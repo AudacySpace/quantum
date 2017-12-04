@@ -1,0 +1,32 @@
+{
+  "name": "quantum",
+  "version": "0.0.1",
+  "description": "Quantum is a mission procedures platform developed by Audacy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "stop": "pkill --signal SIGINT node"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.3",
+    "mongoose": "^4.4.12"
+  },
+  "engines": {
+    "node": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quindar/quantum"
+  },
+  "keywords": [
+    "node",
+    "quantum",
+    "express"
+  ],
+  "author": "Audacy",
+  "contributors": [
+    "Audacy (http://audacy.space)"
+  ],
+  "license": "MIT"
+}
