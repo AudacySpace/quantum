@@ -9,6 +9,19 @@ LABEL vendor="Audacy"
 RUN yum -y update --setopt=tsflags=nodocs   && \
 	yum -y install git wget nano curl make dos2unix
 
+##############################################################################
+	
+#**** install netdata ****
+# https://github.com/firehol/netdata/wiki/Installation
+# https://github.com/firehol/netdata/wiki/Running-behind-nginx
+# netdata is proxied behind nginx, and accessible at \\hostname\netdata
+# start command /usr/sbin/netdata -D -s /host -p 19999
+#
+RUN yum -y install zlib-devel libuuid-devel libmnl-devel gcc autoconf autoconf-archive autogen automake pkgconfig python tc python-yaml  && \
+	git clone https://github.com/firehol/netdata.git --depth=1    && \
+	cd netdata && \
+	./netdata-installer.sh --dont-wait --dont-start-it 
+
 
 ##############################################################################
 
@@ -30,8 +43,8 @@ RUN yum install -y epel-release && \
 	mkdir -p /etc/ssl
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-#COPY nginx/server.crt /etc/ssl/server.crt
-#COPY nginx/server.key /etc/ssl/server.key
+COPY nginx/server.crt /etc/ssl/server.crt
+COPY nginx/server.key /etc/ssl/server.key
 
 #**** install node ****
 # https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora
@@ -71,6 +84,7 @@ RUN npm install
 #
 # the last command can't exit, or the container will shutdown
 
-
-EXPOSE 80
-CMD /usr/sbin/nginx && pm2-docker start server.js --watch --format "YYYY-MM-DD HH:mm:ss Z"
+EXPOSE 80 443
+CMD /usr/sbin/nginx && (pm2-docker start server.js --watch --format "YYYY-MM-DD HH:mm:ss Z" &) && \
+	/usr/sbin/netdata -D -s /host -p 19999
+	
