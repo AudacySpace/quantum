@@ -27,6 +27,10 @@ docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /
 
 The quantum GUI will be running on https://HOSTNAME
 
+You can update the quantum application after the docker container is deployed (running) from the host by running the following command (on the host); the last parameter is the name of the repo branch you want to use for the update; either "master" for production, or "develop" for the demo server. This is useful for either scheduled updates or build automation via Jenkins, etc.
+
+docker exec quantum deploy.sh <branch>
+
 ## About Us
 Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
 
