@@ -25,7 +25,7 @@ docker build -t quantum-app .
 docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
 ```
 
-The quantum GUI will be running on https://<hostname>
+The quantum GUI will be running on https://HOSTNAME
 
 ## About Us
 Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
