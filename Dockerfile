@@ -75,12 +75,6 @@ WORKDIR /node
 COPY . /node
 RUN npm install
 
-# Copy deployment script
-COPY deploy.sh /bin/deploy.sh
-
-RUN  dos2unix  /bin/deploy.sh  && \
-	 chmod a+x /bin/deploy.sh
-
 ##############################################################################	
 	
 #**** start servers with container deploy
