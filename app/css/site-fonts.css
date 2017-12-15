@@ -1,0 +1,48 @@
+
+
+h1,h2,h3{
+	font-family: Open Sans;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+}
+h2 {
+	font-variant:small-caps;
+}
+p, table, pre {
+	font-family: Open Sans;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+
+}
+blockquote {
+	font-family: SerifOpen;
+	font-style: italic;
+	font-variant: normal;
+	font-weight: 400;
+}
+
+
+/*html {
+  font-size: 14px;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 28px;
+  }
+}*/
+

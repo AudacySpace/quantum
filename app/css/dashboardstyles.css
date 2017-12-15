@@ -1,0 +1,217 @@
+/*!
+ * Custom CSS for dashboard page 
+ */
+body {
+    overflow-x: hidden;
+    background-color: #F2F3F4;
+    font-family: "Open Sans", Sans-serif; 
+}
+
+#QBlack {
+    display:none;
+}
+
+.container {
+    margin-left:0;
+    margin-right:0;
+}
+
+span#layout-arrow {
+    position: relative;
+    top: 0px;
+    right:0px;
+}
+
+.navbar {
+    border: 0 none;
+    border-bottom: 3px solid #CFCFD5;
+    text-align: center; 
+    height: 53px;
+}
+
+.navbar .navbar-nav {
+    display:inline-block;
+    float: none;
+}
+
+.navbar-default {
+    background-color: white;
+}
+
+img#main-img {
+    height:20px;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+a#QRegular.navbar-brand {
+    padding:0px;
+}
+
+.navbar-brand>img {
+    height: 100%;
+    width: auto;
+    padding-left:15px;
+}
+
+.navbar-brand {
+    padding: 5px 5px;
+}
+
+#add-widget {
+    background-color: #07D1EA;
+    color: white;
+    margin-right:15px;
+    height: 50px;
+    margin-top: 0px;
+}
+
+img#main-img:focus {
+    outline:auto 0px;
+}
+
+img.search-icon:focus {
+    outline:auto 0px;
+}
+
+.status-bar {
+    padding-left:10px;
+    padding-right:10px;
+} 
+
+.bars {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#top-header {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+a#username.dropdown-toggle {
+    font-size:18px;/*22px*/
+    color:black;
+    display:inline-block;
+    background-color: white;
+    margin-top: 0px;
+    padding-bottom: 0px;
+}
+
+.logout-bar {
+    min-width: 128px;
+}
+
+#callsign {
+    display: block;
+    color: black;
+    text-align: right;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+ul.nav.navbar-nav.navbar-right {
+    height: 50px;
+}
+
+#cfgmenu {
+    height:50px;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav>li>a {
+        margin-top: 5px;
+        padding-top: 10px; 
+        padding-bottom: 10px; 
+    }
+}
+
+@media only screen and (max-width: 736px) {
+  /* For mobile phones: */
+    #QRegular {
+        display:none;
+    }
+
+    #QBlack {
+        padding-left:10px;
+        display:inline-block;
+    }
+
+    .container-fluid>.navbar-header {
+        margin-left: 0px;
+    }
+
+    .nav>li>a {
+        position: relative;
+        display: block;
+        padding: 6px 6px;
+    }
+
+    .navbar-brand>img#main-img {
+        height:100%;
+        padding-left:0px;
+        padding-right:0px;
+        margin-bottom:0;
+        padding-bottom:0;
+        margin-top:0px;
+    }
+
+    ul.nav.navbar-nav {
+        padding:0;
+        margin:0;
+    }
+
+    ul.nav.navbar-nav.navbar-right {
+        position:absolute;
+        top:0;
+        right:0;
+        display:inline;
+    }
+
+    a#username.dropdown-toggle {
+        display:none;
+    }
+
+    a#add-widget {
+        width:100%;
+        position:relative;
+    }
+
+    li.open {
+        width:75%;
+    }
+
+    li#cfgmenu {
+        font-size:16px;  
+            margin-right: 10px; 
+    }
+
+    #callsign {
+        display: none;
+    }
+
+    .bars {
+        padding-top: 11px;
+        padding-bottom: 11px;
+    }
+}
+
+@media only screen and (min-width: 736px) and (max-width: 768px) {
+    a#username.dropdown-toggle {
+        display:none;
+    }
+
+    #callsign{
+        display: none;
+    }
+}   
+
+@media only screen and (min-width: 768px){
+    .navbar-right {
+        margin-right: 0px !important;
+    }
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
