@@ -1,5 +1,30 @@
 module.exports = function(app,passport) {
 
+    var multer = require('multer');
+    var XLSX = require("xlsx");
+    var User = require('./models/user');
+    var ProcedureModel = require('./models/procedure');
+
+    var storage = multer.diskStorage({ //multers disk storage settings
+        destination: function (req, file, cb) {
+            cb(null, '/tmp/uploads');
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.originalname);
+        }
+    });
+
+    var upload = multer({ //multer settings
+        storage: storage,
+        fileFilter : function(req, file, callback) { //file filter
+            if (['xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+                return callback(new Error('Wrong extension. Please upload an xlsx file.'));
+            }
+            callback(null, true);
+        }
+    }).single('file');
+
+
 	// show the home page (will also have our login links)
     app.get('/', function(req, res) {
         res.render('index.ejs');
@@ -42,7 +67,77 @@ module.exports = function(app,passport) {
         });
     });
 
+    //get current role of the user
+    app.get('/getCurrentRole', function(req,res){
+        var email = req.query.email;
 
+        //update the current role of the user
+        User.findOne({ 'google.email' : email }, { currentRole : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+            res.send(user.currentRole);
+        });
+    });
+
+    //To save procedures
+    app.post('/upload', function(req, res) {
+        upload(req,res,function(err){
+            if(err){
+                console.log(err);
+                res.json({error_code:1,err_desc:err});
+            }
+
+            var filename = req.file.originalname.split(" - ");
+            try{
+                var filepath = req.file.path;
+                var workbook = XLSX.readFile(filepath);
+                var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
+            
+                ProcedureModel.find({},{},function(err, procfiles) {
+                    if(err){
+                        console.log(err);
+                        res.json({error_code:0,err_desc:null});
+                    }
+                    
+                    var pfiles = new ProcedureModel();
+                    var ptitle = filename[2].split(".");
+                    pfiles.procedure.id = filename[0];
+                    pfiles.procedure.title = filename[1]+" - "+ptitle[0];
+                    pfiles.procedure.lastuse = "";
+                    pfiles.procedure.running = 0;
+                    pfiles.procedure.archived = 0;
+                    for(var i=0;i<sheet1.length;i++){
+                        pfiles.procedure.sections.push(sheet1[i]); 
+                    }
+                    pfiles.procedure.eventname = filename[1];
+                    pfiles.save(function(err,result){
+                        if(err){
+                            console.log(err);
+                        }
+                        if(result){
+                            console.log('procedure data saved successfully');
+                        }
+                    });
+                });
+                res.json({error_code:0,err_desc:null});
+            }catch(e){
+                console.log(e);
+            }
+        });
+    });
+
+
+    //Displays all the available procedures in a table
+    app.get('/getProcedureList', function(req,res){
+        ProcedureModel.find({}, {}, function(err, procdata) {
+            if (err) {
+                console.log("Error finding procedures data in DB: " + err);
+                throw err;
+            }
+           res.send(procdata); 
+        });
+    });
 };
 
 // route middleware to make sure a user is logged in
