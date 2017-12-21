@@ -75,6 +75,9 @@ WORKDIR /node
 COPY . /node
 RUN npm install
 
+# create a directory to store the uploaded files
+RUN  mkdir -p /tmp/uploads
+
 ##############################################################################	
 	
 #**** start servers with container deploy

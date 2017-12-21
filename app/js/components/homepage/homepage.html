@@ -1,0 +1,49 @@
+<div layout-fill layout="vertical">
+    <section flex layout="horizontal">
+        <!--Main Dashboard Navigation-->
+        <md-content flex class="main">
+            <div id="main">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid" id="top-header">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#" id="QRegular">
+                                <img id="main-img" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
+                            </a>
+                            <a class="navbar-brand" href="#" id="QBlack">
+                                <img id="main-img" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+                            </a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                >{{$ctrl.name}}</a>
+                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
+                                <ul class="dropdown-menu logout-bar">
+                                    <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
+                                </ul>
+                            </li>
+                            <li id="cfgmenu">
+                                <a href="#" id="add-widget"> 
+                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!--Procedures -->
+                <div class="container-fluid">
+                    <procedure><procedure>
+                </div>
+
+                <!-- Dashboard Footer -->
+                <footer class="footer">
+                    <div class="container">
+                        <p class="text-muted"></p>
+                    </div>
+                </footer>
+            </div>
+        </md-content>
+        <!--End Main Dashboard Navigation-->
+    </section>
+</div>

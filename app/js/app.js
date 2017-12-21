@@ -1,1 +1,1 @@
-var quantum = angular.module('quantum', []);
+var quantum = angular.module('quantum', ['ngFileUpload']);
