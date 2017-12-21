@@ -10,8 +10,12 @@
 	<link rel="stylesheet" href="/css/bootstrap-min.css">
 	<link rel="stylesheet" href="/css/font-awesome.min.css">
 	<link href="/css/dashboardstyles.css" rel="stylesheet">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script><!-- load angular -->
+    <script src="https://code.angularjs.org/1.4.8/angular-route.min.js"></script>
+    <script src="https://code.angularjs.org/1.6.1/angular-sanitize.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+    
 	<!-- AngularJS Material CSS -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.css">
@@ -23,73 +27,36 @@
     <!-- AngularJS Material Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
 
+
+
 	<script src="js/app.js"></script> <!-- load our main application -->
-	<script src="js/controllers/main.js"></script> <!-- load up our controller -->
+
+    <!--  Components -->
+    <script src="js/components/homepage/homepage.js"></script>
+    <script src="js/components/procedures/procedure.js"></script>
+
+    <!-- Services -->
+    <script src="js/services/userService.js"></script>
+    <script src="js/services/procedureService.js"></script>
 
     <!-- script to get user details from backend -->
     <script>
         var user = <%- JSON.stringify(user) %>;
-        function getUserName(){
-        	document.getElementById("username").innerHTML = user.google.name;
-        }
     </script>
 
 </head>
 <!-- SET THE CONTROLLER -->
-<body ng-controller="mainController" onload="getUserName()">
-<div layout-fill layout="vertical">
-    <section flex layout="horizontal">
-        <!--Main Dashboard Navigation-->
-        <md-content flex class="main">
-            <div id="main">
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid" id="top-header">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="#" id="QRegular">
-                                <img id="main-img" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
-                            </a>
-                            <a class="navbar-brand" href="#" id="QBlack">
-                                <img id="main-img" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
-                            </a>
-                        </div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
-                                ></a>
-                                <!-- <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small> -->
-                                <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="" ng-click="logout()" target="_self">Logout</a></li>
-                                </ul>
-                            </li>
-                            <li id="cfgmenu">
-                                <a href="#" id="add-widget"> 
-                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+<body>
+    <homepage></homepage>
 
-                <!--Main Dashboard for Widgets -->
-                <div class="container-fluid">
-                    <grid></grid>
-                </div>
-
-                <!-- Dashboard Footer -->
-                <footer class="footer">
-                    <div class="container">
-                        <p class="text-muted"></p>
-                    </div>
-                </footer>
-            </div>
-        </md-content>
-        <!--End Main Dashboard Navigation-->
-    </section>
-</div>
 	<!-- jQuery -->
     <script src="scripts/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="scripts/bootstrap.min.js"></script>
+
+        <!-- Angular Scripts and file upload dependencies -->
+    <script type="text/javascript" src="/scripts/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="/scripts/ng-file-upload-shim.min.js"></script>
 </body>
 </html>
