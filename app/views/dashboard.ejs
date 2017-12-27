@@ -34,6 +34,7 @@
     <!--  Components -->
     <script src="js/components/homepage/homepage.js"></script>
     <script src="js/components/procedures/procedure.js"></script>
+    <script src="js/components/sections/section.js"></script>
 
     <!-- Services -->
     <script src="js/services/userService.js"></script>
@@ -42,6 +43,7 @@
     <!-- script to get user details from backend -->
     <script>
         var user = <%- JSON.stringify(user) %>;
+        angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
     </script>
 
 </head>

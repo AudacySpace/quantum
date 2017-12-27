@@ -46,9 +46,12 @@
                     <td>{{ procedure.id }}</td>
                     <td>{{ procedure.title }}</td>
                     <td>{{ procedure.lastuse }}</td>
-                    <td>{{ procedure.running }}</td>
-                    <td>{{ procedure.archived }}</td>
-                    <td><a><span class="fa fa-caret-down"></span></a>&nbsp;&nbsp;<a><span class="fa fa-caret-right"></span></a></td>
+                    <td><a href="/dashboard/procedure/{{procedure.id}}">{{ procedure.running }}</a></td>
+                    <td><a href="/dashboard/procedure/{{procedure.id}}">{{ procedure.archived }}</a></td>
+                    <td>
+                        <a><span class="fa fa-caret-down"></span></a>&nbsp;&nbsp;
+                        <a><span class="fa fa-caret-right"></span></a>
+                    </td>
                 </tr>
             </tbody>
         </table>
