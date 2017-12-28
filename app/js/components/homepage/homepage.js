@@ -5,6 +5,7 @@ angular.module('quantum')
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
   	controller: function($window,userService,$location,$routeParams) {
+
 		var $ctrl = this;
 	 	$ctrl.name = userService.getUserName();
 	 	$ctrl.role = userService.userRole;
@@ -14,6 +15,7 @@ angular.module('quantum')
 
     	$ctrl.$location = $location;
     	$ctrl.$routeParams = $routeParams;
+    	$ctrl.procedure = procedureService.getProcedureName();
 	 }
 });
 

@@ -6,7 +6,6 @@ body {
     background-color: #F2F3F4;
     font-family: "Open Sans", Sans-serif; 
 }
-
 #QBlack {
     display:none;
 }
@@ -38,9 +37,18 @@ span#layout-arrow {
     background-color: white;
 }
 
-img#main-img {
+img#main-img1 {
     height:20px;
     margin:15px;
+}
+
+img#main-img2 {
+    height:20px;
+    margin:10px;
+}
+
+#headercenter{
+    margin-top:15px;
 }
 
 a#QRegular.navbar-brand {
@@ -65,7 +73,11 @@ a#QRegular.navbar-brand {
     margin-top: 0px;
 }
 
-img#main-img:focus {
+img#main-img1:focus {
+    outline:auto 0px;
+}
+
+img#main-img2:focus{
     outline:auto 0px;
 }
 
@@ -146,7 +158,17 @@ ul.nav.navbar-nav.navbar-right {
         padding: 6px 6px;
     }
 
-    .navbar-brand>img#main-img {
+    .navbar-brand>img#main-img1 {
+        height:100%;
+        padding-left:0px;
+        padding-right:0px;
+        margin-bottom:0;
+        padding-bottom:0;
+        margin-top:0px;
+    }
+
+
+    .navbar-brand>img#main-img2 {
         height:100%;
         padding-left:0px;
         padding-right:0px;

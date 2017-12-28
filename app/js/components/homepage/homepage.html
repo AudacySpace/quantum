@@ -11,10 +11,23 @@
                             </a>
                             <a class="navbar-brand" href="/dashboard" id="QBlack">
                                 <img id="main-img" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+<!--                         <div class="navbar-header" id="headerleft">
+                            <a class="navbar-brand" href="#" id="QRegular">
+                                <img id="main-img1" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
                             </a>
-                        </div>
-                        <ul class="nav navbar-nav navbar-right">
+                            <a class="navbar-brand" href="#" id="QBlack">
+                                <img id="main-img2" src="/media/logos/Quantum_Logo_White.png" alt="Quantum"/>
+                            </a>
+                        </div> -->
+                        <ul class="nav navbar-nav" id="headercenter">
                             <li>
+                                <ul class="nav navbar-nav time">
+                                    <li>{{ $ctrl.procedure.fullname }}</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li  id="headerright">
                                 <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
                                 <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
