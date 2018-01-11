@@ -138,6 +138,38 @@ module.exports = function(app,passport) {
            res.send(procdata); 
         });
     });
+
+    //Gets all the sections of the procedure
+    app.get('/getProcedureData', function(req,res){
+        var id = req.query.id;
+        console.log(id);
+
+        ProcedureModel.findOne( { 'procedure.id' : id }, function(err, procedure) {
+            console.log("heloo");
+            if(err){ 
+                console.log(err);
+            }
+
+            console.log(procedure.procedure.sections);
+
+            var sections = procedure.procedure.sections;
+
+            var ws = XLSX.utils.json_to_sheet(sections);
+
+            var ws_name = "Sheet1";
+ 
+            var wb = { SheetNames:[], Sheets:{} };
+             
+             
+             // add worksheet to workbook 
+            wb.SheetNames.push(ws_name);
+            wb.Sheets[ws_name] = ws;
+            var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+
+
+            res.send(wbout);
+        });
+    });
 };
 
 // route middleware to make sure a user is logged in
