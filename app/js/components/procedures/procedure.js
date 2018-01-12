@@ -1,4 +1,5 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,userService,procedureService) {
+quantum.controller('procedureCtrl', 
+    function(Upload, $window, $scope, userService, procedureService, FileSaver, Blob) {
 	$scope.sortType     = 'procedurearchived'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
 
@@ -83,6 +84,29 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,userService,p
             }
         });
     }
+
+    //String to Array Buffer
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+
+    $scope.download = function(id, title){ 
+        procedureService.downloadProcedure(id, title)
+        .then(function(response) {
+            if(response.status == 200){
+                var data = response.data
+
+                var file = new Blob([s2ab(data)], { type: "application/octet-stream" });
+                FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
+            } else {
+                $window.alert("The file can not be downloaded");
+            }
+        });
+    }
+
 });
 
 

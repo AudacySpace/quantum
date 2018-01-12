@@ -138,6 +138,33 @@ module.exports = function(app,passport) {
            res.send(procdata); 
         });
     });
+
+    //Gets all the sections of the procedure
+    app.get('/getProcedureData', function(req,res){
+        var id = req.query.id;
+
+        ProcedureModel.findOne( { 'procedure.id' : id }, function(err, model) {
+            if(err){ 
+                console.log(err);
+            }
+
+            var sections = model.procedure.sections;
+            //convert json to worksheet
+            var ws = XLSX.utils.json_to_sheet(sections, {header:["Step","Role","Type","Content","Reference"]});
+            //Give name to the worksheet
+            var ws_name = "Sheet1";
+            //Create a workbook object
+            var wb = { SheetNames:[], Sheets:{} };
+
+             // add worksheet to workbook 
+            wb.SheetNames.push(ws_name);
+            wb.Sheets[ws_name] = ws;
+            // write workbook object into a xlsx file
+            var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+
+            res.send(wbout);
+        });
+    });
 };
 
 // route middleware to make sure a user is logged in
