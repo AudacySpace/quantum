@@ -124,7 +124,8 @@ quantum
 
     return {
         telemetry : telemetry,
-        getTime : getTime
+        getTime : getTime,
+        time : time
     }
 }]);
   
