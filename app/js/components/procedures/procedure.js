@@ -1,7 +1,22 @@
-quantum.controller('procedureCtrl', 
-    function(Upload, $window, $scope, userService, procedureService, FileSaver, Blob) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob) {
 	$scope.sortType     = 'procedurearchived'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
+
+    $scope.livelist = [
+    {
+        "revision":"",
+        "openedBy":"",
+        "started":""
+    }];
+
+    $scope.archivedlist = [
+    {
+        "revision":"",
+        "openedBy":"",
+        "started":"",
+        "closedBy":"",
+        "completed":""
+    }];
 
     showList();
   	$scope.submit = function(){ 
@@ -107,6 +122,17 @@ quantum.controller('procedureCtrl',
         });
     }
 
+    $scope.changeColor = function(status,pid,ptitle){
+        if(status === "Live"){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff');
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+
+        }else if(status === "Archived") {
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff');
+            procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+
+        }
+    }
 });
 
 

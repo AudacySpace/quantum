@@ -16,5 +16,17 @@ quantum.config(function($routeProvider, $locationProvider) {
 		controller  : 'sectionCtrl'
 	})
 
+	//route for running index
+	.when('/dashboard/procedure/running/:procID', {
+		templateUrl : './js/components/procedures/running.html',
+		controller  : 'procedureCtrl'
+	})
+
+	 //route for archived index
+	.when('/dashboard/procedure/archived/:procID', {
+		templateUrl : './js/components/procedures/archived.html',
+		controller  : 'procedureCtrl'
+	})
+
 	$locationProvider.html5Mode(true);
 });

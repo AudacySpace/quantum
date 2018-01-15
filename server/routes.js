@@ -4,6 +4,7 @@ module.exports = function(app,passport) {
     var XLSX = require("xlsx");
     var User = require('./models/user');
     var ProcedureModel = require('./models/procedure');
+    var Telemetry = require('./models/telemetry');
 
     var storage = multer.diskStorage({ //multers disk storage settings
         destination: function (req, file, cb) {
@@ -107,6 +108,8 @@ module.exports = function(app,passport) {
                     pfiles.procedure.lastuse = "";
                     pfiles.procedure.running = 0;
                     pfiles.procedure.archived = 0;
+                    pfiles.runninginstances = [];
+                    pfiles.archivedinstances = [];
                     for(var i=0;i<sheet1.length;i++){
                         pfiles.procedure.sections.push(sheet1[i]); 
                     }
@@ -165,6 +168,91 @@ module.exports = function(app,passport) {
             res.send(wbout);
         });
     });
+
+    //save procedure instance
+    app.post('/saveProcedureInstance', function(req,res){
+        var procid = req.body.id;
+        var usernamerole = req.body.usernamerole;
+        var starttime = req.body.starttime;
+
+        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+            if(err){
+                console.log(err);
+            }
+            var instancesteps = [];
+            for(var i=0;i<procs.procedure.sections.length;i++){
+                instancesteps.push({"step":procs.procedure.sections[i].Step,"info":""})
+            }
+            var revision = procs.runninginstances.length+1;
+            procs.runninginstances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":starttime,"completedAt":"","revision": procs.runninginstances.length+1});
+
+            procs.save(function(err) {
+                if (err) throw err;
+                res.send({"revision":revision});
+            });
+        });
+    });
+
+    //Get telemetry data for the mission passed as a parameter
+    app.get('/getTimestamp', function(req, res){
+        var mission = req.query.mission;
+
+        if(mission) {
+            Telemetry.findOne( 
+                {'mission' : mission }, 
+                {}, 
+                { sort: { 'timestamp' : -1 }},
+                function(err, telemetry) {
+                    if(err) throw err;
+
+                    res.send(telemetry);
+                }
+            );
+        }
+    });
+
+    //Displays all the available procedures in a table
+    app.post('/setInfo', function(req,res){
+        var info = req.body.info;
+        var procid = req.body.id;
+        var step = req.body.step;
+        var usernamerole = req.body.usernamerole;
+        var procrevision = req.body.revision;
+
+        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+            if(err){
+                console.log(err);
+            }
+
+            var instance = [];
+            var instanceid;
+            //get procedure instance with the revision num
+            for(var i=0;i<procs.runninginstances.length;i++){
+                if(procs.runninginstances[i].revision === procrevision){
+                    instance = procs.runninginstances[i].Steps;
+                    instanceid = i;
+                    break;
+                }
+            }
+
+            //Set info for the step of that revision
+            for(var j=0;j<instance.length;j++){
+                if(j === step){
+                    instance[j].info = info;
+                    break;
+                }
+            }
+
+            procs.runninginstances[instanceid].Steps = instance;
+            procs.markModified('runninginstances');
+
+            procs.save(function(err) {
+                if (err) throw err;
+                res.send(procs);
+            });
+        });
+    });
+
 };
 
 // route middleware to make sure a user is logged in

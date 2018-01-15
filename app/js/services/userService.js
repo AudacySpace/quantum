@@ -14,7 +14,6 @@ quantum
 
     function getCurrentCallSign() {
         if($window.user.currentRole && $window.user.currentRole.callsign) {
-            console.log($window.user)
             return $window.user.currentRole.callsign;
         } else {
             return "";

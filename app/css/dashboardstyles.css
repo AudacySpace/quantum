@@ -6,7 +6,6 @@ body {
     background-color: #F2F3F4;
     font-family: "Open Sans", Sans-serif; 
 }
-
 #QBlack {
     display:none;
 }
@@ -38,9 +37,18 @@ span#layout-arrow {
     background-color: white;
 }
 
-img#main-img {
+img#main-img1 {
     height:20px;
     margin:15px;
+}
+
+img#main-img2 {
+    height:20px;
+    margin:10px;
+}
+
+#headercenter{
+    margin-top:15px;
 }
 
 a#QRegular.navbar-brand {
@@ -65,7 +73,11 @@ a#QRegular.navbar-brand {
     margin-top: 0px;
 }
 
-img#main-img:focus {
+img#main-img1:focus {
+    outline:auto 0px;
+}
+
+img#main-img2:focus{
     outline:auto 0px;
 }
 
@@ -128,12 +140,22 @@ ul.nav.navbar-nav.navbar-right {
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
     #QRegular {
-        display:none;
+      /*  display:none;*/
+        padding-left:10px;
+        display:inline-block;
+    }
+    img#main-img1 {
+        height:20px !important;
+        margin-top:15px !important;
+        margin-bottom:15px !important;
+        margin-left:0px !important;
+        margin-right:0px !important;
     }
 
     #QBlack {
-        padding-left:10px;
-        display:inline-block;
+/*      padding-left:10px;
+        display:inline-block;*/
+        display:none;
     }
 
     .container-fluid>.navbar-header {
@@ -146,7 +168,17 @@ ul.nav.navbar-nav.navbar-right {
         padding: 6px 6px;
     }
 
-    .navbar-brand>img#main-img {
+    .navbar-brand>img#main-img1 {
+        height:100%;
+        padding-left:0px;
+        padding-right:0px;
+        margin-bottom:0;
+        padding-bottom:0;
+        margin-top:0px;
+    }
+
+
+    .navbar-brand>img#main-img2 {
         height:100%;
         padding-left:0px;
         padding-right:0px;
@@ -182,7 +214,7 @@ ul.nav.navbar-nav.navbar-right {
 
     li#cfgmenu {
         font-size:16px;  
-            margin-right: 10px; 
+        margin-right: 10px; 
     }
 
     #callsign {
@@ -208,6 +240,9 @@ ul.nav.navbar-nav.navbar-right {
 @media only screen and (min-width: 768px){
     .navbar-right {
         margin-right: 0px !important;
+    }
+    #QRegularMbl{
+        display:none;
     }
 }
 
