@@ -77,6 +77,7 @@ quantum
     }
 
     return { 
+        getProcedureList : getProcedureList,
         setProcedureName : setProcedureName,
         getProcedureName : getProcedureName,
         setHeaderStyles : setHeaderStyles,
