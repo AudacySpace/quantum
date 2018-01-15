@@ -13,8 +13,18 @@ quantum
     		method:GET
     	})
     }
+
+    function downloadProcedure(id){
+        return $http({
+            url:"/getProcedureData",
+            method: "GET",
+            params: {"id": id}
+        })
+    }
+
     return { 
         getProcedureList : getProcedureList,
-        getExistingProcedureIds : getExistingProcedureIds
+        getExistingProcedureIds : getExistingProcedureIds,
+        downloadProcedure : downloadProcedure
     }
 }]);

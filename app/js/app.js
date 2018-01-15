@@ -1,4 +1,4 @@
-var quantum = angular.module('quantum', ['ngFileUpload', 'ngRoute']);
+var quantum = angular.module('quantum', ['ngFileUpload', 'ngRoute', 'ngFileSaver']);
 
 // routes
 quantum.config(function($routeProvider, $locationProvider) {
