@@ -1,0 +1,43 @@
+<div id="liveprocedures">
+            <table class="table table-hover">
+            <thead>
+                <tr style="border-top:2px solid gainsboro;border-bottom:1px solid #ccc;display:none">
+                    <th>
+                        <a href="#"></a>
+                    </th>
+                    <th>
+                        <a href="#">Step</a>
+                    </th>
+                    <th>
+                        <a href="#">Role</a>
+                    </th>
+                    <th>
+                        <a href="#">Type</a>
+                    </th>
+                    <th>
+                        <a href="#">Content</a>
+                    </th>
+                    <th>
+                        <a href="#">Status</a>
+                    </th>
+                    <th>
+                        <a href="#">Info</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="details">
+                <tr ng-repeat="step in steps" ng-show="step.openstatus" ng-style="step.rowstyle.rowcolor">
+                    <td>
+                        <a href="#" ng-click="showPList($index,step.index,step.headertype)">
+                        <span class="{{step.class}}"></span></a>
+                    </td>
+                    <td>{{ step.Step }}</td>
+                    <td>{{ step.Role }}</td>
+                    <td><span class="{{step.typeicon}}" title="{{step.Type}}"></span></td>
+                    <td>{{ step.Content }}</td>
+                    <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
+                    <td>{{ step.Info }}</td>
+                </tr>
+            </tbody>
+        </table>
+</div>

@@ -4,20 +4,27 @@
         <md-content flex class="main">
             <div id="main">
                 <nav class="navbar navbar-default">
-                    <div class="container-fluid" id="top-header">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="#" id="QRegular">
-                                <img id="main-img" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
+                    <div class="container-fluid" id="top-header" ng-style="$ctrl.header.styles">
+                        <div class="navbar-header" id="headerleft">
+                            <a class="navbar-brand" href="/dashboard" id="QRegular" ng-style="$ctrl.icons.icon1style" ng-click="$ctrl.setColor()">
+                                <img id="main-img1" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
                             </a>
-                            <a class="navbar-brand" href="#" id="QBlack">
-                                <img id="main-img" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+                            <a class="navbar-brand" href="/dashboard" id="QBlack" ng-style="$ctrl.icons.icon2style" ng-click="$ctrl.setColor()">
+                                <img id="main-img2" src="/media/logos/Quantum_Logo_White.png" alt="Quantum"/>
                             </a>
                         </div>
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav" id="headercenter">
                             <li>
-                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                <ul class="nav navbar-nav time">
+                                    <li>{{ $ctrl.procedure.fullname}}</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li  id="headerright">
+                                <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.styles" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
-                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
+                                <small id="callsign" ng-style="$ctrl.header.styles"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                 </ul>
@@ -33,7 +40,7 @@
 
                 <!--Procedures -->
                 <div class="container-fluid">
-                    <procedure><procedure>
+                    <div ng-view></div>
                 </div>
 
                 <!-- Dashboard Footer -->

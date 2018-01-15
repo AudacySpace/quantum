@@ -1,0 +1,44 @@
+<div class="container form" id="procedures" style="width:100%">
+    <div class="container list" style="width:100%">
+        <table class="table table-hover">
+            <thead>
+                <tr style="border-top:2px solid gainsboro;border-bottom:1px solid #ccc;">
+                    <th>
+                        <a href="#" ng-click="sortType = 'procedurenum'; sortReverse = !sortReverse">Revision
+                            <span ng-show="sortType == 'procedurenum' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'procedurenum' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="sortType = 'proceduretitle'; sortReverse = !sortReverse">Opened By
+                            <span ng-show="sortType == 'proceduretitle' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'proceduretitle' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="sortType = 'procedurelastuse'; sortReverse = !sortReverse">Started
+                            <span ng-show="sortType == 'procedurelastuse' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'procedurelastuse' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="sortType = 'procedurerunning'; sortReverse = !sortReverse">View
+                            <span ng-show="sortType == 'procedurerunning' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'procedurerunning' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="details">
+                <tr ng-repeat="procedure in livelist | orderBy:'revision' | orderBy:sortType:sortReverse">
+                    <td>{{ procedure.revision }}</td>
+                    <td>{{ procedure.openedBy }}</td>
+                    <td>{{ procedure.started }}</td>
+                    <td>
+                        <a><span class="fa fa-caret-right"></span></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

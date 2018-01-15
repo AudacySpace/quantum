@@ -12,7 +12,9 @@ var procedureSchema = mongoose.Schema({
         archived     : Number,
         sections     : Array,
         eventname    : String
-    }
+    },
+    runninginstances : Array,
+    archivedinstances : Array
 });
 
 // create the model for procedures and expose it to our app
