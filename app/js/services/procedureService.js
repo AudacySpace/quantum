@@ -76,6 +76,22 @@ quantum
         });  
     }
 
+    function setInstanceCompleted(info,id,step,usernamerole,revision,completedtime){
+        return $http({
+            url: "/setInstanceCompleted", 
+            method: "POST",
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"completedtime":completedtime}
+        }); 
+    }
+
+    function getLiveInstanceData(pid,revision){
+        return $http({
+            url:"/getLiveInstanceData",
+            method: "GET",
+            params: {'procedureID' : pid,'currentRevision':revision}
+        })
+    }
+
     return { 
         getProcedureList : getProcedureList,
         setProcedureName : setProcedureName,
@@ -85,6 +101,8 @@ quantum
         getIconStyles : getIconStyles,
         saveProcedureInstance : saveProcedureInstance,
         setInfo : setInfo,
-        downloadProcedure : downloadProcedure
+        downloadProcedure : downloadProcedure,
+        setInstanceCompleted : setInstanceCompleted,
+        getLiveInstanceData : getLiveInstanceData
     }
 }]);
