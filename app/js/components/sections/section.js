@@ -14,6 +14,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.interval = $interval($scope.updateClock, 500);
     var currentRevision;
+    // $scope.liveInstanceinterval = "";
 	viewProcedure();
 
 	function viewProcedure(){
@@ -110,14 +111,21 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             if($scope.steps[id].class === "fa fa-caret-down"){
                 $scope.steps[id].class = "fa fa-caret-right"
                 for(var i=0;i<$scope.steps.length;i++){
-                    if(index === parseInt($scope.steps[i].headervalue) && $scope.steps[i].headertype === "subheader" || $scope.steps[i].headertype === "listitem"){
+                    if(index === parseInt($scope.steps[i].headervalue) && $scope.steps[i].headertype === "subheader"){
+                        $scope.steps[i].openstatus = false;
+                    }
+                    else if(index === parseInt($scope.steps[i].headervalue) && $scope.steps[i].headertype === "listitem"){
                         $scope.steps[i].openstatus = false;
                     }
                 }
             }else if($scope.steps[id].class === "fa fa-caret-right"){
                 $scope.steps[id].class = "fa fa-caret-down"
                 for(var i=0;i<$scope.steps.length;i++){
-                    if(index === parseInt($scope.steps[i].headervalue)){
+                    if(index === parseInt($scope.steps[i].headervalue) && $scope.steps[i].headertype === "subheader"){
+                        $scope.steps[i].class = "fa fa-caret-down";
+                        $scope.steps[i].openstatus = true;
+                    }else  if(index === parseInt($scope.steps[i].headervalue) && $scope.steps[i].headertype === "listitem"){
+                        $scope.steps[i].class = "fa fa-caret-right";
                         $scope.steps[i].openstatus = true;
                     }
                 }
@@ -142,35 +150,77 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         }
     }
 
+    // function updateLiveInstance(){
+    //     procedureService.getLiveInstanceData($scope.params.procID,currentRevision).then(function(response){
+    //         if(response.status === 200){
+    //             console.log(response);
+    //         }
+    //     });
+    // }
+
     $scope.setInfo = function(index,stepstatus){
-        if(stepstatus === true){
+        var proc = archiveThisProcedure($scope.params.procID,currentRevision,index); 
+        if(index === $scope.steps.length-1 && proc === false){
+            alert("All the steps have to be completed to close this procedure!");
+                $scope.steps[index].Info = "";
+                $scope.steps[index].rowstyle = {
+                    rowcolor : {backgroundColor:'#e9f6fb'}
+                }
+                $scope.steps[index].chkval = false;
+
+        }else if(index === $scope.steps.length-1 && proc === true){
             $scope.steps[index].rowstyle = {
                 rowcolor : {backgroundColor:'#c6ecc6'}
-          	}
-            var stepInfoStatus = checkIfEmpty($scope.steps);
-            if(stepInfoStatus === true){
-                procedureService.saveProcedureInstance($scope.params.procID,$scope.usernamerole,$scope.clock.utc).then(function(response){
-	                if(response.status === 200){
-	                    currentRevision = response.data.revision;
-	                    $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
-	                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,response.data.revision);
-	                    openNextSteps($scope.steps,index);
-	                }
-            	});
-                	
-        	}else{
-	            $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
-	            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision);
-	            openNextSteps($scope.steps,index);
-        	}
-    	}else{
-            $scope.steps[index].Info = "";
-            $scope.steps[index].rowstyle = {
-                rowcolor : {backgroundColor:'#e9f6fb'}
+            };
+            $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision).then(function(response){
+                if(response.status === 200){
+                    procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision,$scope.clock.utc).then(function(res){
+                        if(res.status === 200){
+                            for(var a=0;a<$scope.steps.length;a++){
+                                $scope.steps[a].status = true;
+                                procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                procedureService.setHeaderStyles('none','block','#000000','#ffffff');
+                            }
+                            // $interval.cancel($scope.liveInstanceinterval);
+                        }
+                    });
                 }
-            procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,currentRevision);
-        }
+            });
 
+        }else{
+            if(stepstatus === true){
+                $scope.steps[index].rowstyle = {
+                    rowcolor : {backgroundColor:'#c6ecc6'}
+                }
+                var stepInfoStatus = checkIfEmpty($scope.steps);
+                if(stepInfoStatus === true){
+                    procedureService.saveProcedureInstance($scope.params.procID,$scope.usernamerole,$scope.clock.utc).then(function(response){
+                        if(response.status === 200){
+                            currentRevision = response.data.revision;
+                            $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+                            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,response.data.revision).then(function(resp){
+                                if(resp.status === 200){
+                                    openNextSteps($scope.steps,index);
+                                    //$scope.liveInstanceinterval = $interval(updateLiveInstance, 1000);
+                                }
+                            });
+                        }
+                    });
+                        
+                }else{
+                    $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision);
+                    openNextSteps($scope.steps,index);
+                }
+            }else{
+                $scope.steps[index].Info = "";
+                $scope.steps[index].rowstyle = {
+                    rowcolor : {backgroundColor:'#e9f6fb'}
+                    }
+                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,currentRevision);
+            }
+        }
     }
 
     function checkIfEmpty(steps){
@@ -190,16 +240,16 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     function openNextSteps(steps,index){
         var newindex = index+1;
         if(steps[index].headertype === "mainheader"){
-        	while(steps[newindex].headertype !== "mainheader"){
+        	while(steps[newindex].headertype !== "mainheader" && index !== steps.length-1){
         		steps[newindex].openstatus = true;
-        		steps[index].class = "fa fa-caret-down"
+        		steps[index].class = "fa fa-caret-down";
         		if(newindex === steps.length-1){
         			break;
         		}else {
         			newindex = newindex+1;
         		}	
         	}
-		}else if(steps[index].headertype === "subheader"){
+		}else if(steps[index].headertype === "subheader" && index !== steps.length-1){
         	while(steps[newindex].headertype !== "mainheader"){
         		steps[newindex].openstatus = true;
         		steps[index].class = "fa fa-caret-down";
@@ -209,10 +259,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         			newindex = newindex+1;
         		}	
         	}
-        }else if(steps[index].headertype === "listitem"){
+        }else if(steps[index].headertype === "listitem" && index !== steps.length-1){
         	if(steps[newindex].headertype === "mainheader"){
+                steps[newindex].class = "fa fa-caret-down";
         		steps[newindex].openstatus = true;
-        		steps[index].class = "fa fa-caret-down";
+        		steps[index].class = "fa fa-caret-right";
         		var newind = newindex+1;
         		while(steps[newind].headertype !== "mainheader"){
         			steps[newind].openstatus = true;
@@ -225,6 +276,28 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         	}
         }
     }
+
+    function archiveThisProcedure(procedureID,revision,index){
+        var count = 0;
+        for(var i=0;i<$scope.steps.length;i++){
+            if($scope.steps[i].Info){
+                count++;
+            }
+        }
+
+        if(count === $scope.steps.length-1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    $scope.$on("$destroy", 
+        function(event) {
+            $interval.cancel( $scope.interval );
+            // $interval.cancel($scope.liveInstanceinterval);
+        }
+    );
 });
 
 
