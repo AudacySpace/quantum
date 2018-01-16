@@ -253,6 +253,69 @@ module.exports = function(app,passport) {
         });
     });
 
+    //Displays all the available procedures in a table
+    app.post('/setInstanceCompleted', function(req,res){
+        var info = req.body.info;
+        var procid = req.body.id;
+        var step = req.body.step;
+        var usernamerole = req.body.usernamerole;
+        var procrevision = req.body.revision;
+        var completedtime = req.body.completedtime;
+
+        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+            if(err){
+                console.log(err);
+            }
+
+            var instance = [];
+            var instanceid;
+            var revision = procs.archivedinstances.length+1;
+            //get procedure instance with the revision num
+            for(var i=0;i<procs.runninginstances.length;i++){
+                if(procs.runninginstances[i].revision === procrevision){
+                    procs.runninginstances[i].closedBy = usernamerole;
+                    procs.runninginstances[i].completedAt = completedtime;
+                    procs.runninginstances[i].revision = revision;
+                    archivedInstance = procs.runninginstances[i];
+                    instanceid = i;
+                    break;
+                }
+            }
+
+            procs.runninginstances.splice(instanceid,1);
+            procs.archivedinstances.push(archivedInstance);
+            procs.markModified('runninginstances');
+            procs.markModified('archivedinstances');
+
+            procs.save(function(err) {
+                if (err) throw err;
+                res.send(procs);
+            });
+        });
+    });
+
+    //Gets all the sections of the live instance
+    app.get('/getLiveInstanceData', function(req,res){
+        var id = req.query.procedureID;
+        var revision = req.query.currentRevision;
+
+        ProcedureModel.findOne( { 'procedure.id' : id}, function(err, model) {
+            if(err){ 
+                console.log(err);
+            }
+
+            var runninginstances = model.runninginstances;
+            var liveinstance = [];
+
+            for(var i=0;i<runninginstances.length;i++){
+                if(runninginstances[i].revision === parseInt(revision)){
+                    liveinstance = runninginstances[i];
+                }
+            }
+            res.send(liveinstance);
+        });
+    });
+
 };
 
 // route middleware to make sure a user is logged in
