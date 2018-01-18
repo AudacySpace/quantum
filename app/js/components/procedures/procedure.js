@@ -2,13 +2,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 	$scope.sortType     = 'procedurearchived'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
 
-    $scope.livelist = [
-    {
-        "revision":"",
-        "openedBy":"",
-        "started":""
-    }];
-
     $scope.archivedlist = [
     {
         "revision":"",
@@ -92,8 +85,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                         id:parseFloat(response.data[i].procedure.id).toFixed(1),
                         title:response.data[i].procedure.title,
                         lastuse:response.data[i].procedure.lastuse,
-                        running:response.data[i].procedure.running,
-                        archived:response.data[i].procedure.archived
+                        running:response.data[i].runninginstances.length,
+                        archived:response.data[i].archivedinstances.length
                     }
                 )
             }

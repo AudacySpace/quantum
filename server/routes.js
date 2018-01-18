@@ -316,6 +316,26 @@ module.exports = function(app,passport) {
         });
     });
 
+    //Gets all running instances and archived instances of a procedure
+    app.get('/getAllInstances', function(req,res){
+        var id = req.query.procedureID;
+
+        ProcedureModel.findOne( { 'procedure.id' : id}, function(err, model) {
+            if(err){ 
+                console.log(err);
+            }
+
+            var runninginstances = model.runninginstances;
+            var archivedinstances = model.archivedinstances;
+            var allinstances = {
+                runninginstances : runninginstances,
+                archivedinstances : archivedinstances,
+                title : model.procedure.title
+            }
+            res.send(allinstances);
+        });
+    });
+
 };
 
 // route middleware to make sure a user is logged in

@@ -89,7 +89,15 @@ quantum
             url:"/getLiveInstanceData",
             method: "GET",
             params: {'procedureID' : pid,'currentRevision':revision}
-        })
+        });
+    }
+
+    function getAllInstances(pid){
+        return $http({
+            url:"/getAllInstances",
+            method: "GET",
+            params: {'procedureID' : pid}
+        });
     }
 
     return { 
@@ -103,6 +111,7 @@ quantum
         setInfo : setInfo,
         downloadProcedure : downloadProcedure,
         setInstanceCompleted : setInstanceCompleted,
-        getLiveInstanceData : getLiveInstanceData
+        getLiveInstanceData : getLiveInstanceData,
+        getAllInstances : getAllInstances
     }
 }]);
