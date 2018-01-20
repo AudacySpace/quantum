@@ -3,7 +3,6 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     showArchivedList();
 
     function showArchivedList(){
-        console.log($scope.params.procID);
         procedureService.getAllInstances($scope.params.procID).then(function(response){
             if(response.status === 200){
                 //openedBy
@@ -13,6 +12,8 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
                 //completedAt
 
                 $scope.archivedlist = response.data.archivedinstances;
+                $scope.procedureid = $scope.params.procID;
+                $scope.proceduretitle = response.data.title;
             }
         });
 

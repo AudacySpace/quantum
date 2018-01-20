@@ -35,7 +35,7 @@
                     <td>{{ procedure.openedBy }}</td>
                     <td>{{ procedure.startedAt }}</td>
                     <td>
-                        <a href="/dashboard/procedure/runninginstance/{{procedureid}}" ng-click="changeColor('Live',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
+                        <a href="/dashboard/procedure/runninginstance/{{procedureid}}/{{procedure.revision}}" ng-click="changeColor('Live',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
                     </td>
                 </tr>
             </tbody>

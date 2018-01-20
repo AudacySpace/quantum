@@ -29,15 +29,15 @@ quantum.config(function($routeProvider, $locationProvider) {
 	})
 
 		//route for running instance
-	.when('/dashboard/procedure/runninginstance/:procID', {
+	.when('/dashboard/procedure/runninginstance/:procID/:revisionID', {
 		templateUrl : './js/components/sections/section.html',
-		controller  : 'sectionCtrl'
+		controller  : 'runningInstanceCtrl'
 	})
 
 	 //route for archived instance
-	.when('/dashboard/procedure/archivedinstance/:procID', {
+	.when('/dashboard/procedure/archivedinstance/:procID/:revisionID', {
 		templateUrl : './js/components/sections/section.html',
-		controller  : 'sectionCtrl'
+		controller  : 'archivedInstanceCtrl'
 	})
 
 	$locationProvider.html5Mode(true);
