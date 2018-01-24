@@ -94,6 +94,22 @@ module.exports = function(app,passport) {
                 var filepath = req.file.path;
                 var workbook = XLSX.readFile(filepath);
                 var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
+
+                console.log(sheet1);
+                var fileverify = 0
+                for(var a=0;a<sheet1.length;a++){
+                    if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
+                        fileverify++;
+                    }
+                }
+                console.log(fileverify);
+                console.log(sheet1.length-1);
+                if(fileverify === sheet1.length-1){
+
+              //  }
+                //else {
+                     //res.json({error_code:0,err_desc:"Not a valid file"});
+                //}
             
                 ProcedureModel.find({},{},function(err, procfiles) {
                     if(err){
@@ -106,10 +122,7 @@ module.exports = function(app,passport) {
                     pfiles.procedure.id = filename[0];
                     pfiles.procedure.title = filename[1]+" - "+ptitle[0];
                     pfiles.procedure.lastuse = "";
-                    pfiles.procedure.running = 0;
-                    pfiles.procedure.archived = 0;
-                    pfiles.runninginstances = [];
-                    pfiles.archivedinstances = [];
+                    pfiles.instances = [];
                     for(var i=0;i<sheet1.length;i++){
                         pfiles.procedure.sections.push(sheet1[i]); 
                     }
@@ -124,6 +137,9 @@ module.exports = function(app,passport) {
                     });
                 });
                 res.json({error_code:0,err_desc:null});
+            }else{
+                res.json({error_code:0,err_desc:"Not a valid file"});
+            }
             }catch(e){
                 console.log(e);
             }
@@ -183,8 +199,8 @@ module.exports = function(app,passport) {
             for(var i=0;i<procs.procedure.sections.length;i++){
                 instancesteps.push({"step":procs.procedure.sections[i].Step,"info":""})
             }
-            var revision = procs.runninginstances.length+1;
-            procs.runninginstances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":starttime,"completedAt":"","revision": procs.runninginstances.length+1});
+            var revision = procs.instances.length+1;
+            procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":starttime,"completedAt":"","revision": procs.instances.length+1,"running":true});
 
             procs.save(function(err) {
                 if (err) throw err;
@@ -227,9 +243,9 @@ module.exports = function(app,passport) {
             var instance = [];
             var instanceid;
             //get procedure instance with the revision num
-            for(var i=0;i<procs.runninginstances.length;i++){
-                if(procs.runninginstances[i].revision === procrevision){
-                    instance = procs.runninginstances[i].Steps;
+            for(var i=0;i<procs.instances.length;i++){
+                if(procs.instances[i].revision === procrevision){
+                    instance = procs.instances[i].Steps;
                     instanceid = i;
                     break;
                 }
@@ -243,8 +259,8 @@ module.exports = function(app,passport) {
                 }
             }
 
-            procs.runninginstances[instanceid].Steps = instance;
-            procs.markModified('runninginstances');
+            procs.instances[instanceid].Steps = instance;
+            procs.markModified('instances');
 
             procs.save(function(err) {
                 if (err) throw err;
@@ -267,26 +283,17 @@ module.exports = function(app,passport) {
                 console.log(err);
             }
 
-            var instance = [];
-            var instanceid;
-            var revision = procs.archivedinstances.length+1;
             //get procedure instance with the revision num
-            for(var i=0;i<procs.runninginstances.length;i++){
-                if(procs.runninginstances[i].revision === procrevision){
-                    procs.runninginstances[i].closedBy = usernamerole;
-                    procs.runninginstances[i].completedAt = completedtime;
-                    procs.runninginstances[i].revision = revision;
-                    archivedInstance = procs.runninginstances[i];
-                    instanceid = i;
+            for(var i=0;i<procs.instances.length;i++){
+                if(procs.instances[i].revision === procrevision){
+                    procs.instances[i].closedBy = usernamerole;
+                    procs.instances[i].completedAt = completedtime;
+                    procs.instances[i].running = false;
                     break;
                 }
             }
 
-            procs.runninginstances.splice(instanceid,1);
-            procs.archivedinstances.push(archivedInstance);
-            procs.markModified('runninginstances');
-            procs.markModified('archivedinstances');
-
+            procs.markModified('instances');
             procs.save(function(err) {
                 if (err) throw err;
                 res.send(procs);
@@ -304,12 +311,12 @@ module.exports = function(app,passport) {
                 console.log(err);
             }
 
-            var runninginstances = model.runninginstances;
+            var instances = model.instances;
             var liveinstance = [];
 
-            for(var i=0;i<runninginstances.length;i++){
-                if(runninginstances[i].revision === parseInt(revision)){
-                    liveinstance = runninginstances[i];
+            for(var i=0;i<instances.length;i++){
+                if(instances[i].revision === parseInt(revision)){
+                    liveinstance = instances[i];
                 }
             }
             res.send(liveinstance);
@@ -325,11 +332,9 @@ module.exports = function(app,passport) {
                 console.log(err);
             }
 
-            var runninginstances = model.runninginstances;
-            var archivedinstances = model.archivedinstances;
+            var instances = model.instances;
             var allinstances = {
-                runninginstances : runninginstances,
-                archivedinstances : archivedinstances,
+                instances : instances,
                 title : model.procedure.title
             }
             res.send(allinstances);

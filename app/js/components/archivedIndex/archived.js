@@ -11,7 +11,12 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
                 //closedBy
                 //completedAt
 
-                $scope.archivedlist = response.data.archivedinstances;
+                $scope.archivedlist = [];
+                for(var i=0;i<response.data.instances.length;i++){
+                    if(response.data.instances[i].running === false){
+                        $scope.archivedlist.push(response.data.instances[i]);
+                    }
+                }
                 $scope.procedureid = $scope.params.procID;
                 $scope.proceduretitle = response.data.title;
             }

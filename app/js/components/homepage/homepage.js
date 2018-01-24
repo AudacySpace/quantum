@@ -21,7 +21,7 @@ angular.module('quantum')
       
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000');
-            procedureService.setProcedureName('','',"Home");
+        procedureService.setProcedureName('','',"Home");
     	}
 	 }
 });

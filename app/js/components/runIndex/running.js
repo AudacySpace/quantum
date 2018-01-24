@@ -8,7 +8,12 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
                 //openedBy
                 //startedAt
                 //revision
-                $scope.livelist = response.data.runninginstances;
+                $scope.livelist = [];
+                for(var i=0;i<response.data.instances.length;i++){
+                    if(response.data.instances[i].running === true){
+                        $scope.livelist.push(response.data.instances[i]);
+                    }
+                }
                 $scope.procedureid = $scope.params.procID;
                 $scope.proceduretitle = response.data.title;
             }
