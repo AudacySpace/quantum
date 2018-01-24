@@ -161,13 +161,13 @@ quantum
             }
 
             //check for role and disable the steps if not permitted
-            // for(var a=0;a<psteps.length;a++){
-            //     if(psteps[a].Role.includes(callsign)){
-            //         psteps[a].status = false;
-            //     }else {
-            //         psteps[a].status = true;
-            //     }
-            // }
+            for(var a=0;a<psteps.length;a++){
+                if(psteps[a].Role.includes(callsign)){
+                    psteps[a].status = false;
+                }else {
+                    psteps[a].status = true;
+                }
+            }
 
         return psteps;
 
