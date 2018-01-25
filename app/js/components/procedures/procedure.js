@@ -2,16 +2,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 	$scope.sortType     = 'procedurearchived'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
 
-    $scope.archivedlist = [
-    {
-        "revision":"",
-        "openedBy":"",
-        "started":"",
-        "closedBy":"",
-        "completed":""
-    }];
-
-    showList();
+    $scope.procedurelistinterval = $interval(showList, 2000);
   	$scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
@@ -85,29 +76,33 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     function showList(){
         procedureService.getProcedureList().then(function(response) {
             $scope.procedurelist = [];
-            for(var i=0;i<response.data.length;i++){
-                $scope.procedurelist.push(
-                    {
-                        id:parseFloat(response.data[i].procedure.id).toFixed(1),
-                        title:response.data[i].procedure.title,
-                        lastuse:response.data[i].procedure.lastuse,
-                        instances:response.data[i].instances,
-                        running:0,
-                        archived:0
-                    }
-                )
-            }
+            if(response.data.length > 0){
+                for(var i=0;i<response.data.length;i++){
+                    $scope.procedurelist.push(
+                        {
+                            id:parseFloat(response.data[i].procedure.id).toFixed(1),
+                            title:response.data[i].procedure.title,
+                            lastuse:response.data[i].procedure.lastuse,
+                            instances:response.data[i].instances,
+                            running:0,
+                            archived:0
+                        }
+                    )
+                }
 
-            for(var j=0;j<response.data.length;j++){
-                for(k=0;k<response.data[j].instances.length;k++){
-                    if(response.data[j].instances[k].running === true){
-                        $scope.procedurelist[j].running++;
-                    }else{
-                        $scope.procedurelist[j].archived++;
+                for(var j=0;j<response.data.length;j++){
+                    for(k=0;k<response.data[j].instances.length;k++){
+                        if(response.data[j].instances[k].running === true){
+                            $scope.procedurelist[j].running++;
+                        }else{
+                            $scope.procedurelist[j].archived++;
+                        }
                     }
                 }
             }
 
+        },function(error){
+            console.log(error);
         });
     }
 
@@ -144,6 +139,12 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 
         }
     }
+
+    $scope.$on("$destroy", 
+        function(event) {
+            $interval.cancel($scope.procedurelistinterval);
+        }
+    );
 });
 
 

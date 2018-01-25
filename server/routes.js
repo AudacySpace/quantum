@@ -95,51 +95,44 @@ module.exports = function(app,passport) {
                 var workbook = XLSX.readFile(filepath);
                 var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
 
-                console.log(sheet1);
                 var fileverify = 0
                 for(var a=0;a<sheet1.length;a++){
                     if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
                         fileverify++;
                     }
                 }
-                console.log(fileverify);
-                console.log(sheet1.length-1);
+
                 if(fileverify === sheet1.length-1){
 
-              //  }
-                //else {
-                     //res.json({error_code:0,err_desc:"Not a valid file"});
-                //}
-            
-                ProcedureModel.find({},{},function(err, procfiles) {
-                    if(err){
-                        console.log(err);
-                        res.json({error_code:0,err_desc:null});
-                    }
-                    
-                    var pfiles = new ProcedureModel();
-                    var ptitle = filename[2].split(".");
-                    pfiles.procedure.id = filename[0];
-                    pfiles.procedure.title = filename[1]+" - "+ptitle[0];
-                    pfiles.procedure.lastuse = "";
-                    pfiles.instances = [];
-                    for(var i=0;i<sheet1.length;i++){
-                        pfiles.procedure.sections.push(sheet1[i]); 
-                    }
-                    pfiles.procedure.eventname = filename[1];
-                    pfiles.save(function(err,result){
+                    ProcedureModel.find({},{},function(err, procfiles) {
                         if(err){
                             console.log(err);
+                            res.json({error_code:0,err_desc:null});
                         }
-                        if(result){
-                            console.log('procedure data saved successfully');
+                        
+                        var pfiles = new ProcedureModel();
+                        var ptitle = filename[2].split(".");
+                        pfiles.procedure.id = filename[0];
+                        pfiles.procedure.title = filename[1]+" - "+ptitle[0];
+                        pfiles.procedure.lastuse = "";
+                        pfiles.instances = [];
+                        for(var i=0;i<sheet1.length;i++){
+                            pfiles.procedure.sections.push(sheet1[i]); 
                         }
+                        pfiles.procedure.eventname = filename[1];
+                        pfiles.save(function(err,result){
+                            if(err){
+                                console.log(err);
+                            }
+                            if(result){
+                                console.log('procedure data saved successfully');
+                            }
+                        });
                     });
-                });
-                res.json({error_code:0,err_desc:null});
-            }else{
-                res.json({error_code:0,err_desc:"Not a valid file"});
-            }
+                    res.json({error_code:0,err_desc:null});
+                }else{
+                    res.json({error_code:0,err_desc:"Not a valid file"});
+                }
             }catch(e){
                 console.log(e);
             }
@@ -189,7 +182,7 @@ module.exports = function(app,passport) {
     app.post('/saveProcedureInstance', function(req,res){
         var procid = req.body.id;
         var usernamerole = req.body.usernamerole;
-        var starttime = req.body.starttime;
+        var lastuse = req.body.lastuse;//start time
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -200,8 +193,8 @@ module.exports = function(app,passport) {
                 instancesteps.push({"step":procs.procedure.sections[i].Step,"info":""})
             }
             var revision = procs.instances.length+1;
-            procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":starttime,"completedAt":"","revision": procs.instances.length+1,"running":true});
-
+            procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true});
+            procs.procedure.lastuse = lastuse;
             procs.save(function(err) {
                 if (err) throw err;
                 res.send({"revision":revision});
@@ -234,6 +227,7 @@ module.exports = function(app,passport) {
         var step = req.body.step;
         var usernamerole = req.body.usernamerole;
         var procrevision = req.body.revision;
+        var lastuse = req.body.lastuse; //time when the step was completed
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -260,6 +254,8 @@ module.exports = function(app,passport) {
             }
 
             procs.instances[instanceid].Steps = instance;
+            procs.procedure.lastuse = lastuse;
+            procs.markModified('procedure');
             procs.markModified('instances');
 
             procs.save(function(err) {
@@ -276,7 +272,7 @@ module.exports = function(app,passport) {
         var step = req.body.step;
         var usernamerole = req.body.usernamerole;
         var procrevision = req.body.revision;
-        var completedtime = req.body.completedtime;
+        var lastuse = req.body.lastuse; // time when the procedure instance is completed
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -287,12 +283,13 @@ module.exports = function(app,passport) {
             for(var i=0;i<procs.instances.length;i++){
                 if(procs.instances[i].revision === procrevision){
                     procs.instances[i].closedBy = usernamerole;
-                    procs.instances[i].completedAt = completedtime;
+                    procs.instances[i].completedAt = lastuse;
                     procs.instances[i].running = false;
                     break;
                 }
             }
-
+            procs.procedure.lastuse = lastuse;
+            procs.markModified('procedure');
             procs.markModified('instances');
             procs.save(function(err) {
                 if (err) throw err;

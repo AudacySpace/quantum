@@ -36,6 +36,7 @@ quantum
 
         if(time != "") {
             var today = new Date(time);
+            var tyear = today.getFullYear();
             var todayZone = new Date(today.getTime() + (3600000*offset) + (today.getTimezoneOffset() * 60000));
             var start = new Date(todayZone.getFullYear(), 0, 0);
             var diff = todayZone - start;
@@ -56,7 +57,8 @@ quantum
             "hours" : h,
             "minutes" : m,
             "seconds" : s,
-            "utc" : clock
+            "utc" : clock,
+            "year" : tyear
         };
     }
 
