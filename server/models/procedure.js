@@ -7,7 +7,7 @@ var procedureSchema = mongoose.Schema({
     procedure           : {
         id           : String,
         title        : String,
-        lastuse      : Date,
+        lastuse      : String,
         sections     : Array,
         eventname    : String
     },

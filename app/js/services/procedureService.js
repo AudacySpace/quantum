@@ -60,27 +60,27 @@ quantum
         return icons;
     }
 
-    function saveProcedureInstance(id,usernamerole,starttime) {
+    function saveProcedureInstance(id,usernamerole,lastuse) {
         return $http({
             url: "/saveProcedureInstance", 
             method: "POST",
-            data: {"id":id,"usernamerole":usernamerole,"starttime":starttime}
+            data: {"id":id,"usernamerole":usernamerole,"lastuse":lastuse}
         });
     }
 
-    function setInfo(info,id,step,usernamerole,revision){
+    function setInfo(info,id,step,usernamerole,revision,lastuse){
         return $http({
             url: "/setInfo", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse}
         });  
     }
 
-    function setInstanceCompleted(info,id,step,usernamerole,revision,completedtime){
+    function setInstanceCompleted(info,id,step,usernamerole,revision,lastuse){
         return $http({
             url: "/setInstanceCompleted", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"completedtime":completedtime}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse}
         }); 
     }
 
@@ -275,7 +275,7 @@ quantum
         return steps;
     }
 
-    function archiveThisProcedure(procedureID,revision,index,steps){
+    function archiveThisProcedure(steps){
         var count = 0;
         for(var i=0;i<steps.length;i++){
             if(steps[i].Info){
