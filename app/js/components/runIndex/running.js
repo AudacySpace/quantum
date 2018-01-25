@@ -1,5 +1,7 @@
 quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval) {
     $scope.params = $routeParams;
+    $scope.sortType     = 'procedurestarted'; // set the default sort type
+    $scope.sortReverse  = false;  // set the default sort order
     showRunningList();
 
     function showRunningList(){
