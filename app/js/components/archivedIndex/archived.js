@@ -1,5 +1,7 @@
 quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams) {
     $scope.params = $routeParams;
+    $scope.sortType     = 'procedurecompleted'; // set the default sort type
+    $scope.sortReverse  = false;  // set the default sort order
     showArchivedList();
 
     function showArchivedList(){
