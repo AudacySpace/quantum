@@ -9,8 +9,14 @@
                             <a class="navbar-brand" href="/dashboard" id="QRegular" ng-style="$ctrl.icons.icon1style" ng-click="$ctrl.setColor()">
                                 <img id="main-img1" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
                             </a>
-                            <a class="navbar-brand" href="/dashboard" id="QBlack" ng-style="$ctrl.icons.icon2style" ng-click="$ctrl.setColor()">
+                            <a class="navbar-brand" href="/dashboard" id="QLogoWhite" ng-style="$ctrl.icons.icon2style" ng-click="$ctrl.setColor()">
                                 <img id="main-img2" src="/media/logos/Quantum_Logo_White.png" alt="Quantum"/>
+                            </a>
+                            <a class="navbar-brand" href="/dashboard" id="QIconBlack" ng-style="$ctrl.icons.icon3style" ng-click="$ctrl.setColor()">
+                                <img id="mbl-main-img1" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+                            </a>
+                            <a class="navbar-brand" href="/dashboard" id="QIconWhite" ng-style="$ctrl.icons.icon4style" ng-click="$ctrl.setColor()">
+                                <img id="mbl-main-img2" src="/media/logos/Quantum_Icon_White.png" alt="Quantum"/> 
                             </a>
                         </div>
                         <ul class="nav navbar-nav" id="headercenter">
@@ -30,7 +36,7 @@
                                 </ul>
                             </li>
                             <li id="cfgmenu">
-                                <a href="#" id="add-widget"> 
+                                <a href="#" id="add-widget" ng-click="$ctrl.openRightNav()"> 
                                     <span class="fa fa-bars bars" aria-hidden="true"> </span>
                                 </a>
                             </li>
@@ -52,5 +58,11 @@
             </div>
         </md-content>
         <!--End Main Dashboard Navigation-->
+
+        <!-- Right Sidebar -->
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$ctrl.locks.lockRight">
+            <right-sidebar></right-sidebar>
+        </md-sidenav>
+        
     </section>
 </div>

@@ -1,0 +1,16 @@
+<!-- Right Side Nav  -->
+<md-toolbar>
+    <h1 class="md-toolbar-tools">Configuration Menu</h1>
+</md-toolbar>
+<md-content flex role="navigation" id="right">
+    <md-list>
+        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }} ({{$ctrl.role.cRole.callsign}})</md-subheader>
+        <md-divider class="show-hide"></md-divider>
+        <md-divider></md-divider>
+        <md-list-item ng-href="/logout" class="show-flex">
+            <p ng-click="$ctrl.logout()">Logout</p>
+        </md-list-item>
+        <md-divider class="show-hide"></md-divider>
+    </md-list>
+</md-content>
+<!-- End of Right Side Nav  -->
