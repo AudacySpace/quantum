@@ -14,7 +14,8 @@ quantum
         icon4style:""
     }
     var header = {
-        styles:{}
+        styles:{},
+        namestyles:{}
     };
     function getProcedureList() {
     	return $http({
@@ -54,6 +55,7 @@ quantum
             icons.icon4style = {display:icon4};
         }
         header.styles = {backgroundColor:bgcolor,color:fontcolor};
+        header.namestyles = {color:fontcolor};
     }
     function getHeaderStyles(){
         return header;
@@ -172,13 +174,13 @@ quantum
             }
 
             //check for role and disable the steps if not permitted
-            // for(var a=0;a<psteps.length;a++){
-            //     if(psteps[a].Role.includes(callsign)){
-            //         psteps[a].status = false;
-            //     }else {
-            //         psteps[a].status = true;
-            //     }
-            // }
+            for(var a=0;a<psteps.length;a++){
+                if(psteps[a].Role.includes(callsign)){
+                    psteps[a].status = false;
+                }else {
+                    psteps[a].status = true;
+                }
+            }
 
         return psteps;
 

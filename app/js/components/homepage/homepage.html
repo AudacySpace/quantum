@@ -20,23 +20,23 @@
                             </a>
                         </div>
                         <ul class="nav navbar-nav" id="headercenter">
-                            <li>
-                                <ul class="nav navbar-nav time">
+                            <li id="pname">
+                                <ul class="nav navbar-nav">
                                     <li>{{ $ctrl.procedure.fullname}}</li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li  id="headerright">
-                                <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.styles" data-toggle="dropdown" href="#"
+                                <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.namestyles" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
-                                <small id="callsign" ng-style="$ctrl.header.styles"> {{ $ctrl.role.cRole.callsign }} </small>
+                                <small id="callsign" ng-style="$ctrl.header.namestyles"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
-                                <a href="#" id="add-widget" ng-click="$ctrl.openRightNav()"> 
+                                <a href="#" id="config-bar" ng-click="$ctrl.openRightNav()"> 
                                     <span class="fa fa-bars bars" aria-hidden="true"> </span>
                                 </a>
                             </li>

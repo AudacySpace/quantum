@@ -14,7 +14,6 @@ quantum
                 params: {'mission' : 'AZero'}
             }).then(function success(response) {
                 if(response.data){
-                    //console.log(response.data);
                     telemetry['time'] = response.data.timestamp;
                     time = response.data.timestamp;
                 }else{
@@ -49,6 +48,10 @@ quantum
             m = checkTime(m);
             s = checkTime(s);
             clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
+        }
+
+        if(clock === "000.00:00:00 UTC"){
+            tyear = (new Date()).getFullYear();
         }
 
         return {

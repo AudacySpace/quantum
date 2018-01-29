@@ -7,8 +7,8 @@
         <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }} ({{$ctrl.role.cRole.callsign}})</md-subheader>
         <md-divider class="show-hide"></md-divider>
         <md-divider></md-divider>
-        <md-list-item ng-href="/logout" class="show-flex">
-            <p ng-click="$ctrl.logout()">Logout</p>
+        <md-list-item ng-click="$ctrl.logout()" class="show-flex">
+            <p>Logout</p>
         </md-list-item>
         <md-divider class="show-hide"></md-divider>
     </md-list>

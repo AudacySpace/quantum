@@ -23,10 +23,16 @@ body {
     margin-right:0;
 }
 
-span#layout-arrow {
-    position: relative;
-    top: 0px;
-    right:0px;
+#procedures {
+    width:100%;
+}
+
+.container.list{
+    width:100%;
+}
+
+.browsefile{
+    display:none !important;
 }
 
 .navbar {
@@ -73,10 +79,10 @@ a#QRegular.navbar-brand {
     padding: 5px 5px;
 }
 
-#add-widget {
+#config-bar {
     background-color: #07D1EA;
     color: white;
-    margin-right:15px;
+    margin-right:0px;
     height: 50px;
     margin-top: 0px;
 }
@@ -112,7 +118,6 @@ a#username.dropdown-toggle {
     font-size:18px;/*22px*/
     color:black;
     display:inline-block;
-    background-color: white;
     margin-top: 0px;
     padding-bottom: 0px;
 }
@@ -137,14 +142,32 @@ ul.nav.navbar-nav.navbar-right {
     height:50px;
 }
 
-    div.upload_form_row,div.upload_form_row span.btn.btn-primary,div.upload_form_row input.btn.btn-primary.upload{
-        border-radius:0px;
-    }
+div.upload_form_row,div.upload_form_row span.btn.btn-primary,div.upload_form_row input.btn.btn-primary.upload{
+    border-radius:0px;
+}
 
-    div.upload_form_row input.form-control{
+div.upload_form_row input.form-control{
+    border-radius:0px;
+}
 
-        border-radius:0px;
-    }
+div.uploadlabel{
+    line-height:1.9em;
+    text-align:right;
+    padding:4px
+}
+
+table td.centerCols,th.centerCols{
+    text-align: center;
+}
+
+.tablerowstyle{
+    border-top:2px solid gainsboro;
+    border-bottom:1px solid #ccc;
+}
+
+.procheader{
+    display:none;
+}
 
 @media (min-width: 768px) {
     .navbar-nav>li>a {
@@ -157,16 +180,12 @@ ul.nav.navbar-nav.navbar-right {
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
     #QRegular {
-      /*  display:none;*/
-        padding-left:10px;
         display:none;
     }
-    img#main-img1 {
-        height:20px !important;
-        margin-top:15px !important;
-        margin-bottom:15px !important;
-        margin-left:0px !important;
-        margin-right:0px !important;
+    div.uploadlabel{
+        line-height:3em !important;
+        text-align:right;
+        padding:2px !important
     }
 
     #QLogoWhite {
@@ -179,10 +198,11 @@ ul.nav.navbar-nav.navbar-right {
         margin-left: 0px;
     }
     table{
-        font-size:5px;
+        font-size:6px;
     }
     .table>tbody>tr>td{
         padding:3px !important;
+        vertical-align: middle;
     }
 
     div#top-header.container-fluid{
@@ -210,11 +230,10 @@ ul.nav.navbar-nav.navbar-right {
         border-radius:0px;
     }
 
-
     .nav>li>a {
         position: relative;
         display: block;
-        padding: 6px 6px;
+        padding: 6px 12px;
     }
 
     .navbar-brand>img#mbl-main-img1 {
@@ -225,7 +244,6 @@ ul.nav.navbar-nav.navbar-right {
         padding-bottom:0;
         margin-top:0px;
     }
-
 
     .navbar-brand>img#mbl-main-img2 {
         height:100%;
@@ -244,7 +262,7 @@ ul.nav.navbar-nav.navbar-right {
     ul.nav.navbar-nav.navbar-right {
         position:absolute;
         top:0;
-        right:0;
+        right:-10px;
         display:inline;
     }
 
@@ -252,7 +270,7 @@ ul.nav.navbar-nav.navbar-right {
         display:none;
     }
 
-    a#add-widget {
+    a#config-bar {
         width:100%;
         position:relative;
     }
@@ -274,6 +292,14 @@ ul.nav.navbar-nav.navbar-right {
         padding-top: 11px;
         padding-bottom: 11px;
     }
+
+    li#pname{
+        left:-7px;
+    }
+    table td.centerCols{
+        text-align: center;
+    }
+
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
@@ -285,6 +311,12 @@ ul.nav.navbar-nav.navbar-right {
         display: none;
     }
 }   
+
+@media only screen and (min-width: 320px) and (max-width: 374px) {
+    table{
+        font-size:5px;
+    }
+}  
 
 @media only screen and (min-width: 768px){
     .navbar-right {
