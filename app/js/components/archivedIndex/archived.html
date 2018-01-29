@@ -1,9 +1,9 @@
 
-<div class="container form" id="procedures" style="width:100%">
-    <div class="container list" style="width:100%">
+<div class="container form" id="procedures">
+    <div class="container list">
         <table class="table table-hover">
             <thead>
-                <tr style="border-top:2px solid gainsboro;border-bottom:1px solid #ccc;">
+                <tr class="tablerowstyle">
                     <th>
                         <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Revision
                             <span ng-show="sortType == 'procedurerevision' && !sortReverse" class="fa fa-caret-down"></span>
@@ -34,7 +34,7 @@
                             <span ng-show="sortType == 'procedurecompleted' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
-                    <th>
+                    <th class="centerCols">
                         <a href="#">View
                         </a>
                     </th>
@@ -47,7 +47,7 @@
                     <td>{{ procedure.closedBy }}</td>
                     <td>{{ procedure.startedAt }}</td>
                     <td>{{ procedure.completedAt }}</td>
-                    <td>
+                    <td class="centerCols">
                           <a href="/dashboard/procedure/archivedinstance/{{procedureid}}/{{procedure.revision}}" ng-click="changeColor('AS-Run Archive',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
                     </td>
                 </tr>
