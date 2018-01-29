@@ -1,5 +1,5 @@
 quantum
-.factory('procedureService', ['$http', function($http) {
+.factory('procedureService', ['$http','$window', function($http,$window) {
 
     var procedure = {
         id:"",
@@ -9,10 +9,13 @@ quantum
     }
     var icons = {
         icon1style:"",
-        icon2style:""
+        icon2style:"",
+        icon3style:"",
+        icon4style:""
     }
     var header = {
-        styles:{}
+        styles:{},
+        namestyles:{}
     };
     function getProcedureList() {
     	return $http({
@@ -39,10 +42,20 @@ quantum
         return procedure;
     }
 
-    function setHeaderStyles(icon1,icon2,bgcolor,fontcolor){
-        icons.icon1style = {display:icon1};
-        icons.icon2style = {display:icon2};
+    function setHeaderStyles(icon1,icon2,bgcolor,fontcolor,icon3,icon4){
+        if($window.innerWidth > 500){
+            icons.icon1style = {display:icon1};
+            icons.icon2style = {display:icon2};
+            icons.icon3style = {display:'none'};
+            icons.icon4style = {display:'none'};
+        }else {
+            icons.icon1style = {display:'none'};
+            icons.icon2style = {display:'none'};
+            icons.icon3style = {display:icon3};
+            icons.icon4style = {display:icon4};
+        }
         header.styles = {backgroundColor:bgcolor,color:fontcolor};
+        header.namestyles = {color:fontcolor};
     }
     function getHeaderStyles(){
         return header;
