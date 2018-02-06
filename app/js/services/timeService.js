@@ -1,6 +1,6 @@
 quantum
 .factory('timeService', ['$interval', '$http', function($interval, $http) {
-    var telemetry = {};
+    // var telemetry = {};
     var time = "";
     var missionName = 'AZero';
 
@@ -14,10 +14,10 @@ quantum
                 params: {'mission' : 'AZero'}
             }).then(function success(response) {
                 if(response.data){
-                    telemetry['time'] = response.data.timestamp;
+                    // telemetry['time'] = response.data.timestamp;
                     time = response.data.timestamp;
                 }else{
-                    telemetry = {};
+                    // telemetry = {};
                 }
 
             }, function error(response){
@@ -79,58 +79,9 @@ quantum
         return d;
     }
 
-    function countdown(target) {
-        var targettimestamp;
-        if(typeof target === "string"){
-            targettimestamp = new Date(target);
-        }else {
-            targettimestamp = target;
-        }
-        var days = "000",
-            hours = "00",
-            minutes = "00",
-            seconds = "00",
-            sign = '';
-
-        if(time != "") {
-            var today = new Date(time);
-            var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
-            var signedDiff = targettimestamp - currentDate;
-
-            //remove sign to calculate individual numbers
-            var difference = Math.abs(signedDiff);
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            // define sign
-            if (signedDiff < 0) {
-                sign = '+';
-            } else {
-                sign = '-';   
-            }
-
-            days = checkDays(days);
-            hours = checkTime(hours);
-            minutes = checkTime(minutes);
-            seconds = checkTime(seconds);
-        }
-
-        return {
-            "days" : days,
-            "hours" : hours,
-            "minutes" : minutes,
-            "seconds" : seconds,
-            "sign" : sign
-        };
-    }
-
     return {
-        telemetry : telemetry,
         getTime : getTime,
-        time : time
+        time : time,
     }
 }]);
   

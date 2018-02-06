@@ -40,5 +40,22 @@
   "contributors": [
     "Audacy (http://audacy.space)"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@uirouter/angularjs": "^1.0.14",
+    "angular": "^1.6.8",
+    "angular-animate": "^1.6.8",
+    "angular-aria": "^1.6.8",
+    "angular-file-saver": "^1.1.3",
+    "angular-material": "^1.1.6",
+    "angular-messages": "^1.6.8",
+    "angular-mocks": "^1.6.8",
+    "angular-route": "^1.6.8",
+    "angular-ui-router": "^1.0.3",
+    "jasmine-core": "^2.9.1",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "ng-file-upload": "^12.2.13"
+  }
 }

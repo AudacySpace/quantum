@@ -19,7 +19,9 @@ quantum
     }
     
 	return {
+        locks : locks,
         getLock : getLock,
+        setLeftLock : setLeftLock,
         setRightLock : setRightLock
 	}
 }]);
