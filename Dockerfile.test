@@ -1,0 +1,23 @@
+FROM quantum-app
+
+RUN yum -y install Xvfb libXfont Xorg chromium gnu-free-sans-fonts
+
+ENV DISPLAY=:99.0  
+ENV CHROME_BIN=/usr/bin/chromium-browser
+
+ARG BRANCH
+
+RUN echo $BRANCH
+
+RUN cd /node && \
+    git checkout $BRANCH && \
+	git pull && \
+	npm install
+
+RUN cd /node && \
+    npm install karma karma-jasmine jasmine-core karma-chrome-launcher --save-dev && \
+    npm install karma-spec-reporter --save-dev && \
+    npm install -g karma-cli
+
+CMD (/usr/bin/Xvfb :99 &) && \
+	cd /node && npm test
