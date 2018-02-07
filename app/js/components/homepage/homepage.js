@@ -4,19 +4,13 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,$location,$routeParams,procedureService,$mdSidenav,dashboardService) {
+  	controller: function($window,userService,procedureService,$mdSidenav,dashboardService) {
 
 		var $ctrl = this;
 	 	$ctrl.name = userService.getUserName();
 	 	$ctrl.role = userService.userRole;
 
         $ctrl.locks = dashboardService.getLock();
-	 	$ctrl.logout = function () {
-			$window.location.href = '/logout';
-    	};
-
-    	$ctrl.$location = $location;
-    	$ctrl.$routeParams = $routeParams;
     	$ctrl.procedure = procedureService.getProcedureName();
     	$ctrl.header = procedureService.getHeaderStyles();
     	$ctrl.icons = procedureService.getIconStyles();
@@ -34,6 +28,9 @@ angular.module('quantum')
                     $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
                     dashboardService.setRightLock($ctrl.locks.lockRight); 
                 }
+            }else {
+                $ctrl.locks.lockRight = false;
+                dashboardService.setRightLock($ctrl.locks.lockRight); 
             }
         }
 	}
