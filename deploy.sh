@@ -10,7 +10,7 @@ git pull
 
 docker build -t quantum-app-test .
 #build docker test container
-docker build -t "quantum_test" -f "Dockerfile.test" --build-arg BRANCH=$1 .
+docker build -t "quantum_test" -f "Dockerfile.test" .
 
 #run and remove the docker test container
 docker run --rm --name "quantum_test" quantum_test
@@ -27,7 +27,12 @@ then
   echo "Updating code in the main docker container"
   echo "====================================================================="
   #docker exec quantum node-update.sh $1
-
+  docker stop quantum || true
+  docker rm quantum || true
+  docker rmi quantum-app || true
+  docker tag quantum-app-test quantum-app
+  docker rmi quantum-app-test
+  docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
 else
   echo "====================================================================="
   echo "Test docker container failure. See above for more details."
