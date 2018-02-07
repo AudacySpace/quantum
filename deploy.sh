@@ -1,6 +1,6 @@
 #!/bin/bash
 #build new docker container
-cd ~/quantum
+#cd ~/quantum
 #git pull
 
 git fetch --all
