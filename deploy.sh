@@ -1,4 +1,14 @@
 #!/bin/bash
+#build new docker container
+cd ~/quantum
+#git pull
+
+git fetch --all
+git checkout $1 
+git pull
+npm install
+
+docker build -t quantum-app-test .
 #build docker test container
 docker build -t "quantum_test" -f "Dockerfile.test" --build-arg BRANCH=$1 .
 
@@ -16,7 +26,8 @@ then
   echo "====================================================================="
   echo "Updating code in the main docker container"
   echo "====================================================================="
-  docker exec quantum node-update.sh $1
+  #docker exec quantum node-update.sh $1
+
 else
   echo "====================================================================="
   echo "Test docker container failure. See above for more details."

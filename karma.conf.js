@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         './node_modules/angular/angular.js',
-        './node_modules/angular-ui-router/release/angular-ui-router.js',
+        './node_modules/@uirouter/angularjs/release/angular-ui-router.js',
         './node_modules/angular-mocks/angular-mocks.js',
         './node_modules/angular-aria/angular-aria.js',
         './node_modules/angular-route/angular-route.js',
@@ -46,7 +46,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec'],
 
 
     // web server port
@@ -68,12 +68,20 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome_without_sandbox'],
+
+    customLaunchers: {
+      Chrome_without_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'], // with sandbox it fails under Docker
+        displayName: 'Chrome w/o sandbox'
+      }
+    },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
