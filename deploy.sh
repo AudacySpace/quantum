@@ -6,7 +6,7 @@
 git fetch --all
 git checkout $1 
 git pull
-npm install
+#npm install
 
 docker build -t quantum-app-test .
 #build docker test container

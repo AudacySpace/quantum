@@ -9,6 +9,8 @@ ARG BRANCH
 
 RUN echo $BRANCH
 
+RUN echo `pwd`
+
 RUN npm install karma karma-jasmine jasmine-core karma-chrome-launcher --save-dev && \
     npm install karma-spec-reporter --save-dev && \
     npm install -g karma-cli
