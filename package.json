@@ -52,6 +52,11 @@
     "angular-messages": "^1.6.8",
     "angular-mocks": "^1.6.8",
     "angular-route": "^1.6.8",
+    "jasmine-core": "^2.99.1",
+    "karma": "^2.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-spec-reporter": "0.0.32",
     "ng-file-upload": "^12.2.13"
   }
 }
