@@ -1,12 +1,8 @@
 #!/bin/bash
 #build new docker container
-#cd ~/quantum
-#git pull
-
 git fetch --all
 git checkout $1 
 git pull
-#npm install
 
 docker build -t quantum-app-test .
 #build docker test container
@@ -18,7 +14,7 @@ docker run --rm --name "quantum_test" quantum_test
 RC=$?
 
 #Remove test container image
-docker rmi quantum_test
+#docker rmi quantum_test
 
 #If tests successful, update the code in the docker container 
 if [ $RC == 0 ]
@@ -26,7 +22,7 @@ then
   echo "====================================================================="
   echo "Updating code in the main docker container"
   echo "====================================================================="
-  #docker exec quantum node-update.sh $1
+  #Stop the old container and run the new one(after retagging)
   docker stop quantum || true
   docker rm quantum || true
   docker rmi quantum-app || true
@@ -37,5 +33,6 @@ else
   echo "====================================================================="
   echo "Test docker container failure. See above for more details."
   echo "====================================================================="
+  docker rmi quantum-app-test
   exit 1	
 fi

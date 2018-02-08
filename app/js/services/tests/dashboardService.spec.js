@@ -27,7 +27,7 @@ describe('Test Suite for Dashboard Service', function () {
 
     it('should define the default locks variable', function() {
         expect(dashboardService.locks).toBeDefined();
-        expect(dashboardService.locks).toEqual({ lockLeft : false, lockRight : true });
+        expect(dashboardService.locks).toEqual({ lockLeft : false, lockRight : false });
     });
 
     it('should define the getLock function', function() {
