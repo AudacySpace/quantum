@@ -1,7 +1,7 @@
 // set up ======================================================================
 var express  = require('express');
 var app      = express(); 								// create our app w/ express
-//var port  	 = process.env.PORT || 3000; 				// set the port
+// set the port
 app.set('port', (process.env.PORT || 3000));
 var mongoose = require('mongoose'); 					// mongoose for mongodb
 var passport = require('passport');

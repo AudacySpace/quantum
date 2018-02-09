@@ -1,9 +1,8 @@
-quantum.controller('procedureCtrl', 
-    function(Upload, $window, $scope, userService, procedureService, FileSaver, Blob) {
-	$scope.sortType     = 'procedurearchived'; // set the default sort type
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob) {
+	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
 
-    showList();
+    $scope.procedurelistinterval = $interval(showList, 2000);
   	$scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
@@ -60,8 +59,14 @@ quantum.controller('procedureCtrl',
                 //reset the input fields on the form
                 $scope.config = {};
                 $scope.upload_form.$setPristine();
+            }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
+                $scope.config = {};
+                $scope.upload_form.$setPristine();
+                $window.alert('Not a valid file.Required Columns are Step,Type,Role,Content!');
             }else {
-                $window.alert('an error occured');
+                $scope.config = {};
+                $scope.upload_form.$setPristine();
+                $window.alert('An error occured while uploading.Please try again!');
             }
         }, function (resp) { //catch error
             $window.alert('Error status: ' + resp.status);
@@ -71,16 +76,35 @@ quantum.controller('procedureCtrl',
     function showList(){
         procedureService.getProcedureList().then(function(response) {
             $scope.procedurelist = [];
-            for(var i=0;i<response.data.length;i++){
-                $scope.procedurelist.push(
-                    {
-                        id:parseFloat(response.data[i].procedure.id).toFixed(1),
-                        title:response.data[i].procedure.title,
-                        lastuse:response.data[i].procedure.lastuse,
-                        running:response.data[i].procedure.running,
-                        archived:response.data[i].procedure.archived
+            if(response.data.length > 0){
+                for(var i=0;i<response.data.length;i++){
+                    $scope.procedurelist.push(
+                        {
+                            id:parseFloat(response.data[i].procedure.id).toFixed(1),
+                            title:response.data[i].procedure.title,
+                            lastuse:response.data[i].procedure.lastuse,
+                            instances:response.data[i].instances,
+                            running:0,
+                            archived:0
+                        }
+                    )
+                }
+
+                for(var j=0;j<response.data.length;j++){
+                    for(k=0;k<response.data[j].instances.length;k++){
+                        if(response.data[j].instances[k].running === true){
+                            $scope.procedurelist[j].running++;
+                        }else{
+                            $scope.procedurelist[j].archived++;
+                        }
                     }
-                )
+                }
+            }
+
+        },function(error){
+            if(error.data === null || error.data === undefined){
+                console.log("No Procedures available");
+                console.log(error);
             }
         });
     }
@@ -107,6 +131,23 @@ quantum.controller('procedureCtrl',
         });
     }
 
+    $scope.changeColor = function(status,pid,ptitle){
+        if(status === "Live"){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+
+        }else if(status === "Archived") {
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+
+        }
+    }
+
+    $scope.$on("$destroy", 
+        function(event) {
+            $interval.cancel($scope.procedurelistinterval);
+        }
+    );
 });
 
 

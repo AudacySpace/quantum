@@ -4,26 +4,39 @@
         <md-content flex class="main">
             <div id="main">
                 <nav class="navbar navbar-default">
-                    <div class="container-fluid" id="top-header">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="/dashboard" id="QRegular">
-                                <img id="main-img" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
+                    <div class="container-fluid" id="top-header" ng-style="$ctrl.header.styles">
+                        <div class="navbar-header" id="headerleft">
+                            <a class="navbar-brand" href="/dashboard" id="QRegular" ng-style="$ctrl.icons.icon1style" ng-click="$ctrl.setColor()">
+                                <img id="main-img1" src="/media/logos/Quantum_Logo_Regular.png" alt="Quantum"/>
                             </a>
-                            <a class="navbar-brand" href="/dashboard" id="QBlack">
-                                <img id="main-img" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+                            <a class="navbar-brand" href="/dashboard" id="QLogoWhite" ng-style="$ctrl.icons.icon2style" ng-click="$ctrl.setColor()">
+                                <img id="main-img2" src="/media/logos/Quantum_Logo_White.png" alt="Quantum"/>
+                            </a>
+                            <a class="navbar-brand" href="/dashboard" id="QIconBlack" ng-style="$ctrl.icons.icon3style" ng-click="$ctrl.setColor()">
+                                <img id="mbl-main-img1" src="/media/logos/Quantum_Icon_Regular.png" alt="Quantum"/>
+                            </a>
+                            <a class="navbar-brand" href="/dashboard" id="QIconWhite" ng-style="$ctrl.icons.icon4style" ng-click="$ctrl.setColor()">
+                                <img id="mbl-main-img2" src="/media/logos/Quantum_Icon_White.png" alt="Quantum"/> 
                             </a>
                         </div>
+                        <ul class="nav navbar-nav" id="headercenter">
+                            <li id="pname">
+                                <ul class="nav navbar-nav">
+                                    <li>{{ $ctrl.procedure.fullname}}</li>
+                                </ul>
+                            </li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                            <li  id="headerright">
+                                <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.namestyles" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
-                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
+                                <small id="callsign" ng-style="$ctrl.header.namestyles"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
-                                <a href="#" id="add-widget"> 
+                                <a href="#" id="config-bar" ng-click="$ctrl.openRightNav()"> 
                                     <span class="fa fa-bars bars" aria-hidden="true"> </span>
                                 </a>
                             </li>
@@ -36,9 +49,6 @@
                     <div ng-view></div>
                 </div>
 
-                <pre>$location.path() = {{$ctrl.$location.path()}}</pre>
-                <pre>$routeParams = {{$ctrl.$routeParams}}</pre>
-
                 <!-- Dashboard Footer -->
                 <footer class="footer">
                     <div class="container">
@@ -48,5 +58,11 @@
             </div>
         </md-content>
         <!--End Main Dashboard Navigation-->
+
+        <!-- Right Sidebar -->
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$ctrl.locks.lockRight">
+            <right-sidebar></right-sidebar>
+        </md-sidenav>
+        
     </section>
 </div>

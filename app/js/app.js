@@ -1,4 +1,4 @@
-var quantum = angular.module('quantum', ['ngFileUpload', 'ngRoute', 'ngFileSaver']);
+var quantum = angular.module('quantum', ['ngFileUpload', 'ngRoute', 'ngFileSaver','ngMaterial']);
 
 // routes
 quantum.config(function($routeProvider, $locationProvider) {
@@ -14,6 +14,30 @@ quantum.config(function($routeProvider, $locationProvider) {
 	.when('/dashboard/procedure/:procID', {
 		templateUrl : './js/components/sections/section.html',
 		controller  : 'sectionCtrl'
+	})
+
+	//route for running index
+	.when('/dashboard/procedure/running/:procID', {
+		templateUrl : './js/components/runIndex/running.html',
+		controller  : 'runIndexCtrl'
+	})
+
+	 //route for archived index
+	.when('/dashboard/procedure/archived/:procID', {
+		templateUrl : './js/components/archivedIndex/archived.html',
+		controller  : 'archivedIndexCtrl'
+	})
+
+		//route for running instance
+	.when('/dashboard/procedure/runninginstance/:procID/:revisionID', {
+		templateUrl : './js/components/sections/section.html',
+		controller  : 'runningInstanceCtrl'
+	})
+
+	 //route for archived instance
+	.when('/dashboard/procedure/archivedinstance/:procID/:revisionID', {
+		templateUrl : './js/components/sections/section.html',
+		controller  : 'archivedInstanceCtrl'
 	})
 
 	$locationProvider.html5Mode(true);

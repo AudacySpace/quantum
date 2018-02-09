@@ -1,8 +1,8 @@
-<div class="container form" style="width:100%">
-    <div class="container list" style="width:100%">
+<div class="container form" id="procedures" >
+    <div class="container list">
         <table class="table table-hover">
             <thead>
-                <tr style="border-top:2px solid gainsboro;border-bottom:1px solid #ccc;">
+                <tr class="tablerowstyle">
                     <th>
                         <a href="#" ng-click="sortType = 'procedurenum'; sortReverse = !sortReverse">No
                             <span ng-show="sortType == 'procedurenum' && !sortReverse" class="fa fa-caret-down"></span>
@@ -21,22 +21,20 @@
                             <span ng-show="sortType == 'procedurelastuse' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
-                    <th>
+                    <th class="centerCols">
                         <a href="#" ng-click="sortType = 'procedurerunning'; sortReverse = !sortReverse">Running
                             <span ng-show="sortType == 'procedurerunning' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'procedurerunning' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
-                    <th>
+                    <th class="centerCols">
                         <a href="#" ng-click="sortType = 'procedurearchived'; sortReverse = !sortReverse">Archived
                             <span ng-show="sortType == 'procedurearchived' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'procedurearchived' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
-                    <th>
-                        <a href="#" ng-click="sortType = 'procedureactions'; sortReverse = !sortReverse">Actions
-                            <span ng-show="sortType == 'procedureactions' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'procedureactions' && sortReverse" class="fa fa-caret-up"></span>
+                    <th class="centerCols">
+                        <a href="#">Actions
                         </a>
                     </th>
                 </tr>
@@ -46,34 +44,34 @@
                     <td>{{ procedure.id }}</td>
                     <td>{{ procedure.title }}</td>
                     <td>{{ procedure.lastuse }}</td>
-                    <td><a href="/dashboard/procedure/{{procedure.id}}">{{ procedure.running }}</a></td>
-                    <td><a href="/dashboard/procedure/{{procedure.id}}">{{ procedure.archived }}</a></td>
-                    <td>
+                    <td class="centerCols"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title);" >{{ procedure.running }}</a></td>
+                    <td class="centerCols"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title);">{{ procedure.archived }}</a></td>
+                    <td class="centerCols">
                         <a ng-click="download(procedure.id, procedure.title)">
                             <span class="fa fa-caret-down"></span>
                         </a>&nbsp;&nbsp;
-                        <a><span class="fa fa-caret-right"></span></a>
+                        <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title);"><span class="fa fa-caret-right"></span></a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <form name="upload_form" enctype="multipart/form-data">
-            <div layout="row" layout-wrap>
-                <div flex="33" style="line-height:2.1em;text-align:right;padding:4px">Upload</div>
-                <div flex="33">  
+            <div layout="row" layout-wrap class="upload_form_row">
+                <div flex="10" class="uploadlabel">Upload</div>
+                <div flex="70">  <!-- 75-->
                     <div class="input-group">
                         <label class="input-group-btn">
                             <span class="btn btn-primary">
                             Browse 
                             <input type="file" id="file" ngf-select ng-model="config.file" name="file" 
-                            ngf-pattern="'.xlsx'" accept=".xlsx" ngf-max-size="1MB" style="display: none;">
+                            ngf-pattern="'.xlsx'" accept=".xlsx" ngf-max-size="1MB" class="browsefile">
                             </span>
                         </label>
                         <input type="text" class="form-control" value="{{ config.file.name }}" readonly>
                     </div>
                 </div>
-                <div flex="33">
+                <div flex="20"> <!-- 15 -->
                     <input type="submit" ng-click="submit()" class="btn btn-primary upload" value="Add">
                 </div>
             </div>

@@ -1,0 +1,11 @@
+FROM quantum-app-test
+
+RUN yum -y install Xvfb libXfont Xorg chromium gnu-free-sans-fonts
+
+ENV DISPLAY=:99.0  
+ENV CHROME_BIN=/usr/bin/chromium-browser
+
+RUN npm install -g karma-cli
+
+CMD (/usr/bin/Xvfb :99 &) && \
+	npm test
