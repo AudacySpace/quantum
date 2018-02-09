@@ -1,4 +1,4 @@
-quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval) {
+quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval,$window) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
@@ -38,7 +38,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     $scope.steps = procedureService.getCompletedSteps($scope.steps);
                     if($scope.steps[$scope.steps.length-1].Info !== ""){
                         procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
-                        procedureService.setHeaderStyles('none','block','#000000','#ffffff');
+                        procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                     }
 
                 }else {
@@ -112,7 +112,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps[a].status = true;
                             }
                             procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
-                            procedureService.setHeaderStyles('none','block','#000000','#ffffff');
+                            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                         }
                     });
                 }

@@ -17,10 +17,12 @@ quantum
         styles:{},
         namestyles:{}
     };
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
-    		method: "GET"
+    		method: "GET",
+            data:{}
     	});
     }
 
@@ -42,8 +44,8 @@ quantum
         return procedure;
     }
 
-    function setHeaderStyles(icon1,icon2,bgcolor,fontcolor,icon3,icon4){
-        if($window.innerWidth > 500){
+    function setHeaderStyles(icon1,icon2,bgcolor,fontcolor,icon3,icon4,windowWidth){
+        if(windowWidth > 500){
             icons.icon1style = {display:icon1};
             icons.icon2style = {display:icon2};
             icons.icon3style = {display:'none'};
@@ -57,6 +59,7 @@ quantum
         header.styles = {backgroundColor:bgcolor,color:fontcolor};
         header.namestyles = {color:fontcolor};
     }
+
     function getHeaderStyles(){
         return header;
     }
@@ -114,7 +117,8 @@ quantum
     }
 
     function getProcedureSection(psteps,callsign){
-        for(var j=0;j<psteps.length;j++){
+        if(psteps.length > 0 && callsign !== ''){
+            for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
                     psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right";
@@ -182,128 +186,150 @@ quantum
                 }
             }
 
+        }else {
+            psteps = [];
+            callsign = "";
+        }
         return psteps;
-
     }
 
     function showPList(id,index,headertype,liststeps){
-        if(headertype === "mainheader"){
-            if(liststeps[id].class === "fa fa-caret-down"){
-                liststeps[id].class = "fa fa-caret-right"
-                for(var i=0;i<liststeps.length;i++){
-                    if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "subheader"){
-                        liststeps[i].openstatus = false;
+        if(id !== "" && index !== "" && headertype !== "" && liststeps.length > 0){
+            if(headertype === "mainheader"){
+                if(liststeps[id].class === "fa fa-caret-down"){
+                    liststeps[id].class = "fa fa-caret-right"
+                    for(var i=0;i<liststeps.length;i++){
+                        if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "subheader"){
+                            liststeps[i].openstatus = false;
+                        }
+                        else if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
+                            liststeps[i].openstatus = false;
+                        }
                     }
-                    else if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
-                        liststeps[i].openstatus = false;
+                }else if(liststeps[id].class === "fa fa-caret-right"){
+                    liststeps[id].class = "fa fa-caret-down"
+                    for(var i=0;i<liststeps.length;i++){
+                        if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "subheader"){
+                            liststeps[i].class = "fa fa-caret-down";
+                            liststeps[i].openstatus = true;
+                        }else  if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
+                            liststeps[i].class = "fa fa-caret-right";
+                            liststeps[i].openstatus = true;
+                        }
                     }
                 }
-            }else if(liststeps[id].class === "fa fa-caret-right"){
-                liststeps[id].class = "fa fa-caret-down"
-                for(var i=0;i<liststeps.length;i++){
-                    if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "subheader"){
-                        liststeps[i].class = "fa fa-caret-down";
-                        liststeps[i].openstatus = true;
-                    }else  if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
-                        liststeps[i].class = "fa fa-caret-right";
-                        liststeps[i].openstatus = true;
-                    }
-                }
-            }
 
-        }else if(headertype === "subheader"){
-            if(liststeps[id].class === "fa fa-caret-down"){
-                liststeps[id].class = "fa fa-caret-right"
-                for(var i=0;i<liststeps.length;i++){
-                    if(index === liststeps[i].index && liststeps[i].headertype === "listitem" ){
-                        liststeps[i].openstatus = false;   
+            }else if(headertype === "subheader"){
+                if(liststeps[id].class === "fa fa-caret-down"){
+                    liststeps[id].class = "fa fa-caret-right"
+                    for(var i=0;i<liststeps.length;i++){
+                        if(index === liststeps[i].index && liststeps[i].headertype === "listitem" ){
+                            liststeps[i].openstatus = false;   
+                        }
+                    }
+                }else if(liststeps[id].class === "fa fa-caret-right"){
+                    liststeps[id].class = "fa fa-caret-down"
+                    for(var i=0;i<liststeps.length;i++){
+                        if(index === liststeps[i].index && liststeps[i].headertype === "listitem" ){
+                            liststeps[i].openstatus = true;   
+                        }
                     }
                 }
-            }else if(liststeps[id].class === "fa fa-caret-right"){
-                liststeps[id].class = "fa fa-caret-down"
-                for(var i=0;i<liststeps.length;i++){
-                    if(index === liststeps[i].index && liststeps[i].headertype === "listitem" ){
-                        liststeps[i].openstatus = true;   
-                    }
-                }
+            }else if(headertype === "listitem"){
+
             }
+        }else {
+            liststeps = [];
         }
-
+        
         return liststeps;
 
     }
 
     function checkIfEmpty(steps){
         var stepcount = 0;
-        for(var i=0;i<steps.length;i++){
-            if(steps[i].Info === undefined){
-                stepcount++;
+        if(steps.length > 0){
+            for(var i=0;i<steps.length;i++){
+                if(steps[i].Info === undefined){
+                    stepcount++;
+                }
             }
-        }
-        if(stepcount === steps.length){
-            return true;
+            if(stepcount === steps.length){
+                return true;
+            }else {
+                return false;
+            }
         }else {
-            return false;
+            return "No steps available!";
         }
     }
 
     function openNextSteps(steps,index){
-        var newindex = index+1;
-        if(steps[index].headertype === "mainheader"){
-            while(steps[newindex].headertype !== "mainheader" && index !== steps.length-1){
-                steps[newindex].openstatus = true;
-                steps[index].class = "fa fa-caret-down";
-                if(newindex === steps.length-1){
-                    break;
-                }else {
-                    newindex = newindex+1;
-                }   
-            }
-        }else if(steps[index].headertype === "subheader" && index !== steps.length-1){
-            while(steps[newindex].headertype !== "mainheader"){
-                steps[newindex].openstatus = true;
-                steps[index].class = "fa fa-caret-down";
-                if(newindex === steps.length-1){
-                    break;
-                }else {
-                    newindex = newindex+1;
-                }   
-            }
-        }else if(steps[index].headertype === "listitem" && index !== steps.length-1){
-            if(steps[newindex].headertype === "mainheader"){
-                steps[newindex].class = "fa fa-caret-down";
-                steps[newindex].openstatus = true;
-                steps[index].class = "fa fa-caret-right";
-                var newind = newindex+1;
-                while(steps[newind].headertype !== "mainheader"){
-                    steps[newind].openstatus = true;
-                    if(newind === steps.length-1){
+        if(steps.length > 0 && index !== ""){
+            var newindex = index+1;
+            if(steps[index].headertype === "mainheader"){
+                while(steps[newindex].headertype !== "mainheader" && index !== steps.length-1){
+                    steps[newindex].openstatus = true;
+                    steps[index].class = "fa fa-caret-down";
+                    if(newindex === steps.length-1){
                         break;
                     }else {
-                        newind = newind+1;
+                        newindex = newindex+1;
+                    }   
+                }
+            }else if(steps[index].headertype === "subheader" && index !== steps.length-1){
+                while(steps[newindex].headertype !== "mainheader"){
+                    steps[newindex].openstatus = true;
+                    steps[index].class = "fa fa-caret-down";
+                    if(newindex === steps.length-1){
+                        break;
+                    }else {
+                        newindex = newindex+1;
+                    }   
+                }
+            }else if(steps[index].headertype === "listitem" && index !== steps.length-1){
+                if(steps[newindex].headertype === "mainheader"){
+                    steps[newindex].class = "fa fa-caret-down";
+                    steps[newindex].openstatus = true;
+                    steps[index].class = "fa fa-caret-right";
+                    var newind = newindex+1;
+                    while(steps[newind].headertype !== "mainheader"){
+                        steps[newind].openstatus = true;
+                        if(newind === steps.length-1){
+                            break;
+                        }else {
+                            newind = newind+1;
+                        }
                     }
                 }
             }
         }
+
         return steps;
     }
 
     function archiveThisProcedure(steps){
-        var count = 0;
-        for(var i=0;i<steps.length;i++){
-            if(steps[i].Info){
-                count++;
+        if(steps.length > 0){
+            var count = 0;
+            for(var i=0;i<steps.length;i++){
+                if(steps[i].Info){
+                    count++;
+                }
             }
+
+            if(count === steps.length-1){
+                return true;
+            }else {
+                return false;
+            } 
+        }else {
+            return "No steps available!";
         }
 
-        if(count === steps.length-1){
-            return true;
-        }else {
-            return false;
-        }
     }
 
     function getCompletedSteps(steps){
+        if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
                     steps[d].rowstyle = {
@@ -311,12 +337,20 @@ quantum
                     };
                     steps[d].chkval = true;
                     steps[d].status = true;
+                }else {
+                    steps[d].chkval = false;
+                    steps[d].status = false;
                 }
             }
+        }
+
         return steps;
     }
 
     return { 
+        procedure : procedure,
+        icons : icons,
+        header : header,
         getProcedureList : getProcedureList,
         setProcedureName : setProcedureName,
         getProcedureName : getProcedureName,
