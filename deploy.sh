@@ -3,8 +3,8 @@
 git fetch --all
 git checkout $1 
 git pull
-
 docker build -t quantum-app-test .
+
 #build docker test container
 docker build -t "quantum_test" -f "Dockerfile.test" .
 
