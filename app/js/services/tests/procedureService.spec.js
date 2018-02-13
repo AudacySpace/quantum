@@ -46,7 +46,7 @@ describe('Test Suite for Procedure Service', function () {
             "Step": "2.1.2"
         },
         {
-            "Content": "Verify that OBC is fully booted and in state \"idle\"",
+            "Content": 'Verify that OBC is fully booted and in state \"idle\"',
             "Type": "Verify",
             "Role": "SYS ",
             "Step": "2.2.0"
@@ -95,7 +95,210 @@ describe('Test Suite for Procedure Service', function () {
     });
 
     it('should be able to retrieve all the procedures from database', function () {
-        var result = [];
+        var result = [{
+            "_id": "5a78b26a5fa10701004acb4c",
+            "instances": [
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.1",
+                            "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.2",
+                            "info": "034.11:26:37 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.0",
+                            "info": "034.11:26:38 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": "034.11:26:39 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": "034.11:26:40 UTC Taruni Gattu(VIP)"
+                        }
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:34 UTC",
+                    "completedAt": "",
+                    "revision": 1,
+                    "running": true
+                },
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.0",
+                            "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": ""
+                        }
+         
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:49 UTC",
+                    "completedAt": "",
+                    "revision": 2,
+                    "running": true
+                }
+            ],
+            "procedure": {
+                "sections": [
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    } 
+                ],
+                "eventname": "Audacy Zero",
+                "lastuse": "2018 - 034.11:26:50 UTC",
+                "title": "Audacy Zero - Procedure Example",
+                "id": "1.1"
+            },
+            "__v": 6
+        },
+        {
+            "_id": "5a78b2745fa10701004acb4d",
+            "instances": [
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": "034.11:26:58 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.1",
+                            "info": "034.11:26:59 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": ""
+                        }
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:58 UTC",
+                    "completedAt": "",
+                    "revision": 1,
+                    "running": true
+                }
+            ],
+            "procedure": {
+                "sections": [
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    }
+                ],
+                "eventname": "Audacy Zero",
+                "lastuse": "2018 - 034.11:26:59 UTC",
+                "title": "Audacy Zero - OBC Bootup",
+                "id": "1.2"
+            },
+            "__v": 3
+        }];
+
         var procedures;
         httpBackend.expectGET('/getProcedureList').respond(200, result);
 
@@ -103,7 +306,8 @@ describe('Test Suite for Procedure Service', function () {
             procedures = response.data;
             expect(response.status).toBe(200);
             expect(procedures).toBeDefined();
-            expect(procedures.length).toEqual(0);
+            expect(procedures.length).toEqual(2);
+            expect(procedures).toEqual(result);
         });
 
         httpBackend.flush();
@@ -689,17 +893,113 @@ describe('Test Suite for Procedure Service', function () {
     });
 
     it('should be able to get all instances of a procedure', function () {
-        var result = [];
+         var result  = { "instances" :[
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.1",
+                            "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.3",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.2.0",
+                            "info": ""
+                        }
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:34 UTC",
+                    "completedAt": "",
+                    "revision": 1,
+                    "running": false
+                },
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.0",
+                            "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1.3",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.2.0",
+                            "info": ""
+                        }
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:49 UTC",
+                    "completedAt": "",
+                    "revision": 2,
+                    "running": false
+                }
+            ],
+            "title":"Audacy Zero - Procedure Example"
+        }
         var procedures;
         var procedureID = '1.1';
  
         httpBackend.expectGET('/getAllInstances?procedureID=1.1').respond(200, result);
 
         procedureService.getAllInstances(procedureID).then( function(response){
-            procedures = response.data;
+            procedures = response.data.instances;
             expect(response.status).toBe(200);
             expect(procedures).toBeDefined();
-            expect(procedures.length).toEqual(0);
+            expect(procedures.length).toEqual(2);
+            expect(procedures).toEqual(result.instances);
         });
 
         httpBackend.flush();

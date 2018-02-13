@@ -13,13 +13,13 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
   	}
 
     $scope.interval = $interval($scope.updateClock, 500);
-    var currentRevision;
+    $scope.currentRevision;
     $scope.liveInstanceinterval = "";
     $scope.procedure = procedureService.getProcedureName();
 	viewProcedure();
 
     function updateLiveInstance(){
-        procedureService.getLiveInstanceData($scope.params.procID,currentRevision).then(function(response){
+        procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){
                 for(var a=0;a<response.data.Steps.length;a++){
                     $scope.steps[a].Info = response.data.Steps[a].info;
@@ -46,7 +46,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                    	$scope.steps = response.data[i].procedure.sections;
 				}
 			}
-            $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
+            $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign); 
     	});
 	}
 
@@ -61,7 +61,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         var starttime = "";
         var completetime = "";
         if(index === $scope.steps.length-1 && proc === false){
-            alert("All the steps have to be completed to close this procedure!");
+            $window.alert("All the steps have to be completed to close this procedure!");
                 $scope.steps[index].Info = "";
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
@@ -74,10 +74,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             };
             $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
             infotime = $scope.clock.year+" - "+$scope.clock.utc;
-            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision,infotime).then(function(response){
+            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime).then(function(response){
                 if(response.status === 200){
                     completetime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision,completetime).then(function(res){
+                    procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,completetime).then(function(res){
                         if(res.status === 200){
                             for(var a=0;a<$scope.steps.length;a++){
                                 $scope.steps[a].status = true;
@@ -99,10 +99,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     starttime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.saveProcedureInstance($scope.params.procID,$scope.usernamerole,starttime).then(function(response){
                         if(response.status === 200){
-                            currentRevision = response.data.revision;
+                            $scope.currentRevision = response.data.revision;
                             $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                             infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,response.data.revision,infotime).then(function(resp){
+                            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime).then(function(resp){
                                 if(resp.status === 200){
                                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                                     $scope.liveInstanceinterval = $interval(updateLiveInstance, 1000);
@@ -114,7 +114,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }else{
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,currentRevision,infotime);
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime);
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             }else{
@@ -123,7 +123,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     rowcolor : {backgroundColor:'#e9f6fb'}
                     }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,currentRevision,infotime);
+                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime);
             }
         }
     }

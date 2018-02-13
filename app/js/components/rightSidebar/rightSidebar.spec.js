@@ -1,4 +1,4 @@
-describe('Test Suite for Right Sidebar Component', function () {
+describe('Test Suite for Right Sidebar Controller', function () {
     var $controller, userService;
     var windowMock = {
         location: {href : ''}
