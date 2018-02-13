@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "stop": "pkill --signal SIGINT node",
-    "test": "karma start karma.conf.js"
+    "stop": "pkill --signal SIGINT node"
   },
   "dependencies": {
     "body-parser": "^1.15.1",
@@ -52,7 +51,7 @@
     "angular-messages": "^1.6.8",
     "angular-mocks": "^1.6.8",
     "angular-route": "^1.6.8",
-    "jasmine-core": "^2.99.1",
+    "jasmine-core": "^3.0.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",

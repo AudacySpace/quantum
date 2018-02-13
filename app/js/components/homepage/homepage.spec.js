@@ -1,4 +1,4 @@
-describe('Test Suite for Homepage Component', function () {
+describe('Test Suite for Homepage Controller', function () {
     var $controller, dashboardService, procedureService, userService;
     var windowMock = {
         innerWidth: ''
@@ -103,8 +103,9 @@ describe('Test Suite for Homepage Component', function () {
     });
 
     it('should set Color of the header and update the procedure name', function(){
-        $controller.setColor();
         windowMock.innerWidth = 1000;
+        $controller.setColor();
+
         //expect the setHeaderStyles and setProcedureName to be called
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('block','none','#ffffff','#000000','inline-block','none',windowMock.innerWidth);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith('','',"Home");
