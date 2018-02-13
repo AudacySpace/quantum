@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Wed Feb 07 2018 11:00:55 GMT-0800 (PST)
+// Generated on Thu Feb 01 2018 12:43:20 GMT-0800 (PST)
 
 module.exports = function(config) {
   config.set({
@@ -24,8 +24,7 @@ module.exports = function(config) {
         './node_modules/angular-messages/angular-messages.js',
         './node_modules/angular-material/angular-material.js',
         './node_modules/ng-file-upload/dist/ng-file-upload.js',
-        './node_modules/ng-file-upload/dist/ng-file-upload-shim.min.js',
-        './node_modules/angular-file-saver/dist/angular-file-saver.bundle.js',
+        './node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
         './app/js/app.js',
         './app/js/components/**/*.js',
         './app/js/services/*.js',
@@ -69,12 +68,20 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome_without_sandbox'],
+
+    customLaunchers: {
+      Chrome_without_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'], // with sandbox it fails under Docker
+        displayName: 'Chrome w/o sandbox'
+      }
+    },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous

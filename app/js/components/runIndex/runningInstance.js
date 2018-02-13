@@ -114,7 +114,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps[a].status = true;
                             }
                             procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
-                            console.log($window.innerWidth);
                             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                         }
                     });
