@@ -2,6 +2,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     $scope.params = $routeParams;
     $scope.sortType     = 'procedurecompleted'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
+    $scope.archivedlist = [];
     showArchivedList();
 
     function showArchivedList(){
@@ -12,7 +13,6 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
                 //revision
                 //closedBy
                 //completedAt
-
                 $scope.archivedlist = [];
                 for(var i=0;i<response.data.instances.length;i++){
                     if(response.data.instances[i].running === false){
@@ -21,12 +21,10 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
                 }
                 $scope.procedureid = $scope.params.procID;
                 $scope.proceduretitle = response.data.title;
-            }
+           }
         });
 
     }
-
-
 });
 
 
