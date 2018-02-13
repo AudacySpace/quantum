@@ -117,6 +117,7 @@ quantum
     }
 
     function getProcedureSection(psteps,callsign){
+
         if(psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
@@ -338,8 +339,8 @@ quantum
                     steps[d].chkval = true;
                     steps[d].status = true;
                 }else {
-                    steps[d].chkval = false;
-                    steps[d].status = false;
+                    //steps[d].chkval = false;
+                    //steps[d].status = false;
                 }
             }
         }
