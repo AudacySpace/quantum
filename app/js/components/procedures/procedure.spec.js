@@ -887,10 +887,11 @@ describe('Test Suite for Procedure Controller', function () {
     });
 
     it('should download a procedure on call on download function', function(){
-    	var file = "";
+    	var file = "filebinarydata";
         deferreddownloadProcedure.resolve({ data :file,status:200});
         scope.$digest();
       	scope.download('1.1','Audacy Zero - OBC');
+     
      	expect(procedureService.downloadProcedure).toHaveBeenCalledWith('1.1','Audacy Zero - OBC');
 
     });
