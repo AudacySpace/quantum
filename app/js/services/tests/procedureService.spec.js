@@ -769,7 +769,7 @@ describe('Test Suite for Procedure Service', function () {
         expect(procedureService.getProcedureList).toBeDefined();
     });
 
-    it('should be able to retrieve all the procedures from database', function () {
+    it('should be able to retrieve empty array if no procedures available from database', function () {
         var result = [];
         var procedures;
  
@@ -792,15 +792,11 @@ describe('Test Suite for Procedure Service', function () {
     it('should be able to download a Procedure', function () {
         var result = [];
         var id = '1.1';
-        var procedures;
  
         httpBackend.expectGET('/getProcedureData?id=1.1').respond(200, result);
 
         procedureService.downloadProcedure(id).then( function(response){
-            procedures = response.data;
             expect(response.status).toBe(200);
-            expect(procedures).toBeDefined();
-            expect(procedures.length).toEqual(0);
         });
 
         httpBackend.flush();
@@ -871,24 +867,54 @@ describe('Test Suite for Procedure Service', function () {
     });
 
     it('should be able to get live instance data', function () {
-        var result = [];
-        var procedures;
+        var result =  {
+            "openedBy": "Taruni Gattu(VIP)",
+            "Steps": [
+                {
+                    "step": "1.0",
+                    "info": "034.11:26:58 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "1.1",
+                    "info": "034.11:26:59 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "1.2",
+                    "info": ""
+                },
+                {
+                    "step": "2.0",
+                    "info": ""
+                },
+                {
+                    "step": "2.1.0",
+                    "info": ""
+                },
+                {
+                    "step": "2.1.1",
+                    "info": ""
+                }
+            ],
+            "closedBy": "",
+            "startedAt": "2018 - 034.11:26:58 UTC",
+            "completedAt": "",
+            "revision": 4,
+            "running": true
+        };
+
         var procedureID = '1.1';
         var currentRevision = 4;
  
         httpBackend.expectGET('/getLiveInstanceData?procedureID=1.1&currentRevision=4').respond(200, result);
 
         procedureService.getLiveInstanceData(procedureID,currentRevision).then( function(response){
-            procedures = response.data;
             expect(response.status).toBe(200);
-            expect(procedures).toBeDefined();
-            expect(procedures.length).toEqual(0);
         });
 
         httpBackend.flush();
     });
 
-        it('should define the getAllInstances function', function() {
+    it('should define the getAllInstances function', function() {
         expect(procedureService.getAllInstances).toBeDefined();
     });
 
@@ -989,17 +1015,17 @@ describe('Test Suite for Procedure Service', function () {
             ],
             "title":"Audacy Zero - Procedure Example"
         }
-        var procedures;
+        var proceduresinstances;
         var procedureID = '1.1';
  
         httpBackend.expectGET('/getAllInstances?procedureID=1.1').respond(200, result);
 
         procedureService.getAllInstances(procedureID).then( function(response){
-            procedures = response.data.instances;
+            proceduresinstances = response.data.instances;
             expect(response.status).toBe(200);
-            expect(procedures).toBeDefined();
-            expect(procedures.length).toEqual(2);
-            expect(procedures).toEqual(result.instances);
+            expect(proceduresinstances).toBeDefined();
+            expect(proceduresinstances.length).toEqual(2);
+            expect(proceduresinstances).toEqual(result.instances);
         });
 
         httpBackend.flush();
