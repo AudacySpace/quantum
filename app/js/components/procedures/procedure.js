@@ -127,8 +127,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         .then(function(response) {
             if(response.status == 200){
                 var data = response.data
-                console.log(data);
-
                 var file = new Blob([s2ab(data)], { type: "application/octet-stream" });
                 FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
             } else {
