@@ -4,7 +4,6 @@ module.exports = function(app,passport) {
     var XLSX = require("xlsx");
     var User = require('./models/user');
     var ProcedureModel = require('./models/procedure');
-    var Telemetry = require('./models/telemetry');
 
     var storage = multer.diskStorage({ //multers disk storage settings
         destination: function (req, file, cb) {
@@ -200,24 +199,6 @@ module.exports = function(app,passport) {
                 res.send({"revision":revision});
             });
         });
-    });
-
-    //Get telemetry data for the mission passed as a parameter
-    app.get('/getTimestamp', function(req, res){
-        var mission = req.query.mission;
-
-        if(mission) {
-            Telemetry.findOne( 
-                {'mission' : mission }, 
-                {}, 
-                { sort: { 'timestamp' : -1 }},
-                function(err, telemetry) {
-                    if(err) throw err;
-
-                    res.send(telemetry);
-                }
-            );
-        }
     });
 
     //Displays all the available procedures in a table
