@@ -1,6 +1,5 @@
 quantum
 .factory('timeService', ['$interval', '$http', function($interval, $http) {
-    // var telemetry = {};
     var time = "";
     var missionName = 'AZero';
 
@@ -8,21 +7,7 @@ quantum
 
     function getTimestamp(missionName) {
         $interval(function () { 
-            $http({
-                url: "/getTimestamp", 
-                method: "GET",
-                params: {'mission' : 'AZero'}
-            }).then(function success(response) {
-                if(response.data){
-                    // telemetry['time'] = response.data.timestamp;
-                    time = response.data.timestamp;
-                }else{
-                    // telemetry = {};
-                }
-
-            }, function error(response){
-                console.log(response);
-            });
+            time = new Date();
         },1000);
     }
 
