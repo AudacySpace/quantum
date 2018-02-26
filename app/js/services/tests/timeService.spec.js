@@ -29,7 +29,7 @@ describe('Test Suite for Time Service', function () {
         expect(timeService.getTime).toBeDefined();
     });
 
-    it('should get the default time (time variable undefined) when getTime function is called', function() {
+    it('should get the default time when getTime function is called', function() {
         var result = timeService.getTime(0);
         var tyear = (new Date()).getFullYear();
         var expected = { 
