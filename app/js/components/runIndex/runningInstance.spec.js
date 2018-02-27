@@ -8,7 +8,6 @@ describe('Test Suite for Run Instance Controller', function () {
         alert: function(message) {
             
         }
-
     };
 
     var steps = [
@@ -1534,7 +1533,7 @@ describe('Test Suite for Run Instance Controller', function () {
     });
 
 
-    it('should archive a procedure when all the steps are completed', function() {
+    it('should archive a procedure when all the steps are completed and confirmed', function() {
         var rep = [
             {   
                 step: '1.0',
@@ -1648,6 +1647,275 @@ describe('Test Suite for Run Instance Controller', function () {
                 status: false
             }
         ];
+
+        spyOn(procedureService, "archiveThisProcedure").and.returnValue(true);  
+        spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
+        spyOn(procedureService, "setProcedureName").and.callThrough();
+        spyOn(procedureService, "setHeaderStyles").and.callThrough();
+
+
+        deferredSetInfo.resolve({status:200});
+        deferredInstanceCompleted.resolve({status:200,data : {procedure : {title: "Procedure Example"}}});
+        scope.$digest();
+        expect(scope.steps).toBeDefined();
+        expect(scope.setInfo).toBeDefined();
+        windowMock.confirm = function(message){
+            return true;
+        }
+        scope.steps = [
+            {   
+                step: '1.0',
+                info: '070.10:10:50 UTC John Smith(MD)',
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                Info: '070.10:10:50 UTC John Smith(MD)', 
+                index: 1, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' } }, 
+                chkval: true, 
+                status: true
+            }, 
+            {   
+                step: '1.1', 
+                info: '070.10:10:51 UTC John Smith(MD)', 
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                Info: '070.10:10:51 UTC John Smith(MD)', 
+                index: 1.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: true, 
+                typeicon: 'fa fa-exclamation-triangle', 
+                status: true
+            }, 
+            {   
+                step: '1.2', 
+                info: '070.10:10:52 UTC John Smith(MD)', 
+                Step: '1.2', 
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                Info: '070.10:10:52 UTC John Smith(MD)', 
+                index: 1.2, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true
+            }, 
+            {   
+                step: '2.0', 
+                info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                Step: '2.0', 
+                Type: undefined, 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                index: 2, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                status: true
+            }, 
+            {
+                step: '2.1.0', 
+                info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                Info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                index: 2.1, 
+                class: 'fa fa-caret-down', 
+                header: true, 
+                headertype: 'subheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true
+            }, 
+            {   step: '2.1.1', 
+                info: '', 
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                Info: '', 
+                index: 2.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false
+            }
+        ];
+        scope.clock = {
+                days : '070',
+                minutes : '10',
+                hours : '10',
+                seconds : '53',
+                utc : '070.10:10:53 UTC',
+                year : '2018'
+        };
+        scope.setInfo(5,false);
+        scope.$digest();
+        expect(procedureService.archiveThisProcedure).toHaveBeenCalledWith(scope.steps);
+
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:53 UTC John Smith(MD)",'1.1',5,'John Smith(MD)',2,"2018 - 070.10:10:53 UTC");
+        scope.$digest();
+        expect(procedureService.setInstanceCompleted).toHaveBeenCalledWith("070.10:10:53 UTC John Smith(MD)",'1.1',5,'John Smith(MD)',2,"2018 - 070.10:10:53 UTC");
+        expect(scope.steps[5].Info).toEqual("070.10:10:53 UTC John Smith(MD)");
+        expect(scope.steps[5].status).toEqual(true);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith('1.1','Procedure Example','AS-Run Archive');
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#000000','#ffffff','none','inline-block',1000);
+
+    });
+
+
+    it('should not archive a procedure when cancelled the confirmation', function() {
+        var rep = [
+            {   
+                step: '1.0',
+                info: '070.10:10:50 UTC John Smith(MD)',
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                Info: '070.10:10:50 UTC John Smith(MD)', 
+                index: 1, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' } }, 
+                chkval: true, 
+                status: true
+            }, 
+            {   
+                step: '1.1', 
+                info: '070.10:10:51 UTC John Smith(MD)', 
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                Info: '070.10:10:51 UTC John Smith(MD)', 
+                index: 1.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: true, 
+                typeicon: 'fa fa-exclamation-triangle', 
+                status: true
+            }, 
+            {   
+                step: '1.2', 
+                info: '070.10:10:52 UTC John Smith(MD)', 
+                Step: '1.2', 
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                Info: '070.10:10:52 UTC John Smith(MD)', 
+                index: 1.2, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true
+            }, 
+            {   
+                step: '2.0', 
+                info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                Step: '2.0', 
+                Type: undefined, 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                index: 2, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                status: true
+            }, 
+            {
+                step: '2.1.0', 
+                info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                Info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                index: 2.1, 
+                class: 'fa fa-caret-down', 
+                header: true, 
+                headertype: 'subheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true
+            }, 
+            {   step: '2.1.1', 
+                info: '070.10:10:53 UTC John Smith(MD)', 
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                Info: '070.10:10:53 UTC John Smith(MD)', 
+                index: 2.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false
+            }
+        ];
+
+        windowMock.confirm = function(message){
+            return false;
+        }
 
         spyOn(procedureService, "archiveThisProcedure").and.returnValue(true);  
         spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
@@ -1781,17 +2049,8 @@ describe('Test Suite for Run Instance Controller', function () {
                 utc : '070.10:10:53 UTC',
                 year : '2018'
         };
-        scope.setInfo(5,false);
-        scope.$digest();
-        expect(procedureService.archiveThisProcedure).toHaveBeenCalledWith(scope.steps);
 
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:53 UTC John Smith(MD)",'1.1',5,'John Smith(MD)',2,"2018 - 070.10:10:53 UTC");
-        scope.$digest();
-        expect(procedureService.setInstanceCompleted).toHaveBeenCalledWith("070.10:10:53 UTC John Smith(MD)",'1.1',5,'John Smith(MD)',2,"2018 - 070.10:10:53 UTC");
-        expect(scope.steps[5].Info).toEqual("070.10:10:53 UTC John Smith(MD)");
-        expect(scope.steps[5].status).toEqual(true);
-        expect(procedureService.setProcedureName).toHaveBeenCalledWith('1.1','Procedure Example','AS-Run Archive');
-        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#000000','#ffffff','none','inline-block',1000);
+        expect(scope.steps[5].chkval).toEqual(false);
 
     });
 
