@@ -1,6 +1,7 @@
-quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService) {
+quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService,$window) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
+    $scope.procedure = procedureService.getProcedureName();
   
     viewProcedure();
 
@@ -37,6 +38,18 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
 
     $scope.showPList = function(id,index,headertype){
         $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
+    }
+
+    $scope.changeColor = function(status,pid,ptitle){
+        if(status === "Live"){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+
+        }else if(status === "Archived") {
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+
+        }
     }
 });
 

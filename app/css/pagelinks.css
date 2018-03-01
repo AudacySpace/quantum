@@ -1,0 +1,91 @@
+.menu-container {
+    width: 100%;
+  /*  margin: 0 auto;*/
+/*    background: #e9e9e9;*/
+}
+
+.menu-mobile {
+    display: none;
+    padding: 20px;
+}
+
+.menu-mobile:after {
+    content: "\f394";
+    font-family: "Ionicons";
+    font-size: 2.5rem;
+    padding: 0;
+    float: right;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-25%);
+    -ms-transform: translateY(-25%);
+    transform: translateY(-25%);
+}
+
+.menu > ul {
+ /*   margin: 0 auto;*/
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    position: relative;
+    /* IF .menu position=relative -> ul = container width, ELSE ul = 100% width */
+    box-sizing: border-box;
+}
+
+.menu > ul:before,
+.menu > ul:after {
+    content: "";
+    display: table;
+}
+
+.menu > ul:after {
+    clear: both;
+}
+
+.menu > ul > li {
+    float: left;
+    background: #e9e9e9;
+    padding: 0;
+    margin: 0;
+    margin-right:10px;
+}
+
+.menu > ul > li a {
+    text-decoration: none;
+    padding: 0.6em 2em;
+    display: block;
+}
+
+.menu > ul > li:hover {
+    background: #f0f0f0;
+}
+
+@media only screen and (max-width: 736px) {
+    .menu > ul > li a {
+        text-decoration: none;
+        padding: 0.2em 1em;
+        display: block;
+        font-size:6px;
+    }
+}
+
+@media only screen and (min-width: 736px) and (max-width: 768px) {
+
+    .menu > ul > li a {
+        text-decoration: none;
+        padding: 0.2em 1em;
+        display: block;
+        font-size:6px;
+    }
+}   
+
+@media only screen and (min-width: 320px) and (max-width: 374px) {
+    .menu > ul > li a {
+        text-decoration: none;
+        padding: 0.2em 1em;
+        display: block;
+        font-size:6px;
+    }
+}  
+
+
