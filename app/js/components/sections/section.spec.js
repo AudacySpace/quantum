@@ -2124,6 +2124,21 @@ describe('Test Suite for Section Controller', function () {
 
     });
 
+    it('should change Color of the header panel to blue when clicked on Live Index', function(){
+        spyOn(procedureService, "setProcedureName").and.callThrough();
+        spyOn(procedureService, "setHeaderStyles").and.callThrough();
+        scope.changeColor("Live","1.1","Procedure Example");
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
+    });
+
+    it('should change Color of the header panel to black when clicked on AS-Run Archive Index', function(){
+        spyOn(procedureService, "setProcedureName").and.callThrough();
+        spyOn(procedureService, "setHeaderStyles").and.callThrough();
+        scope.changeColor("Archived","1.1","Procedure Example");
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#000000','#ffffff','none','inline-block',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","AS-Run Archive");
+    });
 
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');

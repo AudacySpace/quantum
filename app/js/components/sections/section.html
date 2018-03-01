@@ -1,3 +1,9 @@
+<div class="menu float-right">
+    <ul>
+        <li><a ng-href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.name)">Live Index</a></li>
+        <li><a ng-href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.name)">AS-Run Archive Index</a></li>
+    </ul>
+</div>
 <div id="liveprocedures">
     <table class="table table-hover">
         <thead>

@@ -138,6 +138,18 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             $interval.cancel($scope.liveInstanceinterval);
         }
     );
+
+    $scope.changeColor = function(status,pid,ptitle){
+        if(status === "Live"){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+
+        }else if(status === "Archived") {
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+
+        }
+    }
 });
 
 
