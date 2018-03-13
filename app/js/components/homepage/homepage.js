@@ -6,6 +6,21 @@ angular.module('quantum')
   	templateUrl: "./js/components/homepage/homepage.html",
   	controller: function($window,userService,procedureService,$mdSidenav,dashboardService) {
 
+        var email = userService.getUserEmail();
+        var mission = {
+            name : 'Quantum'
+        };
+
+        //add user to the Quantum mission for role assignment
+        function setMissionForUser(mname){
+            userService.setMissionForUser(email, mname)
+            .then(function(response){
+                userService.userRole.cRole = response.data.currentRole;
+            });
+        }
+
+        setMissionForUser(mission.name);
+
 		var $ctrl = this;
 	 	$ctrl.name = userService.getUserName();
 	 	$ctrl.role = userService.userRole;

@@ -4,27 +4,35 @@ describe('Test Suite for User Service', function() {
 	var userService, httpBackend;
 
     var windowMock = { user : 
-    	{_id: "5a5d11f9e1b4fc0036336f5e", 
-    		google: {
-    			email: "taruni92@gmail.com", 
-    			name: "Taruni Gattu", 
-    			id: "108429282787435449886"
-    		},
-    		currentRole : {
-    			name: "Mission Director", 
-    			callsign: "MD"
-    		},
-    		allowedRoles : [
-    		{
-    			name: "Mission Director", 
-    			callsign: "MD"
-    		},
-    		{
-    			name: "Observer", 
-    			callsign: "VIP"
-    		}
-    		]
-    	} 
+    	{_id: "594417df3d2dd966dcb43afd", 
+            google: {
+                email: "john.smith@gmail.com", 
+                name: "John Smith", 
+                id: "112313425445562239891"
+            },
+            missions : [
+            {
+                name: "Quantum",
+                currentRole : {
+                    name: "Mission Director", 
+                    callsign: "MD"
+                },
+                allowedRoles : [
+                {
+                    name: "Mission Director", 
+                    callsign: "MD"
+                },
+                {
+                    name: "Observer", 
+                    callsign: "VIP"
+                },
+                { 
+                    name : 'Proxy Director', 
+                    callsign : 'PRX'
+                }
+                ]
+            }]
+        }
     };
 
     beforeEach(function () {
@@ -52,14 +60,27 @@ describe('Test Suite for User Service', function() {
     	expect(userService).toBeDefined();
     });
 
- 	it('userService should get the user name', function () {
-    	var userName = "Taruni Gattu";
-    	expect(userService.getUserName()).toEqual(userName);
+    it('userService should get the user name', function () {
+        var userName = "John Smith";
+        expect(userService.getUserName()).toEqual(userName);
     });
 
-    it('userService should get the user callsign', function () {
-    	var callsign = 'MD'
-    	expect(userService.getCurrentCallSign()).toEqual(callsign);
+    it('userService should get the user email', function () {
+        var email = "john.smith@gmail.com";
+        expect(userService.getUserEmail()).toEqual(email);
+    });
+
+    it('userService should be able to set the mission name for the user', function () {
+        var mission = "Quantum";
+
+        httpBackend.expectPOST("/setMissionForUser")
+            .respond(200, {});
+
+        userService.setMissionForUser(windowMock.user.google.email, mission).then( function(response){
+            expect(response.status).toBe(200);
+        });
+
+        httpBackend.flush();
     });
 
 });

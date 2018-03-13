@@ -13,17 +13,27 @@ quantum
         }
     }
 
-    function getCurrentCallSign() {
-        if($window.user.currentRole && $window.user.currentRole.callsign) {
-            return $window.user.currentRole.callsign;
+    function getUserEmail() {
+        if($window.user.google && $window.user.google.email) {
+            return $window.user.google.email;
         } else {
             return "";
         }
+    }
+
+    //set mission name for user
+    function setMissionForUser(email, mission) {
+        return $http({
+            url: "/setMissionForUser",
+            method: "POST",
+            data: {"email" : email, "mission" : mission}
+        });
     }
     
 	return {
         userRole : userRole,
         getUserName : getUserName,
-        getCurrentCallSign : getCurrentCallSign
+        getUserEmail : getUserEmail,
+        setMissionForUser : setMissionForUser
 	}
 }]);
