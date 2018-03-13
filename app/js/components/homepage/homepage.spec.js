@@ -1,5 +1,5 @@
 describe('Test Suite for Homepage Controller', function () {
-    var $controller, dashboardService, procedureService, userService;
+    var $controller, dashboardService, procedureService, userService, deferredMission;
     var windowMock = {
         innerWidth: ''
     };
@@ -16,16 +16,25 @@ describe('Test Suite for Homepage Controller', function () {
             });
         });
 
-        inject(function($componentController){
+        inject(function($componentController, _$q_){
             dashboardService = jasmine.createSpyObj('dashboardService', ['getLock','setRightLock']);
             procedureService = jasmine.createSpyObj('procedureService', ['setHeaderStyles', 'setProcedureName','getProcedureName','getHeaderStyles','getIconStyles']);
-            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName']);
+            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail', 'setMissionForUser']);
             
             userService.getUserName.and.callFake(function() {
                 return 'John Smith';
             });
+            userService.getUserEmail.and.callFake(function() {
+                return 'john.smith@gmail.com';
+            });
             userService.userRole.and.callFake(function() {
                 return { cRole : { 'callsign' : 'MD'}};
+            });
+
+            deferredMission = _$q_.defer();
+
+            userService.setMissionForUser.and.callFake(function() {
+                return deferredMission.promise;
             });
             dashboardService.getLock.and.callFake(function() {
                 return { lockLeft : false, lockRight : false };
@@ -54,6 +63,10 @@ describe('Test Suite for Homepage Controller', function () {
 
     it('should define the dashboard component', function() {
         expect($controller).toBeDefined();
+    });
+
+    it('should define the role of the user', function() {
+        expect(userService.setMissionForUser).toHaveBeenCalled();
     });
 
     it('should define user name and role', function() {
