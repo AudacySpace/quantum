@@ -169,6 +169,14 @@ table td.centerCols,th.centerCols{
     display:none;
 }
 
+label{
+    font-weight: 200;
+}
+.row {
+    margin-left:0px;
+    margin-right:0px;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;

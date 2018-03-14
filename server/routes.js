@@ -393,6 +393,64 @@ module.exports = function(app,passport) {
         });
     });
 
+    //get current role of the user
+    app.get('/getCurrentRole', function(req,res){
+        var email = req.query.email;
+        var mission = req.query.mission;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.missions[0].currentRole);
+        });
+    });
+
+    //get allowed roles of the user
+    app.get('/getAllowedRoles', function(req,res){
+        var email = req.query.email;
+        var mission = req.query.mission;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.missions[0].allowedRoles);
+        });
+    });
+
+    //set user's current role in the database
+    app.post('/setUserRole',function(req,res){
+        var email = req.body.email;
+        var role = req.body.role;
+        var mission = req.body.mission;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            for(var i=0; i<user.missions.length; i++) {
+                if(user.missions[i].name === mission) {
+                    user.missions[i].currentRole = role;
+                }
+            }
+
+            user.markModified('missions');
+            user.save(function(err) {
+                if (err) throw err;
+
+                res.send(user);
+            });
+        });
+
+    });
+
 };
 
 // route middleware to make sure a user is logged in

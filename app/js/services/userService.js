@@ -29,11 +29,40 @@ quantum
             data: {"email" : email, "mission" : mission}
         });
     }
+
+    function getCurrentRole(mission) {
+        return $http({
+            url: "/getCurrentRole",
+            method: "GET",
+            params: {"email": $window.user.google.email, "mission" : mission}
+        });
+    }
+
+    function getAllowedRoles(mission) {
+        return $http({
+            url: "/getAllowedRoles",
+            method: "GET",
+            params: {"email": $window.user.google.email, "mission" : mission}
+        });
+    }
+
+    function setCurrentRole(role, mission) {
+        userRole.cRole = role;
+        var email = getUserEmail();
+        return $http({
+            url: "/setUserRole",
+            method: "POST",
+            data: {"email" : email, "role" : role, "mission" : mission}
+        });
+    }
     
 	return {
         userRole : userRole,
         getUserName : getUserName,
         getUserEmail : getUserEmail,
-        setMissionForUser : setMissionForUser
+        setMissionForUser : setMissionForUser,
+        getCurrentRole : getCurrentRole,
+        getAllowedRoles : getAllowedRoles,
+        setCurrentRole : setCurrentRole,
 	}
 }]);
