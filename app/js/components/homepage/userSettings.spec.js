@@ -13,7 +13,7 @@ describe('Testing user settings modal controller', function () {
 
     beforeEach(function () {
         // load the module
-        module('app', function ($provide) {
+        module('quantum', function ($provide) {
             $provide.value('$window', windowMock);
         });
 
