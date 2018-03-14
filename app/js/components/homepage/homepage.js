@@ -4,7 +4,7 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,$mdSidenav,dashboardService) {
+  	controller: function($window,userService,procedureService,$mdSidenav,dashboardService, $uibModal) {
 
         var email = userService.getUserEmail();
         var mission = {
@@ -48,7 +48,23 @@ angular.module('quantum')
                 dashboardService.setRightLock($ctrl.locks.lockRight); 
             }
         }
+
+        $ctrl.showSettings = function(){
+            $uibModal.open({
+                templateUrl: './js/components/homepage/userSettings.html',
+                controller: 'userSettingsCtrl',
+                controllerAs: '$ctrl',
+                resolve: {
+                    mission: mission
+                }
+            }).result.then(function(response){
+                if(response) {
+                    //use the response here;
+                }
+            },
+            function () {
+                //use this function for writing any code on modal close;
+            });
+        }
 	}
 });
-
-

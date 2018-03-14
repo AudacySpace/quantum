@@ -25,6 +25,7 @@ module.exports = function(config) {
         './node_modules/angular-material/angular-material.js',
         './node_modules/ng-file-upload/dist/ng-file-upload.js',
         './node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
+        './node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
         './app/js/app.js',
         './app/js/components/**/*.js',
         './app/js/services/*.js',
