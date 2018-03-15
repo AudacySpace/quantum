@@ -451,6 +451,67 @@ module.exports = function(app,passport) {
 
     });
 
+    //Get Users list
+    app.get('/getUsers', function(req, res){
+        var mission = req.query.mission;
+        var allUsers = [];
+
+        User.find( { 'missions.name' : mission }, { 'google' : 1, 'missions.$' : 1 }, function(err, users) {
+            if(err){
+                console.log(err);
+            }
+
+            for(var i=0; i<users.length; i++){
+                allUsers[i] = new Object();
+                allUsers[i].google = users[i].google;
+                allUsers[i].currentRole = users[i].missions[0].currentRole;
+                var aRoles = {};
+
+                var roles = users[i].missions[0].allowedRoles;
+
+                for(var j=0; j<roles.length; j++){
+                    aRoles[roles[j].callsign] = 1;
+                }
+                allUsers[i].allowedRoles = aRoles;
+            }
+
+            res.send(allUsers);
+        });
+    });
+
+    //get roles configured in server code
+    app.get('/getRoles', function(req,res){
+        res.send(configRole);
+    });
+
+    //set user's allowed roles in the database
+    app.post('/setAllowedRoles',function(req,res){
+        var email = req.body.email;
+        var roles = req.body.roles;
+        var mission = req.body.mission;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            for(var i=0; i<user.missions.length; i++) {
+                if(user.missions[i].name === mission) {
+                    user.missions[i].allowedRoles = roles;
+                }
+            }
+
+            user.markModified('missions');
+
+            user.save(function(err) {
+                if (err) throw err;
+                res.send(user);
+            });
+        });
+
+    });
+
 };
 
 // route middleware to make sure a user is logged in

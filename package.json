@@ -53,6 +53,7 @@
     "angular-mocks": "^1.6.8",
     "angular-route": "^1.6.8",
     "angular-ui-bootstrap": "^2.5.6",
+    "ui-select": "^0.19.8",
     "jasmine-core": "^3.0.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",

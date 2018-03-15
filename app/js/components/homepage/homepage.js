@@ -66,5 +66,22 @@ angular.module('quantum')
                 //use this function for writing any code on modal close;
             });
         }
+
+        $ctrl.showAdminMenu = function() {
+            $uibModal.open({
+                templateUrl: './js/components/homepage/adminMenu.html',
+                controller: 'adminCtrl',
+                controllerAs: '$ctrl',
+                resolve: {
+                    mission: mission
+                }
+            }).result.then(
+            function(response){
+                //handle modal close with response
+            },
+            function () {
+                //handle modal dismiss
+            });
+        }
 	}
 });
