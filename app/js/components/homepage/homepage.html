@@ -34,6 +34,7 @@
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a ng-href="/logout" target="_self">Logout</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'">User Administration</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">

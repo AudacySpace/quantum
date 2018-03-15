@@ -55,6 +55,29 @@ quantum
             data: {"email" : email, "role" : role, "mission" : mission}
         });
     }
+
+    function getUsers(mission) {
+        return $http({
+            url: "/getUsers",
+            method: "GET",
+            params: { "mission" : mission }
+        });
+    }
+
+    function getRoles() {
+        return $http({
+                url: "/getRoles",
+                method: "GET"
+            });
+    }
+
+    function setAllowedRoles(user, roles, mission) {
+        return $http({
+            url: "/setAllowedRoles",
+            method: "POST",
+            data: {"email" : user.google.email, "roles" : roles, "mission": mission}
+        });
+    }
     
 	return {
         userRole : userRole,
@@ -64,5 +87,8 @@ quantum
         getCurrentRole : getCurrentRole,
         getAllowedRoles : getAllowedRoles,
         setCurrentRole : setCurrentRole,
+        getUsers : getUsers,
+        getRoles : getRoles,
+        setAllowedRoles : setAllowedRoles
 	}
 }]);

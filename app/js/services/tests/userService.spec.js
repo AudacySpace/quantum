@@ -150,4 +150,64 @@ describe('Test Suite for User Service', function() {
         httpBackend.flush();
     });
 
+    it('userService should get all the users', function () {
+        var mission = "Quantum";
+        var users;
+        var result = [{
+            _id: "594417df3d2dd966dcb43afd",
+            google: {
+                email: "john.smith@gmail.com",
+                name: "John Smith",
+                id: "112313425445562239891"
+            },
+            missions: [{
+                name: "Quantum",
+                currentRole: {
+                    name: "Observer",
+                    callsign: "VIP"
+                },
+                allowedRoles: [
+                {
+                    name: "Observer",
+                    callsign: "VIP"
+                }]
+            }]
+        }];
+
+        httpBackend.expectGET('/getUsers?mission=Quantum').respond(200, result);
+
+        userService.getUsers(mission).then( function(response){
+            users = response.data;
+            expect(response.status).toBe(200);
+            expect(users).toBeDefined();
+            expect(users.length).toBeGreaterThan(0);
+            expect(users.length).toEqual(1);
+        });
+
+        httpBackend.flush();
+    });
+
+    it('userService should be able to set the allowed roles of the user', function () {
+        var roles = [
+            {
+                name: "Mission Director",
+                callsign: "MD"
+            },
+            {
+                name: "Observer",
+                callsign: "VIP"
+            }
+        ];
+        var mission = "Quantum";
+
+        httpBackend.expectPOST("/setAllowedRoles")
+            .respond(200, {});
+
+        userService.setAllowedRoles(windowMock.user, roles, mission).then( function(response){
+            expect(response.status).toBe(200);
+        });
+
+        httpBackend.flush();
+    });
+
 });
