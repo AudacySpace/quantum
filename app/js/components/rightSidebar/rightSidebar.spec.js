@@ -1,7 +1,8 @@
 describe('Test Suite for Right Sidebar Controller', function () {
     var $controller, userService;
     var windowMock = {
-        location: {href : ''}
+        location: {href : ''},
+        innerWidth: 1000
     };
 
 
@@ -42,6 +43,21 @@ describe('Test Suite for Right Sidebar Controller', function () {
     it('should define user role', function() {
         expect($controller.role).toBeDefined();
         expect($controller.role).toEqual(userService.userRole);
+
+        //update innerWidth for the next test
+        windowMock.innerWidth = 768;
+    });
+
+    it('should define user role as observer on smaller screens', function() {
+        var role = {
+                    cRole : {
+                        "name": "Observer",
+                        "callsign": "VIP"
+                    }
+                };
+
+        expect($controller.role).toBeDefined();
+        expect($controller.role).toEqual(role);
     });
 
     it('should define logout function', function() {
