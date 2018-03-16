@@ -3,6 +3,7 @@ describe('Test Suite for Homepage Controller', function () {
     var windowMock = {
         innerWidth: ''
     };
+    var modalInstance = { open: function() {} };
 
     beforeEach(function () {
         // load the module
@@ -55,7 +56,8 @@ describe('Test Suite for Homepage Controller', function () {
             $controller = $componentController('homepage', {
                 dashboardService: dashboardService,
                 procedureService : procedureService,
-                userService : userService
+                userService : userService,
+                $uibModal : modalInstance
             });
         });
 
@@ -123,5 +125,47 @@ describe('Test Suite for Homepage Controller', function () {
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('block','none','#ffffff','#000000','inline-block','none',windowMock.innerWidth);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith('','',"Home");
     });
+
+    it('should define the function showSettings', function(){
+        expect($controller.showSettings).toBeDefined();
+    });
+
+    it('should open the modal settings menu', function(){
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+        spyOn(modalInstance, 'open').and.returnValue(fakeModal);
+        $controller.showSettings();
+
+        //expect the mocked modal open function to be called
+        expect(modalInstance.open).toHaveBeenCalled();
+    });
+
+    it('should define the function showAdminMenu', function(){
+        expect($controller.showAdminMenu).toBeDefined();
+    })
+
+    it('should open the modal for the administrator', function(){
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+        spyOn(modalInstance, 'open').and.returnValue(fakeModal);
+        $controller.showAdminMenu();
+
+        //expect the mocked modal open function to be called
+        expect(modalInstance.open).toHaveBeenCalled();
+    })
 
 });
