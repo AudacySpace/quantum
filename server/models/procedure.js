@@ -5,13 +5,13 @@ var mongoose = require('mongoose');
 var procedureSchema = mongoose.Schema({
 
     procedure           : {
-        id           : String,
-        title        : String,
-        lastuse      : String,
-        sections     : Array,
-        eventname    : String
+        id           : {type:String,required:true},
+        title        : {type:String,required:true},
+        lastuse      : {type:String},
+        sections     : {type:Array,required:true},
+        eventname    : {type:String,required:true}
     },
-    instances : Array
+    instances : {type:Array}
 });
 
 // create the model for procedures and expose it to our app
