@@ -5,13 +5,13 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
 
     google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
+        id           : {type:String,required:true},
+        token        : {type:String,required:true},
+        email        : {type:String,required:true},
+        name         : {type:String,required:true}
     },
-    grid : Array,
-    missions: Array
+    grid : {type:Array},
+    missions: {type:Array}
 
 });
 
