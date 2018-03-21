@@ -8,7 +8,7 @@ module.exports = {
     'googleAuth' : {
         'clientID'         : '615485532605-22v29drsct2cf76dnhd5hbhnl8h0i0gp.apps.googleusercontent.com',
         'clientSecret'     : '1E3Dh5tTzlEW58e5cWuMdgy1',
-        'callbackURL'      : 'https://quantum.audacy.space/auth/google/callback'
+        'callbackURL'      : 'https://localhost/auth/google/callback'
     }
 
 };
