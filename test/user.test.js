@@ -7,6 +7,7 @@ mongoose.Promise = global.Promise;
 var expect = chai.expect;
 var assert = chai.assert;
 var Usr = require('../server/models/user');
+var configRole = require('../config/role');
 
 describe('Test Suite for User Model ', function() {
     it('should be invalid if the model is empty', function() {
@@ -147,12 +148,16 @@ describe('Test Suite for User Model Route Controller', function() {
     beforeEach(function() {
         sinon.stub(Usr, 'find');
         sinon.stub(Usr,'findOne');
+        sinon.stub(Usr.prototype,'save');
+        sinon.stub(Usr,'count');
     });
  
  
     afterEach(function() {
         Usr.find.restore();
         Usr.findOne.restore();
+        Usr.prototype.save.restore();
+        Usr.count.restore();
     });
  
     it('should get current role of the user', function() {
@@ -326,4 +331,596 @@ describe('Test Suite for User Model Route Controller', function() {
         sinon.assert.calledWith(res.send, output);
     });
 
+    it("should post role for user", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var user = {
+                google:{},
+                missions:[
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    }
+                ],
+                markModified: function(message){},
+                save: function(cb){
+                    var err = null;
+                    var result = {
+                        "data":{
+                            google:{},
+                            missions:[
+                                {
+                                    name:"AZero",
+                                    currentRole:'SYS',
+                                    allowedRoles:[
+                                        {callsign:'SYS'},
+                                        {callsign:'IT'},
+                                        {callsign:'PROXY'}
+                                    ]
+                                }
+                            ]
+                        },"status":200
+                    };
+                    cb(err,result);
+                }
+            };
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:'SYS'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = {
+            "data":{
+                google:{},
+                missions:[{
+                    name:"AZero",
+                    currentRole:'SYS',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }]
+            },
+            "status":200
+        };
+
+        userCtrl.setUserRole(req, res);
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com', 'missions.name' : 'AZero' },sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+
+    });
+
+    it("should not post role for user when error", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = {name:"MongoError"};
+        var user = null;
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:'SYS'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = {
+            "data":{
+                google:{},
+                missions:[{
+                    name:"AZero",
+                    currentRole:'SYS',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }]
+            },
+            "status":200
+        };
+
+        userCtrl.setUserRole(req, res);
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com', 'missions.name' : 'AZero' },sinon.match.func);
+        expect(res.send.calledOnce).to.be.false;
+    });
+
+    it("should post allowed roles for user", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var user = 
+            {
+                google:{},
+                missions:[
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    }
+                ],
+                markModified: function(message){},
+                save: function(cb){
+                    var err = null;
+                    var result = {
+                        "data":{
+                            google:{},
+                            missions:[
+                                {
+                                    name:"AZero",
+                                    currentRole:'SYS',
+                                    allowedRoles:[
+                                        {callsign:'SYS'},
+                                        {callsign:'IT'},
+                                        {callsign:'PROXY'}
+                                    ]
+                                }]
+                        },"status":200
+                    };
+                    cb(err,result);}
+            };
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = {
+            "data":{
+                google:{},
+                missions:[{
+                    name:"AZero",
+                    currentRole:'SYS',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }]
+            },
+            "status":200
+        };
+
+        userCtrl.setAllowedRoles(req, res);
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com', 'missions.name' : 'AZero' },sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+
+    });
+
+    it("should not post allowed roles for user when error", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = {name:"MongoError"};
+        var user = null;
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = {
+            "data":{
+                google:{},
+                missions:[{
+                    name:"AZero",
+                    currentRole:'SYS',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }]
+            },
+            "status":200
+        };
+
+        userCtrl.setAllowedRoles(req, res);
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com', 'missions.name' : 'AZero' },sinon.match.func);
+        expect(res.send.calledOnce).to.be.false;
+
+    });
+
+    it("should set first user as 'MD' and post mission for user when no users are available for that mission", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var count = 0;
+        var user = {
+            google:{},
+            missions:[
+                {
+                    name:"AZero",
+                    currentRole:'MD',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'CC'}
+                    ]
+                }
+            ],
+            markModified: function(message){},
+            save: function(cb){
+                var err = null;
+                var result = {
+                    "data":{
+                        google:{},
+                        missions:[
+                            {
+                                name:"AZero",
+                                currentRole:'SYS',
+                                allowedRoles:[
+                                    {callsign:'SYS'},
+                                    {callsign:'IT'},
+                                    {callsign:'PROXY'}
+                                ]
+                            }
+                        ]
+                    },"status":200
+                };
+                cb(err,result);
+            }                          
+        };
+        Usr.count.yields(error,count);
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var defaultRole = {
+            'name'     : configRole.roles['MD'].name,
+            'callsign' : configRole.roles['MD'].callsign
+        };
+        var output = {
+            allowedRoles: [{ callsign: "VIP", name: "Observer" }, { callsign: "MD", name: "Mission Director" }],
+            currentRole: defaultRole,
+            name: "AZero"
+        }
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+        
+    });
+
+
+    it("should  not set first user as 'MD' and post mission for user when no users are available for that mission but database error", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = {name:"MongoError"};
+        var count = null;
+        var user = null;
+        Usr.count.yields(error,count);
+        Usr.findOne.yields(error,user);
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var defaultRole = {
+            'name'     : configRole.roles['MD'].name,
+            'callsign' : configRole.roles['MD'].callsign
+        };
+        var output = {
+            allowedRoles: [{ callsign: "VIP", name: "Observer" }, { callsign: "MD", name: "Mission Director" }],
+            currentRole: defaultRole,
+            name: "AZero"
+        }
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.false;        
+    });
+
+    it("should set mission for user when no missions are available", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var count = 2;
+        var user = {
+            google:{},
+            missions:[],
+            markModified: function(message){},
+            save: function(cb){
+                var err = null;
+                var result = {
+                    "data":{
+                        google:{},
+                        missions:[
+                            {
+                                name:"AZero",
+                                currentRole:'SYS',
+                                allowedRoles:[
+                                    {callsign:'SYS'},
+                                    {callsign:'IT'},
+                                    {callsign:'PROXY'}
+                                ]
+                            }
+                        ]
+                    },"status":200
+                };
+                cb(err,result);}
+        };
+        Usr.count.yields(error,count);
+        Usr.findOne.yields(error,user);
+
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var defaultRole = {
+                        'name'     : configRole.roles['MD'].name,
+                        'callsign' : configRole.roles['MD'].callsign
+                    };
+        var output = { 
+            name: 'AZero',
+            currentRole: { name: 'Observer', callsign: 'VIP' },
+            allowedRoles: [ { name: 'Observer', callsign: 'VIP' } ] 
+        }
+
+  
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+        
+    });
+
+    it("should not set mission for user when no missions are available but database error", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var count = 2;
+        var user = {
+            google:{},
+            missions:[],
+            markModified: function(message){},
+            save: function(cb){
+                var err = {name:'MongoError'};
+                var result = null;
+                cb(err,result);}
+        };
+        Usr.count.yields(error,count);
+        Usr.findOne.yields(error,user);
+
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+                role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var defaultRole = {
+                        'name'     : configRole.roles['MD'].name,
+                        'callsign' : configRole.roles['MD'].callsign
+                    };
+        var output = { 
+            name: 'AZero',
+            currentRole: { name: 'Observer', callsign: 'VIP' },
+            allowedRoles: [ { name: 'Observer', callsign: 'VIP' } ] 
+        }
+
+  
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.false;
+        
+    });
+
+
+    it("should set mission for user when missions are available", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var count = 2;
+
+        var user = 
+            {
+                google:{},
+                missions:[
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    },
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    }
+                ],
+                markModified: function(message){},
+                save: function(cb){
+                    var err = null;
+                    var result = {
+                        "data":{
+                            google:{},
+                            missions:[
+                                {
+                                    name:"AZero",
+                                    currentRole:'SYS',
+                                    allowedRoles:[
+                                        {callsign:'SYS'},
+                                        {callsign:'IT'},
+                                        {callsign:'PROXY'}
+                                    ]
+                                }
+                            ]
+                        },"status":200
+                    };
+                cb(err,result);}
+            };
+
+            Usr.count.yields(error,count);
+            Usr.findOne.yields(error,user);
+            var req = {
+                body : {
+                    mission:'AZero',
+                    email:'tgattu@gmail.com',
+                    role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }
+            }
+            var res = {
+                send: sinon.spy()
+            }
+            var defaultRole = {
+                'name'     : configRole.roles['MD'].name,
+                'callsign' : configRole.roles['MD'].callsign
+            };
+            var output = {
+                allowedRoles: [{ callsign: "SYS" }, { callsign: "CC" }],
+                currentRole: { callsign: "VIP", name: "Observer" },
+                name: "AZero"
+            }
+  
+    
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+        
+    });
+
+    it("should not set mission for user when missions are available but database error", function() {
+        userCtrl = require('../server/controllers/user.controller');
+        var error = null;
+        var count = 2;
+
+        var user = 
+            {
+                google:{},
+                missions:[
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    },
+                    {
+                        name:"AZero",
+                        currentRole:'MD',
+                        allowedRoles:[
+                            {callsign:'SYS'},
+                            {callsign:'CC'}
+                        ]
+                    }
+                ],
+                markModified: function(message){},
+                save: function(cb){
+                    var err = {name:"MongoError"};
+                    var result = null;
+                cb(err,result);}
+            };
+
+            Usr.count.yields(error,count);
+            Usr.findOne.yields(error,user);
+            var req = {
+                body : {
+                    mission:'AZero',
+                    email:'tgattu@gmail.com',
+                    role:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}                    
+                    ]
+                }
+            }
+            var res = {
+                send: sinon.spy()
+            }
+            var defaultRole = {
+                'name'     : configRole.roles['MD'].name,
+                'callsign' : configRole.roles['MD'].callsign
+            };
+            var output = {
+                allowedRoles: [{ callsign: "SYS" }, { callsign: "CC" }],
+                currentRole: { callsign: "VIP", name: "Observer" },
+                name: "AZero"
+            }
+  
+    
+        userCtrl.setMissionForUser(req, res);
+        sinon.assert.calledWith(Usr.count,{ 'missions.name' : 'AZero' },sinon.match.func)
+        sinon.assert.calledWith(Usr.findOne,{ 'google.email' : 'tgattu@gmail.com'},sinon.match.func);
+        expect(res.send.calledOnce).to.be.false;
+        
+    });
 });

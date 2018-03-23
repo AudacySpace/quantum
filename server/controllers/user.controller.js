@@ -91,53 +91,62 @@ module.exports = {
                     console.log(err);
                 }
 
-                //If zero users for this mission, then assign user as Mission Director
-                if(count == 0){
-                    var userRole = {
-                        'name'     : configRole.roles['MD'].name,
-                        'callsign' : configRole.roles['MD'].callsign
-                    };
-                    missionObj =  {
-                        'name' : mission,
-                        'currentRole' : userRole,
-                        'allowedRoles' : []
-                    };
-                    missionObj.allowedRoles.push(defaultRole);
-                    missionObj.allowedRoles.push(userRole);
-
-                    user.missions.push(missionObj);
-                } else {
-                    //check if the mission exists in the user's mission list
-                    for(var i=0; i<user.missions.length; i++){
-                        if(user.missions[i].name === mission){
-                            if(!containsObject(user.missions[i].currentRole, user.missions[i].allowedRoles)){
-                                //update current role to default role if current role is not a part of allowed roles
-                                user.missions[i].currentRole = defaultRole;
-                            }
-                            missionObj = user.missions[i];
-                            missionCount++;
-                        }
-                    }
-
-                    //If mission does not exist for this user, assign Observer role
-                    if(missionCount == 0) {
+                if(user){
+                    //If zero users for this mission, then assign user as Mission Director
+                    if(count === 0){
+                        var userRole = {
+                            'name'     : configRole.roles['MD'].name,
+                            'callsign' : configRole.roles['MD'].callsign
+                        };
                         missionObj =  {
                             'name' : mission,
-                            'currentRole' : defaultRole,
+                            'currentRole' : userRole,
                             'allowedRoles' : []
                         };
                         missionObj.allowedRoles.push(defaultRole);
+                        missionObj.allowedRoles.push(userRole);
 
                         user.missions.push(missionObj);
+                    } else {
+                        //check if the mission exists in the user's mission list
+                        for(var i=0; i<user.missions.length; i++){
+                            if(user.missions[i].name === mission){
+                                if(!containsObject(user.missions[i].currentRole, user.missions[i].allowedRoles)){
+                                    //update current role to default role if current role is not a part of allowed roles
+                                    user.missions[i].currentRole = defaultRole;
+                                }
+                                missionObj = user.missions[i];
+                                missionCount++;
+                            }
+                        }
+
+                        //If mission does not exist for this user, assign Observer role
+                        if(missionCount == 0) {
+                            missionObj =  {
+                                'name' : mission,
+                                'currentRole' : defaultRole,
+                                'allowedRoles' : []
+                            };
+                            missionObj.allowedRoles.push(defaultRole);
+
+                            user.missions.push(missionObj);
+                        }
                     }
+
+                    user.markModified('missions');
+
+                    user.save(function(err,result) {
+                        if (err){
+                            console.log(err);
+                        }
+
+                        if(result){
+                            res.send(missionObj);
+                        }
+                        
+                    });
                 }
 
-                user.markModified('missions');
-
-                user.save(function(err) {
-                    if (err) throw err;
-                    res.send(missionObj);
-                });
             });
         });
     },
@@ -151,19 +160,26 @@ module.exports = {
             if(err){
                 console.log(err);
             }
-
-            for(var i=0; i<user.missions.length; i++) {
-                if(user.missions[i].name === mission) {
-                    user.missions[i].currentRole = role;
+            if(user){
+                for(var i=0; i<user.missions.length; i++) {
+                    if(user.missions[i].name === mission) {
+                        user.missions[i].currentRole = role;
+                    }
                 }
+
+                user.markModified('missions');
+                user.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+
+                    if(result){
+                        res.send(result);
+                    }
+                    
+                });
             }
 
-            user.markModified('missions');
-            user.save(function(err) {
-                if (err) throw err;
-
-                res.send(user);
-            });
         });
     },
     setAllowedRoles: function(req,res){
@@ -177,22 +193,29 @@ module.exports = {
                 console.log(err);
             }
 
-            for(var i=0; i<user.missions.length; i++) {
-                if(user.missions[i].name === mission) {
-                    user.missions[i].allowedRoles = roles;
+            if(user){
+                for(var i=0; i<user.missions.length; i++) {
+                    if(user.missions[i].name === mission) {
+                        user.missions[i].allowedRoles = roles;
+                    }
                 }
+
+                user.markModified('missions');
+
+                user.save(function(err,result) {
+                    if (err) {
+                        console.log(err);
+                    }
+
+                    if(result){
+                        res.send(result);
+                    }
+                    
+                });
             }
 
-            user.markModified('missions');
-
-            user.save(function(err) {
-                if (err) throw err;
-                res.send(user);
-            });
         });
-
     }
-
 };
 
 //Check if an array list contains an object
