@@ -172,7 +172,7 @@ describe('Test Suite for Procedure Route Controller', function() {
 
     it('should not get all procedures when error', function() {
         procedure = require('../server/controllers/procedure.controller');
-        Procedure.find.yields({"name":"Mongo Error"}, {"status":403});
+        Procedure.find.yields({"name":"Mongo Error"},null);
         var req = { 
             query : {}
 
@@ -183,8 +183,7 @@ describe('Test Suite for Procedure Route Controller', function() {
  
         procedure.getProcedureList(req, res);
         sinon.assert.calledWith(Procedure.find,{},{},sinon.match.func);
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,{"status":403});
+        expect(res.send.calledOnce).to.be.false;
     });
 
     it('should get a procedure section data on download', function() {
@@ -242,7 +241,7 @@ describe('Test Suite for Procedure Route Controller', function() {
             sections:[
 
         ]};
-        Procedure.findOne.yields({"name":"MongoError"}, {"status":403});
+        Procedure.findOne.yields({"name":"MongoError"},null);
         var req = { 
             query : {id:'1.1'}
 
@@ -253,8 +252,7 @@ describe('Test Suite for Procedure Route Controller', function() {
  
         procedure.getProcedureData(req, res);
         sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,{});
+        expect(res.send.calledOnce).to.be.false;
     });
 
     it('should get live procedure instance data', function() {
@@ -340,7 +338,7 @@ describe('Test Suite for Procedure Route Controller', function() {
     it('should not get live procedure instance data when error', function() {
         procedure = require('../server/controllers/procedure.controller');
 
-        Procedure.findOne.yields({"name":"MongoError"}, {"instances":[],"status":403});
+        Procedure.findOne.yields({"name":"MongoError"},null);
         var req = { 
             query : {procedureID:'1.1',currentRevision:1}
 
@@ -351,8 +349,7 @@ describe('Test Suite for Procedure Route Controller', function() {
  
         procedure.getLiveInstanceData(req, res);
         sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,[]);
+        expect(res.send.calledOnce).to.be.false;
     });
 
 
@@ -446,7 +443,7 @@ describe('Test Suite for Procedure Route Controller', function() {
     it('should not get all procedure instances when error', function() {
         procedure = require('../server/controllers/procedure.controller');
 
-        Procedure.findOne.yields({"name":"MongoError"}, {"procs":[],"status":403,});
+        Procedure.findOne.yields({"name":"MongoError"},null);
         var req = { 
             query : {procedureID:'1.1',currentRevision:1}
 
@@ -457,71 +454,114 @@ describe('Test Suite for Procedure Route Controller', function() {
  
         procedure.getAllInstances(req, res);
         sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,{});
+        expect(res.send.calledOnce).to.be.false;
     });
 
-    it('should upload a procedure', function() {
+    it('should upload a procedure and save to database', function() {
         procedure = require('../server/controllers/procedure.controller');
         Procedure.prototype.save.yields(null,{"data":"100","status":200});
-        var req = {};
-        // var req = { 
-        //     body: {
-        //         file:{
-        //             fieldname: 'file',
-        //             originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
-        //             encoding: '7bit',
-        //             mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        //             destination: '/tmp/uploads',
-        //             filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
-        //             path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
-        //             size: 11795 
-        //         }
-        //     }, ReadableState: {
-        //         objectMode: false,
-        //         highWaterMark: 16384,
-        //        // buffer: [ <Buffer 2d 2d 2d 2d 2d 2d 57 65 62 4b 69 74 46 6f 72 6d 42 6f 75 6e 64 61 72 79 71 65 41 54 79 53 39 44 35 5a 4b 37 63 50 4b 44 0d 0a 43 6f 6e 74 65 6e 74 2d ... > ],
-        //         length: 12078,
-        //         pipes: null,
-        //         pipesCount: 0,
-        //         flowing: null,
-        //         ended: true,
-        //         endEmitted: false,
-        //         reading: false,
-        //         sync: true,
-        //         needReadable: false,
-        //         emittedReadable: true,
-        //         readableListening: false,
-        //         resumeScheduled: false,
-        //         defaultEncoding: 'utf8',
-        //         ranOut: false,
-        //         awaitDrain: 0,
-        //         readingMore: true,
-        //         decoder: null,
-        //         encoding: null 
-        //     },
-  
-        //     headers:{ 
-        //         connection: 'upgrade',
-        //         host: 'localhost',
-        //         'content-length': '12078',
-        //         accept: 'application/json, text/plain, */*',
-        //         origin: 'https://localhost',
-        //         'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Mobile Safari/537.36',
-        //         'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary2adRYnQZO7Fk5Cy6',
-        //         referer: 'https://localhost/dashboard',
-        //         'accept-encoding': 'gzip, deflate, br',
-        //         'accept-language': 'en-US,en;q=0.9',
-        //         cookie: 'connect.sid=s%3Aquo--K5WE18K6vMeL8WnpAE9XtW_-PUU.%2F%2FAHCOGnn%2BRm5N7FC7Zd8%2BdRbyl%2FlN7JpGabheK%2BxKA' },
-        // };
-
+        var req = {
+            body: {
+                file:{
+                    fieldname: 'file',
+                    originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    encoding: '7bit',
+                    mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    destination: './testfiles',
+                    filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                    size: 11795 
+                }
+            },
+            file:{
+                fieldname: 'file',
+                originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                encoding: '7bit',
+                mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                destination: './testfiles',
+                filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                size: 11795 
+            }
+        };
         var res = {
             json: sinon.stub()
         };
  
-        // procedure.uploadFile(req, res);
-        // expect(res.json.calledOnce).to.be.true;
-        // sinon.assert.calledWith(res.json, {error_code:0,err_desc:null});
+        procedure.uploadFile(req, res);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json, {error_code:0,err_desc:null});
+    });
+
+    it('should not upload a procedure when the file does not have Step or Type or Content or Role or Reference Columns', function() {
+        procedure = require('../server/controllers/procedure.controller');
+        Procedure.prototype.save.yields(null,{"data":"100","status":200});
+        var req = {
+            body: {
+                file:{
+                    fieldname: 'file',
+                    originalname: '3.4 - Test -Example.xlsx',
+                    encoding: '7bit',
+                    mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    destination: './testfiles',
+                    filename: '3.4 - Test -Example.xlsx',
+                    path: './testfiles/3.4 - Test -Example.xlsx',
+                    size: 11795 
+                }
+            },
+            file:{
+                fieldname: 'file',
+                originalname: '3.4 - Test -Example.xlsx',
+                encoding: '7bit',
+                mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                destination: './testfiles',
+                filename: '3.4 - Test -Example.xlsx',
+                path: './testfiles/3.4 - Test -Example.xlsx',
+                size: 11795 
+            }
+        };
+        var res = {
+            json: sinon.stub()
+        };
+ 
+        procedure.uploadFile(req, res);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json, {error_code:0,err_desc:"Not a valid file"});
+    });
+
+    it('should not upload and save a procedure to database when error', function() {
+        procedure = require('../server/controllers/procedure.controller');
+        Procedure.prototype.save.yields({name:"MongoError"},null);
+        var req = {
+            body: {
+                file:{
+                    fieldname: 'file',
+                    originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    encoding: '7bit',
+                    mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    destination: './testfiles',
+                    filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                    size: 11795 
+                }
+            },
+            file:{
+                fieldname: 'file',
+                originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                encoding: '7bit',
+                mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                destination: './testfiles',
+                filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                size: 11795 
+            }
+        };
+        var res = {
+            json: sinon.stub()
+        };
+ 
+        procedure.uploadFile(req, res);
+        expect(res.json.calledOnce).to.be.false;
     });
 
     it('should save a procedure instance', function() {

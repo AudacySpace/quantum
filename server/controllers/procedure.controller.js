@@ -1,35 +1,17 @@
 var mongoose = require('mongoose');
 var ProcedureModel = mongoose.model('procedure');
-var multer = require('multer');
 var XLSX = require("xlsx");
-
-var storage = multer.diskStorage({ //multers disk storage settings
-    destination: function (req, file, cb) {
-        cb(null, '/tmp/uploads');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    }
-});
-
-var upload = multer({ //multer settings
-    storage: storage,
-    fileFilter : function(req, file, callback) { //file filter
-        if (['xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
-            return callback(new Error('Wrong extension. Please upload an xlsx file.'));
-        }
-        callback(null, true);
-    }
-}).single('file');
 
 module.exports = {
     getProcedureList: function(req, res){
         ProcedureModel.find({}, {}, function(err, procdata) {
             if (err) {
                 console.log("Error finding procedures data in DB: " + err);
-                // throw err;
             }
-           res.send(procdata); 
+            if(procdata){
+                res.send(procdata); 
+            }
+           
         });
     },
     getProcedureData: function(req,res){
@@ -39,26 +21,23 @@ module.exports = {
             if(err){ 
                 console.log(err);
             }
+            if(model){
+                var sections = model.procedure.sections;
+                //convert json to worksheet
+                var ws = XLSX.utils.json_to_sheet(sections, {header:["Step","Role","Type","Content","Reference"]});
+                //Give name to the worksheet
+                var ws_name = "Sheet1";
+                //Create a workbook object
+                var wb = { SheetNames:[], Sheets:{} };
 
-            var wbout = {};
-            if(model.procedure){
-                if(model.procedure.sections){
-                    var sections = model.procedure.sections;
-                    //convert json to worksheet
-                    var ws = XLSX.utils.json_to_sheet(sections, {header:["Step","Role","Type","Content","Reference"]});
-                    //Give name to the worksheet
-                    var ws_name = "Sheet1";
-                    //Create a workbook object
-                    var wb = { SheetNames:[], Sheets:{} };
-
-                     // add worksheet to workbook 
-                    wb.SheetNames.push(ws_name);
-                    wb.Sheets[ws_name] = ws;
-                    // write workbook object into a xlsx file
-                    wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
-                }
+                // add worksheet to workbook 
+                wb.SheetNames.push(ws_name);
+                wb.Sheets[ws_name] = ws;
+                // write workbook object into a xlsx file
+                var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+                res.send(wbout);
             }
-            res.send(wbout);
+            
         });
     },
     getLiveInstanceData: function(req,res){
@@ -70,15 +49,18 @@ module.exports = {
                 console.log(err);
             }
 
-            var instances = model.instances;
-            var liveinstance = [];
+            if(model){
+                var instances = model.instances;
+                var liveinstance = [];
 
-            for(var i=0;i<instances.length;i++){
-                if(instances[i].revision === parseInt(revision)){
-                    liveinstance = instances[i];
+                for(var i=0;i<instances.length;i++){
+                    if(instances[i].revision === parseInt(revision)){
+                        liveinstance = instances[i];
+                    }
                 }
+                res.send(liveinstance);
             }
-            res.send(liveinstance);
+
         });
 
     },
@@ -91,66 +73,62 @@ module.exports = {
             }
             var allinstances = {};
 
-            if(model.instances){
+            if(model){
                 var instances = model.instances;
                 var allinstances = {
                     instances : instances,
                     title : model.procedure.title
                 }
+                res.send(allinstances);
             }
-            res.send(allinstances);
+
         });
 
     },
     uploadFile: function(req,res){
-        upload(req,res,function(err){
-            if(err){
-                console.log(err);
-                res.json({error_code:1,err_desc:err});
-            }
- 
-            try{
-                var filename = req.file.originalname.split(" - ");
-                var filepath = req.file.path;
-                var workbook = XLSX.readFile(filepath);
-                var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
+        try{
+            var filename = req.file.originalname.split(" - ");
+            var filepath = req.file.path;
+            var workbook = XLSX.readFile(filepath);
+            var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
 
-                var fileverify = 0
-                for(var a=0;a<sheet1.length;a++){
-                    if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
-                        fileverify++;
+            var fileverify = 0
+            for(var a=0;a<sheet1.length;a++){
+                if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
+                    fileverify++;
+                }
+            }
+
+            if(fileverify === sheet1.length-1){
+
+                var pfiles = new ProcedureModel();
+                var ptitle = filename[2].split(".");
+
+                pfiles.procedure.id = filename[0];
+                pfiles.procedure.title = filename[1]+" - "+ptitle[0];
+                pfiles.procedure.lastuse = "";
+                pfiles.instances = [];
+
+                for(var i=0;i<sheet1.length;i++){
+                    pfiles.procedure.sections.push(sheet1[i]); 
+                }
+                pfiles.procedure.eventname = filename[1];
+                pfiles.save(function(err,result){
+                    if(err){
+                        console.log(err);
                     }
-                }
+                    if(result){
+                        console.log('procedure data saved successfully!');
+                        res.json({error_code:0,err_desc:null});
+                    }
+                });
 
-                if(fileverify === sheet1.length-1){
-                        var pfiles = new ProcedureModel();
-                        var ptitle = filename[2].split(".");
-                        pfiles.procedure.id = filename[0];
-                        pfiles.procedure.title = filename[1]+" - "+ptitle[0];
-                        pfiles.procedure.lastuse = "";
-                        pfiles.instances = [];
-                        for(var i=0;i<sheet1.length;i++){
-                            pfiles.procedure.sections.push(sheet1[i]); 
-                        }
-                        pfiles.procedure.eventname = filename[1];
-                        pfiles.save(function(err,result){
-                            if(err){
-                                console.log(err);
-                            }
-                            if(result){
-                                console.log('procedure data saved successfully');
-                                res.json({error_code:0,err_desc:null});
-                            }
-                        });
-
-                }else{
-                    res.json({error_code:0,err_desc:"Not a valid file"});
-                }
-            }catch(e){
-                console.log(e);
+            }else{
+                res.json({error_code:0,err_desc:"Not a valid file"});
             }
-        });
-
+        }catch(e){
+            console.log(e);
+        }
     },
     saveProcedureInstance: function(req,res){
         var procid = req.body.id;
