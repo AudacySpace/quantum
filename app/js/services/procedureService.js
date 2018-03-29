@@ -339,8 +339,7 @@ quantum
                     steps[d].chkval = true;
                     steps[d].status = true;
                 }else {
-                    //steps[d].chkval = false;
-                    //steps[d].status = false;
+
                 }
             }
         }

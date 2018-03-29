@@ -1,7 +1,7 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService) {
 	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
-
+    $scope.procedure = procedureService.getProcedureName();
   
   	$scope.submit = function(){ 
         // Call upload if form is valid
@@ -148,7 +148,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }else if(status === "Archived") {
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
-
         }
     }
 
@@ -157,6 +156,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $interval.cancel($scope.procedurelistinterval);
         }
     );
+
 });
 
 

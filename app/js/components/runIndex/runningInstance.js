@@ -1,9 +1,8 @@
-quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval,$window) {
+quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval,$window,dashboardService,$location) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
     $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
-
 
     $scope.clock = {
         utc : "000.00.00.00 UTC"
@@ -180,6 +179,11 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
         }
     }
+
+    $scope.$on('$locationChangeStart', function(evnt, next, current){ 
+        var loc = $location.url();
+        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth);     
+    });
 });
 
 
