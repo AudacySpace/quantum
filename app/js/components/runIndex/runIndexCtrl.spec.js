@@ -1,21 +1,40 @@
 describe('Test Suite for Run Index Controller', function () {
-    var controller,scope,procedureService, deferred, $q;
+    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope;
+
+    var windowMock = {
+        innerWidth: 1000
+    };
 
     beforeEach(function () {
         // load the module
-        module('quantum');
+        module('quantum', function ($provide) {
+            $provide.value('$window', windowMock);
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams){
+        });
+
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_){
             scope = $rootScope.$new();
+            rootScope = $rootScope;
             $q = _$q_;
             procedureService = _procedureService_;
             deferred = _$q_.defer();
+            dashboardService = _dashboardService_;
+            location = $location;
+            deferredHeaderStyles = _$q_.defer();
+            deferredProcName = _$q_.defer();
             spyOn(procedureService, "getAllInstances").and.returnValue(deferred.promise);
+            spyOn(procedureService, "setHeaderStyles").and.returnValue(deferredHeaderStyles.promise);
+            spyOn(procedureService, "setProcedureName").and.returnValue(deferredProcName.promise);
+
+            deferredHeaderChange =  _$q_.defer();
+            spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
 
             controller = $controller('runIndexCtrl', {
                 $scope: scope,
                 $routeParams: {procID: '1.1'},
-                procedureService: procedureService
+                procedureService: procedureService,
+                $location: location,
+                dashboardService: dashboardService
             });
         });
     });
@@ -146,6 +165,8 @@ describe('Test Suite for Run Index Controller', function () {
         expect(scope.livelist).toEqual(result.instances);
         expect(scope.procedureid).toEqual(scope.params.procID);
         expect(scope.proceduretitle).toEqual(result.title);
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith(scope.procedureid ,scope.proceduretitle,"Open Procedure");
     });
 
     it('should set archivedlist to [] if there are no running instances of a procedure or running parameter is false', function() {
@@ -237,6 +258,18 @@ describe('Test Suite for Run Index Controller', function () {
         expect(scope.livelist).toEqual([]);
         expect(scope.procedureid).toEqual(scope.params.procID);
         expect(scope.proceduretitle).toEqual(result.procedure.title);
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith(scope.procedureid ,scope.proceduretitle,"Open Procedure");
+    });
+
+    it('should call changeHeaderWithLocation function on location change', function() {
+        var newUrl = 'http://foourl.com';
+        var oldUrl = 'http://barurl.com'
+
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
     });
 
 });

@@ -1,5 +1,5 @@
 describe('Test Suite for Run Instance Controller', function () {
-    var controller,scope,procedureService,userService, deferred, $q,timeService,$interval;
+    var controller,scope,procedureService,userService, deferred, $q,timeService,$interval,location,dashboardService,rootScope;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -952,13 +952,16 @@ describe('Test Suite for Run Instance Controller', function () {
 
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,_timeService_,$interval){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,_timeService_,$interval,$location,_dashboardService_){
             scope = $rootScope.$new();
+            rootScope = $rootScope;
             $q = _$q_;
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             procedureService = _procedureService_;
             userService = _userService_;
             timeService = _timeService_;
+            location = $location;
+            dashboardService = _dashboardService_;
 
             deferredProcedureList = _$q_.defer();
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
@@ -969,6 +972,9 @@ describe('Test Suite for Run Instance Controller', function () {
             deferredSetInfo = _$q_.defer();
             deferredInstanceCompleted = _$q_.defer();
             spyOn(procedureService, "setInstanceCompleted").and.returnValue(deferredInstanceCompleted.promise);
+
+            deferredHeaderChange =  _$q_.defer();
+            spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
             
            
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
@@ -995,7 +1001,9 @@ describe('Test Suite for Run Instance Controller', function () {
                 procedureService: procedureService,
                 userService: userService,
                 timeService: timeService,
-                $interval: $intervalSpy
+                $interval: $intervalSpy,
+                $location: location,
+                dashboardService: dashboardService
             });
         });
     });
@@ -2077,7 +2085,14 @@ describe('Test Suite for Run Instance Controller', function () {
         expect($intervalSpy.cancel.calls.count()).toBe(2);
     });
 
+    it('should call changeHeaderWithLocation function on location change', function() {
+        var newUrl = 'http://foourl.com';
+        var oldUrl = 'http://barurl.com'
 
-    
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
+    });
 
 });

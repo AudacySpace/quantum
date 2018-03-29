@@ -1,15 +1,25 @@
 describe('Test Suite for Dashboard Service', function () {
-    var dashboardService, httpBackend;
+    var dashboardService, httpBackend,procedureService;
 
     beforeEach(function () {
         // load the module
         module('quantum');
+
+        procedureService = jasmine.createSpyObj('procedureService', ['setHeaderStyles', 'setProcedureName']);
+
+        module(function($provide) {
+            $provide.value('procedureService', procedureService);
+        });
 
         // get your service, also get $httpBackend
         // $httpBackend will be a mock.
         inject(function (_$httpBackend_, _dashboardService_) {
             dashboardService = _dashboardService_;
             httpBackend = _$httpBackend_;
+            // procedureService = _procedureService_;
+            // deferred = _$q_.defer();
+            // spyOn(procedureService, "setHeaderStyles").and.returnValue(deferred.promise);
+            // spyOn(procedureService, "setProcedureName").and.returnValue(deferred.promise);
         });
     });
 
@@ -61,4 +71,15 @@ describe('Test Suite for Dashboard Service', function () {
         dashboardService.setRightLock(false);
         expect(dashboardService.locks).toEqual({ lockLeft : false, lockRight : false });
     });
+
+    it('should define the changeHeaderWithLocation function', function() {
+        expect(dashboardService.changeHeaderWithLocation).toBeDefined();
+    });
+
+    it('should set procedure name and header styles when changeHeaderWithLocation function is called', function() {
+        dashboardService.changeHeaderWithLocation('/dashboard','1.1','Procedure Example','',1000);
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('block','none','#ffffff','#000000','inline-block','none',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith('','',"Home");        
+    });
+
 });

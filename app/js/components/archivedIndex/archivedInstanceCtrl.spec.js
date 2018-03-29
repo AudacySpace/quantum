@@ -1,5 +1,5 @@
 describe('Test Suite for Archived Instance Controller', function () {
-    var controller,scope,procedureService,userService, deferred, $q;
+    var controller,scope,procedureService,userService, deferred, $q,location,dashboardService,rootScope;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -598,23 +598,31 @@ describe('Test Suite for Archived Instance Controller', function () {
 
         });
 
-         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_){
+         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$location,_dashboardService_){
             scope = $rootScope.$new();
+            rootScope = $rootScope;
             $q = _$q_;
             procedureService = _procedureService_;
             userService = _userService_;
             deferredProcedureList = _$q_.defer();
+            location = $location;
+            dashboardService = _dashboardService_;
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
 
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
             spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "showPList").and.returnValue(liststeps);
 
+            deferredHeaderChange =  _$q_.defer();
+            spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
+
             controller = $controller('archivedInstanceCtrl', {
                 $scope: scope,
                 $routeParams: {procID: '1.1',revisionID:'1'},
                 procedureService: procedureService,
-                userService: userService
+                userService: userService,
+                $location: location,
+                dashboardService: dashboardService
             });
         });
     });
@@ -681,6 +689,16 @@ describe('Test Suite for Archived Instance Controller', function () {
         scope.changeColor("Archived","1.1","Procedure Example");
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#000000','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","AS-Run Archive");
+    });
+
+    it('should call changeHeaderWithLocation function on location change', function() {
+        var newUrl = 'http://foourl.com';
+        var oldUrl = 'http://barurl.com'
+
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
     });
 
 

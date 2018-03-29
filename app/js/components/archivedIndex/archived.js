@@ -1,4 +1,4 @@
-quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams) {
+quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location) {
     $scope.params = $routeParams;
     $scope.sortType     = 'procedurecompleted'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
@@ -22,9 +22,16 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
                 $scope.procedureid = $scope.params.procID;
                 $scope.proceduretitle = response.data.title;
            }
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName( $scope.procedureid, $scope.proceduretitle,"AS-Run Archive");
         });
 
     }
+
+    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+        var loc = $location.url();
+        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.proceduretitle,'',$window.innerWidth);  
+    });
 });
 
 
