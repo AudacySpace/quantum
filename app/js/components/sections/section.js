@@ -1,8 +1,9 @@
-quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService,userService,timeService,$interval,$window) {
+quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService,userService,timeService,$interval,$window,dashboardService,$location) {
 	$scope.params = $routeParams;
 	$scope.role = userService.userRole;
     $scope.name = userService.getUserName();
     $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
+    // var locationUrl = dashboardService.getlocationUrl();
 
     $scope.clock = {
         utc : "000.00.00.00 UTC"
@@ -39,14 +40,17 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     }
 
 	function viewProcedure(){
-        procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
+        //procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
+        procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             for(var i=0;i<response.data.length;i++){
                 if(parseFloat(response.data[i].procedure.id).toFixed(1) === $scope.params.procID){
                    	$scope.steps = response.data[i].procedure.sections;
+                    $scope.procedure.name = response.data[i].procedure.title;
 				}
 			}
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign); 
+            procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
     	});
 	}
 
@@ -150,6 +154,13 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
         }
     }
+
+    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+         var loc = $location.url();
+        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth);    
+    });
+
+
 });
 
 

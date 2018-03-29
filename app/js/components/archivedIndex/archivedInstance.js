@@ -1,4 +1,4 @@
-quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService,$window) {
+quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService,$window,dashboardService,$location) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.procedure = procedureService.getProcedureName();
@@ -51,6 +51,11 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
 
         }
     }
+
+    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+        var loc = $location.url();
+        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth);        
+    });
 });
 
 
