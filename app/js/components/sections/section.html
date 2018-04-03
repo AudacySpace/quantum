@@ -39,7 +39,7 @@
                 </td>
                 <td>{{ step.Step }}</td>
                 <td>{{ step.Role }}</td>
-                <td><span class="{{step.typeicon}}" title="{{step.Type}}"></span></td>
+                <td><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
                 <td>{{ step.Content }}</td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>

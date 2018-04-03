@@ -117,7 +117,6 @@ quantum
     }
 
     function getProcedureSection(psteps,callsign){
-
         if(psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
@@ -162,19 +161,26 @@ quantum
             //set type icon 
             for(var k=0;k<psteps.length;k++){
                 if(psteps[k].Type === "Heading"){
-
+                    psteps[k].typeicon = "";
+                    psteps[k].typecolor = {color:""};
                 }else if(psteps[k].Type === "Warning"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
+                    psteps[k].typecolor = {color:"#ff0000"};
                 }else if(psteps[k].Type === "Caution"){
-                    psteps[k].typeicon = "fa fa-exclamation-circle";
+                    psteps[k].typeicon = "fa fa-exclamation-triangle";
+                    psteps[k].typecolor = {color:"#ffcc00"};
                 }else if(psteps[k].Type === "Record"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
+                    psteps[k].typecolor = {color:""};
                 }else if(psteps[k].Type === "Verify"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
+                    psteps[k].typecolor = {color:""};
                 }else if(psteps[k].Type === "Action"){
                     psteps[k].typeicon = "fa fa-cog";
+                    psteps[k].typecolor = {color:""};
                 }else if(psteps[k].Type === "Decision"){
                     psteps[k].typeicon = "fa fa-dot-circle-o";
+                    psteps[k].typecolor = {color:""};
                 }
             }
 
