@@ -163,24 +163,38 @@ quantum
                 if(psteps[k].Type === "Heading"){
                     psteps[k].typeicon = "";
                     psteps[k].typecolor = {color:""};
+                    psteps[k].contenttype = 'String';
                 }else if(psteps[k].Type === "Warning"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ff0000"};
+                    psteps[k].contenttype = 'String';
                 }else if(psteps[k].Type === "Caution"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ffcc00"};
+                    psteps[k].contenttype = 'String';
                 }else if(psteps[k].Type === "Record"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
+                    psteps[k].contenttype = 'String';
                 }else if(psteps[k].Type === "Verify"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
+                    psteps[k].contenttype = 'String';
                 }else if(psteps[k].Type === "Action"){
                     psteps[k].typeicon = "fa fa-cog";
                     psteps[k].typecolor = {color:""};
+                    if(psteps[k].Content.indexOf('\n') !== -1){
+                        //Command type steps
+                        psteps[k].Content = createArrayOfString(psteps[k].Content,'\n');
+                        psteps[k].contenttype = 'Array';
+                    }else{
+                        //General action steps
+                        psteps[k].contenttype = 'String';
+                    }
                 }else if(psteps[k].Type === "Decision"){
                     psteps[k].typeicon = "fa fa-dot-circle-o";
                     psteps[k].typecolor = {color:""};
+                    psteps[k].contenttype = 'String';
                 }
             }
 
@@ -351,6 +365,12 @@ quantum
         }
 
         return steps;
+    }
+
+    function createArrayOfString(content,delimiter){
+        var arrayOfContents = [];
+        arrayOfContents = content.split(delimiter);
+        return arrayOfContents;
     }
 
     return { 

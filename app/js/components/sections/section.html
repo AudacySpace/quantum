@@ -40,7 +40,14 @@
                 <td>{{ step.Step }}</td>
                 <td>{{ step.Role }}</td>
                 <td><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
-                <td>{{ step.Content }}</td>
+                <td ng-if="step.contenttype === 'String'">{{ step.Content }}</td>
+                <td ng-if="step.contenttype === 'Array'">
+                    <ul class="contentList">
+                        <li ng-repeat="item in step.Content track by $index">
+                            {{item}}{{ typeOf(step.Content)}}
+                        </li>
+                    </ul>
+                </td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>
             </tr>

@@ -36,8 +36,7 @@ module.exports = {
                 // write workbook object into a xlsx file
                 var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
                 res.send(wbout);
-            }
-            
+            }    
         });
     },
     getLiveInstanceData: function(req,res){
@@ -93,14 +92,14 @@ module.exports = {
             var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
 
             var fileverify = 0
+
             for(var a=0;a<sheet1.length;a++){
                 if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
                     fileverify++;
                 }
             }
 
-            if(fileverify === sheet1.length-1){
-
+            if(fileverify === sheet1.length){
                 var pfiles = new ProcedureModel();
                 var ptitle = filename[2].split(".");
 
