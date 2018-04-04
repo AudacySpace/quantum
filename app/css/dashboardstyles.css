@@ -177,6 +177,11 @@ label{
     margin-right:0px;
 }
 
+.contentList{
+    list-style-type: none;
+    padding-left:0px;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
