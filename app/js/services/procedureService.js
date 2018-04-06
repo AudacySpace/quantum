@@ -84,11 +84,11 @@ quantum
         });
     }
 
-    function setInfo(info,id,step,usernamerole,revision,lastuse){
+    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue){
         return $http({
             url: "/setInfo", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue}
         });  
     }
 
@@ -175,7 +175,7 @@ quantum
                 }else if(psteps[k].Type === "Record"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
-                    psteps[k].contenttype = 'String';
+                    psteps[k].contenttype = 'Input';
                 }else if(psteps[k].Type === "Verify"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
@@ -325,7 +325,6 @@ quantum
                 }
             }
         }
-
         return steps;
     }
 
@@ -346,7 +345,6 @@ quantum
         }else {
             return "No steps available!";
         }
-
     }
 
     function getCompletedSteps(steps){
@@ -363,7 +361,6 @@ quantum
                 }
             }
         }
-
         return steps;
     }
 

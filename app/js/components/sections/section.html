@@ -44,9 +44,13 @@
                 <td ng-if="step.contenttype === 'Array'">
                     <ul class="contentList">
                         <li ng-repeat="item in step.Content track by $index">
-                            {{item}}{{ typeOf(step.Content)}}
+                            {{item}}
                         </li>
                     </ul>
+                </td>
+                <td ng-if="step.contenttype === 'Input'">
+                    <p>{{step.Content}}</p>
+                    <label>TLM Value:</label><input type="text" ng-model="step.recordedValue" ng-disabled="step.status"/>
                 </td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>
