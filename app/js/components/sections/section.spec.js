@@ -737,7 +737,8 @@ describe('Test Suite for Section Controller', function () {
             openstatus: true, 
             rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' }}, 
             chkval: false, 
-            status: false
+            status: false,
+            recordedValue:""
         },
         {
             step: '1.1', 
@@ -756,7 +757,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' }} , 
             chkval: false, 
             typeicon: 'fa fa-exclamation-triangle', 
-            status: false
+            status: false,
+            recordedValue:""
         },
         {
             step: '1.2', 
@@ -775,7 +777,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' }} , 
             chkval: false, 
             typeicon: 'fa fa-cog', 
-            status: false
+            status: false,
+            recordedValue:""
         }, 
         {
             step: '2.0', 
@@ -794,7 +797,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' }}, 
             chkval: true,
             typeicon: 'fa fa-cog', 
-            status: true
+            status: true,
+            recordedValue:""
         },
         {
             step: '2.1.0', 
@@ -813,7 +817,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' }}, 
             chkval: true, 
             typeicon: 'fa fa-cog', 
-            status: true
+            status: true,
+            recordedValue:""
         }, 
         {
             step: '2.1.1', 
@@ -832,7 +837,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' }}, 
             chkval: false, 
             typeicon: 'fa fa-cog', 
-            status: false
+            status: false,
+            recordedValue:""
         }
     ];
 
@@ -1216,7 +1222,8 @@ describe('Test Suite for Section Controller', function () {
                 openstatus: true, 
                 rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
                 chkval: false, 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '1.1', 
@@ -1235,7 +1242,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
                 chkval: false, 
                 typeicon: 'fa fa-exclamation-triangle', 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '1.2', 
@@ -1254,7 +1262,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '2.0', 
@@ -1273,7 +1282,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
                 chkval: true, 
                 typeicon: 'fa fa-cog',
-                status: true
+                status: true,
+                recordedValue:""
             }, 
             {
                 step: '2.1.0', 
@@ -1292,7 +1302,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
                 chkval: true, 
                 typeicon: 'fa fa-cog', 
-                status: true
+                status: true,
+                recordedValue:""
             }, 
             {   step: '2.1.1', 
                 info: '', 
@@ -1310,7 +1321,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
-                status: false
+                status: false,
+                recordedValue:""
             }
         ];
 
@@ -1329,7 +1341,7 @@ describe('Test Suite for Section Controller', function () {
         scope.setInfo(0,true);
         expect(procedureService.checkIfEmpty).toHaveBeenCalledWith(rep);
         expect(procedureService.checkIfEmpty(rep)).toEqual(false);
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC");
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'');
         expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
         expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
     });
@@ -1353,7 +1365,8 @@ describe('Test Suite for Section Controller', function () {
                 openstatus: true, 
                 rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
                 chkval: false, 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '1.1', 
@@ -1372,7 +1385,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
                 chkval: false, 
                 typeicon: 'fa fa-exclamation-triangle', 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '1.2', 
@@ -1391,7 +1405,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
-                status: false
+                status: false,
+                recordedValue:""
             }, 
             {   
                 step: '2.0', 
@@ -1410,7 +1425,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
                 chkval: true,
                 typeicon: 'fa fa-cog', 
-                status: true
+                status: true,
+                recordedValue:""
             }, 
             {
                 step: '2.1.0', 
@@ -1429,7 +1445,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
                 chkval: true, 
                 typeicon: 'fa fa-cog', 
-                status: true
+                status: true,
+                recordedValue:""
             }, 
             {   step: '2.1.1', 
                 info: '', 
@@ -1447,7 +1464,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
-                status: false
+                status: false,
+                recordedValue:""
             }
         ];
         spyOn(procedureService, "checkIfEmpty").and.returnValue(true);  
@@ -1472,7 +1490,7 @@ describe('Test Suite for Section Controller', function () {
         expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC');
   
         scope.$digest();
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC");
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'');
         expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
         expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
 
