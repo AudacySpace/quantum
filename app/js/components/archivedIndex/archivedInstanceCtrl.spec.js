@@ -7,7 +7,6 @@ describe('Test Suite for Archived Instance Controller', function () {
         }
     };
 
-
     var steps = [
             {   
                 step: '1.0',
@@ -610,8 +609,10 @@ describe('Test Suite for Archived Instance Controller', function () {
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
 
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
-            spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
+            // spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "showPList").and.returnValue(liststeps);
+            spyOn(procedureService, "disableSteps").and.returnValue(steps);
+            
 
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
@@ -651,7 +652,7 @@ describe('Test Suite for Archived Instance Controller', function () {
         expect(procedureService.getProcedureList).toHaveBeenCalled();
 
         expect(procedureService.getProcedureSection).toHaveBeenCalledWith(stepsT,scope.role.cRole.callsign);
-        expect(procedureService.getCompletedSteps).toHaveBeenCalledWith(procSectionSteps);
+        expect(procedureService.disableSteps).toHaveBeenCalledWith(procSectionSteps);
         expect(scope.steps).toEqual(steps);
 
     });

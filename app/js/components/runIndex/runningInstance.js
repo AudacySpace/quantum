@@ -14,7 +14,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         $scope.clock = timeService.getTime(0);
     }
 
-    $scope.interval = $interval($scope.updateClock, 500);
+    $scope.interval = $interval($scope.updateClock, 1000);
 
     $scope.currentRevision = parseInt($scope.params.revisionID);
     $scope.liveInstanceinterval = "";
@@ -55,7 +55,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
-                    if(parseFloat(response.data[i].procedure.id).toFixed(1) === $scope.params.procID){
+                    //if(parseFloat(response.data[i].procedure.id).toFixed(1) === $scope.params.procID){
+                    if(response.data[i].procedure.id === $scope.params.procID){
                         for(var a=0;a<response.data[i].instances.length;a++){
                             if(response.data[i].instances[a].revision === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
@@ -86,26 +87,17 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
 
     $scope.setInfo = function(index,stepstatus){
-        var proc = procedureService.archiveThisProcedure($scope.steps);
         var infotime = "";
         var starttime = "";
         var completetime = ""; 
-        if(index === $scope.steps.length-1 && proc === false){
-            $window.alert("All the steps have to be completed to close this procedure!");
-                $scope.steps[index].Info = "";
-                $scope.steps[index].rowstyle = {
-                    rowcolor : {backgroundColor:'#e9f6fb'}
-                }
-                $scope.steps[index].chkval = false;
-
-        }else if(index === $scope.steps.length-1 && proc === true){
+        if(index === $scope.steps.length-1){
             if($window.confirm("Do you want to close this procedure?")){
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#c6ecc6'}
                 };
                 $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime).then(function(response){
+                procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,'').then(function(response){
                     if(response.status === 200){
                         completetime = $scope.clock.year+" - "+$scope.clock.utc;
                         procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,completetime).then(function(res){
@@ -124,30 +116,27 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             }
         }else{
             if(stepstatus === true){
-                $scope.steps[index].rowstyle = {
-                    rowcolor : {backgroundColor:'#c6ecc6'}
-                }
-                var stepInfoStatus = procedureService.checkIfEmpty($scope.steps);
-                if(stepInfoStatus === true){
-                    starttime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.saveProcedureInstance($scope.params.procID,$scope.usernamerole,starttime).then(function(response){
-                        if(response.status === 200){
-                            $scope.currentRevision = response.data.revision;
-                            $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
-                            infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                            procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,response.data.revision,infotime)
-                            .then(function(resp){
-                               if(resp.status === 200){
-                                    $scope.steps = procedureService.openNextSteps($scope.steps,index);
-                                }
-                           });
-                        }
-                    });
-                        
-                }else{
+                if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue !== undefined){
+                    $scope.steps[index].rowstyle = {
+                        rowcolor : {backgroundColor:'#c6ecc6'}
+                    }
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime);
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
+                    $scope.steps = procedureService.openNextSteps($scope.steps,index);
+                }else if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue === undefined){
+                    alert("Please enter the telemetry value in the field and then check the checkbox");  
+                    $scope.steps[index].chkval = false;   
+                    $scope.steps[index].rowstyle = {
+                        rowcolor : {backgroundColor:'#e9f6fb'}
+                    }
+                }else if($scope.steps[index].contenttype !== 'Input'){
+                    $scope.steps[index].rowstyle = {
+                        rowcolor : {backgroundColor:'#c6ecc6'}
+                    }
+                    $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+                    infotime = $scope.clock.year+" - "+$scope.clock.utc;
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             }else{
@@ -156,7 +145,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     rowcolor : {backgroundColor:'#e9f6fb'}
                     }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime);
+                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
             }
         }
     }

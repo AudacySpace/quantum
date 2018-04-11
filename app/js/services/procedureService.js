@@ -18,6 +18,10 @@ quantum
         namestyles:{}
     };
 
+    var currentViewRevision = {
+        value:""
+    }
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -84,11 +88,11 @@ quantum
         });
     }
 
-    function setInfo(info,id,step,usernamerole,revision,lastuse){
+    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue){
         return $http({
             url: "/setInfo", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue}
         });  
     }
 
@@ -117,7 +121,7 @@ quantum
     }
 
     function getProcedureSection(psteps,callsign){
-        if(psteps.length > 0 && callsign !== ''){
+        if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
                     psteps[j].index = parseFloat(psteps[j].Step);
@@ -167,15 +171,15 @@ quantum
                 }else if(psteps[k].Type === "Warning"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ff0000"};
-                    psteps[k].contenttype = 'String';
+                    psteps[k].contenttype = 'AlertInfo';
                 }else if(psteps[k].Type === "Caution"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ffcc00"};
-                    psteps[k].contenttype = 'String';
+                    psteps[k].contenttype = 'AlertInfo';
                 }else if(psteps[k].Type === "Record"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
-                    psteps[k].contenttype = 'String';
+                    psteps[k].contenttype = 'Input';
                 }else if(psteps[k].Type === "Verify"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
@@ -183,10 +187,15 @@ quantum
                 }else if(psteps[k].Type === "Action"){
                     psteps[k].typeicon = "fa fa-cog";
                     psteps[k].typecolor = {color:""};
-                    if(psteps[k].Content.indexOf('\n') !== -1){
+                    if(psteps[k].Content.indexOf('\r\n') !== -1){
+                        //Command type steps
+                        psteps[k].Content = createArrayOfString(psteps[k].Content,'\r\n');
+                        psteps[k].contenttype = 'Array';
+                    }else if(psteps[k].Content.indexOf('\n') !== -1){
                         //Command type steps
                         psteps[k].Content = createArrayOfString(psteps[k].Content,'\n');
                         psteps[k].contenttype = 'Array';
+
                     }else{
                         //General action steps
                         psteps[k].contenttype = 'String';
@@ -194,7 +203,13 @@ quantum
                 }else if(psteps[k].Type === "Decision"){
                     psteps[k].typeicon = "fa fa-dot-circle-o";
                     psteps[k].typecolor = {color:""};
-                    psteps[k].contenttype = 'String';
+                    psteps[k].contenttype = 'DecisionInfo';
+                    if(psteps[k].Reference){
+                        psteps[k].procedureLinkDetails = getProcedureLink(psteps[k].Reference);
+                    }else {
+                        psteps[k].procedureLinkDetails = [];
+                    }
+                   
                 }
             }
 
@@ -325,7 +340,6 @@ quantum
                 }
             }
         }
-
         return steps;
     }
 
@@ -346,7 +360,6 @@ quantum
         }else {
             return "No steps available!";
         }
-
     }
 
     function getCompletedSteps(steps){
@@ -357,13 +370,11 @@ quantum
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     };
                     steps[d].chkval = true;
-                    steps[d].status = true;
                 }else {
 
                 }
             }
         }
-
         return steps;
     }
 
@@ -371,6 +382,65 @@ quantum
         var arrayOfContents = [];
         arrayOfContents = content.split(delimiter);
         return arrayOfContents;
+    }
+
+    function setCurrentViewRevision(revisionNum){
+        currentViewRevision.value = revisionNum;
+    }
+
+    function getCurrentViewRevision(){
+        return currentViewRevision
+    }
+
+    function getProcedureLink(decisiondetails){
+         var procedureLinkDetails = [];
+        if(decisiondetails.includes("\r\n")){
+            var linkdetails = createArrayOfString(decisiondetails,"\r\n");
+            for(var k=0;k<linkdetails.length;k++){
+                var pid = createArrayOfString(linkdetails[k],':');
+                var procedurelink = '/dashboard/procedure/'+pid[1];
+                procedureLinkDetails.push({
+                    "link":procedurelink,
+                    "pid":pid[1]
+                });
+            }
+        }else if(decisiondetails.includes("\n")){
+            var linkdetails = createArrayOfString(decisiondetails,"\n");
+            for(var k=0;k<linkdetails.length;k++){
+                var pid = createArrayOfString(linkdetails[k],':');
+                var procedurelink = '/dashboard/procedure/'+pid[1];
+                procedureLinkDetails.push({
+                    "link":procedurelink,
+                    "pid":pid[1]
+                });
+            }
+
+        }else {
+            var pid = createArrayOfString(decisiondetails,':');
+            var procedurelink = '/dashboard/procedure/'+pid[1];
+            procedureLinkDetails.push({
+                "link":procedurelink,
+                "pid":pid[1]
+            });
+        }
+        return procedureLinkDetails;
+    }
+
+    function disableSteps(steps){
+        if(steps.length > 0){
+            for(var d=0;d<steps.length;d++){
+                if(steps[d].Info !== ""){
+                    steps[d].rowstyle = {
+                        rowcolor : {backgroundColor:'#c6ecc6'}
+                    };
+                    steps[d].chkval = true;
+                    steps[d].status = true;
+                }else {
+                    steps[d].status = true;
+                }
+            }
+        }
+        return steps;
     }
 
     return { 
@@ -394,6 +464,9 @@ quantum
         checkIfEmpty : checkIfEmpty,
         openNextSteps : openNextSteps,
         archiveThisProcedure : archiveThisProcedure,
-        getCompletedSteps : getCompletedSteps
+        getCompletedSteps : getCompletedSteps,
+        setCurrentViewRevision : setCurrentViewRevision,
+        getCurrentViewRevision : getCurrentViewRevision,
+        disableSteps : disableSteps
     }
 }]);

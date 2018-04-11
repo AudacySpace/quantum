@@ -44,7 +44,24 @@
                 <td ng-if="step.contenttype === 'Array'">
                     <ul class="contentList">
                         <li ng-repeat="item in step.Content track by $index">
-                            {{item}}{{ typeOf(step.Content)}}
+                            {{item}}
+                        </li>
+                    </ul>
+                </td>
+                <td ng-if="step.contenttype === 'Input'">
+                    <p>{{step.Content}}</p>
+                    <label>TLM Value:</label><input type="text" ng-model="step.recordedValue" ng-disabled="step.status"/>
+                </td>
+                <td ng-if="step.contenttype === 'AlertInfo'">
+                    <p>{{step.Content}}</p>
+                    <a href="http://google.com" target="_blank">View Information</a>
+                </td>
+                <td ng-if="step.contenttype === 'DecisionInfo'">
+                    <p>{{step.Content}}</p>
+                    <label ng-show="step.procedureLinkDetails.length > 0">Links to:</label>
+                    <ul class="contentList">
+                        <li ng-repeat="links in step.procedureLinkDetails">
+                            <a href="{{links.link}}">Procedure {{links.pid}}</a>
                         </li>
                     </ul>
                 </td>
