@@ -423,18 +423,17 @@ describe('Test Suite for Procedure Service', function () {
 
     it('should return the procedure sections array when getProcedureSection is called', function() {
         var procedure = [
-            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true },
-            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true },
-            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true },
-            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false },
-            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true },
-            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true },
-            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true },
-            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false },
-            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true },
-            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true },
-            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true },
-
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String' },
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo' },
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String' },
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String'},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String'},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String'},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input' },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String'},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String'},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String' },
         ]
         expect(procedureService.getProcedureSection(procSection,"SYS")).toEqual(procedure);
     });
@@ -721,8 +720,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.0",
                 "Info": "Taruni Gattu 036.09:23:12 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status": true
+                "chkval" : true
             },
             {
                 "Reference": "http://somewhere on the net",
@@ -732,9 +730,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.1",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
-
+                "chkval" : true
             },
             {
                 "Content": "Make required safety announcement on VL-AZERO",
@@ -743,8 +739,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.2",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
+                "chkval" : true
             },
             {
                 "Content": "Establish Com Link",
@@ -752,8 +747,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Role": "SYS,CC",
                 "Step": "2.0",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
+                "chkval" : true
             }
 
         ]);

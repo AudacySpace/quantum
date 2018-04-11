@@ -1,8 +1,18 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService) {
 	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
-  
+
+    $scope.clock = {
+        utc : "000.00.00.00 UTC"
+    }
+
+    $scope.updateClock = function(){
+        $scope.clock = timeService.getTime(0);
+    }
+
+    $scope.interval = $interval($scope.updateClock, 1000);
+
   	$scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
@@ -80,7 +90,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     for(var i=0;i<response.data.length;i++){
                         $scope.procedurelist.push(
                             {
-                                id:parseFloat(response.data[i].procedure.id).toFixed(1),
+                                // displayid:parseFloat(response.data[i].procedure.id).toFixed(1),
+                                id:response.data[i].procedure.id,
                                 title:response.data[i].procedure.title,
                                 lastuse:response.data[i].procedure.lastuse,
                                 instances:response.data[i].instances,
@@ -140,11 +151,22 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         });
     }
 
-    $scope.changeColor = function(status,pid,ptitle){
-        if(status === "Live"){
+    $scope.changeColor = function(status,pid,ptitle,createInstance){
+        if(status === "Live" && createInstance === true){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"Open Procedure");
-
+            $scope.role = userService.userRole;
+            $scope.name = userService.getUserName();
+            $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
+            var starttime = $scope.clock.year+" - "+$scope.clock.utc;
+            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime).then(function(response){
+                if(response.status === 200){
+                    procedureService.setCurrentViewRevision(response.data.revision);
+                }
+            });
+        }else if(status === "Live" && createInstance === false){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
         }else if(status === "Archived") {
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
@@ -154,6 +176,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.procedurelistinterval);
+            $interval.cancel($scope.interval);
         }
     );
 

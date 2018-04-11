@@ -1,5 +1,5 @@
 describe('Test Suite for Procedure Controller', function () {
-    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend;
+    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend,timeService;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -9,7 +9,6 @@ describe('Test Suite for Procedure Controller', function () {
 
         }
     };
-
 
     var result = [{
         "_id": "5a78b26a5fa10701004acb4c",
@@ -222,13 +221,14 @@ describe('Test Suite for Procedure Controller', function () {
 
         });
 
-         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_){
+         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_){
             scope = $rootScope.$new();
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             $q = _$q_;
             procedureService = _procedureService_;
             userService = _userService_;
             httpBackend = _$httpBackend_;
+            timeService = _timeService_;
 
             deferredProcedureList = _$q_.defer();
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
@@ -236,19 +236,57 @@ describe('Test Suite for Procedure Controller', function () {
             deferreddownloadProcedure = _$q_.defer();
             spyOn(procedureService, "downloadProcedure").and.returnValue(deferreddownloadProcedure.promise);
 
+            deferredProcedureInstance = _$q_.defer();
+            spyOn(procedureService, "saveProcedureInstance").and.returnValue(deferredProcedureInstance.promise);
+
+            spyOn(userService, "getUserName").and.returnValue('John Smith');
+
+            spyOn(timeService, "getTime").and.returnValue({
+                days : '070',
+                minutes : '10',
+                hours : '10',
+                seconds : '50',
+                utc : '070.10:10:50 UTC',
+                year : '2018'
+            });
+
             controller = $controller('procedureCtrl', {
                 $scope: scope,
                	FileSaver: FileSaver,
                	Blob: Blob,
                 procedureService: procedureService,
                 userService: userService,
-                $interval: $intervalSpy
+                $interval: $intervalSpy,
+                timeService: timeService
             });
         });
     });
 
     it('should define the procedureCtrl controller', function() {
         expect(controller).toBeDefined();
+    });
+
+    it('should define clock', function() {
+        expect(scope.clock).toBeDefined();
+        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    });
+
+    it('should define updateClock', function() {
+        expect(scope.updateClock).toBeDefined();
+        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    });
+
+    // it('should call $interval on updateClock', function(){
+    //     expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
+    // });
+
+    it('should define the function updateClock', function(){
+        expect(scope.updateClock).toBeDefined();
+    });
+
+    it('should update time of the clock on call of updateClock', function(){
+        scope.updateClock();
+        expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
     });
 
     it('should define sort type and sort reverse variables', function() {
@@ -260,11 +298,12 @@ describe('Test Suite for Procedure Controller', function () {
 
     it('should call $interval one time', function(){
         expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(1);
+        expect($intervalSpy.calls.count()).toBe(2);
     });
 
 
-    it('should call $interval on showList', function(){
+    it('should call $interval on showList and updateClock', function(){
+        expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
         expect($intervalSpy).toHaveBeenCalledWith(scope.showList, 2000);
     });
 
@@ -306,8 +345,6 @@ describe('Test Suite for Procedure Controller', function () {
         expect(scope.config).toEqual({});      
 
     });
-
-
 
     it('should call submit if the form is valid and upload if it is a new index procedure', function(){
 
@@ -717,7 +754,6 @@ describe('Test Suite for Procedure Controller', function () {
     });
 
     it('should define procedure list', function() {
-
     	spyOn(windowMock, 'alert');
    		spyOn(scope, 'showList');
    		scope.upload_form = {
@@ -866,12 +902,11 @@ describe('Test Suite for Procedure Controller', function () {
                     }], 
             running: 1, 
             archived: 0
-        }]
+        }];
 
         deferredProcedureList.resolve({status:200,data:result});
-
         var calls = $intervalSpy.calls.all(); //gets all the intervals called
-        var args0 = calls[0].args; // to get the first interval called - here call interval on showList
+        var args0 = calls[1].args; // to get the first interval called - here call interval on showList
         args0[0]();
        // console.log(args0[0]());
 
@@ -896,10 +931,27 @@ describe('Test Suite for Procedure Controller', function () {
 
     });
 
-    it('should change Color of the header panel to blue when procedure is live', function(){
+    it('should save a procedure and change Color of the header panel to blue when procedure is live and createinstance is true', function(){
         spyOn(procedureService, "setProcedureName").and.callThrough();
         spyOn(procedureService, "setHeaderStyles").and.callThrough();
-        scope.changeColor("Live","1.1","Procedure Example");
+        scope.clock = {
+            days : '070',
+            minutes : '10',
+            hours : '10',
+            seconds : '50',
+            utc : '070.10:10:50 UTC',
+            year : '2018'
+        };
+        scope.changeColor("Live","1.1","Procedure Example",true);
+        expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC');
+        expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
+    });
+
+    it('should change Color of the header panel to blue when procedure is live and createinstance is false', function(){
+        spyOn(procedureService, "setProcedureName").and.callThrough();
+        spyOn(procedureService, "setHeaderStyles").and.callThrough();
+        scope.changeColor("Live","1.1","Procedure Example",false);
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
     });
@@ -907,7 +959,7 @@ describe('Test Suite for Procedure Controller', function () {
     it('should change Color of the header panel to black when procedure is archived', function(){
         spyOn(procedureService, "setProcedureName").and.callThrough();
         spyOn(procedureService, "setHeaderStyles").and.callThrough();
-        scope.changeColor("Archived","1.1","Procedure Example");
+        scope.changeColor("Archived","1.1","Procedure Example",false);
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#000000','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","AS-Run Archive");
     });
@@ -916,7 +968,7 @@ describe('Test Suite for Procedure Controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
-        expect($intervalSpy.cancel.calls.count()).toBe(1);
+        expect($intervalSpy.cancel.calls.count()).toBe(2);
     });
 
 });

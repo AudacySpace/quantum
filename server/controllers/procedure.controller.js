@@ -36,8 +36,7 @@ module.exports = {
                 // write workbook object into a xlsx file
                 var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
                 res.send(wbout);
-            }
-            
+            }    
         });
     },
     getLiveInstanceData: function(req,res){
@@ -93,14 +92,14 @@ module.exports = {
             var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
 
             var fileverify = 0
+
             for(var a=0;a<sheet1.length;a++){
                 if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
                     fileverify++;
                 }
             }
 
-            if(fileverify === sheet1.length-1){
-
+            if(fileverify === sheet1.length){
                 var pfiles = new ProcedureModel();
                 var ptitle = filename[2].split(".");
 
@@ -168,6 +167,7 @@ module.exports = {
         var usernamerole = req.body.usernamerole;
         var procrevision = req.body.revision;
         var lastuse = req.body.lastuse; //time when the step was completed
+        var recordedValue = req.body.recordedValue;
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -190,6 +190,7 @@ module.exports = {
                 for(var j=0;j<instance.length;j++){
                     if(j === step){
                         instance[j].info = info;
+                        instance[j].recordedValue = recordedValue;
                         break;
                     }
                 }
