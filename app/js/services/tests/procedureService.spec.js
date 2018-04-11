@@ -424,7 +424,7 @@ describe('Test Suite for Procedure Service', function () {
     it('should return the procedure sections array when getProcedureSection is called', function() {
         var procedure = [
             { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String' },
-            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'String' },
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo' },
             { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String' },
             { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String'},
             { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String'},
@@ -720,8 +720,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.0",
                 "Info": "Taruni Gattu 036.09:23:12 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status": true
+                "chkval" : true
             },
             {
                 "Reference": "http://somewhere on the net",
@@ -731,9 +730,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.1",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
-
+                "chkval" : true
             },
             {
                 "Content": "Make required safety announcement on VL-AZERO",
@@ -742,8 +739,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.2",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
+                "chkval" : true
             },
             {
                 "Content": "Establish Com Link",
@@ -751,8 +747,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Role": "SYS,CC",
                 "Step": "2.0",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true,
-                "status" : true
+                "chkval" : true
             }
 
         ]);

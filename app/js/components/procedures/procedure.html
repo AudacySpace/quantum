@@ -44,13 +44,13 @@
                     <td>{{ procedure.id }}</td>
                     <td>{{ procedure.title }}</td>
                     <td>{{ procedure.lastuse }}</td>
-                    <td class="centerCols"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title);" >{{ procedure.running }}</a></td>
-                    <td class="centerCols"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title);">{{ procedure.archived }}</a></td>
+                    <td class="centerCols"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,false);" >{{ procedure.running }}</a></td>
+                    <td class="centerCols"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title,false);">{{ procedure.archived }}</a></td>
                     <td class="centerCols">
                         <a ng-click="download(procedure.id, procedure.title)">
                             <span class="fa fa-caret-down"></span>
                         </a>&nbsp;&nbsp;
-                        <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title);"><span class="fa fa-caret-right"></span></a>
+                        <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,true);"><span class="fa fa-caret-right"></span></a>
                     </td>
                 </tr>
             </tbody>
