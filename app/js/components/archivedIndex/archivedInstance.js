@@ -8,13 +8,13 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     function viewProcedure(){
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
-
                 for(var i=0;i<response.data.length;i++){
                     if(parseFloat(response.data[i].procedure.id).toFixed(1) === $scope.params.procID){
                         for(var a=0;a<response.data[i].instances.length;a++){
                             if(response.data[i].instances[a].revision === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
                                 $scope.steps = $scope.instances.Steps;
+
                             }
                         }
                         for(var b=0;b<response.data[i].procedure.sections.length;b++){
@@ -30,7 +30,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                 }
 
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
-                $scope.steps = procedureService.getCompletedSteps($scope.steps);
+                $scope.steps = procedureService.disableSteps($scope.steps);
             }
 
         });

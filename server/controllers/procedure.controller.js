@@ -167,6 +167,7 @@ module.exports = {
         var usernamerole = req.body.usernamerole;
         var procrevision = req.body.revision;
         var lastuse = req.body.lastuse; //time when the step was completed
+        var recordedValue = req.body.recordedValue;
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -189,6 +190,7 @@ module.exports = {
                 for(var j=0;j<instance.length;j++){
                     if(j === step){
                         instance[j].info = info;
+                        instance[j].recordedValue = recordedValue;
                         break;
                     }
                 }
