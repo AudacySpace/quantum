@@ -17,7 +17,7 @@ var configDB = require('./config/database'); 			// load the database config
 // app.use(express.static(__dirname + '/config'));
 app.use(express.static(__dirname + '/app')); 		// set the static files location
 // configuration ===============================================================
-mongoose.connect(configDB.url); 	// connect to mongoDB database on modulus.io
+mongoose.connect(configDB.url, { useMongoClient: true }); 	// connect to mongoDB database
 
 require('./config/passport')(passport); // pass passport for configuration
 
