@@ -967,8 +967,16 @@ describe('Test Suite for Section Controller', function () {
 
         });
 
+        //Prepare the mocks
+        module(function ($provide) {
+            $provide.constant('moment', function () {
+                //Remember, moment is always available in the global scope
+                return moment();
+            })
+        });
 
-         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,_timeService_,$interval,_dashboardService_){
+
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,_timeService_,$interval,_dashboardService_){
             scope = $rootScope.$new();
             rootScope = $rootScope;
             $q = _$q_;

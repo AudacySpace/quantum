@@ -1,26 +1,25 @@
 describe('Test Suite for Time Service', function () {
-    var timeService, httpBackend, interval;
+    var timeService;
 
+    //Load the main module of your application
+    beforeEach(module('quantum'));
+    
     beforeEach(function () {
-        // load the module
-        module('quantum');
+        //Prepare the mocks
+        module(function ($provide) {
+            $provide.constant('moment', function () {
+                //Remember, moment is always available in the global scope
+                return moment(1520737182000);
+            })
+        });
 
-        // get your service, also get $httpBackend
-        // $httpBackend will be a mock.
-        inject(function (_$httpBackend_,_timeService_, _$interval_) {
+        // get your service
+        inject(function (_timeService_) {
             timeService = _timeService_;
-            httpBackend = _$httpBackend_;
-            interval = _$interval_;
         });
     });
- 
-    // make sure no expectations were missed in your tests.
-    afterEach(function () {
-        httpBackend.verifyNoOutstandingExpectation();
-        httpBackend.verifyNoOutstandingRequest();
-    });
 
-    //dashboardService should exist in the application
+    //timeService should exist in the application
     it('should define the service timeService', function() {
         expect(timeService).toBeDefined();
     });
@@ -29,9 +28,9 @@ describe('Test Suite for Time Service', function () {
         expect(timeService.getTime).toBeDefined();
     });
 
-    it('should get the default time when getTime function is called', function() {
-        var result = timeService.getTime(0);
-        var tyear = (new Date()).getFullYear();
+    it('should get the system time in UTC when getTime function is called', function() {
+        var result = timeService.getTime();
+
         var expected = { 
             today: undefined, 
             days: '000', 
@@ -39,10 +38,15 @@ describe('Test Suite for Time Service', function () {
             minutes: '00', 
             seconds: '00', 
             utc: '000.00:00:00 UTC', 
-            year : tyear
+            year : '00'
         }
 
-        expect(result).toEqual(expected);
+        expect(result.days).toEqual('070');
+        expect(result.hours).toEqual('02');
+        expect(result.minutes).toEqual(59);
+        expect(result.seconds).toEqual(42);
+        expect(result.utc).toEqual('070.02:59:42 UTC');
+        expect(result.year).toEqual(2018);
     });
 
 });

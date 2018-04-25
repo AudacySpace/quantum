@@ -221,7 +221,15 @@ describe('Test Suite for Procedure Controller', function () {
 
         });
 
-         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_){
+        //Prepare the mocks
+        module(function ($provide) {
+            $provide.constant('moment', function () {
+                //Remember, moment is always available in the global scope
+                return moment();
+            })
+        });
+
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_){
             scope = $rootScope.$new();
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             $q = _$q_;
