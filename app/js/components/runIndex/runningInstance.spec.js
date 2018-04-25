@@ -958,6 +958,14 @@ describe('Test Suite for Run Instance Controller', function () {
 
         });
 
+        //Prepare the mocks
+        module(function ($provide) {
+            $provide.constant('moment', function () {
+                //Remember, moment is always available in the global scope
+                return moment();
+            })
+        });
+
         inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,_timeService_,$interval,$location,_dashboardService_){
             scope = $rootScope.$new();
             rootScope = $rootScope;

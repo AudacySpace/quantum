@@ -1,46 +1,28 @@
 quantum
-.factory('timeService', ['$interval', '$http', function($interval, $http) {
+.factory('timeService', ['moment', function(moment) {
     var time = "";
-    var missionName = 'AZero';
 
-    getTimestamp(missionName);
+    function getTime() {
+        var days, h, m, s, clock, tyear;
+        var time = moment().utc();
 
-    function getTimestamp(missionName) {
-        $interval(function () { 
-            time = new Date();
-        },1000);
-    }
-
-    function getTime(offset) {
-        var days = "000",
+        if(time) {
+            tyear = time.year();
+            days = checkDays(time.dayOfYear());
+            h = checkTime(time.hours());
+            m = checkTime(time.minutes());
+            s = checkTime(time.seconds());
+            clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
+        } else {
+            days = "000",
             h = "00",
             m = "00",
             s = "00",
             clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
-
-        if(time != "") {
-            var today = new Date(time);
-            var tyear = today.getFullYear();
-            var todayZone = new Date(today.getTime() + (3600000*offset) + (today.getTimezoneOffset() * 60000));
-            var start = new Date(todayZone.getFullYear(), 0, 0);
-            var diff = todayZone - start;
-            h = todayZone.getHours();
-            m = todayZone.getMinutes();
-            s = todayZone.getSeconds();
-            days = Math.floor(diff/(1000*60*60*24));
-            days = checkDays(days);
-            h = checkTime(h);
-            m = checkTime(m);
-            s = checkTime(s);
-            clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
-        }
-
-        if(clock === "000.00:00:00 UTC"){
-            tyear = (new Date()).getFullYear();
         }
 
         return {
-            "today" : today,
+            "today" : time,
             "days" : days, 
             "hours" : h,
             "minutes" : m,
@@ -65,23 +47,6 @@ quantum
     }
 
     return {
-        getTime : getTime,
-        time : time,
+        getTime : getTime
     }
 }]);
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

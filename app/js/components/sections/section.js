@@ -9,7 +9,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     }
 
     $scope.updateClock = function(){
-  		$scope.clock = timeService.getTime(0);
+  		$scope.clock = timeService.getTime();
   	}
 
     $scope.interval = $interval($scope.updateClock, 1000);

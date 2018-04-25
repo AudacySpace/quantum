@@ -33,6 +33,7 @@ module.exports = function(config) {
         './node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
         './node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
         './node_modules/ui-select/dist/select.js',
+        './node_modules/moment/min/moment.min.js',
         './app/js/app.js',
         './app/js/components/**/*.js',
         './app/js/services/*.js',

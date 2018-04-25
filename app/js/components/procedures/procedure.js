@@ -8,7 +8,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     }
 
     $scope.updateClock = function(){
-        $scope.clock = timeService.getTime(0);
+        $scope.clock = timeService.getTime();
     }
 
     $scope.interval = $interval($scope.updateClock, 1000);
