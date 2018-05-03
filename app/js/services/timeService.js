@@ -19,6 +19,7 @@ quantum
             m = "00",
             s = "00",
             clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
+            tyear = "0000"
         }
 
         return {

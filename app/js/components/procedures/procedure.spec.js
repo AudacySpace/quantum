@@ -274,28 +274,28 @@ describe('Test Suite for Procedure Controller', function () {
         expect(controller).toBeDefined();
     });
 
-    it('should define clock', function() {
-        expect(scope.clock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
+    // it('should define clock', function() {
+    //     expect(scope.clock).toBeDefined();
+    //     expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    // });
 
-    it('should define updateClock', function() {
-        expect(scope.updateClock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
+    // it('should define updateClock', function() {
+    //     expect(scope.updateClock).toBeDefined();
+    //     expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    // });
 
     // it('should call $interval on updateClock', function(){
     //     expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
     // });
 
-    it('should define the function updateClock', function(){
-        expect(scope.updateClock).toBeDefined();
-    });
+    // it('should define the function updateClock', function(){
+    //     expect(scope.updateClock).toBeDefined();
+    // });
 
-    it('should update time of the clock on call of updateClock', function(){
-        scope.updateClock();
-        expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
-    });
+    // it('should update time of the clock on call of updateClock', function(){
+    //     scope.updateClock();
+    //     expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
+    // });
 
     it('should define sort type and sort reverse variables', function() {
         expect(scope.sortType).toBeDefined();
@@ -306,12 +306,12 @@ describe('Test Suite for Procedure Controller', function () {
 
     it('should call $interval one time', function(){
         expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(2);
+        expect($intervalSpy.calls.count()).toBe(1);
     });
 
 
     it('should call $interval on showList and updateClock', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
+        //expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
         expect($intervalSpy).toHaveBeenCalledWith(scope.showList, 2000);
     });
 

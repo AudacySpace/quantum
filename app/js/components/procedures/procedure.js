@@ -3,16 +3,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
 
-    $scope.clock = {
-        utc : "000.00.00.00 UTC"
-    }
-
-    $scope.updateClock = function(){
-        $scope.clock = timeService.getTime();
-    }
-
-    $scope.interval = $interval($scope.updateClock, 1000);
-
   	$scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
@@ -153,6 +143,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 
     $scope.changeColor = function(status,pid,ptitle,createInstance){
         if(status === "Live" && createInstance === true){
+            console.log("procedure")
+            $scope.clock = timeService.getTime();
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"Open Procedure");
             $scope.role = userService.userRole;

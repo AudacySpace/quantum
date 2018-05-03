@@ -1047,33 +1047,33 @@ describe('Test Suite for Section Controller', function () {
         expect(scope.usernamerole).toEqual('John Smith(MD)');
     });
 
-    it('should define clock', function() {
-        expect(scope.clock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
+    // it('should define clock', function() {
+    //     expect(scope.clock).toBeDefined();
+    //     expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    // });
 
-    it('should define updateClock', function() {
-        expect(scope.updateClock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
+    // it('should define updateClock', function() {
+    //     expect(scope.updateClock).toBeDefined();
+    //     expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
+    // });
 
-    it('should call $interval two times', function(){
-        expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(1);
-    });
+    // it('should call $interval two times', function(){
+    //     expect($intervalSpy).toHaveBeenCalled();
+    //     expect($intervalSpy.calls.count()).toBe(1);
+    // });
 
-    it('should call $interval on updateClock', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
-    });
+    // it('should call $interval on updateClock', function(){
+    //     expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
+    // });
 
-    it('should define the function updateClock', function(){
-        expect(scope.updateClock).toBeDefined();
-    });
+    // it('should define the function updateClock', function(){
+    //     expect(scope.updateClock).toBeDefined();
+    // });
 
-    it('should update time of the clock on call of updateClock', function(){
-        scope.updateClock();
-        expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
-    });
+    // it('should update time of the clock on call of updateClock', function(){
+    //     scope.updateClock();
+    //     expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
+    // });
 
     it('should define procedure', function() {
         expect(scope.procedure).toBeDefined();

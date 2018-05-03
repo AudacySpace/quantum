@@ -4,15 +4,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.name = userService.getUserName();
     $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
 
-    $scope.clock = {
-        utc : "000.00.00.00 UTC"
-    }
-
-    $scope.updateClock = function(){
-  		$scope.clock = timeService.getTime();
-  	}
-
-    $scope.interval = $interval($scope.updateClock, 1000);
     $scope.currentRevision = procedureService.getCurrentViewRevision();
     $scope.liveInstanceinterval = "";
     $scope.procedure = procedureService.getProcedureName();
@@ -59,9 +50,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
 
     $scope.setInfo = function(index,stepstatus){
+        console.log("section")
         var infotime = "";
         var starttime = "";
         var completetime = "";
+        $scope.clock = timeService.getTime();
         if(index === $scope.steps.length-1){
             if($window.confirm("Do you want to close this procedure?")){
                 $scope.steps[index].rowstyle = {
