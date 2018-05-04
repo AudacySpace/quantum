@@ -50,7 +50,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
 
     $scope.setInfo = function(index,stepstatus){
-        console.log("section")
         var infotime = "";
         var starttime = "";
         var completetime = "";
@@ -121,7 +120,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.$on("$destroy", 
         function(event) {
-            $interval.cancel($scope.interval);
             $interval.cancel($scope.liveInstanceinterval);
         }
     );

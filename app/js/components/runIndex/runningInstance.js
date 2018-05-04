@@ -77,7 +77,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
 
     $scope.setInfo = function(index,stepstatus){
-        console.log("running");
         var infotime = "";
         var starttime = "";
         var completetime = ""; 
@@ -108,9 +107,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             }
         }else{
             if(stepstatus === true){
-                console.log("step-true")
                 if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue !== undefined){
-                    console.log("step-1")
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     }
@@ -119,25 +116,21 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }else if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue === undefined){
-                    console.log("step-2")
                     alert("Please enter the telemetry value in the field and then check the checkbox");  
                     $scope.steps[index].chkval = false;   
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#e9f6fb'}
                     }
                 }else if($scope.steps[index].contenttype !== 'Input'){
-                    console.log("step-3")
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     }
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
-                    console.log($scope.steps[index]);
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             }else{
-                console.log("step-4")
                 $scope.steps[index].Info = "";
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
@@ -150,7 +143,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
     $scope.$on("$destroy", 
         function(event) {
-            $interval.cancel( $scope.interval );
             $interval.cancel($scope.liveInstanceinterval);
         }
     );
