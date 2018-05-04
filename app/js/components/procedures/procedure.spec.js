@@ -274,29 +274,6 @@ describe('Test Suite for Procedure Controller', function () {
         expect(controller).toBeDefined();
     });
 
-    it('should define clock', function() {
-        expect(scope.clock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
-
-    it('should define updateClock', function() {
-        expect(scope.updateClock).toBeDefined();
-        expect(scope.clock).toEqual({utc : "000.00.00.00 UTC"});
-    });
-
-    // it('should call $interval on updateClock', function(){
-    //     expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
-    // });
-
-    it('should define the function updateClock', function(){
-        expect(scope.updateClock).toBeDefined();
-    });
-
-    it('should update time of the clock on call of updateClock', function(){
-        scope.updateClock();
-        expect(scope.clock.utc).toEqual('070.10:10:50 UTC');
-    });
-
     it('should define sort type and sort reverse variables', function() {
         expect(scope.sortType).toBeDefined();
         expect(scope.sortType).toEqual('procedurelastuse');
@@ -306,12 +283,10 @@ describe('Test Suite for Procedure Controller', function () {
 
     it('should call $interval one time', function(){
         expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(2);
+        expect($intervalSpy.calls.count()).toBe(1);
     });
 
-
-    it('should call $interval on showList and updateClock', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateClock, 1000);
+    it('should call $interval on showList', function(){
         expect($intervalSpy).toHaveBeenCalledWith(scope.showList, 2000);
     });
 
@@ -914,7 +889,7 @@ describe('Test Suite for Procedure Controller', function () {
 
         deferredProcedureList.resolve({status:200,data:result});
         var calls = $intervalSpy.calls.all(); //gets all the intervals called
-        var args0 = calls[1].args; // to get the first interval called - here call interval on showList
+        var args0 = calls[0].args; // to get the first interval called - here call interval on showList
         args0[0]();
        // console.log(args0[0]());
 
@@ -954,6 +929,7 @@ describe('Test Suite for Procedure Controller', function () {
         expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC');
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
+        expect(timeService.getTime).toHaveBeenCalled();
     });
 
     it('should change Color of the header panel to blue when procedure is live and createinstance is false', function(){
