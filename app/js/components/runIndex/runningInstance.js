@@ -4,17 +4,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     $scope.name = userService.getUserName();
     $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
 
-    $scope.clock = {
-        utc : "000.00.00.00 UTC"
-    }
-
     $scope.steps = [];
-
-    $scope.updateClock = function(){
-        $scope.clock = timeService.getTime();
-    }
-
-    $scope.interval = $interval($scope.updateClock, 1000);
 
     $scope.currentRevision = parseInt($scope.params.revisionID);
     $scope.liveInstanceinterval = "";
@@ -90,6 +80,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         var infotime = "";
         var starttime = "";
         var completetime = ""; 
+        $scope.clock = timeService.getTime();
         if(index === $scope.steps.length-1){
             if($window.confirm("Do you want to close this procedure?")){
                 $scope.steps[index].rowstyle = {
@@ -152,7 +143,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
     $scope.$on("$destroy", 
         function(event) {
-            $interval.cancel( $scope.interval );
             $interval.cancel($scope.liveInstanceinterval);
         }
     );
