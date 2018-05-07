@@ -2,6 +2,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
+    $scope.role = userService.userRole;
+    $scope.name = userService.getUserName();
 
   	$scope.submit = function(){ 
         // Call upload if form is valid
@@ -13,22 +15,46 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                         if(response.status === 200){
                             $scope.count = 0;
                             for(var i=0;i<response.data.length;i++){
-                                if(response.data[i].procedure.id === $scope.filenames[0]){
+                                var filenameFrmDb = response.data[i].procedure.id+" - "+response.data[i].procedure.title+'.xlsx';
+                                
+                                if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
+                                    //Condition to check if a procedure exists with the same file name and has no saved instances
+
+                                    //Ask user to update or not
+                                    if($window.confirm("Are you sure you want to update this procedure?")){
+                                        $scope.count = 0;
+                                        break;
+                                    }else {
+                                        $scope.count = $scope.count + 1;
+                                        $scope.config = {};
+                                        $scope.upload_form.$setPristine();
+                                        break;
+                                    }
+                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
+                                    //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
-                                    $window.alert("This index number already exists in the table!");
+                                    $window.alert("This file number already exists in the list with a different title.Please try uploading with a new index number!");
                                     $scope.config = {};
                                     $scope.upload_form.$setPristine();
                                     break;
+                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
+                                    //Condition to check if a procedure exists with the same file name and has saved instances
+                                    $scope.count = $scope.count + 1;
+                                    $window.alert("There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.");
+                                    $scope.config = {};
+                                    $scope.upload_form.$setPristine();
                                 }
                             }
 
                             if($scope.count === 0){
-                                $scope.upload($scope.config.file); 
+                                $scope.clock = timeService.getTime();
+                                var userdetails = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+                                $scope.upload($scope.config.file,userdetails); 
                             }
                         }
                     });
                 }else {
-                    $window.alert("The excel file must be named in 'index - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'");
+                    $window.alert("The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'");
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
@@ -38,17 +64,24 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }
     }
 
-    $scope.upload = function(file) {
+    $scope.upload = function(file,userdetails) {
         Upload.upload({
             url: '/upload', 
             data: { 
-                file : file
+                file : file,
+                userdetails : userdetails
             } 
         }).then(function (resp) { 
             //validate success
             if(resp.data.error_code === 0 && resp.data.err_desc === null){ 
                 // $scope.showList();
                 $window.alert('Success: ' + resp.config.data.file.name + ' uploaded.');
+
+                //reset the input fields on the form
+                $scope.config = {};
+                $scope.upload_form.$setPristine();
+            }else if(resp.data.error_code === 0 && resp.data.err_desc === "file updated"){
+                $window.alert('Success: ' + resp.config.data.file.name + ' updated.');
 
                 //reset the input fields on the form
                 $scope.config = {};

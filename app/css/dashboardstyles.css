@@ -122,8 +122,13 @@ a#username.dropdown-toggle {
     padding-bottom: 0px;
 }
 
+.navbar-default .navbar-nav>.open>a#username{
+    background:none !important;
+}
+
 .logout-bar {
     min-width: 128px;
+    border-radius:0;
 }
 
 #callsign {

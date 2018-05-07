@@ -137,6 +137,36 @@ describe('Test Suite for Procedure Model ', function() {
         });  
     });
 
+    it('should validate if uploadedBy is not defined as its not mandatory', function() {
+        var m = new Procedure({
+            procedure : {
+                id : '1.1',
+                title: 'Audacy Zero - Procedure Example',
+                lastuse:'2018 - 060.00:29:29 UTC' ,
+                sections:[{},{}],
+                eventname:'Audacy Zero',
+            }
+        });
+        m.validate(function(err){
+            assert.isNull(err);
+        });  
+    });
+
+    it('should validate if updatedBy is not defined as its not mandatory', function() {
+        var m = new Procedure({
+            procedure : {
+                id : '1.1',
+                title: 'Audacy Zero - Procedure Example',
+                lastuse:'2018 - 060.00:29:29 UTC' ,
+                sections:[{},{}],
+                eventname:'Audacy Zero',
+            }
+        });
+        m.validate(function(err){
+            assert.isNull(err);
+        });  
+    });
+
 });
 
 describe('Test Suite for Procedure Route Controller', function() {
@@ -457,8 +487,11 @@ describe('Test Suite for Procedure Route Controller', function() {
         expect(res.send.calledOnce).to.be.false;
     });
 
-    it('should upload a procedure and save to database', function() {
+    it('should upload a procedure and save to database when its a new procedure', function() {
         procedure = require('../server/controllers/procedure.controller');
+        var error = null;
+        var procs = null
+        Procedure.findOne.yields(error,procs);
         Procedure.prototype.save.yields(null,{"data":"100","status":200});
         var req = {
             body: {
@@ -471,7 +504,8 @@ describe('Test Suite for Procedure Route Controller', function() {
                     filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
                     path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
                     size: 11795 
-                }
+                },
+                userdetails:'070.10:10:50 UTC John Smith(MD)'
             },
             file:{
                 fieldname: 'file',
@@ -489,8 +523,88 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.uploadFile(req, res);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '1.1' },sinon.match.func);
         expect(res.json.calledOnce).to.be.true;
         sinon.assert.calledWith(res.json, {error_code:0,err_desc:null});
+    });
+
+    it('should update a procedure and save to database when it a procedure with same filename is added and it has no saved instances', function() {
+        procedure = require('../server/controllers/procedure.controller');
+        var error = null;
+        var procs = {    
+            "instances": [],
+            "procedure": {
+                "eventname": "SF Earth Station",
+                "lastuse": "",
+                "title": "1.1 - Audacy Zero - Procedure Example",
+                "id": "1.1",
+                "sections": [
+                    {
+                        "Content": "Issue null command and confirm response",
+                        "Type": "Action",
+                        "Role": "MD, CC",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.2"
+                    }
+                ]
+            },
+            save:function(callback){
+                var err = null;
+                var res = {"data":""};
+                callback(err,res);
+            }
+        };
+        Procedure.findOne.yields(error,procs);
+        var req = {
+            body: {
+                file:{
+                    fieldname: 'file',
+                    originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    encoding: '7bit',
+                    mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    destination: './testfiles',
+                    filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                    path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                    size: 11795 
+                },
+                userdetails:'070.10:10:50 UTC John Smith(MD)'
+            },
+            file:{
+                fieldname: 'file',
+                originalname: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                encoding: '7bit',
+                mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                destination: './testfiles',
+                filename: '1.1 - Audacy Zero - Procedure Example.xlsx',
+                path: './testfiles/1.1 - Audacy Zero - Procedure Example.xlsx',
+                size: 11795 
+            }
+        };
+        var res = {
+            json: sinon.stub()
+        };
+ 
+        procedure.uploadFile(req, res);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '1.1' },sinon.match.func);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json, {error_code:0,err_desc:"file updated"});
+
     });
 
     it('should not upload a procedure when the file does not have Step or Type or Content or Role or Reference Columns', function() {
@@ -500,23 +614,24 @@ describe('Test Suite for Procedure Route Controller', function() {
             body: {
                 file:{
                     fieldname: 'file',
-                    originalname: '3.4 - Test -Example.xlsx',
+                    originalname: '3.4 - Test - Example.xlsx',
                     encoding: '7bit',
                     mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     destination: './testfiles',
-                    filename: '3.4 - Test -Example.xlsx',
-                    path: './testfiles/3.4 - Test -Example.xlsx',
+                    filename: '3.4 - Test - Example.xlsx',
+                    path: './testfiles/3.4 - Test - Example.xlsx',
                     size: 11795 
-                }
+                },
+                userdetails:'070.10:10:50 UTC John Smith(MD)'
             },
             file:{
                 fieldname: 'file',
-                originalname: '3.4 - Test -Example.xlsx',
+                originalname: '3.4 - Test - Example.xlsx',
                 encoding: '7bit',
                 mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 destination: './testfiles',
-                filename: '3.4 - Test -Example.xlsx',
-                path: './testfiles/3.4 - Test -Example.xlsx',
+                filename: '3.4 - Test - Example.xlsx',
+                path: './testfiles/3.4 - Test - Example.xlsx',
                 size: 11795 
             }
         };
@@ -528,6 +643,8 @@ describe('Test Suite for Procedure Route Controller', function() {
         expect(res.json.calledOnce).to.be.true;
         sinon.assert.calledWith(res.json, {error_code:0,err_desc:"Not a valid file"});
     });
+
+
 
     it('should not upload and save a procedure to database when error', function() {
         procedure = require('../server/controllers/procedure.controller');

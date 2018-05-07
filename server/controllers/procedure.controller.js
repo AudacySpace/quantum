@@ -90,6 +90,7 @@ module.exports = {
             var filepath = req.file.path;
             var workbook = XLSX.readFile(filepath);
             var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
+            var userdetails = req.body.userdetails;
 
             var fileverify = 0
 
@@ -100,31 +101,59 @@ module.exports = {
             }
 
             if(fileverify === sheet1.length){
-                var pfiles = new ProcedureModel();
-                var ptitle = filename[2].split(".");
 
-                pfiles.procedure.id = filename[0];
-                pfiles.procedure.title = filename[1]+" - "+ptitle[0];
-                pfiles.procedure.lastuse = "";
-                pfiles.instances = [];
-
-                for(var i=0;i<sheet1.length;i++){
-                    pfiles.procedure.sections.push(sheet1[i]); 
-                }
-                pfiles.procedure.eventname = filename[1];
-                pfiles.save(function(err,result){
+                ProcedureModel.findOne({ 'procedure.id' : filename[0] }, function(err, procs) {
                     if(err){
                         console.log(err);
                     }
-                    if(result){
-                        console.log('procedure data saved successfully!');
-                        res.json({error_code:0,err_desc:null});
+
+                    if(procs){ // Update a procedure
+                        for(var i=0;i<sheet1.length;i++){
+                            procs.procedure.sections.push(sheet1[i]); 
+                        }
+                        procs.procedure.updatedBy = userdetails;
+                        procs.save(function(err,result) {
+                            if (err){
+                                // throw err;
+                                console.log(err);
+                            }
+                            if(result){
+                                console.log('procedure data updated successfully!');
+                                res.json({error_code:0,err_desc:"file updated"});
+                            }
+                        });
+
+                    }else { //Save a new procedure
+
+                        var pfiles = new ProcedureModel();
+                        var ptitle = filename[2].split(".");
+
+                        pfiles.procedure.id = filename[0];
+                        pfiles.procedure.title = filename[1]+" - "+ptitle[0];
+                        pfiles.procedure.lastuse = "";
+                        pfiles.instances = [];
+
+                        for(var i=0;i<sheet1.length;i++){
+                            pfiles.procedure.sections.push(sheet1[i]); 
+                        }
+
+                        pfiles.procedure.eventname = filename[1];
+                        pfiles.procedure.uploadedBy = userdetails;
+                        pfiles.save(function(err,result){
+                            if(err){
+                                console.log(err);
+                            }
+                            if(result){
+                                console.log('procedure data saved successfully!');
+                                res.json({error_code:0,err_desc:null});
+                            }
+                        });
                     }
                 });
-
             }else{
                 res.json({error_code:0,err_desc:"Not a valid file"});
             }
+
         }catch(e){
             console.log(e);
         }
