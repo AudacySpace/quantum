@@ -324,7 +324,7 @@ describe('Test Suite for Procedure Controller', function () {
   		expect(scope.config).toBeDefined();
   		scope.$digest();
         expect(procedureService.getProcedureList).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith('This index number already exists in the table!');
+        expect(windowMock.alert).toHaveBeenCalledWith('This file number already exists in the list with a different title.Please try uploading with a new index number!');
         expect(scope.config).toEqual({});      
 
     });
@@ -535,7 +535,7 @@ describe('Test Suite for Procedure Controller', function () {
             "__v": 3
         }];
 
-
+        var userdetails = '070.10:10:50 UTC John Smith(MD)';
     	spyOn(windowMock, 'alert');
     	spyOn(scope, "upload");
     	deferredProcedureList.resolve({ data : rep,status:200});
@@ -552,7 +552,7 @@ describe('Test Suite for Procedure Controller', function () {
         expect(procedureService.getProcedureList).toHaveBeenCalled();
         expect(scope.count).toEqual(0);
         expect(scope.upload).toHaveBeenCalled();
-        expect(scope.upload).toHaveBeenCalledWith(scope.config.file);
+        expect(scope.upload).toHaveBeenCalledWith(scope.config.file,userdetails);
 
     });
 
