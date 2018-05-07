@@ -107,7 +107,7 @@ module.exports = {
                         console.log(err);
                     }
 
-                    if(procs){
+                    if(procs){ // Update a procedure
                         for(var i=0;i<sheet1.length;i++){
                             procs.procedure.sections.push(sheet1[i]); 
                         }
@@ -123,7 +123,7 @@ module.exports = {
                             }
                         });
 
-                    }else {
+                    }else { //Save a new procedure
 
                         var pfiles = new ProcedureModel();
                         var ptitle = filename[2].split(".");

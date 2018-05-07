@@ -16,7 +16,11 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                             $scope.count = 0;
                             for(var i=0;i<response.data.length;i++){
                                 var filenameFrmDb = response.data[i].procedure.id+" - "+response.data[i].procedure.title+'.xlsx';
+                                
                                 if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
+                                    //Condition to check if a procedure exists with the same file name and has no saved instances
+
+                                    //Ask user to update or not
                                     if($window.confirm("Are you sure you want to update this procedure?")){
                                         $scope.count = 0;
                                         break;
@@ -27,12 +31,14 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                         break;
                                     }
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
+                                    //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
                                     $window.alert("This file number already exists in the list with a different title.Please try uploading with a new index number!");
                                     $scope.config = {};
                                     $scope.upload_form.$setPristine();
                                     break;
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
+                                    //Condition to check if a procedure exists with the same file name and has saved instances
                                     $scope.count = $scope.count + 1;
                                     $window.alert("There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.");
                                     $scope.config = {};

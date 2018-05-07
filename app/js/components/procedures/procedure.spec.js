@@ -565,7 +565,7 @@ describe('Test Suite for Procedure Controller', function () {
     	expect(scope.upload_form).toBeDefined();
   		expect(scope.config).toBeDefined();
   		expect(scope.upload).toBeDefined();
-  		expect(windowMock.alert).toHaveBeenCalledWith("The excel file must be named in 'index - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'");
+  		expect(windowMock.alert).toHaveBeenCalledWith("The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'");
   		expect(scope.config).toEqual({});
     });
 

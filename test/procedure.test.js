@@ -614,24 +614,24 @@ describe('Test Suite for Procedure Route Controller', function() {
             body: {
                 file:{
                     fieldname: 'file',
-                    originalname: '3.4 - Test -Example.xlsx',
+                    originalname: '3.4 - Test - Example.xlsx',
                     encoding: '7bit',
                     mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     destination: './testfiles',
-                    filename: '3.4 - Test -Example.xlsx',
-                    path: './testfiles/3.4 - Test -Example.xlsx',
+                    filename: '3.4 - Test - Example.xlsx',
+                    path: './testfiles/3.4 - Test - Example.xlsx',
                     size: 11795 
                 },
                 userdetails:'070.10:10:50 UTC John Smith(MD)'
             },
             file:{
                 fieldname: 'file',
-                originalname: '3.4 - Test -Example.xlsx',
+                originalname: '3.4 - Test - Example.xlsx',
                 encoding: '7bit',
                 mimetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 destination: './testfiles',
-                filename: '3.4 - Test -Example.xlsx',
-                path: './testfiles/3.4 - Test -Example.xlsx',
+                filename: '3.4 - Test - Example.xlsx',
+                path: './testfiles/3.4 - Test - Example.xlsx',
                 size: 11795 
             }
         };
