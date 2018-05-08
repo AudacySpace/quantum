@@ -371,7 +371,10 @@ quantum
                     };
                     steps[d].chkval = true;
                 }else {
-
+                    steps[d].rowstyle = {
+                        rowcolor : {backgroundColor:'#e9f6fb'}
+                    };
+                    steps[d].chkval = false;
                 }
             }
         }
