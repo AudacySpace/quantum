@@ -1046,7 +1046,7 @@ describe('Test Suite for Run Instance Controller', function () {
     });
 
     it('should call $interval on updateClock and updateLiveInstancefunction', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateLiveInstance, 1000);
+        expect($intervalSpy).toHaveBeenCalledWith(scope.updateLiveInstance, 5000);
     });
 
     it('should define procedure', function() {
@@ -1100,12 +1100,13 @@ describe('Test Suite for Run Instance Controller', function () {
 
         expect(procedureService.getProcedureSection).toHaveBeenCalledWith(stepsT,scope.role.cRole.callsign);
         expect(procedureService.getCompletedSteps).toHaveBeenCalledWith(procSectionSteps);
-        expect(scope.steps).toEqual(steps);
+        expect(procedureService.openNextSteps).toHaveBeenCalled();
+        expect(scope.steps).toEqual(res);
 
         expect(scope.updateLiveInstance).toBeDefined();
         scope.updateLiveInstance();
         expect(procedureService.getLiveInstanceData).toHaveBeenCalledWith('1.1',2);
-        expect(scope.steps).toEqual(steps);
+        expect(scope.steps).toEqual(res);
 
     });
 
@@ -1245,7 +1246,8 @@ describe('Test Suite for Run Instance Controller', function () {
         ];
 
         spyOn(procedureService, "checkIfEmpty").and.returnValue(false);  
-        spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        //spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         expect(scope.setInfo).toBeDefined();
         scope.steps = rep;
 
