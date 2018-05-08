@@ -57,6 +57,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps[b].Type = response.data[i].procedure.sections[b].Type;
                                 $scope.steps[b].Content = response.data[i].procedure.sections[b].Content;
                                 $scope.steps[b].Role = response.data[i].procedure.sections[b].Role;
+                                $scope.steps[b].Reference = response.data[i].procedure.sections[b].Reference;
                                 $scope.steps[b].Info = $scope.steps[b].info;
                             }
                         }
@@ -155,6 +156,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
                     }
+                if($scope.steps[index].recordedValue) {
+                    $scope.steps[index].recordedValue = "";
+                }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
                 procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue).then(function(response){
                     if($scope.liveInstanceinterval === null) {

@@ -129,6 +129,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
                 }
+                if($scope.steps[index].recordedValue) {
+                    $scope.steps[index].recordedValue = "";
+                }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
                 procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue).then(function(response){
                     if($scope.liveInstanceinterval === null) {
