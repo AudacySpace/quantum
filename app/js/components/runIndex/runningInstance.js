@@ -142,6 +142,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     }
+                    $scope.steps[index].recordedValue = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue).then(function(response){

@@ -108,6 +108,7 @@ module.exports = {
                     }
 
                     if(procs){ // Update a procedure
+                        procs.procedure.sections = [];
                         for(var i=0;i<sheet1.length;i++){
                             procs.procedure.sections.push(sheet1[i]); 
                         }
