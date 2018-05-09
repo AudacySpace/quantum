@@ -1307,7 +1307,8 @@ describe('Test Suite for Section Controller', function () {
         ];
 
         spyOn(procedureService, "checkIfEmpty").and.returnValue(false);  
-        spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        //spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         expect(scope.setInfo).toBeDefined();
         scope.steps = rep;
         scope.currentRevision = {value:2};

@@ -229,7 +229,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Heading', 
             Content: 'Pre-Action Safety Information', 
             Role: 'MD', 
-            Info: ''
+            Info: '',
+            Reference: undefined
         }, 
         {   
             step: '1.1', 
@@ -238,7 +239,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Warning', 
             Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
             Role: 'MD', 
-            Info: ''
+            Info: '',
+            Reference : 'http://somewhere on the net'
         }, 
         {   
             step: '1.2', 
@@ -247,7 +249,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Make required safety announcement on VL-AZERO', 
             Role: 'MD', 
-            Info: ''
+            Info: '',
+            Reference: undefined
         }, 
         {   
             step: '2.0', 
@@ -256,7 +259,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: undefined, 
             Content: 'Close Procedure', 
             Role: 'MD', 
-            Info: '034.11:26:49 UTC Taruni Gattu(VIP)'
+            Info: '034.11:26:49 UTC Taruni Gattu(VIP)',
+            Reference: undefined
         }, 
         {
             step: '2.1.0', 
@@ -265,7 +269,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Update the shift log with procedure close status / notes', 
             Role: 'MD', 
-            Info: '034.11:26:50 UTC Taruni Gattu(VIP)'
+            Info: '034.11:26:50 UTC Taruni Gattu(VIP)',
+            Reference: undefined
         }, 
         {   
             step: '2.1.1', 
@@ -274,7 +279,8 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Close the procedure in Quantum (complete this step)', 
             Role: 'MD', 
-            Info: ''
+            Info: '',
+            Reference: undefined
         }
     ];
 
@@ -1046,7 +1052,7 @@ describe('Test Suite for Run Instance Controller', function () {
     });
 
     it('should call $interval on updateClock and updateLiveInstancefunction', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateLiveInstance, 1000);
+        expect($intervalSpy).toHaveBeenCalledWith(scope.updateLiveInstance, 5000);
     });
 
     it('should define procedure', function() {
@@ -1100,12 +1106,13 @@ describe('Test Suite for Run Instance Controller', function () {
 
         expect(procedureService.getProcedureSection).toHaveBeenCalledWith(stepsT,scope.role.cRole.callsign);
         expect(procedureService.getCompletedSteps).toHaveBeenCalledWith(procSectionSteps);
-        expect(scope.steps).toEqual(steps);
+        expect(procedureService.openNextSteps).toHaveBeenCalled();
+        expect(scope.steps).toEqual(res);
 
         expect(scope.updateLiveInstance).toBeDefined();
         scope.updateLiveInstance();
         expect(procedureService.getLiveInstanceData).toHaveBeenCalledWith('1.1',2);
-        expect(scope.steps).toEqual(steps);
+        expect(scope.steps).toEqual(res);
 
     });
 
@@ -1245,7 +1252,8 @@ describe('Test Suite for Run Instance Controller', function () {
         ];
 
         spyOn(procedureService, "checkIfEmpty").and.returnValue(false);  
-        spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        //spyOn(procedureService, "setInfo").and.returnValue(mid_res);
+        spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         expect(scope.setInfo).toBeDefined();
         scope.steps = rep;
 

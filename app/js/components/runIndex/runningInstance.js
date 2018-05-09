@@ -21,8 +21,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                         if($scope.steps[a].Info !== ""){
                             $scope.steps[a].chkval = true;
                             $scope.steps = procedureService.openNextSteps($scope.steps,a);
-                        }else {
-
                         }
                     }
                     $scope.steps = procedureService.getCompletedSteps($scope.steps);
@@ -38,7 +36,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
-    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 1000);
+    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
 
     function viewProcedure(){
         procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
@@ -59,6 +57,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps[b].Type = response.data[i].procedure.sections[b].Type;
                                 $scope.steps[b].Content = response.data[i].procedure.sections[b].Content;
                                 $scope.steps[b].Role = response.data[i].procedure.sections[b].Role;
+                                $scope.steps[b].Reference = response.data[i].procedure.sections[b].Reference;
                                 $scope.steps[b].Info = $scope.steps[b].info;
                             }
                         }
@@ -68,6 +67,12 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             //completed steps
             $scope.steps = procedureService.getCompletedSteps($scope.steps);
+
+            for(var a=0;a<$scope.steps.length;a++){
+                if($scope.steps[a].Info !== ""){
+                    $scope.steps = procedureService.openNextSteps($scope.steps,a);
+                }
+            }
         });
     }
 
@@ -77,6 +82,11 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
 
     $scope.setInfo = function(index,stepstatus){
+        if($scope.liveInstanceinterval) {
+            $interval.cancel($scope.liveInstanceinterval);
+            $scope.liveInstanceinterval = null;
+        }
+
         var infotime = "";
         var starttime = "";
         var completetime = ""; 
@@ -100,6 +110,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                             }
                         });
+                        if($scope.liveInstanceinterval === null) {
+                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                        }
                     }
                 });
             }else {
@@ -113,7 +126,11 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue).then(function(response){
+                        if($scope.liveInstanceinterval === null) {
+                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                        }
+                    });
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }else if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue === undefined){
                     alert("Please enter the telemetry value in the field and then check the checkbox");  
@@ -125,9 +142,14 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     }
+                    $scope.steps[index].recordedValue = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
+                    procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue).then(function(response){
+                        if($scope.liveInstanceinterval === null) {
+                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                        }
+                    });
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             }else{
@@ -135,8 +157,15 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
                     }
+                if($scope.steps[index].recordedValue) {
+                    $scope.steps[index].recordedValue = "";
+                }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue);
+                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.steps[index].recordedValue).then(function(response){
+                    if($scope.liveInstanceinterval === null) {
+                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                    }
+                });
             }
         }
     }

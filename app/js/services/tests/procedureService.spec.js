@@ -707,7 +707,8 @@ describe('Test Suite for Procedure Service', function () {
                 "Content": "Establish Com Link",
                 "Type": "Heading",
                 "Role": "SYS,CC",
-                "Step": "2.0"
+                "Step": "2.0",
+                "Info": ""
             }
         ];
 
@@ -746,8 +747,9 @@ describe('Test Suite for Procedure Service', function () {
                 "Type": "Heading",
                 "Role": "SYS,CC",
                 "Step": "2.0",
-                "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
-                "chkval" : true
+                "Info": "",
+                "rowstyle":{"rowcolor" : {'backgroundColor':'#e9f6fb'}},
+                "chkval" : false
             }
 
         ]);

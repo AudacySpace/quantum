@@ -9,7 +9,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.procedure = procedureService.getProcedureName();
 	viewProcedure();
 
-    function updateLiveInstance(){
+    $scope.updateLiveInstance = function(){
         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision.value).then(function(response){
             if(response.status === 200){
                 for(var a=0;a<response.data.Steps.length;a++){
@@ -24,10 +24,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                 }
-
             }
         });
     }
+
+    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
 
 	function viewProcedure(){
         procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
@@ -50,6 +51,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
 
     $scope.setInfo = function(index,stepstatus){
+        if($scope.liveInstanceinterval) {
+            $interval.cancel($scope.liveInstanceinterval);
+            $scope.liveInstanceinterval = null;
+        }
+
         var infotime = "";
         var starttime = "";
         var completetime = "";
@@ -73,6 +79,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                 procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                             }
                         });
+                        if($scope.liveInstanceinterval === null) {
+                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                        }
                     }
                 });
             }else {
@@ -87,7 +96,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         }
                         $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                         infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue);
+                        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue).then(function(response){
+                            if($scope.liveInstanceinterval === null) {
+                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                            }
+                        });
                         $scope.steps = procedureService.openNextSteps($scope.steps,index);
 
                     }else if($scope.steps[index].contenttype === 'Input' && $scope.steps[index].recordedValue === undefined){
@@ -103,7 +116,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         $scope.steps[index].recordedValue = "";
                         $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                         infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue);
+                        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue).then(function(response){
+                            if($scope.liveInstanceinterval === null) {
+                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                            }
+                        });
                         $scope.steps = procedureService.openNextSteps($scope.steps,index);
                     }
             
@@ -112,8 +129,15 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
                 }
+                if($scope.steps[index].recordedValue) {
+                    $scope.steps[index].recordedValue = "";
+                }
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
-                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue);
+                procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.steps[index].recordedValue).then(function(response){
+                    if($scope.liveInstanceinterval === null) {
+                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                    }
+                });
             }
         }
     }
