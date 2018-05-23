@@ -88,11 +88,11 @@ quantum
         });
     }
 
-    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue){
+    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue,steptype){
         return $http({
             url: "/setInfo", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue,"steptype":steptype}
         });  
     }
 
@@ -180,6 +180,9 @@ quantum
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'Input';
+                    if(!psteps[k].hasOwnProperty("recordedValue")){
+                        psteps[k].recordedValue = "";
+                    }
                 }else if(psteps[k].Type === "Verify"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};

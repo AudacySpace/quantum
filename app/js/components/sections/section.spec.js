@@ -738,7 +738,8 @@ describe('Test Suite for Section Controller', function () {
             rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' }}, 
             chkval: false, 
             status: false,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"String"
         },
         {
             step: '1.1', 
@@ -758,7 +759,8 @@ describe('Test Suite for Section Controller', function () {
             chkval: false, 
             typeicon: 'fa fa-exclamation-triangle', 
             status: false,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"AlertInfo"
         },
         {
             step: '1.2', 
@@ -778,13 +780,14 @@ describe('Test Suite for Section Controller', function () {
             chkval: false, 
             typeicon: 'fa fa-cog', 
             status: false,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"Array"
         }, 
         {
             step: '2.0', 
             info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
             Step: '2.0', 
-            Type: 'Action', 
+            Type: 'Heading', 
             Content: 'Close Procedure', 
             Role: 'MD', 
             Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
@@ -798,7 +801,8 @@ describe('Test Suite for Section Controller', function () {
             chkval: true,
             typeicon: 'fa fa-cog', 
             status: true,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"String"
         },
         {
             step: '2.1.0', 
@@ -818,7 +822,8 @@ describe('Test Suite for Section Controller', function () {
             chkval: true, 
             typeicon: 'fa fa-cog', 
             status: true,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"Array"
         }, 
         {
             step: '2.1.1', 
@@ -838,7 +843,8 @@ describe('Test Suite for Section Controller', function () {
             chkval: false, 
             typeicon: 'fa fa-cog', 
             status: false,
-            recordedValue:""
+            recordedValue:"",
+            contenttype:"String"
         }
     ];
 
@@ -1203,7 +1209,8 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
                 chkval: false, 
                 status: false,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "String"
             }, 
             {   
                 step: '1.1', 
@@ -1223,7 +1230,8 @@ describe('Test Suite for Section Controller', function () {
                 chkval: false, 
                 typeicon: 'fa fa-exclamation-triangle', 
                 status: false,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "AlertInfo"
             }, 
             {   
                 step: '1.2', 
@@ -1243,13 +1251,14 @@ describe('Test Suite for Section Controller', function () {
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
                 status: false,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "Array"
             }, 
             {   
                 step: '2.0', 
                 info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
                 Step: '2.0', 
-                Type: 'Action', 
+                Type: 'Heading', 
                 Content: 'Close Procedure', 
                 Role: 'MD', 
                 Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
@@ -1263,7 +1272,8 @@ describe('Test Suite for Section Controller', function () {
                 chkval: true, 
                 typeicon: 'fa fa-cog',
                 status: true,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "String"
             }, 
             {
                 step: '2.1.0', 
@@ -1283,7 +1293,8 @@ describe('Test Suite for Section Controller', function () {
                 chkval: true, 
                 typeicon: 'fa fa-cog', 
                 status: true,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "Array"
             }, 
             {   step: '2.1.1', 
                 info: '', 
@@ -1302,7 +1313,8 @@ describe('Test Suite for Section Controller', function () {
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
                 status: false,
-                recordedValue:""
+                recordedValue:"",
+                contenttype: "String"
             }
         ];
 
@@ -1311,10 +1323,36 @@ describe('Test Suite for Section Controller', function () {
         spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         expect(scope.setInfo).toBeDefined();
         scope.steps = rep;
+        scope.inputStepValues = [
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            }
+        ]
         scope.currentRevision = {value:2};
         scope.setInfo(0,true);
         expect(timeService.getTime).toHaveBeenCalled();
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'');
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String');
         expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
         expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
     });
