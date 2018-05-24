@@ -50,7 +50,10 @@
                 </td>
                 <td ng-if="step.contenttype === 'Input'">
                     <p>{{step.Content}}</p>
-                    <label>TLM Value:</label><input type="text" ng-model="step.recordedValue" ng-disabled="step.status"/>
+                    <label>TLM Recorded Value:</label><strong>{{step.recordedValue}}</strong>
+                    <br/>
+                    <label>Enter Value:</label><input type="text" ng-model="tempValues[$index].ivalue" ng-keypress="whenTyping($index)" ng-disabled="step.chkval || step.status"/>
+                    <button ng-click="updateInputValue($index,tempValues[$index].ivalue)" ng-style="step.buttonStatus" ng-disabled="step.chkval || step.status">Set</button>
                 </td>
                 <td ng-if="step.contenttype === 'AlertInfo'">
                     <p>{{step.Content}}</p>
