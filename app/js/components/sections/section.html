@@ -24,6 +24,9 @@
                     <a href="#">Content</a>
                 </th>
                 <th>
+                    <a href="#">Comments</a>
+                </th>
+                <th>
                     <a href="#">Status</a>
                 </th>
                 <th>
@@ -67,6 +70,10 @@
                             <a href="{{links.link}}">Procedure {{links.pid}}</a>
                         </li>
                     </ul>
+                </td>
+                <td>
+                    <textarea rows="3" cols="30" ng-disabled="step.chkval" ng-model="step.comments">
+                    </textarea>
                 </td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>
