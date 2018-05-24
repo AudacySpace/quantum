@@ -199,6 +199,7 @@ module.exports = {
         var lastuse = req.body.lastuse; //time when the step was completed
         var recordedValue = req.body.recordedValue;
         var steptype = req.body.steptype;
+        var comments = req.body.comments;
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -221,6 +222,7 @@ module.exports = {
                 for(var j=0;j<instance.length;j++){
                     if(j === step){
                         instance[j].info = info;
+                        instance[j].comments = comments;
                         if(steptype === 'Input'){
                            instance[j].recordedValue = recordedValue; 
                         }
