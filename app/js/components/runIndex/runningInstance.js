@@ -145,6 +145,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                     $scope.steps[index].recordedValue = $scope.inputStepValues[index].ivalue;
                     $scope.tempValues[index].ivalue = "";
+                    $scope.steps[index].buttonStatus = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){  
@@ -182,6 +183,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 if($scope.steps[index].recordedValue) {
                     $scope.steps[index].recordedValue = "";
                 }
+                $scope.steps[index].buttonStatus = "";
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
                 procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){   
                     if($scope.liveInstanceinterval === null) {
@@ -217,11 +219,15 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     $scope.updateInputValue = function(index,value){
         if(value.length > 0){
             $scope.inputStepValues[index].ivalue = value;
-            $window.alert("Value is set.");
+            $scope.steps[index].buttonStatus = {backgroundColor:'#07D1EA',color:'#fff',outline: 0};
         }else {
             $window.alert("Please enter value and then click Set");
         }
 
+    }
+
+    $scope.whenTyping = function(index){
+        $scope.steps[index].buttonStatus = {outline: 0};
     }
 
 });

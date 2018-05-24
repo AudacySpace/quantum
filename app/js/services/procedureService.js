@@ -168,18 +168,22 @@ quantum
                     psteps[k].typeicon = "";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
+                    psteps[k].buttonStatus = "";
                 }else if(psteps[k].Type === "Warning"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ff0000"};
                     psteps[k].contenttype = 'AlertInfo';
+                    psteps[k].buttonStatus = "";
                 }else if(psteps[k].Type === "Caution"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ffcc00"};
                     psteps[k].contenttype = 'AlertInfo';
+                    psteps[k].buttonStatus = "";
                 }else if(psteps[k].Type === "Record"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'Input';
+                    psteps[k].buttonStatus = "";
                     if(!psteps[k].hasOwnProperty("recordedValue")){
                         psteps[k].recordedValue = "";
                     }
@@ -187,9 +191,11 @@ quantum
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
+                    psteps[k].buttonStatus = "";
                 }else if(psteps[k].Type === "Action"){
                     psteps[k].typeicon = "fa fa-cog";
                     psteps[k].typecolor = {color:""};
+                    psteps[k].buttonStatus = "";
                     if(psteps[k].Content.indexOf('\r\n') !== -1){
                         //Command type steps
                         psteps[k].Content = createArrayOfString(psteps[k].Content,'\r\n');
@@ -207,6 +213,7 @@ quantum
                     psteps[k].typeicon = "fa fa-dot-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'DecisionInfo';
+                    psteps[k].buttonStatus = "";
                     if(psteps[k].Reference){
                         psteps[k].procedureLinkDetails = getProcedureLink(psteps[k].Reference);
                     }else {

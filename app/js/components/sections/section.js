@@ -117,6 +117,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                     $scope.steps[index].recordedValue = $scope.inputStepValues[index].ivalue;
                     $scope.tempValues[index].ivalue = "";
+                    $scope.steps[index].buttonStatus = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
 
@@ -138,6 +139,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         rowcolor : {backgroundColor:'#c6ecc6'}
                     }
                     $scope.steps[index].recordedValue = "";
+                    $scope.steps[index].buttonStatus = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
 
@@ -195,10 +197,14 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.updateInputValue = function(index,value){
         if(value.length > 0){
             $scope.inputStepValues[index].ivalue = value;
-            $window.alert("Value is set.");
+            $scope.steps[index].buttonStatus = {backgroundColor:'#07D1EA',color:'#fff',outline: 0};
         }else {
             $window.alert("Please enter value and then click Set");
         }
+    }
+
+    $scope.whenTyping = function(index){
+        $scope.steps[index].buttonStatus = {outline: 0};
     }
 
 });
