@@ -80,7 +80,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
                                 $scope.tempValues.push({
                                     snum:$scope.steps[b].Step,
-                                    ivalue:""
+                                    ivalue:"",
+                                    comments:""
                                 });
                             }
                         }
@@ -150,6 +151,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     $scope.steps[index].recordedValue = $scope.inputStepValues[index].ivalue;
                     $scope.tempValues[index].ivalue = "";
                     $scope.steps[index].buttonStatus = "";
+                    $scope.steps[index].comments = $scope.tempValues[index].comments;
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype,$scope.steps[index].comments).then(function(response){  
@@ -170,6 +172,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                     $scope.steps[index].recordedValue = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+                    $scope.steps[index].comments = $scope.tempValues[index].comments;
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
                     procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype,$scope.steps[index].comments).then(function(response){  
                         if($scope.liveInstanceinterval === null) {
@@ -187,8 +190,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 if($scope.steps[index].recordedValue) {
                     $scope.steps[index].recordedValue = "";
                 }
+                $scope.tempValues[index].comments = $scope.steps[index].comments;
                 $scope.steps[index].buttonStatus = "";
-                $scope.steps[index].comments = "";
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
                 procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype,$scope.steps[index].comments).then(function(response){   
                     if($scope.liveInstanceinterval === null) {

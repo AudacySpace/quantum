@@ -71,9 +71,11 @@
                         </li>
                     </ul>
                 </td>
-                <td>
-                    <textarea rows="3" cols="30" ng-disabled="step.chkval" ng-model="step.comments">
-                    </textarea>
+                <td class="commentsCol">
+                    <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="20"  ng-if="step.chkval === false && step.status === false">
+                        <pre>{{ tempValues[$index].comments || step.comments || 'Enter comments here' }}</pre>
+                    </a>
+                    <span ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="30"><pre>{{ step.comments|| 'Enter comments here' }}</pre></span>
                 </td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>

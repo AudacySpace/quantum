@@ -740,7 +740,8 @@ describe('Test Suite for Section Controller', function () {
             status: false,
             recordedValue:"",
             contenttype:"String",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         },
         {
             step: '1.1', 
@@ -762,7 +763,8 @@ describe('Test Suite for Section Controller', function () {
             status: false,
             recordedValue:"",
             contenttype:"AlertInfo",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         },
         {
             step: '1.2', 
@@ -784,7 +786,8 @@ describe('Test Suite for Section Controller', function () {
             status: false,
             recordedValue:"",
             contenttype:"Array",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         }, 
         {
             step: '2.0', 
@@ -806,7 +809,8 @@ describe('Test Suite for Section Controller', function () {
             status: true,
             recordedValue:"",
             contenttype:"String",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         },
         {
             step: '2.1.0', 
@@ -828,7 +832,8 @@ describe('Test Suite for Section Controller', function () {
             status: true,
             recordedValue:"",
             contenttype:"Array",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         }, 
         {
             step: '2.1.1', 
@@ -850,7 +855,8 @@ describe('Test Suite for Section Controller', function () {
             status: false,
             recordedValue:"",
             contenttype:"String",
-            buttonStatus: ''
+            buttonStatus: '',
+            comments:""
         }
     ];
 
@@ -1223,7 +1229,8 @@ describe('Test Suite for Section Controller', function () {
                 status: false,
                 recordedValue:"",
                 contenttype: "String",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }, 
             {   
                 step: '1.1', 
@@ -1245,7 +1252,8 @@ describe('Test Suite for Section Controller', function () {
                 status: false,
                 recordedValue:"",
                 contenttype: "AlertInfo",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }, 
             {   
                 step: '1.2', 
@@ -1267,7 +1275,8 @@ describe('Test Suite for Section Controller', function () {
                 status: false,
                 recordedValue:"",
                 contenttype: "Array",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }, 
             {   
                 step: '2.0', 
@@ -1289,7 +1298,8 @@ describe('Test Suite for Section Controller', function () {
                 status: true,
                 recordedValue:"",
                 contenttype: "String",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }, 
             {
                 step: '2.1.0', 
@@ -1311,7 +1321,8 @@ describe('Test Suite for Section Controller', function () {
                 status: true,
                 recordedValue:"",
                 contenttype: "Array",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }, 
             {   step: '2.1.1', 
                 info: '', 
@@ -1332,7 +1343,8 @@ describe('Test Suite for Section Controller', function () {
                 status: false,
                 recordedValue:"",
                 contenttype: "String",
-                buttonStatus: ''
+                buttonStatus: '',
+                comments:""
             }
         ];
 
@@ -1366,11 +1378,43 @@ describe('Test Suite for Section Controller', function () {
                 "snum":"",
                 "ivalue":""
             }
-        ]
+        ];
+        scope.tempValues = [
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            }
+        ];
         scope.currentRevision = {value:2};
         scope.setInfo(0,true);
         expect(timeService.getTime).toHaveBeenCalled();
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String');
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String',"");
         expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
         expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
     });
@@ -1979,6 +2023,137 @@ describe('Test Suite for Section Controller', function () {
         spyOn(windowMock, 'alert');
         scope.updateInputValue(0,"");
         expect(windowMock.alert).toHaveBeenCalledWith("Please enter value and then click Set");
+    });
+
+    it('should set buttonStatus when whentyping is called', function() {
+        scope.steps = [
+            {   
+                step: '1.0',
+                info: '',
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                status: false,
+                recordedValue:"",
+                contenttype: "String"
+            }, 
+            {   
+                step: '1.1', 
+                info: '', 
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                typeicon: 'fa fa-exclamation-triangle', 
+                status: false,
+                recordedValue:"",
+                contenttype: "AlertInfo"
+            }, 
+            {   
+                step: '1.2', 
+                info: '', 
+                Step: '1.2', 
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.2, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "Array"
+            }, 
+            {   
+                step: '2.0', 
+                info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                Step: '2.0', 
+                Type: 'Heading', 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                index: 2, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog',
+                status: true,
+                recordedValue:"",
+                contenttype: "String"
+            }, 
+            {
+                step: '2.1.0', 
+                info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                Info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                index: 2.1, 
+                class: 'fa fa-caret-down', 
+                header: true, 
+                headertype: 'subheader', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true,
+                recordedValue:"",
+                contenttype: "Array"
+            }, 
+            {   step: '2.1.1', 
+                info: '', 
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                Info: '', 
+                index: 2.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "String"
+            }
+        ];
+        scope.whenTyping(0);
+        expect(scope.steps[0].buttonStatus).toEqual({outline: 0});
     });
 
 });

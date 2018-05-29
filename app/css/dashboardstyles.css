@@ -318,6 +318,24 @@ label{
         text-align: center;
     }
 
+    table td.commentsCol pre{
+        font-size: 6px;
+        padding:5.5px;
+        margin-top:6px;
+        margin-bottom:6px;
+    }
+
+    table td.commentsCol span{
+        font-size: 6px;
+        padding:5.5px;
+        margin-top:6px;
+        margin-bottom:6px;
+    }
+
+    table td.commentsCol button{
+        padding:3px 6px;
+    }
+
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {

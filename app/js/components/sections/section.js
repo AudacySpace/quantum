@@ -62,7 +62,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 $scope.tempValues.push({
                     snum:$scope.steps[a].Step,
                     ivalue:"",
-                    status:false
+                    comments:""
                 });
             }
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign); 
@@ -121,6 +121,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     $scope.steps[index].recordedValue = $scope.inputStepValues[index].ivalue;
                     $scope.tempValues[index].ivalue = "";
                     $scope.steps[index].buttonStatus = "";
+                    $scope.steps[index].comments = $scope.tempValues[index].comments;
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
 
@@ -143,6 +144,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                     $scope.steps[index].recordedValue = "";
                     $scope.steps[index].buttonStatus = "";
+                    $scope.steps[index].comments = $scope.tempValues[index].comments;
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                     infotime = $scope.clock.year+" - "+$scope.clock.utc;
 
@@ -159,12 +161,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
                 }
-
+                $scope.tempValues[index].comments = $scope.steps[index].comments;
                 $scope.inputStepValues[index].ivalue = "";
                 if($scope.steps[index].recordedValue) {
                     $scope.steps[index].recordedValue = "";
                 }
-                $scope.steps[index].comments = "";
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
                 procedureService.setInfo("",$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype,$scope.steps[index].comments).then(function(response){
                     if($scope.liveInstanceinterval === null) {
