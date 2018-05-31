@@ -333,7 +333,13 @@ label{
     }
 
     table td.commentsCol button{
-        padding:3px 6px;
+        padding:0px 4px;
+    }
+
+    textarea {
+        font-size:10px !important;
+        padding:2px !important;
+        margin-top:3px !important;
     }
 
 }
@@ -346,6 +352,15 @@ label{
     #callsign{
         display: none;
     }
+
+    table td.commentsCol button{
+        padding:6px 10px !important;
+    }
+
+    a.indexBtns {
+        font-size: 10px !important;
+    }
+
 }   
 
 @media only screen and (min-width: 320px) and (max-width: 374px) {
