@@ -1027,4 +1027,24 @@ describe('Test Suite for Procedure Service', function () {
         httpBackend.flush();
     });
 
+    it('should define the setComments function', function() {
+        expect(procedureService.setComments).toBeDefined();
+    });
+
+    it('should be able to set comments', function () {
+        var comments = 'comment test 1';
+        var id = '1.1';
+        var step = '2.0';
+        var revision = 3;
+        var lastuse  = '036.09:09:15 UTC';
+
+        httpBackend.expectPOST("/setComments").respond(200, {});
+
+        procedureService.setComments(id,revision,step,comments,lastuse).then( function(response){
+            expect(response.status).toBe(200);
+        });
+
+        httpBackend.flush();
+    });
+
 });

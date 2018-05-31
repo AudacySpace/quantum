@@ -1017,6 +1017,7 @@ describe('Test Suite for Section Controller', function () {
             // deferredProcedureInstance = _$q_.defer();
             // spyOn(procedureService, "saveProcedureInstance").and.returnValue(deferredProcedureInstance.promise);
             deferredSetInfo = _$q_.defer();
+            deferredSetComments = _$q_.defer();
             deferredInstanceCompleted = _$q_.defer();
             spyOn(procedureService, "setInstanceCompleted").and.returnValue(deferredInstanceCompleted.promise);
             
@@ -1414,7 +1415,7 @@ describe('Test Suite for Section Controller', function () {
         scope.currentRevision = {value:2};
         scope.setInfo(0,true);
         expect(timeService.getTime).toHaveBeenCalled();
-        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String',"");
+        expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String');
         expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
         expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
     });
@@ -2155,5 +2156,395 @@ describe('Test Suite for Section Controller', function () {
         scope.whenTyping(0);
         expect(scope.steps[0].buttonStatus).toEqual({outline: 0});
     });
+  
+    it('should set text area previously saved value when whenTypingComments is called', function() {
+        scope.tempValues = [
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            }
+        ];
+        scope.steps = [
+            {   
+                step: '1.0',
+                info: '',
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                status: false,
+                recordedValue:"",
+                contenttype: "String",
+                comments:"test comment"
+            }, 
+            {   
+                step: '1.1', 
+                info: '', 
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                typeicon: 'fa fa-exclamation-triangle', 
+                status: false,
+                recordedValue:"",
+                contenttype: "AlertInfo",
+                comments:""
+            }, 
+            {   
+                step: '1.2', 
+                info: '', 
+                Step: '1.2', 
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.2, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "Array",
+                comments:""
+            }, 
+            {   
+                step: '2.0', 
+                info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                Step: '2.0', 
+                Type: 'Heading', 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                index: 2, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog',
+                status: true,
+                recordedValue:"",
+                contenttype: "String",
+                comments:""
+            }, 
+            {
+                step: '2.1.0', 
+                info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                Info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                index: 2.1, 
+                class: 'fa fa-caret-down', 
+                header: true, 
+                headertype: 'subheader', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true,
+                recordedValue:"",
+                contenttype: "Array",
+                comments:""
+            }, 
+            {   step: '2.1.1', 
+                info: '', 
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                Info: '', 
+                index: 2.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "String",
+                comments:""
+            }
+        ];
+        scope.whenTypingComments(0);
+        expect(scope.tempValues[0].comments).toEqual("test comment");
+    });
 
+    
+    it('should store comments in the database when saveComments is called', function() {
+        var rep = [
+            {   
+                step: '1.0',
+                info: '',
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '1', 
+                openstatus: true, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                status: false,
+                recordedValue:"",
+                contenttype: "String",
+                buttonStatus: '',
+                comments:""
+            }, 
+            {   
+                step: '1.1', 
+                info: '', 
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor:{backgroundColor: '#e9f6fb' } }, 
+                chkval: false, 
+                typeicon: 'fa fa-exclamation-triangle', 
+                status: false,
+                recordedValue:"",
+                contenttype: "AlertInfo",
+                buttonStatus: '',
+                comments:""
+            }, 
+            {   
+                step: '1.2', 
+                info: '', 
+                Step: '1.2', 
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                Info: '', 
+                index: 1.2, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '1', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "Array",
+                buttonStatus: '',
+                comments:""
+            }, 
+            {   
+                step: '2.0', 
+                info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                Step: '2.0', 
+                Type: 'Heading', 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
+                index: 2, 
+                class: 'fa fa-caret-right', 
+                header: true, 
+                headertype: 'mainheader', 
+                headervalue: '2', 
+                openstatus: true, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog',
+                status: true,
+                recordedValue:"",
+                contenttype: "String",
+                buttonStatus: '',
+                comments:""
+            }, 
+            {
+                step: '2.1.0', 
+                info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                Info: '034.11:26:50 UTC Taruni Gattu(VIP)', 
+                index: 2.1, 
+                class: 'fa fa-caret-down', 
+                header: true, 
+                headertype: 'subheader', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
+                chkval: true, 
+                typeicon: 'fa fa-cog', 
+                status: true,
+                recordedValue:"",
+                contenttype: "Array",
+                buttonStatus: '',
+                comments:""
+            }, 
+            {   step: '2.1.1', 
+                info: '', 
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                Info: '', 
+                index: 2.1, 
+                class: 'fa fa-caret-right', 
+                header: false, 
+                headertype: 'listitem', 
+                headervalue: '2', 
+                openstatus: false, 
+                rowstyle: {rowcolor: {backgroundColor: '#e9f6fb' }}, 
+                chkval: false, 
+                typeicon: 'fa fa-cog', 
+                status: false,
+                recordedValue:"",
+                contenttype: "String",
+                buttonStatus: '',
+                comments:""
+            }
+        ];
+
+        spyOn(procedureService, "setComments").and.returnValue(deferredSetComments.promise);
+        expect(scope.saveComments).toBeDefined();
+        scope.steps = rep;
+        scope.inputStepValues = [
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            },
+            {
+                "snum":"",
+                "ivalue":""
+            }
+        ];
+        scope.tempValues = [
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            },
+            {
+                "snum":"",
+                "ivalue":"",
+                "comments":""
+            }
+        ];
+        scope.currentRevision = {value:2};
+        scope.params = {
+            procID : '1.1'
+        }
+
+        deferredSetInfo.resolve({status:200});
+        scope.$digest();
+        scope.saveComments("test comment",0);
+        expect(timeService.getTime).toHaveBeenCalled();
+        expect(procedureService.setComments).toHaveBeenCalledWith('1.1',2,0,"test comment",'2018 - 070.10:10:50 UTC');
+        expect(scope.clock).toEqual({
+            days : '070',
+            minutes : '10',
+            hours : '10',
+            seconds : '50',
+            utc : '070.10:10:50 UTC',
+            year : '2018'
+        })
+    });
 });

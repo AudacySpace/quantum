@@ -71,14 +71,18 @@
                         </li>
                     </ul>
                 </td>
-                <td class="commentsCol">
-                    <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="20"  ng-if="step.chkval === false && step.status === false">
-                        <pre>{{ tempValues[$index].comments || step.comments || 'Enter comments here' }}</pre>
-                    </a>
-                    <span ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="30"><pre>{{ step.comments|| 'Enter comments here' }}</pre></span>
-                </td>
                 <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
                 <td>{{ step.Info }}</td>
+                <td class="commentsCol">
+                    <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="20"  ng-if="step.chkval === false && step.status === false" ng-click="whenTypingComments($index,comments)" onaftersave="saveComments(tempValues[$index].comments,$index)">
+                        <pre ng-if="tempValues[$index].comments.length > 0 || step.comments.length > 0">{{ tempValues[$index].comments || step.comments }}</pre>
+                        <pre ng-if="!tempValues[$index].comments && !step.comments" style="color:#ccc">{{ 'Enter comments here' }}</pre>
+                    </a>
+                    <span ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="30">
+                        <pre ng-if="step.comments.length > 0">{{ step.comments }}</pre>
+                        <pre ng-if="!step.comments || step.comments.length === 0" style="color:#ccc">{{ 'Enter comments here' }}</pre>
+                    </span>
+                </td>
             </tr>
         </tbody>
     </table>

@@ -199,7 +199,6 @@ module.exports = {
         var lastuse = req.body.lastuse; //time when the step was completed
         var recordedValue = req.body.recordedValue;
         var steptype = req.body.steptype;
-        var comments = req.body.comments;
 
         ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
             if(err){
@@ -222,7 +221,6 @@ module.exports = {
                 for(var j=0;j<instance.length;j++){
                     if(j === step){
                         instance[j].info = info;
-                        instance[j].comments = comments;
                         if(steptype === 'Input'){
                            instance[j].recordedValue = recordedValue; 
                         }
@@ -286,6 +284,55 @@ module.exports = {
             }
 
         });
-    }
+    },
+    setComments: function(req,res){
+        var procid = req.body.pid;
+        var procrevision = req.body.prevision;
+        var step = req.body.index;
+        var comments = req.body.comments;
+        var lastuse = req.body.lastuse; // time when the procedure instance is completed
 
+        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+            if(err){
+                console.log(err);
+            }
+
+            if(procs){
+                //get procedure instance with the revision num
+                var instance = [];
+                var instanceid;
+                //get procedure instance with the revision num
+                for(var i=0;i<procs.instances.length;i++){
+                    if(parseInt(procs.instances[i].revision) === parseInt(procrevision)){
+                        instance = procs.instances[i].Steps;
+                        instanceid = i;
+                        break;
+                    }
+                }
+
+                //Set info for the step of that revision
+                for(var j=0;j<instance.length;j++){
+                    if(j === step){
+                        instance[j].comments = comments;
+                        break;
+                    }
+                }
+
+                procs.instances[instanceid].Steps = instance;
+                procs.procedure.lastuse = lastuse;
+                procs.markModified('procedure');
+                procs.markModified('instances');
+                procs.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                       res.send(result);
+                    }
+                    
+                });
+            }
+
+        });
+    }
 };

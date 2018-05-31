@@ -88,11 +88,11 @@ quantum
         });
     }
 
-    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue,steptype,comments){
+    function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue,steptype){
         return $http({
             url: "/setInfo", 
             method: "POST",
-            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue,"steptype":steptype,"comments":comments}
+            data: {"info":info,"id":id,"step":step,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"recordedValue":recordedValue,"steptype":steptype}
         });  
     }
 
@@ -477,6 +477,14 @@ quantum
         return steps;
     }
 
+    function setComments(pid,prevision,index,comments,lastuse){
+        return $http({
+            url: "/setComments", 
+            method: "POST",
+            data: {"pid":pid,"prevision":prevision,"index":index,"comments":comments,"lastuse":lastuse}
+        });
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -501,6 +509,7 @@ quantum
         getCompletedSteps : getCompletedSteps,
         setCurrentViewRevision : setCurrentViewRevision,
         getCurrentViewRevision : getCurrentViewRevision,
-        disableSteps : disableSteps
+        disableSteps : disableSteps,
+        setComments : setComments
     }
 }]);
