@@ -106,6 +106,9 @@ module.exports = function(app,passport) {
     //set user's allowed roles in the database
     app.post('/setAllowedRoles',usr.setAllowedRoles);
 
+    //set comments
+    app.post('/setComments',procs.setComments);
+
 };
 
 // route middleware to make sure a user is logged in

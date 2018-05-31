@@ -1,5 +1,5 @@
 var quantum = angular.module('quantum', 
-	['ngFileUpload', 'ngRoute', 'ngFileSaver','ngMaterial', 'ui.bootstrap', 'ui.select']);
+	['ngFileUpload', 'ngRoute', 'ngFileSaver','ngMaterial', 'ui.bootstrap', 'ui.select','xeditable']);
 
 quantum.constant('moment', moment);
 
@@ -45,3 +45,7 @@ quantum.config(function($routeProvider, $locationProvider) {
 
 	$locationProvider.html5Mode(true);
 });
+
+quantum.run(['editableOptions', function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+}]);
