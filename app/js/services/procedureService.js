@@ -544,7 +544,12 @@ quantum
                 break; 
             }
         }
-        return sectionHeader;
+        if(sectionHeader >=0){
+            return sectionHeader;
+        }else {
+            return -1;
+        }
+        
     }
 
     function getNextSectionHeaderIndex(steps,mainHeaderIndex,currentIndex){
@@ -555,7 +560,13 @@ quantum
                 break;
             }
         }
-        return nextsectionHeader;
+
+        if(nextsectionHeader >= 0){
+            return nextsectionHeader;
+        }else {
+            return -1;
+        }
+
     }
 
     function getSubSectionHeaderIndex(steps,currentIndex){
@@ -566,18 +577,27 @@ quantum
                 break;
             }
         }
-        return subsectionHeader;
+        if(subsectionHeader >= 0){
+             return subsectionHeader;
+         }else {
+            return -1;
+         }
+       
     }
 
     function getNextSubSectionHeaderIndex(steps,mainSubHeaderIndex,currentIndex){
         var nextsubheaderIndex;
         for(var s=mainSubHeaderIndex+1;s<steps.length;s++){
-            if(steps[s].headertype === "subheader" && steps[s].index !== steps[currentIndex].index){
+            if(steps[s].headertype === "subheader" && steps[s].index !== steps[currentIndex].index && steps[s].index !== steps[currentIndex].index && steps[s].headervalue === steps[currentIndex].headervalue){
                 nextsubheaderIndex = s;
                 break;
             }
         }
-        return nextsubheaderIndex;
+        if(nextsubheaderIndex >= 0){
+             return nextsubheaderIndex;
+         }else {
+            return -1;
+         }
     }
 
     return { 
@@ -606,6 +626,11 @@ quantum
         getCurrentViewRevision : getCurrentViewRevision,
         disableSteps : disableSteps,
         setComments : setComments,
-        openFirstStep : openFirstStep
+        openFirstStep : openFirstStep,
+        getSectionHeaderIndex : getSectionHeaderIndex,
+        getNextSectionHeaderIndex : getNextSectionHeaderIndex,
+        getSubSectionHeaderIndex : getSubSectionHeaderIndex,
+        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex
+
     }
 }]);

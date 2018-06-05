@@ -98,32 +98,24 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         completetime = $scope.clock.year+" - "+$scope.clock.utc;
 
                         //check if all the steps in the section are completed and set section header color and timestamp
-                        var mainheaderIndex = "";
-                        var nextmainheaderIndex = "";
-                        var subheaderIndex = "";
-                        var nextsubheaderIndex = "";
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
 
-                        //check if there exists a sub header
-                        for(var a=0;a<index;a++){
-                            if($scope.steps[a].index === $scope.steps[index].index && $scope.steps[a].headertype === "subheader"){
-                                subheaderIndex = a;
-                                break; 
-                            }
-                        }
+                        //check if there exists a sub header 
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
 
                         //If no subheader check for main header
-                        if(subheaderIndex === ""){
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    break; 
-                                }
-                            }
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
                         }
 
-                        if(subheaderIndex !== ""){
-                            var finalCount1 = 0;
-                            var finalCountnew1 = 0;
+                        if(subheaderIndex && subheaderIndex !== -1){
+                            var finalCount1 = 0; // to store count of steps completed in a subsection
+                            var finalCountnew1 = 0; // to store count of steps completed in a section
+
+                            //loop through steps and get the count
                             for(var k=subheaderIndex+1;k<index;k++){
                                 if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
                                     finalCount1++;
@@ -131,13 +123,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                             }
 
                             // to set main header info
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    break; 
-                                }
-                            }
-
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
 
                             if(finalCount1 === (index - subheaderIndex - 1)){
                                 if($scope.liveInstanceinterval) {
@@ -150,7 +136,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
-
                                     finalCountnew1 = 0;
                                     for(var k=mainheaderIndex+1;k<index;k++){
                                         if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
@@ -194,8 +179,23 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                         });
                                     }
                                 });
+                            }else {
+                                procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                    if(res.status === 200){
+                                        for(var a=0;a<$scope.steps.length;a++){
+                                            $scope.steps[a].status = true;
+                                        }
+                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                    }
+
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+
                             }
-                        }else if(mainheaderIndex !== ""){
+                        }else if(mainheaderIndex >=0){
                             var finalCount2 = 0;
                             for(var k=mainheaderIndex+1;k<index;k++){
                                 if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
@@ -243,7 +243,11 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                 });
             }else {
+                // if close procedure confirmation is cancelled
                 $scope.steps[index].chkval = false;
+                if($scope.liveInstanceinterval === null) {
+                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                }
             }
 
         }else{
@@ -265,52 +269,30 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         // get main header or sub header for the step
                         //check for all the rest of the steps in that section if completed
                             //if completed mark header as done
-                            //if not ,then dont mark as done
-                            // var mainheaderIndex = "";
-                            // var subheaderIndex = ""; 
+                            //if not ,then dont mark as not done
 
                         //check if all the steps in the section are completed and set section header color and timestamp
-                        var mainheaderIndex = "";
-                        var nextmainheaderIndex = "";
-                        var subheaderIndex = "";
-                        var nextsubheaderIndex = "";
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
 
                         //check if there exists a sub header
-                        for(var a=0;a<index;a++){
-                            if($scope.steps[a].index === $scope.steps[index].index && $scope.steps[a].headertype === "subheader"){
-                                subheaderIndex = a;
-                                for(var s=a+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "subheader" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
-                                        nextsubheaderIndex = s;
-                                        break;
-                                    }
-                                }
-                                break; 
-                            }
-                        }
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                        nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
 
                         //If no subheader check for main header
-                        if(subheaderIndex === ""){
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    for(var s=a+1;s<$scope.steps.length;s++){
-                                        if($scope.steps[s].headertype === "mainheader"){
-                                            nextmainheaderIndex = s;
-                                            break;
-                                        }
-                                    }
-                                    break; 
-                                }
-                            }
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
                         }
 
-                        if(subheaderIndex !== ""){
+                        if(subheaderIndex && subheaderIndex !== -1){
                             var finalCount1 = 0;
                             var finalCountnew1 = 0;
-                            if(nextsubheaderIndex === ""){
+                            if(nextsubheaderIndex === -1 ){
                                 for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index){
+                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
                                         nextsubheaderIndex = s;
                                         break;
                                     }
@@ -322,28 +304,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                 }
                             }
 
-                            if(nextsubheaderIndex === "" && nextsubheaderIndex.length === 0){
-                                for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
-                                        nextsubheaderIndex = s;
-                                        break;
-                                    }
-                                }
-                            }
-
                             // to add main header info 
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    for(var s=a+1;s<$scope.steps.length;s++){
-                                        if($scope.steps[s].headertype === "mainheader"){
-                                            nextmainheaderIndex = s;
-                                            break;
-                                        }
-                                    }
-                                    break; 
-                                }
-                            }
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
 
                             var mIndex = mainheaderIndex + 1;
                             for(var k=mIndex;k<nextmainheaderIndex;k++){
@@ -352,7 +315,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                 }
                             }
 
-                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
+                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -387,7 +350,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                     }
                                 });
 
-                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -408,14 +371,14 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                     });
                                 });
                             }
-                        }else if(mainheaderIndex !== ""){
+                        }else if(mainheaderIndex >= 0){
                             var finalCount2 = 0;
                             for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
                                 if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
                                     finalCount2++;
                                 }
                             }
-                            if(finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
+                            if( nextmainheaderIndex !== 1 && finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -441,7 +404,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     $scope.steps[index].chkval = false;  
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#e9f6fb'}
-                    }                      
+                    } 
+                    if($scope.liveInstanceinterval === null) {
+                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                    }                     
                 }else if($scope.steps[index].contenttype !== 'Input'){
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
@@ -457,47 +423,28 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         }
 
                         //check if all the steps in the section are completed and set section header color and timestamp
-                        var mainheaderIndex = "";
-                        var nextmainheaderIndex = "";
-                        var subheaderIndex = "";
-                        var nextsubheaderIndex = "";
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
 
                         //check if there exists a sub header
-                        for(var a=0;a<index;a++){
-                            if($scope.steps[a].index === $scope.steps[index].index && $scope.steps[a].headertype === "subheader"){
-                               subheaderIndex = a;
-                                    for(var s=a+1;s<$scope.steps.length;s++){
-                                        if($scope.steps[s].headertype === "subheader" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
-                                            nextsubheaderIndex = s;
-                                            break;
-                                        }
-                                    }
-                                    break; 
-                            }
-                        }
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                        nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
 
                         //If no subheader check for main header
-                        if(subheaderIndex === ""){
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    for(var s=a+1;s<$scope.steps.length;s++){
-                                        if($scope.steps[s].headertype === "mainheader"){
-                                            nextmainheaderIndex = s;
-                                            break;
-                                        }
-                                    }
-                                    break; 
-                                }
-                            }
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
                         }
 
-                        if(subheaderIndex !== ""){
+                        if(subheaderIndex && subheaderIndex !== -1){
                             var finalCount1 = 0;
                             var finalCountnew1 = 0;
-                            if(nextsubheaderIndex === ""){
+
+                            if(nextsubheaderIndex === -1){
                                 for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index){
+                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
                                         nextsubheaderIndex = s;
                                         break;
                                     }
@@ -509,29 +456,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                 }
                             }
 
-                            if(nextsubheaderIndex === "" && nextsubheaderIndex.length === 0){
-                                for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
-                                        nextsubheaderIndex = s;
-                                        break;
-                                    }
-                                }
-                            }
-
 
                             // to add main header info 
-                            for(var a=0;a<index;a++){
-                                if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                    mainheaderIndex = a;
-                                    for(var s=a+1;s<$scope.steps.length;s++){
-                                        if($scope.steps[s].headertype === "mainheader"){
-                                            nextmainheaderIndex = s;
-                                            break;
-                                        }
-                                    }
-                                    break; 
-                                }
-                            }
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
 
                             var mIndex = mainheaderIndex + 1;
                             for(var k=mIndex;k<nextmainheaderIndex;k++){
@@ -539,8 +467,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                     finalCountnew1++;
                                 }
                             }
-
-                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
+                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -573,7 +500,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                     }
 
                                 });
-                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -594,14 +521,15 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                     });
                                 });
                             }
-                        }else if(mainheaderIndex !== ""){
+                        }else if(mainheaderIndex >= 0){
                             var finalCount2 = 0;
                             for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
                                 if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
                                     finalCount2++;
                                 }
                             }
-                            if(finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
+  
+                            if(nextmainheaderIndex !== -1 && finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
                                 if($scope.liveInstanceinterval) {
                                     $interval.cancel($scope.liveInstanceinterval);
                                     $scope.liveInstanceinterval = null;
@@ -642,42 +570,23 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     var nextmainheaderIndex = "";
                     var subheaderIndex = "";
                     var nextsubheaderIndex = "";
+
                     //check if there exists a sub header
-                    for(var a=0;a<index;a++){
-                        if($scope.steps[a].index === $scope.steps[index].index && $scope.steps[a].headertype === "subheader"){
-                            subheaderIndex = a;
-                            for(var s=a+1;s<$scope.steps.length;s++){
-                                if($scope.steps[s].headertype === "subheader" && $scope.steps[s].index !== $scope.steps[index].index){
-                                    nextsubheaderIndex = s;
-                                    break;
-                                }
-                            }
-                            break; 
-                        }
-                    }
+                    subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                    nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
 
                     //If no subheader check for main header
-                    if(subheaderIndex === ""){
-                        for(var a=0;a<index;a++){
-                            if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                mainheaderIndex = a;
-                                for(var s=a+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "mainheader"){
-                                        nextmainheaderIndex = s;
-                                        break;
-                                    }
-                                }
-                                break; 
-                            }
-                        }
+                    if(subheaderIndex === -1){
+                        mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                        nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
                     }
 
-                    if(subheaderIndex !== ""){
+                    if(subheaderIndex && subheaderIndex !== -1){
                         var finalCount1 = 0;
                         var finalCountnew1 = 0;
-                        if(nextsubheaderIndex === ""){
+                        if(nextsubheaderIndex === -1){
                             for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
-                                if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index){
+                                if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
                                     nextsubheaderIndex = s;
                                     break;
                                 }
@@ -690,19 +599,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         }
 
                         // to remove main header info if exits
-
-                        for(var a=0;a<index;a++){
-                            if($scope.steps[a].headervalue === $scope.steps[index].headervalue && $scope.steps[a].headertype === "mainheader"){
-                                mainheaderIndex = a;
-                                for(var s=a+1;s<$scope.steps.length;s++){
-                                    if($scope.steps[s].headertype === "mainheader"){
-                                        nextmainheaderIndex = s;
-                                        break;
-                                    }
-                                }
-                                break; 
-                            }
-                        }
+                        mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                        nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
 
                         for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
                             if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
@@ -710,6 +608,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                             }
                         }
 
+                       
                         if($scope.steps[mainheaderIndex].Info.length === 0 && finalCount1 !== (nextsubheaderIndex - subheaderIndex - 1)){
                             if($scope.liveInstanceinterval) {
                                 $interval.cancel($scope.liveInstanceinterval);
@@ -766,13 +665,14 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                 });
                             });
                         }
-                    }else if(mainheaderIndex !== ""){
+                    }else if(mainheaderIndex >=0){
                         var finalCount2 = 0;
                         for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
                             if($scope.steps[k].Info){
                                 finalCount2++;
                             }
                         }
+
                         if(finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
                             if($scope.liveInstanceinterval) {
                                 $interval.cancel($scope.liveInstanceinterval);
