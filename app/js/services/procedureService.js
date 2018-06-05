@@ -134,6 +134,7 @@ quantum
                         rowcolor: {backgroundColor:'#e9f6fb'}
                     };
                     psteps[j].chkval = false;
+                    psteps[j].checkbox = false;
 
                 }else if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") !== psteps[j].Step.lastIndexOf(".")){
                     psteps[j].index = parseFloat(psteps[j].Step);
@@ -148,6 +149,7 @@ quantum
                         }
                     };
                     psteps[j].chkval = false;
+                    psteps[j].checkbox = false;
                 }else {
                     psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right"; 
@@ -158,7 +160,8 @@ quantum
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
                     };
-                        psteps[j].chkval = false;
+                    psteps[j].chkval = false;
+                    psteps[j].checkbox = true;
                 }  
             }
 
@@ -345,6 +348,10 @@ quantum
                     }   
                 }
             }else if(steps[index].headertype === "subheader" && index !== steps.length-1){
+                //steps[index].openstatus = true;
+                if(steps[index-1].headertype === "mainheader"){
+                    steps[index-1].class = "fa fa-caret-down";
+                }
                 while(steps[newindex].headertype !== "mainheader"){
                     steps[newindex].openstatus = true;
                     steps[index].class = "fa fa-caret-down";
@@ -353,6 +360,11 @@ quantum
                     }else {
                         newindex = newindex+1;
                     }   
+                }
+                for(var a=0;a<steps.length;a++){
+                    if(steps[a].headervalue === steps[index].headervalue){
+                        steps[a].openstatus = true;
+                    }
                 }
             }else if(steps[index].headertype === "listitem" && index !== steps.length-1){
                 if(steps[newindex].headertype === "mainheader"){
@@ -366,6 +378,19 @@ quantum
                             break;
                         }else {
                             newind = newind+1;
+                        }
+                    }
+
+                    for(var a=0;a<steps.length;a++){
+                        if(steps[a].headervalue === steps[index].headervalue){
+                            steps[a].openstatus = true;
+                        }
+                    }
+
+                }else {
+                    for(var a=0;a<steps.length;a++){
+                        if(steps[a].headervalue === steps[index].headervalue){
+                            steps[a].openstatus = true;
                         }
                     }
                 }
@@ -485,6 +510,96 @@ quantum
         });
     }
 
+    function openFirstStep(psteps,callsign){
+        if(psteps && psteps.length > 0){
+            for(var j=0;j<psteps.length;j++){
+                if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
+                    psteps[j].class = "fa fa-caret-down";
+                    var nextIndex = j+1;
+                    while(psteps[nextIndex].Step.includes(".0") === false && nextIndex !== psteps.length-1){
+                        psteps[nextIndex].openstatus = true;
+                        psteps[nextIndex].class = "fa fa-caret-right";
+                        nextIndex = nextIndex + 1;
+                    }
+                    break;
+                }
+            }
+
+            for(var a=0;a<psteps.length;a++){
+                if(psteps[a].Role.includes(callsign)){
+                    psteps[a].status = false;
+                }else {
+                    psteps[a].status = true;
+                }
+            }
+        }
+        return psteps;
+    }
+
+    function getSectionHeaderIndex(steps,currentIndex) {
+        var sectionHeader;
+        for(var a=0;a<currentIndex;a++){
+            if(steps[a].headervalue === steps[currentIndex].headervalue && steps[a].headertype === "mainheader"){
+                sectionHeader = a;
+                break; 
+            }
+        }
+        if(sectionHeader >=0){
+            return sectionHeader;
+        }else {
+            return -1;
+        }
+        
+    }
+
+    function getNextSectionHeaderIndex(steps,mainHeaderIndex,currentIndex){
+        var nextsectionHeader;
+        for(var s=mainHeaderIndex+1;s<steps.length;s++){
+            if(steps[s].headertype === "mainheader"){
+                nextsectionHeader = s;
+                break;
+            }
+        }
+
+        if(nextsectionHeader >= 0){
+            return nextsectionHeader;
+        }else {
+            return -1;
+        }
+
+    }
+
+    function getSubSectionHeaderIndex(steps,currentIndex){
+        var subsectionHeader;
+        for(var i=0;i<currentIndex;i++){
+            if(steps[i].index === steps[currentIndex].index && steps[i].headertype === "subheader"){
+                subsectionHeader = i;
+                break;
+            }
+        }
+        if(subsectionHeader >= 0){
+             return subsectionHeader;
+         }else {
+            return -1;
+         }
+       
+    }
+
+    function getNextSubSectionHeaderIndex(steps,mainSubHeaderIndex,currentIndex){
+        var nextsubheaderIndex;
+        for(var s=mainSubHeaderIndex+1;s<steps.length;s++){
+            if(steps[s].headertype === "subheader" && steps[s].index !== steps[currentIndex].index && steps[s].index !== steps[currentIndex].index && steps[s].headervalue === steps[currentIndex].headervalue){
+                nextsubheaderIndex = s;
+                break;
+            }
+        }
+        if(nextsubheaderIndex >= 0){
+             return nextsubheaderIndex;
+         }else {
+            return -1;
+         }
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -510,6 +625,12 @@ quantum
         setCurrentViewRevision : setCurrentViewRevision,
         getCurrentViewRevision : getCurrentViewRevision,
         disableSteps : disableSteps,
-        setComments : setComments
+        setComments : setComments,
+        openFirstStep : openFirstStep,
+        getSectionHeaderIndex : getSectionHeaderIndex,
+        getNextSectionHeaderIndex : getNextSectionHeaderIndex,
+        getSubSectionHeaderIndex : getSubSectionHeaderIndex,
+        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex
+
     }
 }]);

@@ -9,9 +9,9 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
-                    if(parseFloat(response.data[i].procedure.id).toFixed(1) === $scope.params.procID){
+                    if(response.data[i].procedure.id === $scope.params.procID){
                         for(var a=0;a<response.data[i].instances.length;a++){
-                            if(response.data[i].instances[a].revision === parseInt($scope.params.revisionID)){
+                            if(parseInt(response.data[i].instances[a].revision) === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
                                 $scope.steps = $scope.instances.Steps;
 

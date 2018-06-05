@@ -30,6 +30,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         $scope.steps = procedureService.openNextSteps($scope.steps,a);
                     }
                 }
+
                 $scope.steps = procedureService.getCompletedSteps($scope.steps); 
                 if($scope.steps[$scope.steps.length-1].Info !== ""){
                     procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
@@ -65,7 +66,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     comments:""
                 });
             }
-            $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign); 
+            $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
+            $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign); 
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
     	});
 	}
@@ -94,22 +96,158 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){
                     if(response.status === 200){
                         completetime = $scope.clock.year+" - "+$scope.clock.utc;
-                        procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
-                            if(res.status === 200){
-                                for(var a=0;a<$scope.steps.length;a++){
-                                    $scope.steps[a].status = true;
+
+                        //check if all the steps in the section are completed and set section header color and timestamp
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
+
+                        //check if there exists a sub header 
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+
+                        //If no subheader check for main header
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                        }
+
+                        if(subheaderIndex && subheaderIndex !== -1){
+                            var finalCount1 = 0; // to store count of steps completed in a subsection
+                            var finalCountnew1 = 0; // to store count of steps completed in a section
+
+                            //loop through steps and get the count
+                            for(var k=subheaderIndex+1;k<index;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount1++;
                                 }
-                                procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
-                                procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                             }
-                        });
-                        if($scope.liveInstanceinterval === null) {
-                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+
+                            // to set main header info
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+
+                            if(finalCount1 === (index - subheaderIndex - 1)){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[subheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+
+                                $scope.steps[subheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                    finalCountnew1 = 0;
+                                    for(var k=mainheaderIndex+1;k<index;k++){
+                                        if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                            finalCountnew1++;
+                                        }
+                                    }
+                                    if(finalCountnew1 === (index - mainheaderIndex - 1)){
+                                        $scope.steps[mainheaderIndex].rowstyle = {
+                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                        } 
+
+                                        $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+
+                                        procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                            procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                                if(res.status === 200){
+                                                    for(var a=0;a<$scope.steps.length;a++){
+                                                        $scope.steps[a].status = true;
+                                                    }
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                                }
+                                            });
+                                            if($scope.liveInstanceinterval === null) {
+                                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                            }
+                                        });
+                                    }else {
+                                        procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                                if(res.status === 200){
+                                                    for(var a=0;a<$scope.steps.length;a++){
+                                                        $scope.steps[a].status = true;
+                                                    }
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                                }
+
+                                                if($scope.liveInstanceinterval === null) {
+                                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                                }
+                                        });
+                                    }
+                                });
+                            }else {
+                                procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                    if(res.status === 200){
+                                        for(var a=0;a<$scope.steps.length;a++){
+                                            $scope.steps[a].status = true;
+                                        }
+                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                    }
+
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+
+                            }
+                        }else if(mainheaderIndex >=0){
+                            var finalCount2 = 0;
+                            for(var k=mainheaderIndex+1;k<index;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount2++;
+                                }
+                            }
+                            if(finalCount2 === (index  - mainheaderIndex - 1) ){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[mainheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                    procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                        if(res.status === 200){
+                                            for(var a=0;a<$scope.steps.length;a++){
+                                                $scope.steps[a].status = true;
+                                            }
+                                            procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                        }
+                                    });
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+                            }else {
+                                procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                                    if(res.status === 200){
+                                        for(var a=0;a<$scope.steps.length;a++){
+                                            $scope.steps[a].status = true;
+                                        }
+                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+                                    }
+                                });
+                                if($scope.liveInstanceinterval === null) {
+                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                }
+                            }
                         }
                     }
                 });
             }else {
+                // if close procedure confirmation is cancelled
                 $scope.steps[index].chkval = false;
+                if($scope.liveInstanceinterval === null) {
+                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                }
             }
 
         }else{
@@ -128,7 +266,137 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         if($scope.liveInstanceinterval === null) {
                             $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
                         }
+                        // get main header or sub header for the step
+                        //check for all the rest of the steps in that section if completed
+                            //if completed mark header as done
+                            //if not ,then dont mark as not done
+
+                        //check if all the steps in the section are completed and set section header color and timestamp
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
+
+                        //check if there exists a sub header
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                        nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
+
+                        //If no subheader check for main header
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+                        }
+
+                        if(subheaderIndex && subheaderIndex !== -1){
+                            var finalCount1 = 0;
+                            var finalCountnew1 = 0;
+                            if(nextsubheaderIndex === -1 ){
+                                for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
+                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
+                                        nextsubheaderIndex = s;
+                                        break;
+                                    }
+                                }
+                            }
+                            for(var k=subheaderIndex+1;k<nextsubheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount1++;
+                                }
+                            }
+
+                            // to add main header info 
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+
+                            var mIndex = mainheaderIndex + 1;
+                            for(var k=mIndex;k<nextmainheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCountnew1++;
+                                }
+                            }
+
+                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[subheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[subheaderIndex].Info = $scope.clock.utc;
+
+                                procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                    finalCountnew1 = 0;
+                                    for(var k=mIndex;k<nextmainheaderIndex;k++){
+                                        if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                            finalCountnew1++;
+                                        }
+                                    }
+
+                                    if(finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                                        $scope.steps[mainheaderIndex].rowstyle = {
+                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                        } 
+                                        $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                        procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                            if($scope.liveInstanceinterval === null) {
+                                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                            }
+                                        });
+                                    }else {
+                                        if($scope.liveInstanceinterval === null) {
+                                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                        }
+                                    }
+                                });
+
+                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[subheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[mainheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[subheaderIndex].Info = $scope.clock.utc;
+                                $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                    procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                        if($scope.liveInstanceinterval === null) {
+                                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                        }
+                                    });
+                                });
+                            }
+                        }else if(mainheaderIndex >= 0){
+                            var finalCount2 = 0;
+                            for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount2++;
+                                }
+                            }
+                            if( nextmainheaderIndex !== 1 && finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[mainheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+                            }
+                        }                       
                     });
+
+                    //end of logic
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
 
                 }else if($scope.steps[index].contenttype === 'Input' && $scope.inputStepValues[index].ivalue.length === 0){  
@@ -136,7 +404,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     $scope.steps[index].chkval = false;  
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#e9f6fb'}
-                    }                      
+                    } 
+                    if($scope.liveInstanceinterval === null) {
+                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                    }                     
                 }else if($scope.steps[index].contenttype !== 'Input'){
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#c6ecc6'}
@@ -150,11 +421,136 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         if($scope.liveInstanceinterval === null) {
                             $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
                         }
+
+                        //check if all the steps in the section are completed and set section header color and timestamp
+                        var mainheaderIndex = ""; // to store section header index
+                        var nextmainheaderIndex = ""; // to store next section header index
+                        var subheaderIndex = ""; // to store sub section header index
+                        var nextsubheaderIndex = ""; // to store next sub section header index
+
+                        //check if there exists a sub header
+                        subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                        nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
+
+                        //If no subheader check for main header
+                        if(subheaderIndex === -1){
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+                        }
+
+                        if(subheaderIndex && subheaderIndex !== -1){
+                            var finalCount1 = 0;
+                            var finalCountnew1 = 0;
+
+                            if(nextsubheaderIndex === -1){
+                                for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
+                                    if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
+                                        nextsubheaderIndex = s;
+                                        break;
+                                    }
+                                }
+                            }
+                            for(var k=subheaderIndex+1;k<nextsubheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount1++;
+                                }
+                            }
+
+
+                            // to add main header info 
+                            mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                            nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+
+                            var mIndex = mainheaderIndex + 1;
+                            for(var k=mIndex;k<nextmainheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCountnew1++;
+                                }
+                            }
+                            if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[subheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[subheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                    finalCountnew1 = 0;
+                                    for(var k=mIndex;k<nextmainheaderIndex;k++){
+                                        if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                            finalCountnew1++;
+                                        }
+                                    }
+                                    if(finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                                        $scope.steps[mainheaderIndex].rowstyle = {
+                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                        } 
+                                        $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                        procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                            if($scope.liveInstanceinterval === null) {
+                                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                            }
+                                        });
+                                    }else {
+                                        if($scope.liveInstanceinterval === null) {
+                                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                        }
+                                    }
+
+                                });
+                            }else if(finalCount1 === (nextsubheaderIndex - subheaderIndex - 1) && nextmainheaderIndex !== 1 && finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[subheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[subheaderIndex].Info = $scope.clock.utc;
+                                $scope.steps[mainheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                    procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                        if($scope.liveInstanceinterval === null) {
+                                            $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                        }
+                                    });
+                                });
+                            }
+                        }else if(mainheaderIndex >= 0){
+                            var finalCount2 = 0;
+                            for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
+                                if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                    finalCount2++;
+                                }
+                            }
+  
+                            if(nextmainheaderIndex !== -1 && finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
+                                if($scope.liveInstanceinterval) {
+                                    $interval.cancel($scope.liveInstanceinterval);
+                                    $scope.liveInstanceinterval = null;
+                                }
+                                $scope.steps[mainheaderIndex].rowstyle = {
+                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                } 
+                                $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                                procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+                            }
+                        }
                     });
+                    //end of updating section header info
                     $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             
-            }else{
+            }else {
                 $scope.steps[index].Info = "";
                 $scope.steps[index].rowstyle = {
                     rowcolor : {backgroundColor:'#e9f6fb'}
@@ -168,7 +564,147 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     if($scope.liveInstanceinterval === null) {
                         $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
                     }
+
+                    //check if all the steps in the section are completed and set section header color and timestamp
+                    var mainheaderIndex = "";
+                    var nextmainheaderIndex = "";
+                    var subheaderIndex = "";
+                    var nextsubheaderIndex = "";
+
+                    //check if there exists a sub header
+                    subheaderIndex = procedureService.getSubSectionHeaderIndex($scope.steps,index);
+                    nextsubheaderIndex = procedureService.getNextSubSectionHeaderIndex($scope.steps,subheaderIndex,index);
+
+                    //If no subheader check for main header
+                    if(subheaderIndex === -1){
+                        mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                        nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+                    }
+
+                    if(subheaderIndex && subheaderIndex !== -1){
+                        var finalCount1 = 0;
+                        var finalCountnew1 = 0;
+                        if(nextsubheaderIndex === -1){
+                            for(var s=subheaderIndex+1;s<$scope.steps.length;s++){
+                                if($scope.steps[s].headertype === "listitem" && $scope.steps[s].index !== $scope.steps[index].index && $scope.steps[s].headervalue === $scope.steps[index].headervalue){
+                                    nextsubheaderIndex = s;
+                                    break;
+                                }
+                            }
+                        }
+                        for(var k=subheaderIndex+1;k<nextsubheaderIndex;k++){
+                            if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                finalCount1++;
+                            }
+                        }
+
+                        // to remove main header info if exits
+                        mainheaderIndex = procedureService.getSectionHeaderIndex($scope.steps,index);
+                        nextmainheaderIndex = procedureService.getNextSectionHeaderIndex($scope.steps,mainheaderIndex,index);
+
+                        for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
+                            if($scope.steps[k].Info && $scope.steps[k].Info.length > 0){
+                                finalCountnew1++;
+                            }
+                        }
+
+                       
+                        if($scope.steps[mainheaderIndex].Info.length === 0 && finalCount1 !== (nextsubheaderIndex - subheaderIndex - 1)){
+                            if($scope.liveInstanceinterval) {
+                                $interval.cancel($scope.liveInstanceinterval);
+                                $scope.liveInstanceinterval = null;
+                            }
+                            $scope.steps[subheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            } 
+                            $scope.steps[subheaderIndex].Info = "";
+                            procedureService.setInfo("",$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                if($scope.liveInstanceinterval === null) {
+                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                }
+                            });
+                        }else if($scope.steps[mainheaderIndex].Info.length > 0 && finalCountnew1 !== (nextmainheaderIndex - mainheaderIndex - 1)){
+                            if($scope.liveInstanceinterval) {
+                                $interval.cancel($scope.liveInstanceinterval);
+                                $scope.liveInstanceinterval = null;
+                            }
+                            $scope.steps[mainheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            };
+                            $scope.steps[subheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            }
+                            $scope.steps[subheaderIndex].Info = "";
+                            $scope.steps[mainheaderIndex].Info = "";
+                            procedureService.setInfo("",$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                procedureService.setInfo("",$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                if($scope.liveInstanceinterval === null) {
+                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                }
+                            });
+                            });
+
+                        }else {
+                            if($scope.liveInstanceinterval) {
+                                $interval.cancel($scope.liveInstanceinterval);
+                                $scope.liveInstanceinterval = null;
+                            }
+                            $scope.steps[mainheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            };
+                            $scope.steps[subheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            }
+
+                            $scope.steps[subheaderIndex].Info = "";
+                            procedureService.setInfo("",$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
+                                procedureService.setInfo("",$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                    if($scope.liveInstanceinterval === null) {
+                                        $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                    }
+                                });
+                            });
+                        }
+                    }else if(mainheaderIndex >=0){
+                        var finalCount2 = 0;
+                        for(var k=mainheaderIndex+1;k<nextmainheaderIndex;k++){
+                            if($scope.steps[k].Info){
+                                finalCount2++;
+                            }
+                        }
+
+                        if(finalCount2 === (nextmainheaderIndex - mainheaderIndex - 1) ){
+                            if($scope.liveInstanceinterval) {
+                                $interval.cancel($scope.liveInstanceinterval);
+                                $scope.liveInstanceinterval = null;
+                            }
+                            $scope.steps[mainheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#c6ecc6'}
+                            } 
+                            $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
+                            procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                if($scope.liveInstanceinterval === null) {
+                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                }
+                            });
+                        }else {
+                            if($scope.liveInstanceinterval) {
+                                $interval.cancel($scope.liveInstanceinterval);
+                                $scope.liveInstanceinterval = null;
+                            }
+                            $scope.steps[mainheaderIndex].rowstyle = {
+                                rowcolor : {backgroundColor:'#e9f6fb'}
+                            } 
+                            $scope.steps[mainheaderIndex].Info = "";
+                            procedureService.setInfo("",$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
+                                if($scope.liveInstanceinterval === null) {
+                                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                                }
+                            });
+                        }
+                    }
                 });
+                //remove headercolor and timestamp
             }
         }
     }
