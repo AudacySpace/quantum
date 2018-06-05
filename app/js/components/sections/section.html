@@ -71,17 +71,20 @@
                         </li>
                     </ul>
                 </td>
-                <td><input type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval"></td>
+                <td><input ng-show="step.checkbox" type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval">
+                </td>
                 <td>{{ step.Info }}</td>
-                <td class="commentsCol">
+                <td class="commentsCol" ng-show="step.headertype === 'listitem'">
                     <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="15"  ng-if="step.chkval === false && step.status === false" ng-click="whenTypingComments($index,comments)" onaftersave="saveComments(tempValues[$index].comments,$index)">
-                        <pre ng-if="tempValues[$index].comments.length > 0 || step.comments.length > 0">{{ tempValues[$index].comments || step.comments }}</pre>
-                        <pre ng-if="!tempValues[$index].comments && !step.comments" style="color:#ccc">{{ 'Enter comments here' }}</pre>
+                        <div ng-if="tempValues[$index].comments.length > 0 || step.comments.length > 0" style="border:1px solid #F8F8F8;background: #fff;color:#000000de;padding:4px;font-style: normal">{{ tempValues[$index].comments || step.comments }}</div>
+                        <div ng-if="!tempValues[$index].comments && !step.comments" style="color:#ccc;border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">{{ 'Enter comments here' }}</div>
                     </a>
-                    <span ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="15">
-                        <pre ng-if="step.comments.length > 0">{{ step.comments }}</pre>
-                        <pre ng-if="!step.comments || step.comments.length === 0" style="color:#ccc">{{ 'Enter comments here' }}</pre>
-                    </span>
+                    <div ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="15" style="border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">
+                        <div ng-if="step.comments.length > 0" style="color:#000000de">{{ step.comments }}</div>
+                        <div ng-if="!step.comments || step.comments.length === 0" style="color:#ccc;background: #fff;  font-style: normal;">{{ 'Enter comments here' }}</div>
+                    </div>
+                </td>
+                <td ng-show="step.headertype !== 'listitem'">
                 </td>
             </tr>
         </tbody>
