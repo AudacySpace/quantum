@@ -2,8 +2,8 @@
 <div class="container form" id="procedures">
     <div class="container list">
         <table class="table table-hover">
-            <thead>
-                <tr class="tablerowstyle">
+            <thead ng-show="loadstatus === false" >
+                <tr class="tablerowstyle" style="background-color: #ddd">
                     <th>
                         <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Revision
                             <span ng-show="sortType == 'procedurerevision' && !sortReverse" class="fa fa-caret-down"></span>
@@ -40,7 +40,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="details">
+            <tbody class="details" ng-show="archivedlist.length > 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
                 <tr ng-repeat="procedure in archivedlist | orderBy:'-revision' | orderBy:sortType:sortReverse">
                     <td>{{ procedure.revision }}</td>
                     <td>{{ procedure.openedBy }}</td>
@@ -49,6 +49,18 @@
                     <td>{{ procedure.completedAt }}</td>
                     <td class="centerCols">
                           <a href="/dashboard/procedure/archivedinstance/{{procedureid}}/{{procedure.revision}}" ng-click="changeColor('AS-Run Archive',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody class="details" ng-show="archivedlist.length === 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
+                <tr>
+                    <td colspan="6" style="text-align:center">No archived procedure instances available.</td>
+                </tr>
+            </tbody>
+            <tbody class="details" ng-show="loadstatus === true">
+                <tr>
+                    <td colspan="6" style="text-align:center;background: #fcfefc">
+                        <div class="loading-spiner" ng-show="loadstatus === true"><img src="../../../media/gifs/tenor (3).gif" style="width:10%"/> </div>
                     </td>
                 </tr>
             </tbody>
