@@ -602,6 +602,19 @@ quantum
          }
     }
 
+    function getStepPermissions(psteps,callsign){
+        var len = psteps.length;
+        //check for role and disable the steps if not permitted
+        for(var a=0;a<len;a++){
+            if(psteps[a].Role.includes(callsign)){
+                psteps[a].status = false;
+            }else {
+                psteps[a].status = true;
+            }
+        }
+        return psteps;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -632,7 +645,8 @@ quantum
         getSectionHeaderIndex : getSectionHeaderIndex,
         getNextSectionHeaderIndex : getNextSectionHeaderIndex,
         getSubSectionHeaderIndex : getSubSectionHeaderIndex,
-        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex
+        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
+        getStepPermissions : getStepPermissions
 
     }
 }]);

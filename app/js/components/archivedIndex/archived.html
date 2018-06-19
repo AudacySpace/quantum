@@ -40,7 +40,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="details" ng-show="archivedlist.length > 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
+            <tbody class="details" ng-show="archivedlist.length > 0 && loadstatus === false" style="background: #fcfefc">
                 <tr ng-repeat="procedure in archivedlist | orderBy:'-revision' | orderBy:sortType:sortReverse">
                     <td>{{ procedure.revision }}</td>
                     <td>{{ procedure.openedBy }}</td>
@@ -52,7 +52,7 @@
                     </td>
                 </tr>
             </tbody>
-            <tbody class="details" ng-show="archivedlist.length === 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
+            <tbody class="details" ng-show="archivedlist.length === 0 && loadstatus === false" style="background: #fcfefc">
                 <tr>
                     <td colspan="6" style="text-align:center">No archived procedure instances available.</td>
                 </tr>

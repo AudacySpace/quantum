@@ -366,6 +366,9 @@ label{
     div#toaster{
         font-size:8px;
     }
+    #procedures th{
+        padding:3px !important;
+    }
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
@@ -387,6 +390,10 @@ label{
 
     div#toaster{
         margin-top:50px;
+    }
+
+    #procedures th{
+        padding:3px !important;
     }
 }   
 

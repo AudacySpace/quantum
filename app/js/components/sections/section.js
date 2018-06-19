@@ -900,6 +900,10 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             }
         });
     }
+
+    $scope.$watch('role.cRole',function(newvalue,oldvalue){
+        $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
+    });
 });
 
 

@@ -27,7 +27,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="details" ng-show="livelist.length > 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd !important">
+            <tbody class="details" ng-show="livelist.length > 0 && loadstatus === false" style="background: #fcfefc">
                 <tr ng-repeat="procedure in livelist | orderBy:'-revision' | orderBy:sortType:sortReverse">
                     <td>{{ procedure.revision }}</td>
                     <td>{{ procedure.openedBy }}</td>
@@ -37,7 +37,7 @@
                     </td>
                 </tr>
             </tbody>
-            <tbody class="details" ng-show="livelist.length === 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd !important">
+            <tbody class="details" ng-show="livelist.length === 0 && loadstatus === false" style="background: #fcfefc">
                 <tr>
                     <td colspan="6" style="text-align:center">No live procedure instances available.</td>
                 </tr>

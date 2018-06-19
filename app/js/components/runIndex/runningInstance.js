@@ -938,6 +938,10 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    $scope.$watch('role.cRole',function(newvalue,oldvalue){
+        $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
+    });
+
 });
 
 
