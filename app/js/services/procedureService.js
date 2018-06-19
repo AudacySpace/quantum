@@ -423,7 +423,9 @@ quantum
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
                     steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
+                        rowcolor : {
+                            backgroundColor:'#c6ecc6'
+                        }
                     };
                     steps[d].chkval = true;
                 }else {
