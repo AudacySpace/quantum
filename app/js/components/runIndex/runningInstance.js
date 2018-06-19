@@ -119,7 +119,15 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         if(index === $scope.steps.length-1){
             if($window.confirm("Do you want to close this procedure?")){
                 $scope.steps[index].rowstyle = {
-                    rowcolor : {backgroundColor:'#c6ecc6'}
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
                 };
                 $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                 infotime = $scope.clock.year+" - "+$scope.clock.utc;
@@ -161,7 +169,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[subheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
@@ -174,7 +191,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     }
                                     if(finalCountnew1 === (index - mainheaderIndex - 1)){
                                         $scope.steps[mainheaderIndex].rowstyle = {
-                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                            rowcolor : {
+                                                // backgroundColor:'#c6ecc6'
+                                                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background-size': '200% 100%',
+                                                'background-position':'right bottom',
+                                                'margin-left':'10px',
+                                                'transition':'all 0.3s linear'
+                                            }
                                         } 
 
                                         $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
@@ -238,7 +264,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[mainheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
@@ -282,7 +317,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             if(stepstatus === true){
                 if($scope.steps[index].contenttype === 'Input' && $scope.inputStepValues[index].ivalue.length > 0){  
                     $scope.steps[index].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
+                        rowcolor : {
+                            // backgroundColor:'#c6ecc6'
+                            'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background-size': '200% 100%',
+                            'background-position':'right bottom',
+                            'margin-left':'10px',
+                            'transition':'all 0.3s linear'
+                        }
                     }
                     $scope.steps[index].recordedValue = $scope.inputStepValues[index].ivalue;
                     $scope.tempValues[index].ivalue = "";
@@ -348,7 +392,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[subheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
 
@@ -362,7 +415,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
                                     if(finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
                                         $scope.steps[mainheaderIndex].rowstyle = {
-                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                            rowcolor : {
+                                                // backgroundColor:'#c6ecc6'
+                                                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background-size': '200% 100%',
+                                                'background-position':'right bottom',
+                                                'margin-left':'10px',
+                                                'transition':'all 0.3s linear'
+                                            }
                                         } 
                                         $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                         procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
@@ -383,10 +445,28 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[subheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[mainheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
                                 $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
@@ -411,7 +491,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[mainheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
@@ -434,7 +523,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                 }else if($scope.steps[index].contenttype !== 'Input'){
                     $scope.steps[index].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
+                        rowcolor : {
+                            // backgroundColor:'#c6ecc6'
+                            'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                            'background-size': '200% 100%',
+                            'background-position':'right bottom',
+                            'margin-left':'10px',
+                            'transition':'all 0.3s linear'
+                        }
                     }
                     $scope.steps[index].recordedValue = "";
                     $scope.steps[index].Info = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
@@ -496,7 +594,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[subheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
@@ -508,7 +615,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     }
                                     if(finalCountnew1 === (nextmainheaderIndex - mainheaderIndex - 1)){
                                         $scope.steps[mainheaderIndex].rowstyle = {
-                                            rowcolor : {backgroundColor:'#c6ecc6'}
+                                            rowcolor : {
+                                                // backgroundColor:'#c6ecc6'
+                                                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                                'background-size': '200% 100%',
+                                                'background-position':'right bottom',
+                                                'margin-left':'10px',
+                                                'transition':'all 0.3s linear'
+                                            }
                                         } 
                                         $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                         procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
@@ -529,11 +645,29 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[subheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[subheaderIndex].Info = $scope.clock.utc;
                                 $scope.steps[mainheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[subheaderIndex].Info,$scope.params.procID,subheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[subheaderIndex].ivalue,$scope.steps[subheaderIndex].contenttype).then(function(response){   
@@ -558,7 +692,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                     $scope.liveInstanceinterval = null;
                                 }
                                 $scope.steps[mainheaderIndex].rowstyle = {
-                                    rowcolor : {backgroundColor:'#c6ecc6'}
+                                    rowcolor : {
+                                        // backgroundColor:'#c6ecc6'
+                                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                        'background-size': '200% 100%',
+                                        'background-position':'right bottom',
+                                        'margin-left':'10px',
+                                        'transition':'all 0.3s linear'
+                                    }
                                 } 
                                 $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                                 procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
@@ -701,7 +844,16 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.liveInstanceinterval = null;
                             }
                             $scope.steps[mainheaderIndex].rowstyle = {
-                                rowcolor : {backgroundColor:'#c6ecc6'}
+                                rowcolor : {
+                                    // backgroundColor:'#c6ecc6'
+                                    'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                    'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                    'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                                    'background-size': '200% 100%',
+                                    'background-position':'right bottom',
+                                    'margin-left':'10px',
+                                    'transition':'all 0.3s linear'
+                                }
                             } 
                             $scope.steps[mainheaderIndex].Info = $scope.clock.utc;
                             procedureService.setInfo($scope.steps[mainheaderIndex].Info,$scope.params.procID,mainheaderIndex,$scope.usernamerole,$scope.currentRevision,infotime,$scope.inputStepValues[mainheaderIndex].ivalue,$scope.steps[mainheaderIndex].contenttype).then(function(response){   
