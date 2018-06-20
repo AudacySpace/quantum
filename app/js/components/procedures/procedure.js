@@ -9,7 +9,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
   	$scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
-            if($scope.config){
+            if($scope.config && $scope.config.file){
                 $scope.filenames = $scope.config.file.name.split(" - ");
                 if($scope.filenames.length === 3){
                     procedureService.getProcedureList().then(function(response){
@@ -34,47 +34,24 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
-                                  //  $window.alert("This file number already exists in the list with a different title.Please try uploading with a new index number!");
-                                    var pinTo = 'top left';
-                                    var toast = $mdToast.simple()
-                                                        .textContent('This file number already exists in the list with a different title.Please try uploading with a new index number!')
-                                                        .action('OK')
-                                                        .parent(document.querySelectorAll('#toaster'))
-                                                        .hideDelay(5000)
-                                                        .highlightAction(true)
-                                                        .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                                        .position(pinTo);
-                                    console.log(toast);
-                                    $mdToast.show(toast).then(function(response) {
-                                        if ( response == 'ok' ) {
+                                    $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                                    if(alertstatus === true){
+                                        $scope.config = {};
+                                        $scope.upload_form.$setPristine();
+                                        break;
+                                    }
 
-                                        }
-                                    },function(error){
-                                        console.log(error);
-                                    });
-                                    $scope.config = {};
-                                    $scope.upload_form.$setPristine();
-                                    break;
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
                                     $scope.count = $scope.count + 1;
-                                    var pinTo = 'top left';
-                                    var toast = $mdToast.simple()
-                                                        .textContent('There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.')
-                                                        .action('OK')
-                                                        .parent(document.querySelectorAll('#toaster'))
-                                                        .hideDelay(5000)
-                                                        .highlightAction(true)
-                                                        .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                                        .position(pinTo);
-
-                                    $mdToast.show(toast).then(function(response) {
-                                        if ( response == 'ok' ) {}
-                                    },function(error){
-                                        console.log(error);
-                                    });
-                                    $scope.config = {};
-                                    $scope.upload_form.$setPristine();
+                                    $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                                    if(alertstatus === true){
+                                        $scope.config = {};
+                                        $scope.upload_form.$setPristine();
+                                        break;
+                                    }
                                 }
                             }
 
@@ -86,41 +63,20 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                         }
                     });
                 }else {
-                    var pinTo = 'top left';
-                    var toast = $mdToast.simple()
-                                        .textContent("The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'")
-                                        .action('OK')
-                                        .parent(document.querySelectorAll('#toaster'))
-                                        .hideDelay(5000)
-                                        .highlightAction(true)
-                                        .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                        .position(pinTo);
-
-                    $mdToast.show(toast).then(function(response) {
-                        if ( response == 'ok' ) {}
-                    },function(error){
-                        console.log(error);
-                    });
+                    $scope.usermessage = "The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'";
+                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                    if(alertstatus === true){
+                        $scope.config = {};
+                        $scope.upload_form.$setPristine();
+                    }
+                }
+            } else {
+                $scope.usermessage = "No file passed. Please upload an xlsx file.";
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
-            } else {
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent("No file passed. Please upload an xlsx file.")
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
-
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
             }
         }
     }
@@ -135,123 +91,57 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }).then(function (resp) { 
             //validate success
             if(resp.data.error_code === 0 && resp.data.err_desc === null){ 
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent('Success: File ' + resp.config.data.file.name + ' uploaded.')
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
+                $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' uploaded.';
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                if(alertstatus === true){
+                    //reset the input fields on the form
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine(); 
+                }
 
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
-
-                //reset the input fields on the form
-                $scope.config = {};
-                $scope.upload_form.$setPristine();
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "file updated"){
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent('Success: File ' + resp.config.data.file.name + ' updated.')
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
+                $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' updated.';
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
 
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
+                if(alertstatus === true){
+                    //reset the input fields on the form
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
 
-                //reset the input fields on the form
-                $scope.config = {};
-                $scope.upload_form.$setPristine();
+
             }else if(resp.data.error_code === 1){
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent('An error occured.This procedure already exists.Please upload with a new index number')
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
+                $scope.usermessage = 'An error occured.This procedure already exists.Please upload with a new index number.';
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
 
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
-                //reset the input fields on the form
-                $scope.config = {};
-                $scope.upload_form.$setPristine();
+                if(alertstatus === true){
+                    //reset the input fields on the form
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
-                $scope.config = {};
-                $scope.upload_form.$setPristine();
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent('Not a valid file.Required Columns are Step,Type,Role,Content!')
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
+                $scope.usermessage = 'Not a valid file.Required Columns are Step,Type,Role,Content!';
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
 
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
             }else {
-                $scope.config = {};
-                $scope.upload_form.$setPristine();
-                var pinTo = 'top left';
-                var toast = $mdToast.simple()
-                                    .textContent('An error occured while uploading.Please try again!')
-                                    .action('OK')
-                                    .parent(document.querySelectorAll('#toaster'))
-                                    .hideDelay(5000)
-                                    .highlightAction(true)
-                                    .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                    .position(pinTo);
-
-                $mdToast.show(toast).then(function(response) {
-                    if ( response == 'ok' ) {
-                    }
-                },function(error){
-                    console.log(error);
-                });
+                $scope.usermessage = 'An error occured while uploading.Please try again!';
+                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
             }
         }, function (resp) { //catch error
-            var pinTo = 'top left';
-            var toast = $mdToast.simple()
-                                .textContent('Error status: ' + resp.status)
-                                .action('OK')
-                                .parent(document.querySelectorAll('#toaster'))
-                                .hideDelay(5000)
-                                .highlightAction(true)
-                                .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                                .position(pinTo);
-
-            $mdToast.show(toast).then(function(response) {
-                if ( response == 'ok' ) {
-                }
-            },function(error){
-                console.log(error);
-            });
+            $scope.usermessage = 'Error status: ' + resp.status;
+            var alertstatus = procedureService.displayAlert($scope.usermessage);
+            if(alertstatus === true){
+                $scope.config = {};
+                $scope.upload_form.$setPristine();
+            }
 
         });
     };
@@ -359,7 +249,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $interval.cancel($scope.interval);
         }
     );
-
 });
 
 
