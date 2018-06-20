@@ -1,5 +1,5 @@
 quantum
-.factory('procedureService', ['$http','$window', function($http,$window) {
+.factory('procedureService', ['$http','$window','$mdToast', function($http,$window,$mdToast) {
 
     var procedure = {
         id:"",
@@ -615,6 +615,26 @@ quantum
         return psteps;
     }
 
+    function displayAlert(message){
+        var pinTo = 'top left';
+        var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            .parent(document.querySelectorAll('#toaster'))
+                            .hideDelay(5000)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(pinTo);
+
+        $mdToast.show(toast).then(function(response) {
+            if ( response == 'ok' ) {
+            }
+        },function(error){
+            console.log(error);
+        });
+        return true;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -646,7 +666,7 @@ quantum
         getNextSectionHeaderIndex : getNextSectionHeaderIndex,
         getSubSectionHeaderIndex : getSubSectionHeaderIndex,
         getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
-        getStepPermissions : getStepPermissions
-
+        getStepPermissions : getStepPermissions,
+        displayAlert : displayAlert
     }
 }]);
