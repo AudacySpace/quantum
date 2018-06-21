@@ -735,7 +735,18 @@ describe('Test Suite for Run Instance Controller', function () {
             headertype: 'mainheader', 
             headervalue: '1', 
             openstatus: true, 
-            rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' }}, 
+            rowstyle: {
+                rowcolor : {
+                    // backgroundColor:'#c6ecc6'
+                    'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
+            }, 
             chkval: false, 
             status: false,
             recordedValue:"",
