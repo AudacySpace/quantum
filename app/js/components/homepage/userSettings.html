@@ -9,18 +9,19 @@
         <div class="row" ng-if="$even">
             <div class="col-xs-6">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole" ng-value="$ctrl.roles[$index]"> 
+                    <input type="radio" ng-model="$ctrl.role[$index].status" ng-value="$ctrl.roles[$index]"> 
                     {{ $ctrl.roles[$index].name }} ({{ $ctrl.roles[$index].callsign }})
                 </label>
             </div>
             <div class="col-xs-6" ng-show="$ctrl.roles[$index+1]">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole" ng-value="$ctrl.roles[$index+1]"> 
+                    <input type="radio" ng-model="$ctrl.role.checked" ng-value="$ctrl.roles[$index+1]"> 
                     {{ $ctrl.roles[$index+1].name }} ({{ $ctrl.roles[$index+1].callsign }})
                 </label> 
             </div>
         </div>
     </div>
+    <div id="usersettingstoaster"></div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>

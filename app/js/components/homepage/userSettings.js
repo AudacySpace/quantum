@@ -1,4 +1,4 @@
-quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, mission, $window) {
+quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, mission, $window,$scope,procedureService) {
     var $ctrl = this;
 
     $ctrl.cRole = {};
@@ -26,14 +26,25 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
 
     $ctrl.updateRole = function(){
         if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
-            $window.alert("No mission without the Mission Director. Your role cannot be updated");
-            $uibModalInstance.close($ctrl.cRole);
+            var position = "bottom right";
+            var queryId = '#logouttoaster';
+            $scope.usermessage = 'No mission without the Mission Director. Your role cannot be updated';
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+            if(alertstatus === true){
+               $uibModalInstance.close($ctrl.cRole);
+            }
+
         } else {
             userService.setCurrentRole($ctrl.role.currentRole, mission.name)
             .then(function(response) {
                 if(response.status == 200){
-                    $window.alert("User's current role updated");
-                    $uibModalInstance.close($ctrl.role.currentRole);
+                    var position = "bottom right";
+                    var queryId = '#logouttoaster';
+                    $scope.usermessage = "User's current role updated";
+                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                    if(alertstatus === true){
+                       $uibModalInstance.close($ctrl.role.currentRole);
+                    }
                 }
             });
         }

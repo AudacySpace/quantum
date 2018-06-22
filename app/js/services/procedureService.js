@@ -602,22 +602,22 @@ quantum
          }
     }
 
-    function displayAlert(message){
-        var pinTo = 'top left';
+    function displayAlert(message,position,queryId){
+        // var pinTo = 'top left';
         var toast = $mdToast.simple()
                             .textContent(message)
                             .action('OK')
-                            .parent(document.querySelectorAll('#toaster'))
-                            .hideDelay(5000)
+                            .parent(document.querySelectorAll(queryId))
+                            .hideDelay(false)
                             .highlightAction(true)
                             .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
-                            .position(pinTo);
+                            .position(position);
 
         $mdToast.show(toast).then(function(response) {
             if ( response == 'ok' ) {
             }
         },function(error){
-            console.log(error);
+            // console.log(error);
         });
         return true;
     }

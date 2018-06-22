@@ -1,4 +1,4 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal) {
 	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
@@ -15,38 +15,33 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     procedureService.getProcedureList().then(function(response){
                         if(response.status === 200){
                             $scope.count = 0;
+                            $scope.sameProcedure = false;
                             for(var i=0;i<response.data.length;i++){
                                 var filenameFrmDb = response.data[i].procedure.id+" - "+response.data[i].procedure.title+'.xlsx';
                                 
                                 if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
                                     //Condition to check if a procedure exists with the same file name and has no saved instances
-
-                                    //Ask user to update or not
-                                    if($window.confirm("Are you sure you want to update this procedure?")){
-                                        $scope.count = 0;
-                                        break;
-                                    }else {
-                                        $scope.count = $scope.count + 1;
-                                        $scope.config = {};
-                                        $scope.upload_form.$setPristine();
-                                        break;
-                                    }
+                                    $scope.sameProcedure = true;
+                                    break;
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                                    var position = "top left";
+                                    var queryId = '#toaster';
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                                     if(alertstatus === true){
                                         $scope.config = {};
                                         $scope.upload_form.$setPristine();
                                         break;
                                     }
-
                                 }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                                    var position = "top left";
+                                    var queryId = '#toaster';
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                                     if(alertstatus === true){
                                         $scope.config = {};
                                         $scope.upload_form.$setPristine();
@@ -55,24 +50,33 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 }
                             }
 
-                            if($scope.count === 0){
+                            if($scope.count === 0 && $scope.sameProcedure === false){
                                 $scope.clock = timeService.getTime();
                                 var userdetails = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
                                 $scope.upload($scope.config.file,userdetails); 
+                            }else if($scope.count === 0 && $scope.sameProcedure === true){
+                                var messages = {
+                                    confirmMsg: "Are you sure you want to update this procedure?"
+                                };
+                                confirmProcedureUpdate(messages);
                             }
                         }
                     });
                 }else {
+                    var position = "top left";
+                    var queryId = '#toaster';
                     $scope.usermessage = "The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'";
-                    var alertstatus = procedureService.displayAlert($scope.usermessage);
+                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                     if(alertstatus === true){
                         $scope.config = {};
                         $scope.upload_form.$setPristine();
                     }
                 }
             } else {
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = "No file passed. Please upload an xlsx file.";
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
@@ -91,8 +95,10 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }).then(function (resp) { 
             //validate success
             if(resp.data.error_code === 0 && resp.data.err_desc === null){ 
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' uploaded.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                 if(alertstatus === true){
                     //reset the input fields on the form
                     $scope.config = {};
@@ -100,8 +106,10 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 }
 
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "file updated"){
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' updated.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
 
                 if(alertstatus === true){
                     //reset the input fields on the form
@@ -111,8 +119,10 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 
 
             }else if(resp.data.error_code === 1){
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = 'An error occured.This procedure already exists.Please upload with a new index number.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
 
                 if(alertstatus === true){
                     //reset the input fields on the form
@@ -120,24 +130,30 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     $scope.upload_form.$setPristine();
                 }
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = 'Not a valid file.Required Columns are Step,Type,Role,Content!';
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
 
             }else {
+                var position = "top left";
+                var queryId = '#toaster';
                 $scope.usermessage = 'An error occured while uploading.Please try again!';
-                var alertstatus = procedureService.displayAlert($scope.usermessage);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
             }
         }, function (resp) { //catch error
+            var position = "top left";
+            var queryId = '#toaster';
             $scope.usermessage = 'Error status: ' + resp.status;
-            var alertstatus = procedureService.displayAlert($scope.usermessage);
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
             if(alertstatus === true){
                 $scope.config = {};
                 $scope.upload_form.$setPristine();
@@ -177,7 +193,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                         }
                     }
                 }
-
             }
 
             $scope.loadstatus = false;
@@ -206,16 +221,37 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         procedureService.downloadProcedure(id, title)
         .then(function(response) {
             if(response.status == 200){
-                var data = response.data
-                if($window.confirm("Do you want to download "+title+" excel file")){
-                    var file = new Blob([s2ab(data)], { type: "application/octet-stream" });
-                    FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
-                }else {
-
+                // var data = response.data;
+                var filedata = {
+                    data: response.data
                 }
 
+                var messages = {
+                    confirmMsg:"Do you want to download "+title+" excel file."
+                }
+                $uibModal.open({
+                    templateUrl: './js/components/procedures/userConfirmation.html',
+                    controller: 'confirmCtrl',
+                    controllerAs: '$ctrl',
+                    resolve: {
+                        usermessage: messages,
+                        filedata:filedata
+                    },
+                    backdrop: 'static',
+                    keyboard: false
+                }).result.then(function(filedata,status){
+                    //handle modal close with response
+                    var file = new Blob([s2ab(filedata.data)], { type: "application/octet-stream" });
+                    FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
+                },function () {
+                    //handle modal dismiss
+
+                });
             } else {
-                $window.alert("The file can not be downloaded");
+                var position = "top left";
+                var queryId = '#toaster';
+                $scope.usermessage = 'The file can not be downloaded';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
             }
         });
     }
@@ -249,6 +285,44 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $interval.cancel($scope.interval);
         }
     );
+
+    function confirmProcedureUpdate(messages){
+         //Ask user to update or not
+        $uibModal.open({
+            templateUrl: './js/components/procedures/userConfirmation.html',
+            controller: 'confirmCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                usermessage: messages,
+                filedata:{}
+            },
+            backdrop: 'static',
+            keyboard: false
+        }).result.then(function(response,status){
+            //handle modal close with response
+            $scope.clock = timeService.getTime();
+            var userdetails = $scope.clock.utc +" "+$scope.name +"("+$scope.role.cRole.callsign+")";
+            $scope.upload($scope.config.file,userdetails); 
+        },function () {
+            //handle modal dismiss
+            $scope.config = {};
+            $scope.upload_form.$setPristine();
+        });
+    }
+});
+
+quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {
+    var $ctrl = this;
+    $ctrl.modalLabel = usermessage.confirmMsg;
+
+    $ctrl.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $ctrl.save = function(){
+        $uibModalInstance.close(filedata,true);
+    }
+
 });
 
 

@@ -40,7 +40,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="details" ng-show="procedurelist.length > 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
+            <tbody class="details" ng-show="procedurelist.length > 0 && loadstatus === false" style="background: #fcfefc">
                 <tr ng-repeat="procedure in procedurelist | orderBy:'id' | orderBy:sortType:sortReverse">
                     <td>{{ procedure.id }}</td>
                     <td>{{ procedure.title }}</td>
@@ -55,7 +55,7 @@
                     </td>
                 </tr>
             </tbody>
-            <tbody class="details" ng-show="procedurelist.length === 0 && loadstatus === false" style="background: #fcfefc;border-bottom:1px solid #ddd">
+            <tbody class="details" ng-show="procedurelist.length === 0 && loadstatus === false" style="background: #fcfefc">
                 <tr>
                     <td colspan="6" style="text-align:center">No procedures available.</td>
                 </tr>

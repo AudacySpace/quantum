@@ -90,7 +90,7 @@ angular.module('quantum')
             console.log(temp);
             if(temp.length === 4 && temp[1] === 'dashboard' && temp[2] === 'procedure'){
                 var revNum = procedureService.getCurrentViewRevision();
-                var pinTo = 'top right';
+                var pinTo = 'bottom right';
                 var toast = $mdToast.simple()
                                     .textContent('This procedure instance is saved in the Live Index with revision number: '+revNum.value)
                                     .action('OK')

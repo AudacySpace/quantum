@@ -187,15 +187,13 @@ label{
     padding-left:0px;
 }
 
-/*tbody.details {
-    border-bottom: 1px solid #ddd;
-}
-*/
-#toaster button.md-action, #logouttoaster  button.md-action{
-    color:#07d1ea;
+button.md-action{
+   color:#07d1ea !important; 
 }
 
-
+.infoNotification{
+    top:-68px;
+}
 
 @media (min-width: 768px) {
     .navbar-nav>li>a {
@@ -362,9 +360,19 @@ label{
 
     div#toaster{
         margin-top:50px;
+        font-size:8px; 
     }
-    div#toaster{
-        font-size:8px;
+    .infoNotification{
+        top:-28px;
+    }
+
+    div.md-toast-content,button.md-action{
+        font-size:8px !important;
+     /*   font-size:8px; */
+    }
+
+    .inputNotification{
+        top:50px;
     }
 }
 
@@ -387,6 +395,23 @@ label{
 
     div#toaster{
         margin-top:50px;
+    }
+    md-toast{
+        width:400px;
+    }
+
+    .infoNotification{
+        top:-28px;
+        font-size:10px;
+    }
+
+    div.md-toast-content{
+        font-size:10px;
+       /* font-size:8px; */
+    }
+
+    .inputNotification{
+        top:50px;
     }
 }   
 

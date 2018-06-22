@@ -1,4 +1,4 @@
-quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window) {
+quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window,procedureService) {
     var $ctrl = this;
 
     $ctrl.users = [];
@@ -58,14 +58,23 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
                 userService.setAllowedRoles($ctrl.selected.user, newRoles, $ctrl.mission)
                 .then(function(response) {
                     if(response.status == 200){
-                        $window.alert("Allowed roles updated for " + $ctrl.selected.user.google.name);
+                        var position = "bottom right";
+                        var queryId = '#adminsettingstoaster';
+                        $scope.usermessage = "Allowed roles updated for " + $ctrl.selected.user.google.name;
+                        var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
                     }
                 })
             } else {
-                $window.alert("Please choose at least one role");
+                var position = "bottom right";
+                var queryId = '#adminsettingstoaster';
+                $scope.usermessage = "Please choose at least one role";
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
             }
         } else {
-            $window.alert("Please select the user from dropdown menu");
+            var position = "bottom right";
+            var queryId = '#adminsettingstoaster';
+            $scope.usermessage = "Please select the user from dropdown menu";
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
         }
     }
 
