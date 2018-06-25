@@ -7,6 +7,8 @@ describe('Test Suite for Procedure Controller', function () {
         }
     };
 
+    var modalInstance = { open: function() {} };
+
     var result = [{
         "_id": "5a78b26a5fa10701004acb4c",
         "instances": [
@@ -264,7 +266,8 @@ describe('Test Suite for Procedure Controller', function () {
                 procedureService: procedureService,
                 userService: userService,
                 $interval: $intervalSpy,
-                timeService: timeService
+                timeService: timeService,
+                $uibModal : modalInstance
             });
         });
     });
@@ -322,7 +325,7 @@ describe('Test Suite for Procedure Controller', function () {
   		expect(scope.config).toBeDefined();
   		scope.$digest();
         expect(procedureService.getProcedureList).toHaveBeenCalled();
-        expect(scope.usermessage).toEqual('This file number already exists in the list with a different title.Please try uploading with a new index number!')
+        expect(scope.usermessage).toEqual('This file number already exists in the list with a different title.Please try uploading with a new index number!');
         expect(scope.config).toEqual({});      
 
     });

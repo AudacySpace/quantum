@@ -1492,6 +1492,7 @@ describe('Test Suite for Run Instance Controller', function () {
         spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         spyOn(procedureService, "setProcedureName").and.callThrough();
         spyOn(procedureService, "setHeaderStyles").and.callThrough();
+        spyOn(procedureService,"displayAlert").and.returnValue(true);
 
 
         deferredSetInfo.resolve({status:200});
@@ -1971,9 +1972,10 @@ describe('Test Suite for Run Instance Controller', function () {
                 contenttype: "String"
             }
         ];
-        spyOn(windowMock, 'alert');
+       // spyOn(windowMock, 'alert');
         scope.updateInputValue(0,"");
-        expect(windowMock.alert).toHaveBeenCalledWith("Please enter value and then click Set");
+        //expect(windowMock.alert).toHaveBeenCalledWith("Please enter value and then click Set");
+        expect(scope.usermessage).toEqual('Please enter value and then click Set');
     });
 
     it('should set buttonStatus when whentyping is called', function() {

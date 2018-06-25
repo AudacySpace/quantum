@@ -2032,9 +2032,10 @@ describe('Test Suite for Section Controller', function () {
                 contenttype: "String"
             }
         ];
-        spyOn(windowMock, 'alert');
+       // spyOn(windowMock, 'alert');
         scope.updateInputValue(0,"");
-        expect(windowMock.alert).toHaveBeenCalledWith("Please enter value and then click Set");
+       // expect(windowMock.alert).toHaveBeenCalledWith("Please enter value and then click Set");
+       expect(scope.usermessage).toEqual("Please enter value and then click Set");
     });
 
     it('should set buttonStatus when whentyping is called', function() {

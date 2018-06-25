@@ -608,7 +608,7 @@ quantum
                             .textContent(message)
                             .action('OK')
                             .parent(document.querySelectorAll(queryId))
-                            .hideDelay(false)
+                            .hideDelay(5000)
                             .highlightAction(true)
                             .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
                             .position(position);
