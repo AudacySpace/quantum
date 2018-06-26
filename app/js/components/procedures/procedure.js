@@ -305,8 +305,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $scope.upload($scope.config.file,userdetails); 
         },function () {
             //handle modal dismiss
-            $scope.config = {};
-            $scope.upload_form.$setPristine();
         });
     }
 });

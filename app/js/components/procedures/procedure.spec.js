@@ -557,6 +557,214 @@ describe('Test Suite for Procedure Controller', function () {
     });
 
 
+    it('should call submit if the form is valid and update the procedure when no saved instances exist', function(){
+
+         var rep = [{
+            "_id": "5a78b26a5fa10701004acb4c",
+            "instances": [
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.1",
+                            "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "1.2",
+                            "info": "034.11:26:37 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.0",
+                            "info": "034.11:26:38 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": "034.11:26:39 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": "034.11:26:40 UTC Taruni Gattu(VIP)"
+                        }
+                    ],
+                    "closedBy": "Taruni Gattu(VIP)",
+                    "startedAt": "2018 - 034.11:26:35 UTC",
+                    "completedAt": "2018 - 034.11:26:40 UTC",
+                    "revision": 1,
+                    "running": false
+                },
+                {
+                    "openedBy": "Taruni Gattu(VIP)",
+                    "Steps": [
+                        {
+                            "step": "1.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "1.2",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.0",
+                            "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.0",
+                            "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
+                        },
+                        {
+                            "step": "2.1.1",
+                            "info": ""
+                        }
+         
+                    ],
+                    "closedBy": "",
+                    "startedAt": "2018 - 034.11:26:49 UTC",
+                    "completedAt": "",
+                    "revision": 2,
+                    "running": true
+                }
+            ],
+            "procedure": {
+                "sections": [
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    } 
+                ],
+                "eventname": "Audacy Zero",
+                "lastuse": "2018 - 034.11:26:50 UTC",
+                "title": "Audacy Zero - Procedure Example",
+                "id": "1.3"
+            },
+            "__v": 6
+        },
+        {
+            "_id": "5a78b2745fa10701004acb4d",
+            "instances": [],
+            "procedure": {
+                "sections": [
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    }
+                ],
+                "eventname": "Audacy Zero",
+                "lastuse": "2018 - 034.11:26:59 UTC",
+                "title": "Audacy Zero - OBC Bootup",
+                "id": "1.2"
+            },
+            "__v": 3
+        }];
+
+        var userdetails = '070.10:10:50 UTC John Smith(MD)';
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+
+        var modalResult = {};
+        var mockModalInstance = { result: $q.resolve(modalResult,true) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+        spyOn(scope, "upload");
+        deferredProcedureList.resolve({ data : rep,status:200});
+
+        scope.upload_form = { $valid: true ,$setPristine : function(){}};
+        scope.config = {file: { name : '1.2 - Audacy Zero - OBC Bootup.xlsx'}};
+    
+        scope.submit();
+        expect(scope.upload_form).toBeDefined();
+        expect(scope.config).toBeDefined();
+        expect(scope.upload).toBeDefined();
+
+        scope.$digest();
+        expect(procedureService.getProcedureList).toHaveBeenCalled();
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
+        expect(scope.count).toEqual(0);
+        expect(scope.upload).toHaveBeenCalled();
+        expect(scope.upload).toHaveBeenCalledWith(scope.config.file,userdetails);
+
+    });
+
+
 	it('should alert the user if the filename is not in the desired format(1.1 - Audacy Zero - OBC Bootup.xlsx)', function(){
         scope.upload_form = { $valid: true ,$setPristine : function(){}};
     	scope.config = {file: { name : '1.1 - Audacy Zero OBC Bootup.xlsx'}};
