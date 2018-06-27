@@ -28,8 +28,9 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
         if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
             var position = "bottom right";
             var queryId = '#logouttoaster';
+            var delay = 5000;
             $scope.usermessage = 'No mission without the Mission Director. Your role cannot be updated';
-            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
             if(alertstatus === true){
                $uibModalInstance.close($ctrl.cRole);
             }
@@ -40,8 +41,9 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
                 if(response.status == 200){
                     var position = "bottom right";
                     var queryId = '#logouttoaster';
+                    var delay = 5000;
                     $scope.usermessage = "User's current role updated";
-                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                     if(alertstatus === true){
                        $uibModalInstance.close($ctrl.role.currentRole);
                     }

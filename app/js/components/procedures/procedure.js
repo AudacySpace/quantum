@@ -5,6 +5,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
     $scope.loadcount = 0;
+    $scope.loadstatus = true;
 
   	$scope.submit = function(){ 
         // Call upload if form is valid
@@ -29,7 +30,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
                                     var position = "top left";
                                     var queryId = '#toaster';
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                                    var delay = 5000;
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                                     if(alertstatus === true){
                                         $scope.config = {};
                                         $scope.upload_form.$setPristine();
@@ -41,7 +43,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
                                     var position = "top left";
                                     var queryId = '#toaster';
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                                    var delay = 5000;
+                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                                     if(alertstatus === true){
                                         $scope.config = {};
                                         $scope.upload_form.$setPristine();
@@ -65,8 +68,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 }else {
                     var position = "top left";
                     var queryId = '#toaster';
+                    var delay = 5000;
                     $scope.usermessage = "The excel file must be named in 'index - eventname - title.xlsx' format.Eg: '1.1 - Audacy Zero - OBC Bootup.xlsx'";
-                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                     if(alertstatus === true){
                         $scope.config = {};
                         $scope.upload_form.$setPristine();
@@ -75,8 +79,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             } else {
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = "No file passed. Please upload an xlsx file.";
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
@@ -97,8 +102,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             if(resp.data.error_code === 0 && resp.data.err_desc === null){ 
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' uploaded.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     //reset the input fields on the form
                     $scope.config = {};
@@ -108,8 +114,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "file updated"){
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'Success: File ' + resp.config.data.file.name + ' updated.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
 
                 if(alertstatus === true){
                     //reset the input fields on the form
@@ -121,8 +128,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             }else if(resp.data.error_code === 1){
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'An error occured.This procedure already exists.Please upload with a new index number.';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
 
                 if(alertstatus === true){
                     //reset the input fields on the form
@@ -132,8 +140,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'Not a valid file.Required Columns are Step,Type,Role,Content!';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
@@ -142,8 +151,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             }else {
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'An error occured while uploading.Please try again!';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
@@ -152,8 +162,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }, function (resp) { //catch error
             var position = "top left";
             var queryId = '#toaster';
+            var delay = 5000;
             $scope.usermessage = 'Error status: ' + resp.status;
-            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
             if(alertstatus === true){
                 $scope.config = {};
                 $scope.upload_form.$setPristine();
@@ -250,8 +261,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             } else {
                 var position = "top left";
                 var queryId = '#toaster';
+                var delay = 5000;
                 $scope.usermessage = 'The file can not be downloaded';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
             }
         });
     }

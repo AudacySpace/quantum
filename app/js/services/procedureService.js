@@ -399,25 +399,6 @@ quantum
         return steps;
     }
 
-    function archiveThisProcedure(steps){
-        if(steps.length > 0){
-            var count = 0;
-            for(var i=0;i<steps.length;i++){
-                if(steps[i].Info){
-                    count++;
-                }
-            }
-
-            if(count === steps.length-1){
-                return true;
-            }else {
-                return false;
-            } 
-        }else {
-            return "No steps available!";
-        }
-    }
-
     function getCompletedSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
@@ -602,13 +583,27 @@ quantum
          }
     }
 
-    function displayAlert(message,position,queryId){
-        // var pinTo = 'top left';
+
+    function getStepPermissions(psteps,callsign){
+        var len = psteps.length;
+        //check for role and disable the steps if not permitted
+        for(var a=0;a<len;a++){
+            if(psteps[a].Role.includes(callsign)){
+                psteps[a].status = false;
+            }else {
+                psteps[a].status = true;
+            }
+        }
+        return psteps;
+    }
+
+      function displayAlert(message,position,queryId,delay){
+        //var pinTo = 'top left';
         var toast = $mdToast.simple()
                             .textContent(message)
                             .action('OK')
                             .parent(document.querySelectorAll(queryId))
-                            .hideDelay(5000)
+                            .hideDelay(delay)
                             .highlightAction(true)
                             .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
                             .position(position);
@@ -642,7 +637,6 @@ quantum
         showPList : showPList,
         checkIfEmpty : checkIfEmpty,
         openNextSteps : openNextSteps,
-        archiveThisProcedure : archiveThisProcedure,
         getCompletedSteps : getCompletedSteps,
         setCurrentViewRevision : setCurrentViewRevision,
         getCurrentViewRevision : getCurrentViewRevision,
@@ -653,7 +647,7 @@ quantum
         getNextSectionHeaderIndex : getNextSectionHeaderIndex,
         getSubSectionHeaderIndex : getSubSectionHeaderIndex,
         getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
+        getStepPermissions : getStepPermissions,
         displayAlert : displayAlert
-
     }
 }]);

@@ -2,7 +2,7 @@
 <div class="container form" id="procedures">
     <div class="container list">
         <table class="table table-hover">
-            <thead ng-show="loadstatus === false" >
+            <thead>
                 <tr class="tablerowstyle" style="background-color: #ddd">
                     <th>
                         <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Revision
@@ -60,7 +60,7 @@
             <tbody class="details" ng-show="loadstatus === true">
                 <tr>
                     <td colspan="6" style="text-align:center;background: #fcfefc">
-                        <div class="loading-spiner" ng-show="loadstatus === true"><img src="../../../media/gifs/tenor (3).gif" style="width:10%"/> </div>
+                        <div class="loading-spiner" ng-show="loadstatus === true"><img src="../../../media/gifs/tenor (3).gif" style="width:100px"/> </div>
                     </td>
                 </tr>
             </tbody>

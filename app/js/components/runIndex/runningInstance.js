@@ -317,8 +317,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }else if($scope.steps[index].contenttype === 'Input' && $scope.inputStepValues[index].ivalue.length === 0){  
                     var position = "right";
                     var queryId = "#objectid-"+index;
-                    $scope.usermessage = 'Please enter the telemetry value in the field,click Set and then mark the checkbox';
-                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);   
+                    var delay = 5000;
+                    $scope.usermessage = 'Please enter the telemetry value in the field,click Set and then mark the checkbox.';
+                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);   
                     $scope.steps[index].chkval = false;   
                     $scope.steps[index].rowstyle = {
                         rowcolor : {backgroundColor:'#e9f6fb'}
@@ -708,8 +709,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }else {
             var position = "left";
             var queryId = "#object-"+index;
+            var delay = 5000;
             $scope.usermessage = 'Please enter value and then click Set';
-            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
         }
 
     }
@@ -947,6 +949,10 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             }
         });
     }
+
+    $scope.$watch('role.cRole',function(newvalue,oldvalue){
+        $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
+    });
 
 });
 

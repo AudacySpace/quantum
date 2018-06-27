@@ -1330,7 +1330,6 @@ describe('Test Suite for Procedure Controller', function () {
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","AS-Run Archive");
     });
 
-
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();

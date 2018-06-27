@@ -597,84 +597,6 @@ describe('Test Suite for Procedure Service', function () {
         expect(procedureService.openNextSteps(inputprocedure,0)).toEqual(outputprocedure);
     });
 
-    it('should define the archiveThisProcedure function', function() {
-        expect(procedureService.archiveThisProcedure).toBeDefined();
-    });
-
-    it('should return error message No steps available when archiveThisProcedure is called', function() {
-        expect(procedureService.archiveThisProcedure([])).toEqual("No steps available!");
-    });
-
-
-    it('should return false when archiveThisProcedure is called with steps having more than one step without Info', function() {
-        var procSectionTmp = [
-            {
-                "Content": "Pre-Action Safety Information",
-                "Type": "Heading",
-                "Role": "MD",
-                "Step": "1.0",
-                "Info": "Taruni Gattu 036.09:23:12 UTC"
-            },
-            {
-                "Reference": "http://somewhere on the net",
-                "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder.",
-                "Type": "Warning",
-                "Role": "MD",
-                "Step": "1.1",
-                "Info": "Taruni Gattu 036.09:23:15 UTC"
-            },
-            {
-                "Content": "Make required safety announcement on VL-AZERO",
-                "Type": "Action",
-                "Role": "MD",
-                "Step": "1.2"
-            },
-            {
-                "Content": "Establish Com Link",
-                "Type": "Heading",
-                "Role": "SYS,CC",
-                "Step": "2.0"
-            }
-        ];
-
-        expect(procedureService.archiveThisProcedure(procSectionTmp)).toEqual(false);
-    });
-
-    it('should return true when archiveThisProcedure is called with steps with close step clicked and it is the only one left', function() {
-        var procSectionTmp = [
-            {
-                "Content": "Pre-Action Safety Information",
-                "Type": "Heading",
-                "Role": "MD",
-                "Step": "1.0",
-                "Info": "Taruni Gattu 036.09:23:12 UTC"
-            },
-            {
-                "Reference": "http://somewhere on the net",
-                "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder.",
-                "Type": "Warning",
-                "Role": "MD",
-                "Step": "1.1",
-                "Info": "Taruni Gattu 036.09:23:15 UTC"
-            },
-            {
-                "Content": "Make required safety announcement on VL-AZERO",
-                "Type": "Action",
-                "Role": "MD",
-                "Step": "1.2",
-                "Info": "Taruni Gattu 036.09:23:15 UTC"
-            },
-            {
-                "Content": "Establish Com Link",
-                "Type": "Heading",
-                "Role": "SYS,CC",
-                "Step": "2.0"
-            }
-        ];
-
-        expect(procedureService.archiveThisProcedure(procSectionTmp)).toEqual(true);
-    });
-
     it('should define the getCompletedSteps function', function() {
         expect(procedureService.getCompletedSteps).toBeDefined();
     });
@@ -1223,6 +1145,23 @@ describe('Test Suite for Procedure Service', function () {
         ];
         expect(procedureService.getSubSectionHeaderIndex(steps,7)).toEqual(-1);
 
+    });
+
+    it('should return the procedure sections array with defined permissions when getStepPermissions is called', function() {
+        var procedure = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true },
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'checkbox':false},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
+        ]
+        expect(procedureService.getStepPermissions(procSection,"SYS")).toEqual(procedure);
     });
 
 });

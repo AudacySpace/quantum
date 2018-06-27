@@ -87,7 +87,6 @@ angular.module('quantum')
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
-            console.log(temp);
             if(temp.length === 4 && temp[1] === 'dashboard' && temp[2] === 'procedure'){
                 var revNum = procedureService.getCurrentViewRevision();
                 var pinTo = 'bottom right';

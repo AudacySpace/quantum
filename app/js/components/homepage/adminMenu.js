@@ -60,21 +60,24 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
                     if(response.status == 200){
                         var position = "bottom right";
                         var queryId = '#adminsettingstoaster';
+                        var delay = 5000;
                         $scope.usermessage = "Allowed roles updated for " + $ctrl.selected.user.google.name;
-                        var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                        var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                     }
                 })
             } else {
                 var position = "bottom right";
                 var queryId = '#adminsettingstoaster';
+                var delay = 5000;
                 $scope.usermessage = "Please choose at least one role";
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
             }
         } else {
             var position = "bottom right";
             var queryId = '#adminsettingstoaster';
+            var delay = 5000;
             $scope.usermessage = "Please select the user from dropdown menu";
-            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId);
+            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
         }
     }
 
