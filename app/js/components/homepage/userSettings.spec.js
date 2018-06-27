@@ -1,5 +1,5 @@
 describe('Testing user settings modal controller', function () {
-    var controller, userService, deferredGetRole, deferredAllowed, deferredSetRole, scope;
+    var controller, userService, deferredGetRole, deferredAllowed, deferredSetRole, scope,procedureService;
     var windowMock = {
         alert: function(message) {
             
@@ -17,21 +17,24 @@ describe('Testing user settings modal controller', function () {
             $provide.value('$window', windowMock);
         });
 
-        inject( function($controller, _$q_, _userService_, $rootScope){
+        inject( function($controller, _$q_, _userService_, $rootScope,_procedureService_){
             scope = $rootScope.$new();
             userService = _userService_;
             deferredGetRole = _$q_.defer();
             deferredSetRole = _$q_.defer();
             deferredAllowed = _$q_.defer();
+            procedureService = _procedureService_;
             spyOn(userService, "getCurrentRole").and.returnValue(deferredGetRole.promise);
             spyOn(userService, "setCurrentRole").and.returnValue(deferredSetRole.promise);
             spyOn(userService, "getAllowedRoles").and.returnValue(deferredAllowed.promise);
+            spyOn(procedureService,"displayAlert").and.returnValue(true);
 
             controller = $controller('userSettingsCtrl', {
                 $scope : scope,
                 $uibModalInstance: modalInstance,
                 userService: userService,
-                mission: mission
+                mission: mission,
+                procedureService: procedureService
             });
             
         });
@@ -122,12 +125,13 @@ describe('Testing user settings modal controller', function () {
             }
         }
 
-        spyOn(windowMock, 'alert');
+       // spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
 
         controller.updateRole();
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith('No mission without the Mission Director. Your role cannot be updated');
+       // expect(windowMock.alert).toHaveBeenCalledWith('No mission without the Mission Director. Your role cannot be updated');
+        expect(scope.usermessage).toEqual('No mission without the Mission Director. Your role cannot be updated');
     });
 
     it('should update the role of the user when update role is called', function() {
@@ -142,7 +146,7 @@ describe('Testing user settings modal controller', function () {
             }
         };
 
-        spyOn(windowMock, 'alert');
+       // spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
 
         deferredSetRole.resolve({ data : {}, status : 200 });
@@ -153,7 +157,8 @@ describe('Testing user settings modal controller', function () {
 
         expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.name);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated");
+        //expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated");
+        expect(scope.usermessage).toEqual("User's current role updated");
     });
 
     it('should not update the role of the user when update role is called(response status other than 200)', function() {
@@ -168,7 +173,7 @@ describe('Testing user settings modal controller', function () {
             }
         };
 
-        spyOn(windowMock, 'alert');
+        //spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
 
         deferredSetRole.resolve({ data : {}, status : 404 });
@@ -179,6 +184,7 @@ describe('Testing user settings modal controller', function () {
 
         expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.name);
         expect(modalInstance.close).not.toHaveBeenCalled();
-        expect(windowMock.alert).not.toHaveBeenCalledWith("User's current role updated");
+        //expect(windowMock.alert).not.toHaveBeenCalledWith("User's current role updated");
+        expect(scope.usermessage).toEqual(undefined);
     });
 });

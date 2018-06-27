@@ -1,5 +1,5 @@
 quantum
-.factory('procedureService', ['$http','$window', function($http,$window) {
+.factory('procedureService', ['$http','$window','$mdToast', function($http,$window,$mdToast) {
 
     var procedure = {
         id:"",
@@ -399,31 +399,14 @@ quantum
         return steps;
     }
 
-    function archiveThisProcedure(steps){
-        if(steps.length > 0){
-            var count = 0;
-            for(var i=0;i<steps.length;i++){
-                if(steps[i].Info){
-                    count++;
-                }
-            }
-
-            if(count === steps.length-1){
-                return true;
-            }else {
-                return false;
-            } 
-        }else {
-            return "No steps available!";
-        }
-    }
-
     function getCompletedSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
                     steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
+                        rowcolor : {
+                            backgroundColor:'#c6ecc6'
+                        }
                     };
                     steps[d].chkval = true;
                 }else {
@@ -600,6 +583,40 @@ quantum
          }
     }
 
+
+    function getStepPermissions(psteps,callsign){
+        var len = psteps.length;
+        //check for role and disable the steps if not permitted
+        for(var a=0;a<len;a++){
+            if(psteps[a].Role.includes(callsign)){
+                psteps[a].status = false;
+            }else {
+                psteps[a].status = true;
+            }
+        }
+        return psteps;
+    }
+
+      function displayAlert(message,position,queryId,delay){
+        //var pinTo = 'top left';
+        var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            .parent(document.querySelectorAll(queryId))
+                            .hideDelay(delay)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(position);
+
+        $mdToast.show(toast).then(function(response) {
+            if ( response == 'ok' ) {
+            }
+        },function(error){
+            // console.log(error);
+        });
+        return true;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -620,7 +637,6 @@ quantum
         showPList : showPList,
         checkIfEmpty : checkIfEmpty,
         openNextSteps : openNextSteps,
-        archiveThisProcedure : archiveThisProcedure,
         getCompletedSteps : getCompletedSteps,
         setCurrentViewRevision : setCurrentViewRevision,
         getCurrentViewRevision : getCurrentViewRevision,
@@ -630,7 +646,8 @@ quantum
         getSectionHeaderIndex : getSectionHeaderIndex,
         getNextSectionHeaderIndex : getNextSectionHeaderIndex,
         getSubSectionHeaderIndex : getSubSectionHeaderIndex,
-        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex
-
+        getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
+        getStepPermissions : getStepPermissions,
+        displayAlert : displayAlert
     }
 }]);

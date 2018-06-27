@@ -51,12 +51,17 @@
                         </li>
                     </ul>
                 </td>
-                <td ng-if="step.contenttype === 'Input'">
+                <td ng-if="step.contenttype === 'Input'" >
                     <p>{{step.Content}}</p>
                     <label>TLM Recorded Value:</label><strong>{{step.recordedValue}}</strong>
                     <br/>
                     <label>Enter Value:</label><input type="text" ng-model="tempValues[$index].ivalue" ng-keypress="whenTyping($index)" ng-disabled="step.chkval || step.status"/>
                     <button ng-click="updateInputValue($index,tempValues[$index].ivalue)" ng-style="step.buttonStatus" ng-disabled="step.chkval || step.status">Set</button>
+                   <!--  <span id="{{ 'object-' + $index }}" style="top:-28px !important"></span> -->
+                   <span id="{{ 'object-' + $index }}" style="display:block" class="inputNotification"></span>
+     <!--               <span id="{{ 'objectid-' + $index }}" style="display:block;width:179px" class="infoNotification"></span> -->
+                    <span id="{{ 'objectid-' + $index }}" style="display:block;" class="infoNotification"></span>
+
                 </td>
                 <td ng-if="step.contenttype === 'AlertInfo'">
                     <p>{{step.Content}}</p>

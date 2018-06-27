@@ -3,9 +3,14 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
     $scope.sortType = 'procedurestarted'; // set the default sort type
     $scope.sortReverse = false;  // set the default sort order
     $scope.livelist = [];
+    $scope.loadcount = 0;
+    $scope.loadstatus = true;
     showRunningList();
 
     function showRunningList(){
+        if($scope.loadcount === 0){
+            $scope.loadstatus = true;
+        }
         procedureService.getAllInstances($scope.params.procID).then(function(response){
             if(response.status === 200){
                 //openedBy
@@ -22,6 +27,8 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
             }
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName($scope.procedureid ,$scope.proceduretitle,"Open Procedure");
+            $scope.loadstatus = false;
+            $scope.loadcount++;
         });
     }
 
