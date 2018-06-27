@@ -293,7 +293,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }else if($scope.steps[index].contenttype === 'Input' && $scope.inputStepValues[index].ivalue.length === 0){  
                     var position = "right";
                     var queryId = "#objectid-"+index;
-                    var delay = 5000;
+                    var delay = false;
                     $scope.usermessage = 'Please enter the telemetry value in the field,click Set and then mark the checkbox.';
                     var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay); 
 
@@ -691,7 +691,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         }else {
             var position = "left";
             var queryId = "#object-"+index;
-            var delay = 5000;
+            var delay = false;
             $scope.usermessage = 'Please enter value and then click Set';
             var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
         }
