@@ -166,6 +166,6 @@ describe('Test Suite for Homepage Controller', function () {
 
         //expect the mocked modal open function to be called
         expect(modalInstance.open).toHaveBeenCalled();
-    })
+    });
 
 });

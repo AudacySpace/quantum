@@ -1,5 +1,5 @@
 describe('Testing admin controller', function () {
-    var controller, scope, userService, deferredRole, deferredUser, deferredSet;
+    var controller, scope, userService, deferredRole, deferredUser, deferredSet,procedureService;
     var windowMock = {
         alert: function(message) {
             
@@ -14,11 +14,12 @@ describe('Testing admin controller', function () {
             $provide.value('$window', windowMock);
         });
 
-        inject( function($controller, $rootScope, _$q_){
+        inject( function($controller, $rootScope, _$q_,_procedureService_){
             deferredUser = _$q_.defer();
             deferredRole = _$q_.defer();
             deferredSet = _$q_.defer();
             scope = $rootScope.$new();
+            procedureService = _procedureService_;
             userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles']);
 
             userService.getRoles.and.callFake(function() {
@@ -33,11 +34,14 @@ describe('Testing admin controller', function () {
                 return deferredSet.promise;
             });
 
+            spyOn(procedureService,"displayAlert").and.returnValue(true);
+
             controller = $controller('adminCtrl', {
                 $uibModalInstance: modalInstance,
                 userService: userService,
                 $scope: scope,
-                mission: mission
+                mission: mission,
+                procedureService: procedureService
             });
             
         });
@@ -208,15 +212,15 @@ describe('Testing admin controller', function () {
     });
 
     it('should alert the administrator if no user is selected from dropdown, on call of save function', function() {
-        spyOn(windowMock, 'alert');
+        //spyOn(windowMock, 'alert');
         controller.selected = undefined;
-
         controller.save();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please select the user from dropdown menu');
+        //expect(windowMock.alert).toHaveBeenCalledWith('Please select the user from dropdown menu');
+        expect(scope.usermessage).toEqual('Please select the user from dropdown menu');
     });
 
     it('should alert the administrator if no role is checked for the user, on call of save function', function() {
-        spyOn(windowMock, 'alert');
+       // spyOn(windowMock, 'alert');
         controller.selected = {
             user : {
                 'google' : {},
@@ -243,11 +247,12 @@ describe('Testing admin controller', function () {
         }];
 
         controller.save();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please choose at least one role');
+       // expect(windowMock.alert).toHaveBeenCalledWith('Please choose at least one role');
+        expect(scope.usermessage).toEqual('Please choose at least one role');
     });
 
     it('should call service to update user allowed roles and alert administrator, on call of save function', function() {
-        spyOn(windowMock, 'alert');
+        //spyOn(windowMock, 'alert');
         controller.selected = {
             user : {
                 'google' : {
@@ -294,17 +299,19 @@ describe('Testing admin controller', function () {
         deferredSet.resolve({ data : {}, status : 200 })
         controller.save();
 
-        expect(windowMock.alert).not.toHaveBeenCalledWith('Allowed roles updated for John Smith')
+        //expect(windowMock.alert).not.toHaveBeenCalledWith('Allowed roles updated for John Smith')
 
         //call digest cycle for resolve to work
         scope.$digest();
         expect(controller.selected.user.allowedRoles).toEqual({GCC : 1, NAV : 1});
         expect(userService.setAllowedRoles).toHaveBeenCalledWith(user, roles, controller.mission);
-        expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
+        //expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
+        expect(scope.usermessage).toEqual('Allowed roles updated for John Smith');
+
     });
 
     it('should not be able to save allowed roles for user (status other than 200), on call of save function', function() {
-        spyOn(windowMock, 'alert');
+        //spyOn(windowMock, 'alert');
         controller.selected = {
             user : {
                 'google' : {
@@ -342,7 +349,8 @@ describe('Testing admin controller', function () {
 
         //call digest cycle for resolve to work
         scope.$digest();
-        expect(windowMock.alert).not.toHaveBeenCalledWith('Allowed roles updated for John Smith')
+        //expect(windowMock.alert).not.toHaveBeenCalledWith('Allowed roles updated for John Smith')
+        expect(scope.usermessage).toEqual(undefined);
     });
 
     it('should watch for selected user and check the roles listed as allowed roles for user', function() {

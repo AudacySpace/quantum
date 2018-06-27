@@ -3,9 +3,14 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     $scope.sortType     = 'procedurecompleted'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.archivedlist = [];
+    $scope.loadcount = 0;
+    $scope.loadstatus = true;
     showArchivedList();
 
     function showArchivedList(){
+        if($scope.loadcount === 0){
+            $scope.loadstatus = true;
+        }
         procedureService.getAllInstances($scope.params.procID).then(function(response){
             if(response.status === 200){
                 //openedBy
@@ -24,6 +29,9 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
            }
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName( $scope.procedureid, $scope.proceduretitle,"AS-Run Archive");
+            $scope.loadstatus = false;
+            $scope.loadcount++;
+
         });
 
     }

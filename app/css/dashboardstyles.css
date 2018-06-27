@@ -187,6 +187,14 @@ label{
     padding-left:0px;
 }
 
+button.md-action{
+   color:#07d1ea !important; 
+}
+
+.infoNotification{
+    top:-68px;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
@@ -246,6 +254,14 @@ label{
     div.upload_form_row input.form-control{
         height:22px;
         border-radius:0px;
+        font-size:6px;
+    }
+    #toaster div.md-toast-content{
+        font-size:6px;
+    }
+
+    #toaster button.md-action{
+         font-size:6px;
     }
 
     .nav>li>a {
@@ -342,6 +358,25 @@ label{
         margin-top:3px !important;
     }
 
+    div#toaster{
+        margin-top:50px;
+        font-size:8px; 
+    }
+    .infoNotification{
+        top:-28px;
+    }
+
+    div.md-toast-content,button.md-action{
+        font-size:8px !important;
+     /*   font-size:8px; */
+    }
+
+    .inputNotification{
+        top:50px;
+    }
+    #procedures th{
+        padding:3px !important;
+    }
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
@@ -361,6 +396,26 @@ label{
         font-size: 10px !important;
     }
 
+    div#toaster{
+        margin-top:50px;
+    }
+
+    md-toast{
+        width:400px;
+    }
+
+    .infoNotification{
+        top:-28px;
+        font-size:10px;
+    }
+
+    div.md-toast-content{
+        font-size:10px;
+       /* font-size:8px; */
+    }
+
+    .inputNotification{
+        top:50px;
 }   
 
 @media only screen and (min-width: 320px) and (max-width: 374px) {

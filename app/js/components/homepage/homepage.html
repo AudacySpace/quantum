@@ -3,7 +3,7 @@
         <!--Main Dashboard Navigation-->
         <md-content flex class="main">
             <div id="main">
-                <nav class="navbar navbar-default">
+                <nav class="navbar navbar-default" style="background: #fcfefc">
                     <div class="container-fluid" id="top-header" ng-style="$ctrl.header.styles">
                         <div class="navbar-header" id="headerleft">
                             <a class="navbar-brand" href="/dashboard" id="QRegular" ng-style="$ctrl.icons.icon1style" ng-click="$ctrl.setColor()">
@@ -26,13 +26,13 @@
                                 </ul>
                             </li>
                         </ul>
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right" style="margin-right:0px !important">
                             <li  id="headerright">
                                 <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.namestyles" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
                                 <small id="callsign" ng-style="$ctrl.header.namestyles"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a ng-href="/logout" target="_self">Logout</a></li>
+                                    <li ><a ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'">User Administration</a></li>
                                 </ul>
