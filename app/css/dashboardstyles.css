@@ -195,6 +195,13 @@ button.md-action{
     top:-68px;
 }
 
+button.inputsetbuttton{
+    background: #337ab7;
+    color:white;
+    border:none;
+    padding:3px 6px;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
@@ -342,11 +349,16 @@ button.md-action{
     }
 
     table td.commentsCol span{
-        font-size: 6px;
-        padding:5.5px;
-        margin-top:6px;
-        margin-bottom:6px;
+        font-size: 8px;
+        padding:2px 3px;
+        margin-top:1px;
+   /*     margin-bottom:6px;*/
     }
+
+    table td.commentsCol span span.glyphicon{
+        top: -2px;
+    }
+
 
     table td.commentsCol button{
         padding:0px 4px;
@@ -377,9 +389,24 @@ button.md-action{
     #procedures th{
         padding:3px !important;
     }
+
+    .navbar-default{
+        margin-bottom:10px !important;
+    }
+
+    .indexbuttons ul{
+        margin-bottom:5px;
+    }
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
+    .navbar-default{
+        margin-bottom:10px !important;
+    }
+
+    .indexbuttons ul{
+        margin-bottom:6px;
+    }
     a#username.dropdown-toggle {
         display:none;
     }
@@ -389,7 +416,7 @@ button.md-action{
     }
 
     table td.commentsCol button{
-        padding:6px 10px !important;
+        padding:4px 8px !important;
     }
 
     a.indexBtns {
