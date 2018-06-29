@@ -202,6 +202,71 @@ button.inputsetbuttton{
     padding:3px 6px;
 }
 
+
+/* scrollable procedure list styles*/
+.procedureTable{
+  width:100%;
+  table-layout: fixed;
+}
+.tbl-header{
+  background-color: #cccccc40;
+ }
+.tbl-content{
+  height:300px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 10px 5px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 14px;
+  color: #fff;
+  text-transform: uppercase;
+}
+td{
+    padding: 5px;
+    text-align: left;
+    vertical-align:middle;
+    font-size: 14px;
+    color: #000;
+    border-bottom: solid 1px #ddd;
+}
+.tbl-index-content{
+    height:600px;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.procedurescontainer section{
+    padding-left:25px !important;
+    padding-right: 25px !important;
+}
+
+.procedurescontainer {
+    padding-top:90px;
+}
+
+.formcontainer1{
+    height:40px;
+    line-height: 2.9;
+    background: #cccccc40;
+    color:#337ab7;
+    text-transform: uppercase;
+}
+
+.formcontainer2{
+    padding-top:35px;
+}
+
+/*section{
+    line-height: normal;
+}
+*/
+/* end of scrollable procedure list styles*/
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
@@ -397,11 +462,49 @@ button.inputsetbuttton{
     .indexbuttons ul{
         margin-bottom:5px;
     }
+
+    th{
+        padding: 8px 4px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 8px;
+        color: #fff;
+        text-transform: uppercase;
+    }
+    td{
+        padding: 0px;
+        text-align: left;
+        vertical-align:middle;
+        /* font-weight: 300;*/
+        font-size: 8px;
+        color: #000;
+        border-bottom: solid 1px #ddd;
+    }
+
+    .formcontainer1{
+        height:30px;
+        line-height: 4.0;
+        background: #cccccc40;
+        color:#337ab7;
+        text-transform: uppercase;
+        font-size: 8px;
+    }
+
+    .formcontainer2{
+        padding-top:35px;
+    }
+    .form-control {
+        padding:6px 10px;
+    }
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
-    .navbar-default{
+/*    .navbar-default{
         margin-bottom:10px !important;
+    }*/
+
+    section{
+        line-height: 1.1;
     }
 
     .indexbuttons ul{
@@ -438,11 +541,41 @@ button.inputsetbuttton{
 
     div.md-toast-content{
         font-size:10px;
-       /* font-size:8px; */
     }
 
     .inputNotification{
         top:50px;
+    }
+
+    th{
+        padding: 8px 4px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 12px;
+        color: #fff;
+        text-transform: uppercase;
+    }
+    td{
+        padding: 3px;
+        text-align: left;
+        vertical-align:middle;
+        font-size: 10px;
+        color: #000;
+        border-bottom: solid 1px #ddd;
+    }
+
+    .formcontainer1{
+        height:35px;
+        line-height: 3;
+        background: #cccccc40;
+        color:#337ab7;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .formcontainer2{
+        padding-top:35px;
+    }
 }   
 
 @media only screen and (min-width: 320px) and (max-width: 374px) {
@@ -458,6 +591,16 @@ button.inputsetbuttton{
     #QRegularMbl{
         display:none;
     }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    td{
+        padding:7px;
+    }
+    section{
+        line-height:1.1;
+    }
+    
 }
 
 ::-webkit-scrollbar { 
