@@ -35,6 +35,7 @@ module.exports = function(config) {
         './node_modules/ui-select/dist/select.js',
         './node_modules/moment/min/moment.min.js',
         './node_modules/angular-xeditable/dist/js/xeditable.min.js',
+        './node_modules/angular-utils-pagination/dirPagination.js',
         './app/js/app.js',
         './app/js/components/**/*.js',
         './app/js/services/*.js',
