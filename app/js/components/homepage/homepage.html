@@ -3,7 +3,7 @@
         <!--Main Dashboard Navigation-->
         <md-content flex class="main">
             <div id="main">
-                <nav class="navbar navbar-default" style="background: #fcfefc">
+                <nav class="navbar navbar-default navbar-fixed-top" style="background: #fcfefc">
                     <div class="container-fluid" id="top-header" ng-style="$ctrl.header.styles">
                         <div class="navbar-header" id="headerleft">
                             <a class="navbar-brand" href="/dashboard" id="QRegular" ng-style="$ctrl.icons.icon1style" ng-click="$ctrl.setColor()">
@@ -47,7 +47,7 @@
                 </nav>
 
                 <!--Procedures -->
-                <div class="container-fluid">
+                <div class="container-fluid procedurescontainer">
                     <div ng-view></div>
                 </div>
 
