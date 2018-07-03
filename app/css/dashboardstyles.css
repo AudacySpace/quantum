@@ -112,10 +112,11 @@ img.search-icon:focus {
 #top-header {
     padding-right: 0px;
     padding-left: 0px;
+    font-size: 16px;
 }
 
 a#username.dropdown-toggle {
-    font-size:18px;/*22px*/
+    font-size:16px;
     color:black;
     display:inline-block;
     margin-top: 0px;
@@ -202,6 +203,9 @@ button.inputsetbuttton{
     padding:3px 6px;
 }
 
+.configmenu{
+    margin-right:0px !important;
+}
 
 /* scrollable procedure list styles*/
 .procedureTable{
@@ -212,7 +216,7 @@ button.inputsetbuttton{
   background-color: #cccccc40;
  }
 .tbl-content{
-  height:300px;
+  /*height:300px;*/
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid rgba(255,255,255,0.3);
@@ -221,7 +225,7 @@ th{
   padding: 10px 5px;
   text-align: left;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   text-transform: uppercase;
 }
@@ -229,7 +233,7 @@ td{
     padding: 5px;
     text-align: left;
     vertical-align:middle;
-    font-size: 14px;
+    font-size: 16px;
     color: #000;
     border-bottom: solid 1px #ddd;
 }
@@ -255,6 +259,7 @@ td{
     background: #cccccc40;
     color:#337ab7;
     text-transform: uppercase;
+    font-size:16px;
 }
 
 .formcontainer2{
@@ -319,12 +324,12 @@ td{
     }
 
     div.upload_form_row,div.upload_form_row span.btn.btn-primary,div.upload_form_row input.btn.btn-primary.upload{
-        font-size:6px;
+        font-size:8px;
         border-radius:0px;
     }
 
     div.upload_form_row input.form-control{
-        height:22px;
+        height:25px;
         border-radius:0px;
         font-size:6px;
     }
@@ -496,6 +501,13 @@ td{
     .form-control {
         padding:6px 10px;
     }
+    .navbar-fixed-top{
+        z-index: 0;
+    }
+    .pagination{
+        font-size:8px;
+        margin:15px 0;
+    }
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
@@ -576,11 +588,24 @@ td{
     .formcontainer2{
         padding-top:35px;
     }
+
+    .navbar-fixed-top{
+        z-index: 0;
+    }
+    .pagination{
+        font-size:10px;
+    }
+    .form-control{
+        font-size:12px;
+    }
 }   
 
 @media only screen and (min-width: 320px) and (max-width: 374px) {
     table{
         font-size:5px;
+    }
+    .navbar-fixed-top{
+        z-index: 0;
     }
 }  
 
