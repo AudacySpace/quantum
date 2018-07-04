@@ -38,6 +38,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }
             }
         });
+
+        var curLocation = $location.url();
+        console.log(curLocation);
     }
 
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
@@ -48,9 +51,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             for(var i=0;i<response.data.length;i++){
-                if(response.data[i].procedure.id === $scope.params.procID){
-                   	$scope.steps = response.data[i].procedure.sections;
-                    $scope.procedure.name = response.data[i].procedure.title;
+                if(response.data[i].procedureID === $scope.params.procID){
+                   	$scope.steps = response.data[i].sections;
+                    $scope.procedure.name = response.data[i].title;
 				}
 			}
 

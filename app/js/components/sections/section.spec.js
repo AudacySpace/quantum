@@ -353,8 +353,7 @@ describe('Test Suite for Section Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -396,8 +395,7 @@ describe('Test Suite for Section Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.1"
-            },
+                "procedureID": "1.1",
             "__v": 6
         },
         {
@@ -438,7 +436,6 @@ describe('Test Suite for Section Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
                 "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
@@ -481,8 +478,7 @@ describe('Test Suite for Section Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
+                "procedureID": "1.2",
             "__v": 3
         }];
 
@@ -1201,7 +1197,7 @@ describe('Test Suite for Section Controller', function () {
         expect(scope.steps).toBeDefined();
         scope.currentRevision = 2;
         expect(procedureService.getProcedureList).toHaveBeenCalled();
-        expect(procedureService.getProcedureSection).toHaveBeenCalledWith(result[0].procedure.sections,'MD');
+        expect(procedureService.getProcedureSection).toHaveBeenCalledWith(result[0].sections,'MD');
        
     });
 
