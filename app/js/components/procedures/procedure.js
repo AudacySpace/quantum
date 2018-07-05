@@ -18,13 +18,13 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                             $scope.count = 0;
                             $scope.sameProcedure = false;
                             for(var i=0;i<response.data.length;i++){
-                                var filenameFrmDb = response.data[i].procedure.id+" - "+response.data[i].procedure.title+'.xlsx';
+                                var filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
                                 
-                                if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
+                                if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
                                     //Condition to check if a procedure exists with the same file name and has no saved instances
                                     $scope.sameProcedure = true;
                                     break;
-                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
+                                }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
@@ -37,7 +37,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                         $scope.upload_form.$setPristine();
                                         break;
                                     }
-                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
+                                }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
@@ -184,9 +184,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     for(var i=0;i<response.data.length;i++){
                         $scope.procedurelist.push(
                             {
-                                id:response.data[i].procedure.id,
-                                title:response.data[i].procedure.title,
-                                lastuse:response.data[i].procedure.lastuse,
+                                id:response.data[i].procedureID,
+                                title:response.data[i].title,
+                                lastuse:response.data[i].lastuse,
                                 instances:response.data[i].instances,
                                 running:0,
                                 archived:0

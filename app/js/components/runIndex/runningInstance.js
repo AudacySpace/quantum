@@ -45,6 +45,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             }
         });
+
+        var curLocation = $location.url();
+        console.log(curLocation);
     }
 
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
@@ -56,20 +59,20 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
-                    if(response.data[i].procedure.id === $scope.params.procID){
+                    if(response.data[i].procedureID === $scope.params.procID){
                         for(var a=0;a<response.data[i].instances.length;a++){
                             if(response.data[i].instances[a].revision === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
                                 $scope.steps = $scope.instances.Steps;
                             }
                         }
-                        for(var b=0;b<response.data[i].procedure.sections.length;b++){
-                            if($scope.steps[b].step === response.data[i].procedure.sections[b].Step){
-                                $scope.steps[b].Step = response.data[i].procedure.sections[b].Step
-                                $scope.steps[b].Type = response.data[i].procedure.sections[b].Type;
-                                $scope.steps[b].Content = response.data[i].procedure.sections[b].Content;
-                                $scope.steps[b].Role = response.data[i].procedure.sections[b].Role;
-                                $scope.steps[b].Reference = response.data[i].procedure.sections[b].Reference;
+                        for(var b=0;b<response.data[i].sections.length;b++){
+                            if($scope.steps[b].step === response.data[i].sections[b].Step){
+                                $scope.steps[b].Step = response.data[i].sections[b].Step
+                                $scope.steps[b].Type = response.data[i].sections[b].Type;
+                                $scope.steps[b].Content = response.data[i].sections[b].Content;
+                                $scope.steps[b].Role = response.data[i].sections[b].Role;
+                                $scope.steps[b].Reference = response.data[i].sections[b].Reference;
                                 $scope.steps[b].Info = $scope.steps[b].info;
 
                                 $scope.inputStepValues.push({

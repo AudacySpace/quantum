@@ -17,12 +17,12 @@ module.exports = {
     getProcedureData: function(req,res){
         var id = req.query.id;
 
-        ProcedureModel.findOne( { 'procedure.id' : id }, function(err, model) {
+        ProcedureModel.findOne( { 'procedureID' : id }, function(err, model) {
             if(err){ 
                 console.log(err);
             }
             if(model){
-                var sections = model.procedure.sections;
+                var sections = model.sections;
                 //convert json to worksheet
                 var ws = XLSX.utils.json_to_sheet(sections, {header:["Step","Role","Type","Content","Reference"]});
                 //Give name to the worksheet
@@ -43,7 +43,7 @@ module.exports = {
         var id = req.query.procedureID;
         var revision = req.query.currentRevision;
 
-        ProcedureModel.findOne( { 'procedure.id' : id}, function(err, model) {
+        ProcedureModel.findOne( { 'procedureID' : id}, function(err, model) {
             if(err){ 
                 console.log(err);
             }
@@ -66,7 +66,7 @@ module.exports = {
     getAllInstances: function(req,res){
         var id = req.query.procedureID;
 
-        ProcedureModel.findOne( { 'procedure.id' : id}, function(err, model) {
+        ProcedureModel.findOne( { 'procedureID' : id}, function(err, model) {
             if(err){ 
                 console.log(err);
             }
@@ -76,7 +76,7 @@ module.exports = {
                 var instances = model.instances;
                 var allinstances = {
                     instances : instances,
-                    title : model.procedure.title
+                    title : model.title
                 }
                 res.send(allinstances);
             }
@@ -102,17 +102,17 @@ module.exports = {
 
             if(fileverify === sheet1.length){
 
-                ProcedureModel.findOne({ 'procedure.id' : filename[0] }, function(err, procs) {
+                ProcedureModel.findOne({ 'procedureID' : filename[0] }, function(err, procs) {
                     if(err){
                         console.log(err);
                     }
 
                     if(procs){ // Update a procedure
-                        procs.procedure.sections = [];
+                        procs.sections = [];
                         for(var i=0;i<sheet1.length;i++){
-                            procs.procedure.sections.push(sheet1[i]); 
+                            procs.sections.push(sheet1[i]); 
                         }
-                        procs.procedure.updatedBy = userdetails;
+                        procs.updatedBy = userdetails;
                         procs.save(function(err,result) {
                             if (err){
                                 // throw err;
@@ -129,17 +129,17 @@ module.exports = {
                         var pfiles = new ProcedureModel();
                         var ptitle = filename[2].split(".");
 
-                        pfiles.procedure.id = filename[0];
-                        pfiles.procedure.title = filename[1]+" - "+ptitle[0];
-                        pfiles.procedure.lastuse = "";
+                        pfiles.procedureID = filename[0];
+                        pfiles.title = filename[1]+" - "+ptitle[0];
+                        pfiles.lastuse = "";
                         pfiles.instances = [];
 
                         for(var i=0;i<sheet1.length;i++){
-                            pfiles.procedure.sections.push(sheet1[i]); 
+                            pfiles.sections.push(sheet1[i]); 
                         }
 
-                        pfiles.procedure.eventname = filename[1];
-                        pfiles.procedure.uploadedBy = userdetails;
+                        pfiles.eventname = filename[1];
+                        pfiles.uploadedBy = userdetails;
                         pfiles.save(function(err,result){
                             if(err){
                                 console.log(err);
@@ -164,18 +164,18 @@ module.exports = {
         var usernamerole = req.body.usernamerole;
         var lastuse = req.body.lastuse;//start time
 
-        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+        ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
                 console.log(err);
             }
             if(procs){
                 var instancesteps = [];
-                for(var i=0;i<procs.procedure.sections.length;i++){
-                    instancesteps.push({"step":procs.procedure.sections[i].Step,"info":""})
+                for(var i=0;i<procs.sections.length;i++){
+                    instancesteps.push({"step":procs.sections[i].Step,"info":""})
                 }
                 var revision = procs.instances.length+1;
                 procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true});
-                procs.procedure.lastuse = lastuse;
+                procs.lastuse = lastuse;
                 procs.save(function(err,result) {
                     if (err){
                         // throw err;
@@ -200,7 +200,7 @@ module.exports = {
         var recordedValue = req.body.recordedValue;
         var steptype = req.body.steptype;
 
-        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+        ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
                 console.log(err);
             }
@@ -229,7 +229,7 @@ module.exports = {
                 }
 
                 procs.instances[instanceid].Steps = instance;
-                procs.procedure.lastuse = lastuse;
+                procs.lastuse = lastuse;
                 procs.markModified('procedure');
                 procs.markModified('instances');
 
@@ -254,7 +254,7 @@ module.exports = {
         var procrevision = req.body.revision;
         var lastuse = req.body.lastuse; // time when the procedure instance is completed
 
-        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+        ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
                 console.log(err);
             }
@@ -269,7 +269,7 @@ module.exports = {
                         break;
                     }
                 }
-                procs.procedure.lastuse = lastuse;
+                procs.lastuse = lastuse;
                 procs.markModified('procedure');
                 procs.markModified('instances');
                 procs.save(function(err,result) {
@@ -292,7 +292,7 @@ module.exports = {
         var comments = req.body.comments;
         var lastuse = req.body.lastuse; // time when the procedure instance is completed
 
-        ProcedureModel.findOne({ 'procedure.id' : procid }, function(err, procs) {
+        ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
                 console.log(err);
             }
@@ -319,7 +319,7 @@ module.exports = {
                 }
 
                 procs.instances[instanceid].Steps = instance;
-                procs.procedure.lastuse = lastuse;
+                procs.lastuse = lastuse;
                 procs.markModified('procedure');
                 procs.markModified('instances');
                 procs.save(function(err,result) {
@@ -336,3 +336,4 @@ module.exports = {
         });
     }
 };
+

@@ -357,7 +357,6 @@ describe('Test Suite for Run Instance Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
                 "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
@@ -399,9 +398,8 @@ describe('Test Suite for Run Instance Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.1"
-            },
-            "__v": 6
+                "procedureID": "1.1",
+                "__v": 6
         },
         {
             "_id": "5a78b2745fa10701004acb4d",
@@ -441,8 +439,7 @@ describe('Test Suite for Run Instance Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -483,9 +480,8 @@ describe('Test Suite for Run Instance Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
-            "__v": 3
+                "procedureID": "1.2",
+                "__v": 3
         }];
 
     var liststeps = [
