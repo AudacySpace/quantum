@@ -1,4 +1,4 @@
-<div class="menu float-right">
+<div class="menu float-right indexbuttons">
     <ul>
         <li><a ng-href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.name)" class="indexBtns">Live Index</a></li>
         <li><a ng-href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.name)" class="indexBtns">AS-Run Archive Index</a></li>
@@ -56,12 +56,9 @@
                     <label>TLM Recorded Value:</label><strong>{{step.recordedValue}}</strong>
                     <br/>
                     <label>Enter Value:</label><input type="text" ng-model="tempValues[$index].ivalue" ng-keypress="whenTyping($index)" ng-disabled="step.chkval || step.status"/>
-                    <button ng-click="updateInputValue($index,tempValues[$index].ivalue)" ng-style="step.buttonStatus" ng-disabled="step.chkval || step.status">Set</button>
-                   <!--  <span id="{{ 'object-' + $index }}" style="top:-28px !important"></span> -->
-                   <span id="{{ 'object-' + $index }}" style="display:block" class="inputNotification"></span>
-     <!--               <span id="{{ 'objectid-' + $index }}" style="display:block;width:179px" class="infoNotification"></span> -->
+                    <button ng-click="updateInputValue($index,tempValues[$index].ivalue)" ng-style="step.buttonStatus" ng-disabled="step.chkval || step.status" class="inputsetbuttton">Set</button>
+                    <span id="{{ 'object-' + $index }}" style="display:block" class="inputNotification"></span>
                     <span id="{{ 'objectid-' + $index }}" style="display:block;" class="infoNotification"></span>
-
                 </td>
                 <td ng-if="step.contenttype === 'AlertInfo'">
                     <p>{{step.Content}}</p>
