@@ -38,9 +38,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }
             }
         });
-
-        var curLocation = $location.url();
-        console.log(curLocation);
     }
 
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
@@ -74,6 +71,17 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
     	});
 	}
+
+    function setUser(){
+        //Get emailaddress from the current users data
+        var currentLocation = $location.url();
+        var emailaddress = userService.getUserEmail();
+        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
+            console.log(response);
+        },function(error){
+            console.log(error);
+        });
+    }
 
     $scope.showPList = function(id,index,headertype){
         $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);

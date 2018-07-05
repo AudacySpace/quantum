@@ -80,11 +80,11 @@ quantum
         return icons;
     }
 
-    function saveProcedureInstance(id,usernamerole,lastuse) {
+    function saveProcedureInstance(id,usernamerole,lastuse,username,email) {
         return $http({
             url: "/saveProcedureInstance", 
             method: "POST",
-            data: {"id":id,"usernamerole":usernamerole,"lastuse":lastuse}
+            data: {"id":id,"usernamerole":usernamerole,"lastuse":lastuse,"username":username,"email":email}
         });
     }
 
@@ -617,6 +617,34 @@ quantum
         return true;
     }
 
+    function setUserStatus(location,emailaddress,username,pid,revision){
+        var locationOp1 = location.split("/"); // to split the current location string
+        if(locationOp1.length === 4){ // if length is 4,then the current location is new instance
+            //location: /dashboard/procedure/:procID
+            console.log("here");
+            console.log(pid);
+            return $http({
+                url: "/setUserStatus", 
+                method: "POST",
+                data: {"email":emailaddress,"status":true,"pid":pid,"username":username,"revision":revision}
+            });
+        }else if(locationOp1.length === 6){ // if length is 6,then the current location is running instance
+            //location: /dashboard/procedure/runninginstance/:procID/:revisionID
+            return $http({
+                url: "/setUserStatus", 
+                method: "POST",
+                data: {"email":emailaddress,"status":true,"pid":pid,"username":username,"revision":revision}
+            });
+        }else {
+            // for all other locations in the application
+            return $http({
+                url: "/setUserStatus", 
+                method: "POST",
+                data: {"email":emailaddress,"status":false,"pid":pid,"username":username,"revision":revision}
+            });
+        }
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -648,6 +676,7 @@ quantum
         getSubSectionHeaderIndex : getSubSectionHeaderIndex,
         getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
         getStepPermissions : getStepPermissions,
-        displayAlert : displayAlert
+        displayAlert : displayAlert,
+        setUserStatus : setUserStatus
     }
 }]);

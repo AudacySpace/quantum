@@ -277,7 +277,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $scope.name = userService.getUserName();
             $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
             var starttime = $scope.clock.year+" - "+$scope.clock.utc;
-            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime).then(function(response){
+            var emailaddress = userService.getUserEmail();
+            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress).then(function(response){
                 if(response.status === 200){
                     procedureService.setCurrentViewRevision(response.data.revision);
                 }

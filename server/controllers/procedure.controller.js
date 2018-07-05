@@ -163,6 +163,8 @@ module.exports = {
         var procid = req.body.id;
         var usernamerole = req.body.usernamerole;
         var lastuse = req.body.lastuse;//start time
+        var username = req.body.username;
+        var useremail = req.body.email;
 
         ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
@@ -174,7 +176,11 @@ module.exports = {
                     instancesteps.push({"step":procs.sections[i].Step,"info":""})
                 }
                 var revision = procs.instances.length+1;
-                procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true});
+                procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true,users:[{
+                    "name":username,
+                    "email":useremail,
+                    "status":true
+                }]});
                 procs.lastuse = lastuse;
                 procs.save(function(err,result) {
                     if (err){
@@ -333,6 +339,57 @@ module.exports = {
                 });
             }
 
+        });
+    },
+    setUserStatus: function(req,res){
+        var email = req.body.email;
+        var status = req.body.status;
+        var procid = req.body.pid;
+        var username = req.body.username;
+        var revision = req.body.revision;
+
+        ProcedureModel.findOne( { 'procedureID' : procid}, function(err, procs) {
+            if(err){ 
+                console.log(err);
+            }
+
+            if(procs){
+                var liveinstanceID;
+                for(var i=0;i<procs.instances.length;i++){
+                    if(procs.instances[i].revision === parseInt(revision)){
+                        liveinstanceID = i;
+                        break;
+                    }
+                }
+
+                if(procs.instances[liveinstanceID].users && procs.instances[liveinstanceID].users.length > 0){
+                    var len = instances[liveinstanceID].users.length;
+                    for(var i=0;i<len;i++){
+                        if(procs.instances[liveinstanceID].users[i].emailaddress === email){
+                            // when the user object exits already
+                            procs.instances[liveinstanceID].users[i].status = status;
+                            break;
+                        }
+                    }
+                }else {
+                    procs.instances[liveinstanceID].users.push({
+                        "name":username,
+                        "email":email,
+                        "status":status
+                    });
+                }
+
+                procs.markModified('instances');
+                procs.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                       res.send(result);
+                    }
+                    
+                });
+            }
         });
     }
 };

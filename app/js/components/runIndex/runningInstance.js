@@ -45,9 +45,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             }
         });
-
-        var curLocation = $location.url();
-        console.log(curLocation);
     }
 
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);

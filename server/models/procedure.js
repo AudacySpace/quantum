@@ -10,8 +10,7 @@ var procedureSchema = mongoose.Schema({
     eventname:{type:String,required:true},
     uploadedBy:{type:String},
     updatedBy:{type:String},
-    instances:{type:Array},
-    users:{type:Array}
+    instances:{type:Array}
 });
 
 // create the model for procedures and expose it to our app
