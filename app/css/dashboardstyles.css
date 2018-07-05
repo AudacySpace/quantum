@@ -472,7 +472,7 @@ td{
         padding: 8px 4px;
         text-align: left;
         font-weight: bold;
-        font-size: 8px;
+        font-size: 6px;
         color: #fff;
         text-transform: uppercase;
     }
@@ -481,18 +481,18 @@ td{
         text-align: left;
         vertical-align:middle;
         /* font-weight: 300;*/
-        font-size: 8px;
+        font-size: 6px;
         color: #000;
         border-bottom: solid 1px #ddd;
     }
 
     .formcontainer1{
         height:30px;
-        line-height: 4.0;
+        line-height: 5em;
         background: #cccccc40;
         color:#337ab7;
         text-transform: uppercase;
-        font-size: 8px;
+        font-size: 6px;
     }
 
     .formcontainer2{
@@ -505,7 +505,7 @@ td{
         z-index: 0;
     }
     .pagination{
-        font-size:8px;
+        font-size:6px;
         margin:15px 0;
     }
 }

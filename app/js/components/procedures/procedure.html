@@ -16,25 +16,25 @@
                         <span ng-show="sortType == 'proceduretitle' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </th>
-                <th style="width:30%">
+                <th style="width:15%">
                     <a href="#" ng-click="sortType = 'procedurelastuse'; sortReverse = !sortReverse">Last Use
                         <span ng-show="sortType == 'procedurelastuse' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'procedurelastuse' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </th>
-                <th class="centerCols" style="width:10%">
+                <th class="centerCols" style="width:15%">
                     <a href="#" ng-click="sortType = 'procedurerunning'; sortReverse = !sortReverse">Running
                         <span ng-show="sortType == 'procedurerunning' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'procedurerunning' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </th>
-                <th class="centerCols" style="width:10%">
+                <th class="centerCols" style="width:15%">
                     <a href="#" ng-click="sortType = 'procedurearchived'; sortReverse = !sortReverse">Archived
                         <span ng-show="sortType == 'procedurearchived' && !sortReverse" class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'procedurearchived' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </th>
-                <th class="centerCols" style="width:10%">
+                <th class="centerCols" style="width:15%">
                     <a href="#">Actions</a>
                 </th>
             </tr>
@@ -47,10 +47,10 @@
                 <tr dir-paginate="procedure in procedurelist | orderBy:'id' | orderBy:sortType:sortReverse |itemsPerPage:5">
                     <td style="width:10%">{{ procedure.id }}</td>
                     <td style="width:40%">{{ procedure.title }}</td>
-                    <td style="width:30%">{{ procedure.lastuse }}</td>
-                    <td class="centerCols" style="width:10%"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,false);">{{ procedure.running }}</a></td>
-                    <td class="centerCols" style="width:10%"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title,false);">{{ procedure.archived }}</a></td>
-                    <td class="centerCols" style="width:10%">
+                    <td style="width:15%">{{ procedure.lastuse }}</td>
+                    <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,false);">{{ procedure.running }}</a></td>
+                    <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title,false);">{{ procedure.archived }}</a></td>
+                    <td class="centerCols" style="width:15%">
                         <a ng-click="download(procedure.id, procedure.title)" href="">
                             <span class="fa fa-caret-down" title="Download procedure"></span>
                         </a>&nbsp;&nbsp;
