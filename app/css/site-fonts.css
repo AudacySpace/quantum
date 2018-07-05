@@ -23,26 +23,19 @@ blockquote {
 	font-weight: 400;
 }
 
-
-/*html {
-  font-size: 14px;
+.signinbtn{
+	font-size: 18px;
 }
 
-@include media-breakpoint-up(sm) {
-  html {
-    font-size: 16px;
-  }
+@media only screen and (max-width: 736px) {
+	.signinbtn{
+		font-size: 14px;
+	}
 }
 
-@include media-breakpoint-up(md) {
-  html {
-    font-size: 20px;
-  }
+@media only screen and (min-width: 736px) and (max-width: 768px) {
+	.signinbtn{
+		font-size: 16px;
+	}
 }
-
-@include media-breakpoint-up(lg) {
-  html {
-    font-size: 28px;
-  }
-}*/
 
