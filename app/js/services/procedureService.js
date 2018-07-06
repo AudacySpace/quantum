@@ -619,6 +619,7 @@ quantum
 
     function setUserStatus(location,emailaddress,username,pid,revision){
         var locationOp1 = location.split("/"); // to split the current location string
+        console.log(locationOp1);
         if(locationOp1.length === 4){ // if length is 4,then the current location is new instance
             //location: /dashboard/procedure/:procID
             console.log("here");

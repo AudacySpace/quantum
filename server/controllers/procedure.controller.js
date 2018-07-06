@@ -356,14 +356,14 @@ module.exports = {
             if(procs){
                 var liveinstanceID;
                 for(var i=0;i<procs.instances.length;i++){
-                    if(procs.instances[i].revision === parseInt(revision)){
+                    if(parseInt(procs.instances[i].revision) === parseInt(revision)){
                         liveinstanceID = i;
                         break;
                     }
                 }
 
-                if(procs.instances[liveinstanceID].users && procs.instances[liveinstanceID].users.length > 0){
-                    var len = instances[liveinstanceID].users.length;
+                if(procs.instances[liveinstanceID].users.length > 0){
+                    var len = procs.instances[liveinstanceID].users.length;
                     for(var i=0;i<len;i++){
                         if(procs.instances[liveinstanceID].users[i].emailaddress === email){
                             // when the user object exits already

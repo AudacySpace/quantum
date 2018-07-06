@@ -674,8 +674,18 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.$on("$destroy", 
         function(event) {
-            $interval.cancel($scope.liveInstanceinterval);
+         
+        var currentLocation = $location.url();
+        console.log(currentLocation);
+        var emailaddress = userService.getUserEmail();
+        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
+            console.log(response);
+               $interval.cancel($scope.liveInstanceinterval);
+        },function(error){
+            console.log(error);
+        });
         }
+
     );
 
     $scope.changeColor = function(status,pid,ptitle){
@@ -692,6 +702,13 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  
         var loc = $location.url();
+        var currentLocation = $location.url();
+        var emailaddress = userService.getUserEmail();
+        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
+            console.log(response);
+        },function(error){
+            console.log(error);
+        });
         dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);    
     });
 
@@ -838,7 +855,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
                                             });
@@ -852,7 +869,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
 
@@ -868,7 +885,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
 
@@ -908,7 +925,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                             for(var a=0;a<$scope.steps.length;a++){
                                                 $scope.steps[a].status = true;
                                             }
-                                            procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                            procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                         }
                                     });
@@ -922,7 +939,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
                                 });
