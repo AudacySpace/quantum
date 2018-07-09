@@ -14,14 +14,18 @@ describe('Test Suite for Right Sidebar Controller', function () {
 
         inject(function($componentController){
 
-            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName']);
+            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName','getUserEmail']);
             
             userService.getUserName.and.callFake(function() {
                 return 'John Smith';
             });
             userService.userRole.and.callFake(function() {
                 return { cRole : { 'callsign' : 'MD'}};
-            });            
+            }); 
+
+            userService.getUserEmail.and.callFake(function() {
+                return 'jsmith@gmail.com';
+            });           
 
             $controller = $componentController('rightSidebar', {
                 userService : userService
