@@ -72,17 +72,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     	});
 	}
 
-    function setUser(){
-        //Get emailaddress from the current users data
-        var currentLocation = $location.url();
-        var emailaddress = userService.getUserEmail();
-        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
-            console.log(response);
-        },function(error){
-            console.log(error);
-        });
-    }
-
     $scope.showPList = function(id,index,headertype){
         $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
     }
@@ -674,18 +663,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.$on("$destroy", 
         function(event) {
-         
-        var currentLocation = $location.url();
-        console.log(currentLocation);
-        var emailaddress = userService.getUserEmail();
-        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
-            console.log(response);
-               $interval.cancel($scope.liveInstanceinterval);
-        },function(error){
-            console.log(error);
-        });
+            $interval.cancel($scope.liveInstanceinterval);  
         }
-
     );
 
     $scope.changeColor = function(status,pid,ptitle){
@@ -700,16 +679,35 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         }
     }
 
-    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+    $scope.$on('$locationChangeStart', function(evnt, next, current){ 
         var loc = $location.url();
-        var currentLocation = $location.url();
+        var revNumOp = loc.split("/");
         var emailaddress = userService.getUserEmail();
-        procedureService.setUserStatus(currentLocation,emailaddress,$scope.name,$scope.params.procID,$scope.currentRevision.value).then(function(response){
-            console.log(response);
+        var name = userService.getUserName();
+        var currentRevision;
+        var status;
+
+        if(revNumOp.length === 4){
+            currentRevision = parseInt(revNumOp[3]);
+            status = true;
+        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = true;
+        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = false;
+        }
+        else if(revNumOp.length === 2 || revNumOp.length === 5){
+            currentRevision = "";
+            status = false;
+        }
+
+        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+            if(response.status === 200){
+                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);   
+            }
         },function(error){
-            console.log(error);
-        });
-        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);    
+        }); 
     });
 
     $scope.updateInputValue = function(index,value){

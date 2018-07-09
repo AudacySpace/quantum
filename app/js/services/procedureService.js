@@ -80,11 +80,11 @@ quantum
         return icons;
     }
 
-    function saveProcedureInstance(id,usernamerole,lastuse,username,email) {
+    function saveProcedureInstance(id,usernamerole,lastuse,username,email,userstatus) {
         return $http({
             url: "/saveProcedureInstance", 
             method: "POST",
-            data: {"id":id,"usernamerole":usernamerole,"lastuse":lastuse,"username":username,"email":email}
+            data: {"id":id,"usernamerole":usernamerole,"lastuse":lastuse,"username":username,"email":email,"status":userstatus}
         });
     }
 
@@ -617,31 +617,29 @@ quantum
         return true;
     }
 
-    function setUserStatus(location,emailaddress,username,pid,revision){
+    function setUserStatus(location,emailaddress,username,pid,revision,status){
         var locationOp1 = location.split("/"); // to split the current location string
-        console.log(locationOp1);
-        if(locationOp1.length === 4){ // if length is 4,then the current location is new instance
+        if(locationOp1.length === 4){
             //location: /dashboard/procedure/:procID
-            console.log("here");
-            console.log(pid);
             return $http({
                 url: "/setUserStatus", 
                 method: "POST",
-                data: {"email":emailaddress,"status":true,"pid":pid,"username":username,"revision":revision}
+                data: {"email":emailaddress,"status":status,"pid":pid,"username":username,"revision":revision}
             });
-        }else if(locationOp1.length === 6){ // if length is 6,then the current location is running instance
+        }
+        else if(locationOp1.length === 6){ // if length is 6,then the current location is running instance
             //location: /dashboard/procedure/runninginstance/:procID/:revisionID
             return $http({
                 url: "/setUserStatus", 
                 method: "POST",
-                data: {"email":emailaddress,"status":true,"pid":pid,"username":username,"revision":revision}
+                data: {"email":emailaddress,"status":status,"pid":pid,"username":username,"revision":revision}
             });
         }else {
             // for all other locations in the application
             return $http({
                 url: "/setUserStatus", 
                 method: "POST",
-                data: {"email":emailaddress,"status":false,"pid":pid,"username":username,"revision":revision}
+                data: {"email":emailaddress,"status":status,"pid":pid,"username":username,"revision":revision}
             });
         }
     }

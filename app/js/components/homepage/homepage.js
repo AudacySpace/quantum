@@ -87,8 +87,11 @@ angular.module('quantum')
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
+            var emailaddress = userService.getUserEmail();
+            var revNum = procedureService.getCurrentViewRevision();
+            var status = false;
             if(temp.length === 4 && temp[1] === 'dashboard' && temp[2] === 'procedure'){
-                var revNum = procedureService.getCurrentViewRevision();
+
                 var pinTo = 'bottom right';
                 var toast = $mdToast.simple()
                                     .textContent('This procedure instance is saved in the Live Index with revision number: '+revNum.value)
@@ -103,12 +106,35 @@ angular.module('quantum')
                     if ( response == 'ok' ) {
                     
                     }
-                    $window.location.href = '/logout';
+                    var currentRevision = parseInt(revNum.value);
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+                    }); 
+                    
                 });
             }else {
-                $window.location.href = '/logout';
+                var currentRevision;
+                if(revNum.value !== ""){
+                    currentRevision = parseInt(revNum.value);
+                }else {
+                    currentRevision = "";
+                }
+
+                if($ctrl.procedure.id !== ""){
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+
+                    }); 
+                }else {
+                    $window.location.href = '/logout';
+                }
             }
-            
         };
 	}
 });

@@ -1,8 +1,11 @@
 describe('Test Suite for Run Index Controller', function () {
-    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope;
+    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope,userService;
 
     var windowMock = {
-        innerWidth: 1000
+        innerWidth: 1000,
+        user : {
+            currentRole : {callsign : 'MD'}
+        }
     };
 
     beforeEach(function () {
@@ -12,7 +15,7 @@ describe('Test Suite for Run Index Controller', function () {
 
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_,_userService_){
             scope = $rootScope.$new();
             rootScope = $rootScope;
             $q = _$q_;
@@ -20,6 +23,7 @@ describe('Test Suite for Run Index Controller', function () {
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
             location = $location;
+            userService = _userService_;
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
             spyOn(procedureService, "getAllInstances").and.returnValue(deferred.promise);
@@ -29,12 +33,16 @@ describe('Test Suite for Run Index Controller', function () {
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
 
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
             controller = $controller('runIndexCtrl', {
                 $scope: scope,
                 $routeParams: {procID: '1.1'},
                 procedureService: procedureService,
                 $location: location,
-                dashboardService: dashboardService
+                dashboardService: dashboardService,
+                userService: userService
             });
         });
     });
@@ -263,9 +271,9 @@ describe('Test Suite for Run Index Controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = 'http://foourl.com';
-        var oldUrl = 'http://barurl.com'
-
+        var newUrl = '/dahboard/procedure/runninginstance/1.1/1';
+        var oldUrl = '/dashboard/procedure/running/1.1';
+        deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });

@@ -1020,8 +1020,6 @@ describe('Test Suite for Run Instance Controller', function () {
 
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
-            
-           
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
             spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "openNextSteps").and.returnValue(res);
@@ -1039,6 +1037,9 @@ describe('Test Suite for Run Instance Controller', function () {
             });
 
             spyOn(procedureService, "getProcedureName").and.returnValue({id : '', name : '', status : '',fullname : ''});
+
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
 
             controller = $controller('runningInstanceCtrl', {
                 $scope: scope,
@@ -1595,9 +1596,10 @@ describe('Test Suite for Run Instance Controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = 'http://foourl.com';
-        var oldUrl = 'http://barurl.com'
-
+        var newUrl = '/dashboard';
+        var oldUrl = '/dashboard/procedure/runninginstance/1.1/1';
+        
+        deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });

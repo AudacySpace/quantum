@@ -1,4 +1,4 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal,$location) {
 	$scope.sortType     = 'procedurelastuse'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
@@ -278,7 +278,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
             var starttime = $scope.clock.year+" - "+$scope.clock.utc;
             var emailaddress = userService.getUserEmail();
-            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress).then(function(response){
+            var userstatus = true;
+
+            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
                 if(response.status === 200){
                     procedureService.setCurrentViewRevision(response.data.revision);
                 }
@@ -295,7 +297,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.procedurelistinterval);
-            $interval.cancel($scope.interval);
         }
     );
 
@@ -320,6 +321,45 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             //handle modal dismiss
         });
     }
+
+    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+        var loc = $location.url();
+        var revNumOp = loc.split("/");
+        var emailaddress = userService.getUserEmail();
+        var name = userService.getUserName();
+        var currentRevision;
+        if(revNumOp.length === 4){
+            //user status is already set using save procedure instance
+        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = true;
+            var proc = procedureService.getProcedureName();
+            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                }
+            },function(error){
+            }); 
+        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = false;
+            var proc = procedureService.getProcedureName();
+            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                }
+            },function(error){
+            }); 
+        }
+        else if(revNumOp.length === 2 || revNumOp.length === 5){
+            currentRevision = "";
+            status = false;
+            var proc = procedureService.getProcedureName();
+            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                }
+            },function(error){
+            }); 
+        }  
+    });
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {

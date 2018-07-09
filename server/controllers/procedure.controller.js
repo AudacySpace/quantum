@@ -165,6 +165,7 @@ module.exports = {
         var lastuse = req.body.lastuse;//start time
         var username = req.body.username;
         var useremail = req.body.email;
+        var userstatus = req.body.status;
 
         ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
             if(err){
@@ -179,7 +180,7 @@ module.exports = {
                 procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true,users:[{
                     "name":username,
                     "email":useremail,
-                    "status":true
+                    "status":userstatus
                 }]});
                 procs.lastuse = lastuse;
                 procs.save(function(err,result) {
@@ -347,37 +348,63 @@ module.exports = {
         var procid = req.body.pid;
         var username = req.body.username;
         var revision = req.body.revision;
-
+        var mydata;
+        var liveinstanceID;
+        var Leni;
         ProcedureModel.findOne( { 'procedureID' : procid}, function(err, procs) {
             if(err){ 
                 console.log(err);
             }
 
             if(procs){
-                var liveinstanceID;
+
                 for(var i=0;i<procs.instances.length;i++){
-                    if(parseInt(procs.instances[i].revision) === parseInt(revision)){
+                    if(parseInt(procs.instances[i].revision) === parseInt(revision) && revision !== ""){
                         liveinstanceID = i;
                         break;
+                    }else if(revision === ""){
+                        liveinstanceID = "";
                     }
                 }
 
-                if(procs.instances[liveinstanceID].users.length > 0){
-                    var len = procs.instances[liveinstanceID].users.length;
-                    for(var i=0;i<len;i++){
-                        if(procs.instances[liveinstanceID].users[i].emailaddress === email){
-                            // when the user object exits already
-                            procs.instances[liveinstanceID].users[i].status = status;
-                            break;
+                if(liveinstanceID !== ""){
+                    if(procs.instances[liveinstanceID].users.length > 0){
+                        var len = procs.instances[liveinstanceID].users.length;
+                        for(var i=0;i<len;i++){
+                            if(procs.instances[liveinstanceID].users[i].email === email){
+                                // when the user object exits already
+                                procs.instances[liveinstanceID].users[i].status = status;
+                               // mydata = procs.instances[liveinstanceID].users;
+                                break;
+                            }else if(i === len-1){
+                                Leni = i;
+                                procs.instances[liveinstanceID].users.push({
+                                    "name":username,
+                                    "email":email,
+                                    "status":status
+                                });
+                            }
                         }
+                    }else {
+                        procs.instances[liveinstanceID].users.push({
+                            "name":username,
+                            "email":email,
+                            "status":status
+                        });
                     }
                 }else {
-                    procs.instances[liveinstanceID].users.push({
-                        "name":username,
-                        "email":email,
-                        "status":status
-                    });
+                    //when in dashboard page or any other index page;there exists no revision num
+                    //then set the status of user as false for all the revisions available in the procedure.
+                    for(var i=0;i<procs.instances.length;i++){
+                        for(var j=0;j<procs.instances[i].users.length;j++){
+                            if(procs.instances[i].users[j].email === email){
+                                // when the user object exits already
+                                procs.instances[i].users[j].status = status;
+                            }
+                        }
+                    }
                 }
+
 
                 procs.markModified('instances');
                 procs.save(function(err,result) {
@@ -385,7 +412,7 @@ module.exports = {
                         console.log(err);
                     }
                     if(result){
-                       res.send(result);
+                       res.send({"status":status});
                     }
                     
                 });

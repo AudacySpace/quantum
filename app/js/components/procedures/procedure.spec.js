@@ -243,6 +243,7 @@ describe('Test Suite for Procedure Controller', function () {
             spyOn(procedureService, "saveProcedureInstance").and.returnValue(deferredProcedureInstance.promise);
 
             spyOn(userService, "getUserName").and.returnValue('John Smith');
+            spyOn(userService, "getUserEmail").and.returnValue('jsmith@gmail.com');
 
             spyOn(procedureService,"displayAlert").and.returnValue(true);
 
@@ -1292,7 +1293,7 @@ describe('Test Suite for Procedure Controller', function () {
             year : '2018'
         };
         scope.changeColor("Live","1.1","Procedure Example",true);
-        expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC');
+        expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC','John Smith',"jsmith@gmail.com",true);
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
         expect(timeService.getTime).toHaveBeenCalled();
@@ -1317,7 +1318,7 @@ describe('Test Suite for Procedure Controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
-        expect($intervalSpy.cancel.calls.count()).toBe(2);
+        expect($intervalSpy.cancel.calls.count()).toBe(1);
     });
 
 });
