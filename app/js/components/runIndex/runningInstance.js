@@ -9,6 +9,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
     $scope.tempValues = [];
     $scope.currentRevision = parseInt($scope.params.revisionID);
+    procedureService.setCurrentViewRevision($scope.currentRevision);
     $scope.liveInstanceinterval = "";
     
     $scope.procedure = procedureService.getProcedureName();
@@ -702,7 +703,32 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
     $scope.$on('$locationChangeStart', function(evnt, next, current){ 
         var loc = $location.url();
-        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth);     
+        var revNumOp = loc.split("/");
+        var emailaddress = userService.getUserEmail();
+        var name = userService.getUserName();
+        var currentRevision;
+        var status;
+
+        if(revNumOp.length === 4){
+            currentRevision = parseInt(revNumOp[3]);
+            status = true;
+        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = true
+        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = false;
+        }else if(revNumOp.length === 2 || revNumOp.length === 5){
+            currentRevision = "";
+            status = false;
+        }
+        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+            if(response.status === 200){
+                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth); 
+            }
+        },function(error){
+
+        });   
     });
 
     $scope.updateInputValue = function(index,value){
@@ -716,7 +742,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             $scope.usermessage = 'Please enter value and then click Set';
             var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
         }
-
     }
 
     $scope.whenTyping = function(index){

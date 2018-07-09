@@ -1,8 +1,11 @@
 describe('Test Suite for Archived Index controller', function () {
-    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope;
+    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope,userService;
 
     var windowMock = {
-        innerWidth: 1000
+        innerWidth: 1000,
+        user : {
+            currentRole : {callsign : 'MD'}
+        }
     };
 
     beforeEach(function () {
@@ -12,13 +15,14 @@ describe('Test Suite for Archived Index controller', function () {
 
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_,_userService_){
             scope = $rootScope.$new();
             rootScope = $rootScope;
             $q = _$q_;
             procedureService = _procedureService_;
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
+            userService = _userService_;
             location = $location;
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
@@ -29,12 +33,17 @@ describe('Test Suite for Archived Index controller', function () {
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
 
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
+
             controller = $controller('archivedIndexCtrl', {
                 $scope: scope,
                 $routeParams: {procID: '1.1'},
                 procedureService: procedureService,
                 $location: location,
-                dashboardService: dashboardService
+                dashboardService: dashboardService,
+                userService: userService
             });
         });
     });
@@ -263,9 +272,9 @@ describe('Test Suite for Archived Index controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = 'http://foourl.com';
-        var oldUrl = 'http://barurl.com'
-
+        var newUrl = '/dahboard/procedure/archivedinstance/1.1/1';
+        var oldUrl = '/dashboard/procedure/archived/1.1';
+        deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });

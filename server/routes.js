@@ -109,6 +109,9 @@ module.exports = function(app,passport) {
     //set comments
     app.post('/setComments',procs.setComments);
 
+    //set user status
+    app.post('/setUserStatus',procs.setUserStatus);
+
 };
 
 // route middleware to make sure a user is logged in

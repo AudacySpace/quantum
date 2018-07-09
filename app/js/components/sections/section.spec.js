@@ -1049,6 +1049,9 @@ describe('Test Suite for Section Controller', function () {
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
 
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
             controller = $controller('sectionCtrl', {
                 $scope: scope,
                 $routeParams: {procID: '1.1',revisionID:'2'},
@@ -1656,9 +1659,10 @@ describe('Test Suite for Section Controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = 'http://foourl.com';
-        var oldUrl = 'http://barurl.com'
+        var newUrl = '/dashboard/procedure/running/1.1';
+        var oldUrl = '/dashboard/procedure/runninginstance/1.1/1'
 
+        deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });

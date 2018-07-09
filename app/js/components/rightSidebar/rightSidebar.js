@@ -9,11 +9,15 @@ angular.module('quantum')
         var $ctrl = this;
         $ctrl.name = userService.getUserName();
         $ctrl.role = userService.userRole;
+        $ctrl.procedure = procedureService.getProcedureName();
         getUserRole();
 
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
+            var emailaddress = userService.getUserEmail();
+            var revNum = procedureService.getCurrentViewRevision();
+            var status = false;
             if(temp.length === 4 && temp[1] === 'dashboard' && temp[2] === 'procedure'){
                 var revNum = procedureService.getCurrentViewRevision();
                 var pinTo = 'bottom right';
@@ -29,10 +33,34 @@ angular.module('quantum')
                     if ( response == 'ok' ) {
                     
                     }
-                    $window.location.href = '/logout';
+                    var currentRevision = parseInt(revNum.value);
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+                    }); 
                 });
             }else {
-                $window.location.href = '/logout';
+                var currentRevision;
+                if(revNum.value !== ""){
+                    currentRevision = parseInt(revNum.value);
+                }else {
+                    currentRevision = "";
+                }
+
+                if($ctrl.procedure.id !== ""){
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+
+                    }); 
+                }else {
+                    //logout from home page
+                    $window.location.href = '/logout';
+                } 
             }
         };
 
