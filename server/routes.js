@@ -112,6 +112,9 @@ module.exports = function(app,passport) {
     //set user status
     app.post('/setUserStatus',procs.setUserStatus);
 
+    //get user current role
+    app.get('/getUsersCurrentRole',usr.getUsersCurrentRole);
+
 };
 
 // route middleware to make sure a user is logged in

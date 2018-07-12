@@ -37,7 +37,7 @@ body {
 
 .navbar {
     border: 0 none;
-    border-bottom: 3px solid #CFCFD5;
+    border-bottom: 1px solid #CFCFD5;
     text-align: center; 
     height: 53px;
 }
@@ -130,6 +130,7 @@ a#username.dropdown-toggle {
 .logout-bar {
     min-width: 128px;
     border-radius:0;
+    margin-right: 2px;
 }
 
 #callsign {
@@ -146,6 +147,7 @@ ul.nav.navbar-nav.navbar-right {
 
 #cfgmenu {
     height:50px;
+    display:none;
 }
 
 div.upload_form_row,div.upload_form_row span.btn.btn-primary,div.upload_form_row input.btn.btn-primary.upload{
@@ -216,7 +218,6 @@ button.inputsetbuttton{
   background-color: #cccccc40;
  }
 .tbl-content{
-  /*height:300px;*/
   overflow-x:auto;
   margin-top: 0px;
   border: 1px solid rgba(255,255,255,0.3);
@@ -266,11 +267,18 @@ td{
     padding-top:35px;
 }
 
-/*section{
-    line-height: normal;
-}
-*/
+
 /* end of scrollable procedure list styles*/
+
+div.indexList{
+    min-width:110px !important;
+    font-size: 13px;
+    border-radius:0;
+}
+
+div.indexList i {
+    padding:5px;
+}
 
 @media (min-width: 768px) {
     .navbar-nav>li>a {
@@ -366,19 +374,18 @@ td{
     }
 
     ul.nav.navbar-nav {
-        padding:0;
         margin:0;
     }
 
     ul.nav.navbar-nav.navbar-right {
         position:absolute;
         top:0;
-        right:-10px;
+        right:0px;
         display:inline;
     }
 
     a#username.dropdown-toggle {
-        display:none;
+        font-size:12px;
     }
 
     a#config-bar {
@@ -386,17 +393,17 @@ td{
         position:relative;
     }
 
-    li.open {
-        width:75%;
-    }
-
     li#cfgmenu {
-        font-size:16px;  
+        font-size:10px;  
         margin-right: 10px; 
     }
 
     #callsign {
-        display: none;
+       font-size:10px;
+    }
+
+    ul.configmenu{
+       /* padding:5px;*/
     }
 
     .bars {
@@ -422,7 +429,6 @@ td{
         font-size: 8px;
         padding:2px 3px;
         margin-top:1px;
-   /*     margin-bottom:6px;*/
     }
 
     table td.commentsCol span span.glyphicon{
@@ -450,7 +456,6 @@ td{
 
     div.md-toast-content,button.md-action{
         font-size:8px !important;
-     /*   font-size:8px; */
     }
 
     .inputNotification{
@@ -469,30 +474,29 @@ td{
     }
 
     th{
-        padding: 8px 4px;
+        padding: 5px 4px;
         text-align: left;
         font-weight: bold;
-        font-size: 6px;
+        font-size: 7px;
         color: #fff;
         text-transform: uppercase;
     }
     td{
-        padding: 0px;
+        padding: 2px;
         text-align: left;
         vertical-align:middle;
-        /* font-weight: 300;*/
-        font-size: 6px;
+        font-size: 7px;
         color: #000;
         border-bottom: solid 1px #ddd;
     }
 
     .formcontainer1{
-        height:30px;
-        line-height: 5em;
+        height:20px;
+        line-height: 3.2em;
         background: #cccccc40;
         color:#337ab7;
         text-transform: uppercase;
-        font-size: 6px;
+        font-size: 7px;
     }
 
     .formcontainer2{
@@ -501,20 +505,39 @@ td{
     .form-control {
         padding:6px 10px;
     }
-    .navbar-fixed-top{
-        z-index: 0;
-    }
     .pagination{
         font-size:6px;
         margin:15px 0;
     }
+
+    div.indexList{
+        min-width:75px !important;
+        font-size: 8px;
+    }
+
+    .indexbuttons .btn{
+        padding:3px 4px !important;
+        font-size: 10px;
+    }
+
+    .navbar-nav .open .dropdown-menu.logout-bar{
+        position:absolute !important;
+        background-color:#fff;
+        border-radius:0;
+        border:1px solid rgba(0, 0, 0, 0.15);
+        min-width:85px !important;
+        font-size:10px;
+    }
+
+    .navbar-nav .open .dropdown-menu.logout-bar>li>a {
+        line-height:15px !important;
+        padding:3px 6px !important;
+        color:#000000de;
+    }
+
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
-/*    .navbar-default{
-        margin-bottom:10px !important;
-    }*/
-
     section{
         line-height: 1.1;
     }
@@ -523,11 +546,16 @@ td{
         margin-bottom:6px;
     }
     a#username.dropdown-toggle {
-        display:none;
+       font-size:16px;
+    }
+
+    .logout-bar{
+        min-width:100px;
+        font-size: 12px;
     }
 
     #callsign{
-        display: none;
+        font-size:10px;
     }
 
     table td.commentsCol button{
@@ -535,7 +563,7 @@ td{
     }
 
     a.indexBtns {
-        font-size: 10px !important;
+        font-size: 14px !important;
     }
 
     div#toaster{
@@ -568,7 +596,6 @@ td{
         text-transform: uppercase;
     }
     td{
-        padding: 3px;
         text-align: left;
         vertical-align:middle;
         font-size: 10px;
@@ -589,23 +616,28 @@ td{
         padding-top:35px;
     }
 
-    .navbar-fixed-top{
-        z-index: 0;
-    }
     .pagination{
         font-size:10px;
     }
     .form-control{
         font-size:12px;
     }
+
+    div.indexList{
+        min-width:90px !important;
+        font-size: 8px;
+        padding: 1px 0;
+    }
+
+    .indexbuttons .btn{
+        padding:3px 6px !important;
+    }
+
 }   
 
 @media only screen and (min-width: 320px) and (max-width: 374px) {
     table{
         font-size:5px;
-    }
-    .navbar-fixed-top{
-        z-index: 0;
     }
 }  
 
@@ -619,9 +651,6 @@ td{
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    td{
-        padding:7px;
-    }
     section{
         line-height:1.1;
     }

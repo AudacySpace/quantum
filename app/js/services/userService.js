@@ -5,6 +5,10 @@ quantum
         cRole : $window.user.currentRole
     };
 
+    var userList = {
+        online: []
+    }
+
     function getUserName() {
         if($window.user.google && $window.user.google.name) {
             return $window.user.google.name;
@@ -78,7 +82,23 @@ quantum
             data: {"email" : user.google.email, "roles" : roles, "mission": mission}
         });
     }
-    
+
+    function getUsersCurrentRole(mission,userList){
+        return $http({
+            url: "/getUsersCurrentRole",
+            method: "GET",
+            params: {"mission" : mission,"userList":userList}
+        });
+    }
+
+    function setOnlineUsers(users){
+        userList.online = users;
+    }
+
+    function getOnlineUsers(){
+        return userList;
+    }
+ 
 	return {
         userRole : userRole,
         getUserName : getUserName,
@@ -89,6 +109,9 @@ quantum
         setCurrentRole : setCurrentRole,
         getUsers : getUsers,
         getRoles : getRoles,
-        setAllowedRoles : setAllowedRoles
+        setAllowedRoles : setAllowedRoles,
+        setOnlineUsers : setOnlineUsers,
+        getOnlineUsers  : getOnlineUsers,
+        getUsersCurrentRole : getUsersCurrentRole
 	}
 }]);

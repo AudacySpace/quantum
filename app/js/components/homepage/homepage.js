@@ -4,7 +4,7 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,$mdSidenav,dashboardService, $uibModal,$location,$mdToast) {
+  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast) {
 
         var email = userService.getUserEmail();
         var mission = {
@@ -33,21 +33,8 @@ angular.module('quantum')
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
             procedureService.setProcedureName('','',"Home");
+            dashboardService.setRightLock(false);
     	}
-
-        $ctrl.openRightNav = function(){
-            if($window.innerWidth < 800){
-                if ($window.innerWidth < 800){
-                    $mdSidenav('right').open();
-                } else {
-                    $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
-                    dashboardService.setRightLock($ctrl.locks.lockRight); 
-                }
-            }else {
-                $ctrl.locks.lockRight = false;
-                dashboardService.setRightLock($ctrl.locks.lockRight); 
-            }
-        }
 
         $ctrl.showSettings = function(){
             $uibModal.open({

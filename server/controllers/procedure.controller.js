@@ -177,15 +177,13 @@ module.exports = {
                     instancesteps.push({"step":procs.sections[i].Step,"info":""})
                 }
                 var revision = procs.instances.length+1;
-<<<<<<< HEAD
-                procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true});
-=======
+
                 procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true,users:[{
                     "name":username,
                     "email":useremail,
                     "status":userstatus
                 }]});
->>>>>>> feature/A8041_Quantum_SetUserStatus
+
                 procs.lastuse = lastuse;
                 procs.save(function(err,result) {
                     if (err){
@@ -383,17 +381,17 @@ module.exports = {
                             }else if(i === len-1){
                                 Leni = i;
                                 procs.instances[liveinstanceID].users.push({
-                                    "name":username,
-                                    "email":email,
-                                    "status":status
+                                    'name':username,
+                                    'email':email,
+                                    'status':status
                                 });
                             }
                         }
                     }else {
                         procs.instances[liveinstanceID].users.push({
-                            "name":username,
-                            "email":email,
-                            "status":status
+                            'name':username,
+                            'email':email,
+                            'status':status
                         });
                     }
                 }else {
@@ -416,7 +414,7 @@ module.exports = {
                         console.log(err);
                     }
                     if(result){
-                       res.send({"status":status});
+                       res.send({status:status});
                     }
                     
                 });

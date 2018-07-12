@@ -2,7 +2,12 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.procedure = procedureService.getProcedureName();
-  
+      $scope.icons = {
+        usersicon: {
+            'display':'none',
+        }
+    }
+
     viewProcedure();
 
     function viewProcedure(){

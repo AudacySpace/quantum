@@ -10,6 +10,7 @@ angular.module('quantum')
         $ctrl.name = userService.getUserName();
         $ctrl.role = userService.userRole;
         $ctrl.procedure = procedureService.getProcedureName();
+        $ctrl.userList = userService.getOnlineUsers();
         getUserRole();
 
         $ctrl.logout = function () {

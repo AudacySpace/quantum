@@ -1,5 +1,5 @@
 quantum
-.factory('procedureService', ['$http','$window','$mdToast', function($http,$window,$mdToast) {
+.factory('procedureService', ['$http','$window','$mdToast','userService', function($http,$window,$mdToast,userService) {
 
     var procedure = {
         id:"",
@@ -26,7 +26,7 @@ quantum
     	return $http({
     		url: "/getProcedureList",
     		method: "GET",
-            data:{}
+            params:{}
     	});
     }
 
