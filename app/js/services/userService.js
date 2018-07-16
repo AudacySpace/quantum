@@ -5,6 +5,10 @@ quantum
         cRole : $window.user.currentRole
     };
 
+    var userList = {
+        online: []
+    }
+
     function getUserName() {
         if($window.user.google && $window.user.google.name) {
             return $window.user.google.name;
@@ -78,7 +82,42 @@ quantum
             data: {"email" : user.google.email, "roles" : roles, "mission": mission}
         });
     }
-    
+
+    function getUsersCurrentRole(mission,userList){
+        return $http({
+            url: "/getUsersCurrentRole",
+            method: "GET",
+            params: {"mission" : mission,"userList":userList}
+        });
+    }
+
+    function setOnlineUsers(users){
+        userList.online = users;
+    }
+
+    function getOnlineUsers(){
+        return userList;
+    }
+
+    function setActiveUsers(activeUsers){
+        var userLen = activeUsers.length;
+        var userList = [];
+        var currentUserEmail = getUserEmail();
+        //for loop to get all the current users
+        for(var i=0;i<userLen;i++){
+            if(activeUsers[i].status === true && activeUsers[i].email !== currentUserEmail){
+                var userdetails = new Object();
+                userdetails.name = activeUsers[i].name;
+                userdetails.status = activeUsers[i].status;
+                userdetails.email = activeUsers[i].email;
+                userdetails.role = {};
+                userList.push(userdetails);
+            }
+        }
+
+        return userList;
+    }
+ 
 	return {
         userRole : userRole,
         getUserName : getUserName,
@@ -89,6 +128,10 @@ quantum
         setCurrentRole : setCurrentRole,
         getUsers : getUsers,
         getRoles : getRoles,
-        setAllowedRoles : setAllowedRoles
+        setAllowedRoles : setAllowedRoles,
+        setOnlineUsers : setOnlineUsers,
+        getOnlineUsers  : getOnlineUsers,
+        getUsersCurrentRole : getUsersCurrentRole,
+        setActiveUsers : setActiveUsers
 	}
 }]);

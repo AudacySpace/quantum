@@ -14,25 +14,22 @@ describe('Test Suite for Procedure Model ', function() {
     it('should be invalid if the model is empty', function() {
         var m = new Procedure();
         m.validate(function(err) {
-            expect(err.errors['procedure.id']).to.exist;
-            expect(err.errors['procedure.title']).to.exist;
-            expect(err.errors['procedure.sections']).to.exist;
-            expect(err.errors['procedure.eventname']).to.exist;
+            expect(err.errors['procedureID']).to.exist;
+            expect(err.errors['title']).to.exist;
+            expect(err.errors['sections']).to.exist;
+            expect(err.errors['eventname']).to.exist;
         });
     });
 
     it('should validate if all of the properties are defined with valid data types', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero'
-
-            },
-            instances : [{},{}]
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero',
+                    instances : [{},{}]
+                });
         m.validate(function(err){
             assert.isNull(err);
         });  
@@ -40,50 +37,43 @@ describe('Test Suite for Procedure Model ', function() {
 
     it('should invalidate if procedure id is not a string type', function() {
         var m = new Procedure({
-            procedure : {
-                id :{},
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero'
-
-            },
-            instances : [{},{}]
-        });
+                    procedureID :{},
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero',
+                    instances : [{},{}]
+                });
         m.validate(function(err){
-            expect(err.errors['procedure.id'].name).to.exist;
-            expect(err.errors['procedure.id'].name).to.equal('CastError');
+            expect(err.errors['procedureID'].name).to.exist;
+            expect(err.errors['procedureID'].name).to.equal('CastError');
         });  
     });
 
 
     it('should invalidate if procedure title is not a string type', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: {},
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero'
-            },
-            instances : [{},{}]
-        });
+                    procedureID : '1.1',
+                    title: {},
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero',
+                    instances : [{},{}]
+                });
         m.validate(function(err){
-            expect(err.errors['procedure.title'].name).to.exist;
-            expect(err.errors['procedure.title'].name).to.equal('CastError');
+            expect(err.errors['title'].name).to.exist;
+            expect(err.errors['title'].name).to.equal('CastError');
         });  
     });
 
     it('should validate if procedure lastuse is not defined as its not mandatory', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                sections:[{},{}],
-                eventname:'Audacy Zero'
-            },
-            instances : [{},{}]
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    sections:[{},{}],
+                    eventname:'Audacy Zero',
+                    instances : [{},{}]
+                });
         m.validate(function(err){
            assert.isNull(err);
         });  
@@ -91,47 +81,41 @@ describe('Test Suite for Procedure Model ', function() {
 
     it('should invalidate if procedure sections is not defined', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                eventname:'Audacy Zero'
-            },
-            instances : [{},{}]
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    eventname:'Audacy Zero',
+                    instances : [{},{}]
+                });
         m.validate(function(err){
-            expect(err.errors['procedure.sections'].name).to.exist;
-            expect(err.errors['procedure.sections'].name).to.equal('ValidatorError');
+            expect(err.errors['sections'].name).to.exist;
+            expect(err.errors['sections'].name).to.equal('ValidatorError');
         });  
     });
 
     it('should invalidate if procedure eventname is not a string type', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:{}
-            },
-            instances : [{},{}]
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:{},
+                    instances : [{},{}]
+                });
         m.validate(function(err){
-            expect(err.errors['procedure.eventname'].name).to.exist;
-            expect(err.errors['procedure.eventname'].name).to.equal('CastError');
+            expect(err.errors['eventname'].name).to.exist;
+            expect(err.errors['eventname'].name).to.equal('CastError');
         });  
     });
 
     it('should validate if instances is not defined as its not mandatory', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero',
-            }
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero'
+                });
         m.validate(function(err){
             assert.isNull(err);
         });  
@@ -139,14 +123,12 @@ describe('Test Suite for Procedure Model ', function() {
 
     it('should validate if uploadedBy is not defined as its not mandatory', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero',
-            }
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero'
+                });
         m.validate(function(err){
             assert.isNull(err);
         });  
@@ -154,14 +136,12 @@ describe('Test Suite for Procedure Model ', function() {
 
     it('should validate if updatedBy is not defined as its not mandatory', function() {
         var m = new Procedure({
-            procedure : {
-                id : '1.1',
-                title: 'Audacy Zero - Procedure Example',
-                lastuse:'2018 - 060.00:29:29 UTC' ,
-                sections:[{},{}],
-                eventname:'Audacy Zero',
-            }
-        });
+                    procedureID : '1.1',
+                    title: 'Audacy Zero - Procedure Example',
+                    lastuse:'2018 - 060.00:29:29 UTC' ,
+                    sections:[{},{}],
+                    eventname:'Audacy Zero'
+                });
         m.validate(function(err){
             assert.isNull(err);
         });  
@@ -251,7 +231,7 @@ describe('Test Suite for Procedure Route Controller', function() {
                     "Step": "2.1.2"
                 }
         ]};
-        Procedure.findOne.yields(null, {"procedure":procs,"status":200});
+        Procedure.findOne.yields(null, {"sections":procs.sections,"status":200});
         var req = { 
             query : {id:'1.1'}
 
@@ -261,16 +241,14 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getProcedureData(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
     });
 
     it('should not get a procedure section data on download when error', function() {
         procedure = require('../server/controllers/procedure.controller');
         var procs = {
-            sections:[
-
-        ]};
+            sections:[]};
         Procedure.findOne.yields({"name":"MongoError"},null);
         var req = { 
             query : {id:'1.1'}
@@ -281,7 +259,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getProcedureData(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -360,7 +338,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getLiveInstanceData(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,instances[0]);
     });
@@ -378,7 +356,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getLiveInstanceData(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -455,7 +433,15 @@ describe('Test Suite for Procedure Route Controller', function() {
 
             }
         ];
-        Procedure.findOne.yields(null, {"instances":instances,"status":200,"procedure":proc});
+        Procedure.findOne.yields(null, {
+                "instances":instances,
+                "status":200,
+                "procedureID":proc.id,
+                "title":proc.title,
+                "lastuse":proc.lastuse,
+                "eventname":proc.eventname,
+                "sections":proc.sections
+            });
         var req = { 
             query : {procedureID:'1.1'}
 
@@ -465,7 +451,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getAllInstances(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,{'instances':instances,'title':'Procedure Example'});
     });
@@ -483,7 +469,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.getAllInstances(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{'procedureID' : '1.1' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -523,7 +509,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.uploadFile(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '1.1' },sinon.match.func);
         expect(res.json.calledOnce).to.be.true;
         sinon.assert.calledWith(res.json, {error_code:0,err_desc:null});
     });
@@ -533,37 +519,36 @@ describe('Test Suite for Procedure Route Controller', function() {
         var error = null;
         var procs = {    
             "instances": [],
-            "procedure": {
-                "eventname": "SF Earth Station",
-                "lastuse": "",
-                "title": "1.1 - Audacy Zero - Procedure Example",
-                "id": "1.1",
-                "sections": [
-                    {
-                        "Content": "Issue null command and confirm response",
-                        "Type": "Action",
-                        "Role": "MD, CC",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.2"
-                    }
-                ]
-            },
+            "eventname": "SF Earth Station",
+            "lastuse": "",
+            "title": "1.1 - Audacy Zero - Procedure Example",
+            "procedureID": "1.1",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
@@ -601,7 +586,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.uploadFile(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '1.1' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '1.1' },sinon.match.func);
         expect(res.json.calledOnce).to.be.true;
         sinon.assert.calledWith(res.json, {error_code:0,err_desc:"file updated"});
 
@@ -686,37 +671,36 @@ describe('Test Suite for Procedure Route Controller', function() {
         var error = null;
         var procs = {    
             "instances": [],
-            "procedure": {
-                "eventname": "SF Earth Station",
-                "lastuse": "",
-                "title": "SF Earth Station - Procedure Example copy 2",
-                "id": "2.3",
-                "sections": [
-                    {
-                        "Content": "Issue null command and confirm response",
-                        "Type": "Action",
-                        "Role": "MD, CC",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.2"
-                    }
-                ]
-            },
+            "eventname": "SF Earth Station",
+            "lastuse": "",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
@@ -738,7 +722,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.saveProcedureInstance(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send, {"revision":1});
     });
@@ -761,7 +745,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.saveProcedureInstance(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -796,37 +780,36 @@ describe('Test Suite for Procedure Route Controller', function() {
                     "running": true
                 }
             ],
-            "procedure": {
-                "eventname": "SF Earth Station",
-                "lastuse": "2018 - 057.21:56:35 UTC",
-                "title": "SF Earth Station - Procedure Example copy 2",
-                "id": "2.3",
-                "sections": [
-                    {
-                        "Content": "Issue null command and confirm response",
-                        "Type": "Action",
-                        "Role": "MD, CC",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.2"
-                    }
-                ]
-            },
+            "eventname": "SF Earth Station",
+            "lastuse": "2018 - 057.21:56:35 UTC",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
@@ -854,7 +837,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.setInfo(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,{"data":""});
     });
@@ -881,7 +864,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.setInfo(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -916,37 +899,36 @@ describe('Test Suite for Procedure Route Controller', function() {
                     "running": true
                 }
             ],
-            "procedure": {
-                "eventname": "SF Earth Station",
-                "lastuse": "2018 - 057.21:57:35 UTC",
-                "title": "SF Earth Station - Procedure Example copy 2",
-                "id": "2.3",
-                "sections": [
-                    {
-                        "Content": "Issue null command and confirm response",
-                        "Type": "Action",
-                        "Role": "MD, CC",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.2"
-                    }
-                ]
-            },
+            "eventname": "SF Earth Station",
+            "lastuse": "2018 - 057.21:57:35 UTC",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
@@ -974,7 +956,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.setInstanceCompleted(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,{"data":""});
     });
@@ -1000,7 +982,7 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.setInstanceCompleted(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.false;
     });
 
@@ -1035,37 +1017,36 @@ describe('Test Suite for Procedure Route Controller', function() {
                     "running": true
                 }
             ],
-            "procedure": {
-                "eventname": "SF Earth Station",
-                "lastuse": "2018 - 057.21:56:35 UTC",
-                "title": "SF Earth Station - Procedure Example copy 2",
-                "id": "2.3",
-                "sections": [
-                    {
-                        "Content": "Issue null command and confirm response",
-                        "Type": "Action",
-                        "Role": "MD, CC",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.2"
-                    }
-                ]
-            },
+            "eventname": "SF Earth Station",
+            "lastuse": "2018 - 057.21:56:35 UTC",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
@@ -1092,8 +1073,100 @@ describe('Test Suite for Procedure Route Controller', function() {
         };
  
         procedure.setComments(req, res);
-        sinon.assert.calledWith(Procedure.findOne,{ 'procedure.id' : '2.3' },sinon.match.func);
+        sinon.assert.calledWith(Procedure.findOne,{ 'procedureID' : '2.3' },sinon.match.func);
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,{"data":""});
+    });
+
+    it('should set user online or offline status for the logged in user when working on active procedure', function() {
+        procedure = require('../server/controllers/procedure.controller');
+        var error = null;
+        var procs = {    
+            "instances": [
+                {
+                    "Steps":[
+                        { "step": "1.0",
+                            "info": "2018 - 057.21:54:35 UTC Taruni Gattu(MD)"
+                        },
+                        {
+                            "step": "2.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.2",
+                            "info": ""
+                        }
+                    ],
+                    "openedBy": "Taruni Gattu(MD)",
+                    "closedBy": "",
+                    "startedAt": "2018 - 057.21:53:35 UTC",
+                    "completedAt": "",
+                    "revision": 1,
+                    "running": true
+                }
+            ],
+            "eventname": "SF Earth Station",
+            "lastuse": "2018 - 057.21:56:35 UTC",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
+            save:function(callback){
+                var err = null;
+                var res = {"data":""};
+                callback(err,res);
+            },
+            markModified:function(field){
+
+            }
+        };
+
+        Procedure.findOne.yields(error,procs);
+        var req = { 
+            body: {
+                pid:'2.3',
+                revision:1,
+                email:'jsmith@gmail.com',
+                status:true,
+                username:'John Smith'
+            }
+        };
+
+        var res = {
+            send: sinon.stub()
+        };
+ 
+        procedure.setUserStatus(req, res);
+        sinon.assert.calledWith(Procedure.findOne,{ procedureID: "2.3" },sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,{"status":true});
     });
 });

@@ -4,7 +4,7 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,$mdSidenav,dashboardService, $uibModal,$location,$mdToast) {
+  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast) {
 
         var email = userService.getUserEmail();
         var mission = {
@@ -33,21 +33,8 @@ angular.module('quantum')
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
             procedureService.setProcedureName('','',"Home");
+            dashboardService.setRightLock(false);
     	}
-
-        $ctrl.openRightNav = function(){
-            if($window.innerWidth < 800){
-                if ($window.innerWidth < 800){
-                    $mdSidenav('right').open();
-                } else {
-                    $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
-                    dashboardService.setRightLock($ctrl.locks.lockRight); 
-                }
-            }else {
-                $ctrl.locks.lockRight = false;
-                dashboardService.setRightLock($ctrl.locks.lockRight); 
-            }
-        }
 
         $ctrl.showSettings = function(){
             $uibModal.open({
@@ -87,8 +74,11 @@ angular.module('quantum')
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
+            var emailaddress = userService.getUserEmail();
+            var revNum = procedureService.getCurrentViewRevision();
+            var status = false;
             if(temp.length === 4 && temp[1] === 'dashboard' && temp[2] === 'procedure'){
-                var revNum = procedureService.getCurrentViewRevision();
+
                 var pinTo = 'bottom right';
                 var toast = $mdToast.simple()
                                     .textContent('This procedure instance is saved in the Live Index with revision number: '+revNum.value)
@@ -103,12 +93,35 @@ angular.module('quantum')
                     if ( response == 'ok' ) {
                     
                     }
-                    $window.location.href = '/logout';
+                    var currentRevision = parseInt(revNum.value);
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+                    }); 
+                    
                 });
             }else {
-                $window.location.href = '/logout';
+                var currentRevision;
+                if(revNum.value !== ""){
+                    currentRevision = parseInt(revNum.value);
+                }else {
+                    currentRevision = "";
+                }
+
+                if($ctrl.procedure.id !== ""){
+                    procedureService.setUserStatus(loc,emailaddress,$ctrl.name,$ctrl.procedure.id,currentRevision,status).then(function(response){
+                        if(response.data.status === false){
+                            $window.location.href = '/logout';
+                        }
+                    },function(error){
+
+                    }); 
+                }else {
+                    $window.location.href = '/logout';
+                }
             }
-            
         };
 	}
 });

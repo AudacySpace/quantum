@@ -9,12 +9,12 @@ describe('Test Suite for Homepage Controller', function () {
         // load the module
         module('quantum', function ($provide) {
             $provide.value('$window', windowMock);
-            sideNavOpenMock = jasmine.createSpy();
-            $provide.factory('$mdSidenav', function() {
-                return function(sideNavId){
-                    return { open: sideNavOpenMock };
-                };
-            });
+            // sideNavOpenMock = jasmine.createSpy();
+            // $provide.factory('$mdSidenav', function() {
+            //     return function(sideNavId){
+            //         return { open: sideNavOpenMock };
+            //     };
+            // });
         });
 
         inject(function($componentController, _$q_){
@@ -92,26 +92,26 @@ describe('Test Suite for Homepage Controller', function () {
         expect($controller.icons).toEqual({ icon1style:"", icon2style:"",icon3style:"",icon4style : ""});
     });
 
-    it('should define the function openRightNav', function(){
-        expect($controller.openRightNav).toBeDefined();
-    });
+    // it('should define the function openRightNav', function(){
+    //     expect($controller.openRightNav).toBeDefined();
+    // });
 
-    it('should open the right navigation menu, window width less than 800', function(){
-        windowMock.innerWidth = 768;
-        $controller.openRightNav();
+    // it('should open the right navigation menu, window width less than 800', function(){
+    //     windowMock.innerWidth = 768;
+    //     $controller.openRightNav();
 
-        //expect the mocked mdSidenav open function to be called
-        expect(sideNavOpenMock).toHaveBeenCalled();
-    });
+    //     //expect the mocked mdSidenav open function to be called
+    //     expect(sideNavOpenMock).toHaveBeenCalled();
+    // });
 
-    it('should not open the right navigation menu, window width 800 or more', function(){
-        windowMock.innerWidth = 1000;
-        $controller.openRightNav();
+    // it('should not open the right navigation menu, window width 800 or more', function(){
+    //     windowMock.innerWidth = 1000;
+    //     $controller.openRightNav();
 
-        //expect the right lock to be false
-        expect($controller.locks.lockRight).toEqual(false);
-        expect(dashboardService.setRightLock).toHaveBeenCalledWith(false);
-    });
+    //     //expect the right lock to be false
+    //     expect($controller.locks.lockRight).toEqual(false);
+    //     expect(dashboardService.setRightLock).toHaveBeenCalledWith(false);
+    // });
 
     it('should define the function setColor', function(){
         expect($controller.setColor).toBeDefined();

@@ -215,6 +215,19 @@ module.exports = {
             }
 
         });
+    },
+    getUsersCurrentRole: function(req,res){
+        var mission = req.query.mission;
+        var onlineUsers = [];
+        //update the current role of the user
+        User.find({'missions.name' : mission}, {'google' : 1, 'missions.$' : 1}, function(err, users) {
+            if(err){
+                console.log(err);
+            }
+            if(users){
+                res.send(users);
+            }
+        });
     }
 };
 

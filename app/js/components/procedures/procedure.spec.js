@@ -1,5 +1,5 @@
 describe('Test Suite for Procedure Controller', function () {
-    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend,timeService;
+    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend,timeService,$location,rootScope;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -81,8 +81,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "running": true
             }
         ],
-        "procedure": {
-            "sections": [
+        "sections": [
                 {
                     "Content": "Pre-Action Safety Information",
                     "Type": "Heading",
@@ -123,8 +122,7 @@ describe('Test Suite for Procedure Controller', function () {
             "eventname": "Audacy Zero",
             "lastuse": "2018 - 034.11:26:50 UTC",
             "title": "Audacy Zero - Procedure Example",
-            "id": "1.1"
-        },
+            "procedureID": "1.1",
         "__v": 6
     },
     {
@@ -165,8 +163,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "running": true
             }
         ],
-        "procedure": {
-            "sections": [
+        "sections": [
                 {
                     "Content": "Pre-Action Safety Information",
                     "Type": "Heading",
@@ -207,9 +204,8 @@ describe('Test Suite for Procedure Controller', function () {
             "eventname": "Audacy Zero",
             "lastuse": "2018 - 034.11:26:59 UTC",
             "title": "Audacy Zero - OBC Bootup",
-            "id": "1.2"
-        },
-        "__v": 3
+            "procedureID": "1.2",
+            "__v": 3
     }];
 
 
@@ -228,14 +224,18 @@ describe('Test Suite for Procedure Controller', function () {
             })
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_,$location){
             scope = $rootScope.$new();
+            rootScope = $rootScope;
+
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             $q = _$q_;
             procedureService = _procedureService_;
             userService = _userService_;
             httpBackend = _$httpBackend_;
             timeService = _timeService_;
+            
+            spyOn($location,'url').and.returnValue('/dashboard/procedure/running/1.1');
 
             deferredProcedureList = _$q_.defer();
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
@@ -247,8 +247,18 @@ describe('Test Suite for Procedure Controller', function () {
             spyOn(procedureService, "saveProcedureInstance").and.returnValue(deferredProcedureInstance.promise);
 
             spyOn(userService, "getUserName").and.returnValue('John Smith');
-
+            spyOn(userService, "getUserEmail").and.returnValue('jsmith@gmail.com');
             spyOn(procedureService,"displayAlert").and.returnValue(true);
+
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
+            spyOn(procedureService,'getProcedureName').and.returnValue({
+                id:"1.1",
+                name:"Audacy Zero - Procedure Example",
+                status:"",
+                fullname:"Audacy Zero - Procedure Example.xlsx"
+            });
 
             spyOn(timeService, "getTime").and.returnValue({
                 days : '070',
@@ -405,8 +415,7 @@ describe('Test Suite for Procedure Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -447,8 +456,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.3"
-            },
+                "procedureID": "1.3",
             "__v": 6
         },
         {
@@ -489,8 +497,7 @@ describe('Test Suite for Procedure Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -531,8 +538,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
+                "procedureID": "1.2",
             "__v": 3
         }];
 
@@ -632,8 +638,7 @@ describe('Test Suite for Procedure Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -674,15 +679,13 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.3"
-            },
+                "procedureID": "1.3",
             "__v": 6
         },
         {
             "_id": "5a78b2745fa10701004acb4d",
             "instances": [],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -723,8 +726,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
+                "procedureID": "1.2",
             "__v": 3
         }];
 
@@ -861,8 +863,7 @@ describe('Test Suite for Procedure Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -903,8 +904,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.3"
-            },
+                "procedureID": "1.3",
             "__v": 6
         },
         {
@@ -945,8 +945,7 @@ describe('Test Suite for Procedure Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -987,8 +986,7 @@ describe('Test Suite for Procedure Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
+                "procedureID": "1.2",
             "__v": 3
         }];
 
@@ -1308,7 +1306,7 @@ describe('Test Suite for Procedure Controller', function () {
             year : '2018'
         };
         scope.changeColor("Live","1.1","Procedure Example",true);
-        expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC');
+        expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC','John Smith',"jsmith@gmail.com",true);
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
         expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
         expect(timeService.getTime).toHaveBeenCalled();
@@ -1333,7 +1331,7 @@ describe('Test Suite for Procedure Controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
-        expect($intervalSpy.cancel.calls.count()).toBe(2);
+        expect($intervalSpy.cancel.calls.count()).toBe(1);
     });
 
 });

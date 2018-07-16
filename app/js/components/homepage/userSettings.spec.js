@@ -5,7 +5,7 @@ describe('Testing user settings modal controller', function () {
             
         },
         user : {
-            role : {}
+            currentRole : {}
         }
     };
     var modalInstance = { close: function() {}, dismiss: function() {}, open: function() {} };

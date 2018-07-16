@@ -2,7 +2,10 @@ describe('Test Suite for Right Sidebar Controller', function () {
     var $controller, userService;
     var windowMock = {
         location: {href : ''},
-        innerWidth: 1000
+        innerWidth: 1000,
+        user : {
+            currentRole : {}
+        }
     };
 
 
@@ -14,13 +17,26 @@ describe('Test Suite for Right Sidebar Controller', function () {
 
         inject(function($componentController){
 
-            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName']);
+            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName','getUserEmail','getOnlineUsers']);
             
             userService.getUserName.and.callFake(function() {
                 return 'John Smith';
             });
             userService.userRole.and.callFake(function() {
                 return { cRole : { 'callsign' : 'MD'}};
+            }); 
+
+            userService.getUserEmail.and.callFake(function() {
+                return 'jsmith@gmail.com';
+            });
+
+            userService.getOnlineUsers.and.callFake(function() {
+                return [{
+                    "name":"John Smith",
+                    "status":"true",
+                    "email":"johnsmith@gmail.com",
+                    "role":"SYS"
+                }];
             });            
 
             $controller = $componentController('rightSidebar', {

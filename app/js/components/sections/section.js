@@ -1,4 +1,4 @@
-quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService,userService,timeService,$interval,$window,dashboardService,$location,$uibModal) {
+quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService,userService,timeService,$interval,$window,dashboardService,$location,$uibModal,$mdSidenav) {
 	$scope.params = $routeParams;
 	$scope.role = userService.userRole;
     $scope.name = userService.getUserName();
@@ -8,11 +8,45 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.inputStepValues = [];
 
     $scope.tempValues = [];
+    $scope.locks = dashboardService.getLock();
 
+    $scope.icons = {
+        usersicon: {
+            'display':'block',
+            'float':'right'
+        }
+    }
+    var users;
     $scope.currentRevision = procedureService.getCurrentViewRevision();
     $scope.liveInstanceinterval = "";
     $scope.procedure = procedureService.getProcedureName();
+    var mission = 'Quantum';
 	viewProcedure();
+
+    $scope.openRightNav = function(){
+        if($window.innerWidth < 800){
+            if ($window.innerWidth < 800){
+                $mdSidenav('right').open();
+            } else {
+                $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                dashboardService.setRightLock($ctrl.locks.lockRight); 
+            }
+        }else {
+            var curLocation = $location.url();
+            var curLocationOp = curLocation.split("/");
+            if(curLocationOp.length === 4 ){ //open right sidebar for new instance
+                $scope.locks.lockRight = !$scope.locks.lockRight;
+                dashboardService.setRightLock($scope.locks.lockRight);
+            }else if(curLocationOp.length === 6 && curLocationOp[3] === "runninginstance" ){
+                //open right sidebar for active procedure
+                $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                dashboardService.setRightLock($ctrl.locks.lockRight); 
+            }else{
+                $ctrl.locks.lockRight = false;
+                dashboardService.setRightLock($ctrl.locks.lockRight); 
+            }
+        }
+    }
 
     $scope.updateLiveInstance = function(){
         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision.value).then(function(response){
@@ -40,7 +74,19 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         });
     }
 
+    $scope.updateActiveUsers = function(){
+         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision.value).then(function(response){
+            if(response.status === 200){
+                if(response.data.users){
+                    users = userService.setActiveUsers(response.data.users);
+                    setActiveUsersRole(users);
+                }
+            } 
+        });
+    }
+
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+    $scope.activeUsersInterval = $interval($scope.updateActiveUsers,1000);
 
 	function viewProcedure(){
         $scope.inputStepValues = [];
@@ -48,10 +94,13 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             for(var i=0;i<response.data.length;i++){
-                if(response.data[i].procedure.id === $scope.params.procID){
-                   	$scope.steps = response.data[i].procedure.sections;
-                    $scope.procedure.name = response.data[i].procedure.title;
-				}
+                if(response.data[i].procedureID){
+                    if(response.data[i].procedureID === $scope.params.procID){
+                        $scope.steps = response.data[i].sections;
+                        $scope.procedure.name = response.data[i].title;
+                        break;
+                    }
+                }
 			}
 
             for(var a=0;a<$scope.steps.length;a++){
@@ -66,6 +115,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     comments:""
                 });
             }
+
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign); 
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
@@ -664,6 +714,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.liveInstanceinterval);
+            $interval.cancel($scope.activeUsersInterval);    
         }
     );
 
@@ -671,17 +722,35 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         if(status === "Live"){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+            dashboardService.setRightLock(false); 
 
         }else if(status === "Archived") {
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+            dashboardService.setRightLock(false); 
 
         }
     }
 
-    $scope.$on('$locationChangeStart', function(evnt, next, current){  
+    $scope.$on('$locationChangeStart', function(evnt, next, current){ 
         var loc = $location.url();
-        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);    
+        var revNumOp = loc.split("/");
+        var emailaddress = userService.getUserEmail();
+        var name = userService.getUserName();
+        var currentRevision;
+        var status;
+
+        if(revNumOp.length === 2 || revNumOp.length === 5){
+            var procRev = procedureService.getCurrentViewRevision();
+            currentRevision = procRev.value;
+            status = false;
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);   
+                }
+            },function(error){
+            }); 
+        }
     });
 
     $scope.updateInputValue = function(index,value){
@@ -827,7 +896,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
                                             });
@@ -841,7 +910,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
 
@@ -857,7 +926,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
 
@@ -897,7 +966,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                             for(var a=0;a<$scope.steps.length;a++){
                                                 $scope.steps[a].status = true;
                                             }
-                                            procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                            procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                         }
                                     });
@@ -911,7 +980,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
                                 });
@@ -935,6 +1004,23 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.$watch('role.cRole',function(newvalue,oldvalue){
         $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
     });
+
+    function setActiveUsersRole(activeUsers){
+        //function to get current roles of all the online users
+        userService.getUsersCurrentRole(mission).then(function(response) {
+            if(response.status == 200){
+                for(var i=0;i<activeUsers.length;i++){
+                    for(var j=0;j<response.data.length;j++){
+                        if(activeUsers[i].status === true && activeUsers[i].email === response.data[j].google.email){
+                            activeUsers[i].role = response.data[j].missions[0].currentRole;
+                        }
+                    }
+                }
+                userService.setOnlineUsers(activeUsers);
+            }
+        });  
+    }
+
 });
 
 
