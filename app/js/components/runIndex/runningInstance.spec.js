@@ -2645,7 +2645,7 @@ describe('Test Suite for Run Instance Controller', function () {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
 
-        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1','',false);
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1',1,false);
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','','2',1000);
     });
 

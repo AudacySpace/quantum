@@ -40,31 +40,21 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
         var name = userService.getUserName();
         var currentRevision;
         var status;
-        if(revNumOp.length === 4){
-            currentRevision = parseInt(revNumOp[3]);
-            status = true;
-        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+ 
+        if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
             currentRevision = parseInt(revNumOp[5]);
             status = true
             procedureService.setCurrentViewRevision(currentRevision);
-        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-            currentRevision = parseInt(revNumOp[5]);
-            status = false;
-            procedureService.setCurrentViewRevision(currentRevision);
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
+                }
+            },function(error){
+            }); 
+        }else {
+            dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
         }
-        else if(revNumOp.length === 2 || revNumOp.length === 5){
-            currentRevision = "";
-            status = false;
-        }
-
-        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
-            if(response.status === 200){
-                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
-            }
-        },function(error){
-        }); 
     });
-
 });
 
 

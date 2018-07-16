@@ -2709,7 +2709,7 @@ describe('Test Suite for Section Controller', function () {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
 
-        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1','',false);
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1',1,false);
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','',1,1000);
     });
 

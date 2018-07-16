@@ -100,12 +100,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         $scope.procedure.name = response.data[i].title;
                         break;
                     }
-                }else {
-                    if(response.data[i].procedure.id === $scope.params.procID){
-                        $scope.steps =  response.data[i].procedure.sections;
-                        $scope.procedure.name = response.data[i].procedure.title;
-                        break;
-                    }
                 }
 			}
 
@@ -746,27 +740,17 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         var currentRevision;
         var status;
 
-        if(revNumOp.length === 4){
-            currentRevision = parseInt(revNumOp[3]);
-            status = true;
-        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
-            currentRevision = parseInt(revNumOp[5]);
-            status = true;
-        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-            currentRevision = parseInt(revNumOp[5]);
+        if(revNumOp.length === 2 || revNumOp.length === 5){
+            var procRev = procedureService.getCurrentViewRevision();
+            currentRevision = procRev.value;
             status = false;
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);   
+                }
+            },function(error){
+            }); 
         }
-        else if(revNumOp.length === 2 || revNumOp.length === 5){
-            currentRevision = "";
-            status = false;
-        }
-
-        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
-            if(response.status === 200){
-                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.currentRevision.value,$window.innerWidth);   
-            }
-        },function(error){
-        }); 
     });
 
     $scope.updateInputValue = function(index,value){

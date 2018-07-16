@@ -1334,17 +1334,4 @@ describe('Test Suite for Procedure Controller', function () {
         expect($intervalSpy.cancel.calls.count()).toBe(1);
     });
 
-    it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dashboard/procedure/running/1.1';
-        var oldUrl = '/dashboard'
-
-        deferredUserStatus.resolve({ data :{},status : 200});
-        scope.$apply(function() {
-            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
-        });
-
-        expect(procedureService.setUserStatus).toHaveBeenCalledWith('/dashboard/procedure/running/1.1', 'jsmith@gmail.com', 'John Smith', '1.1', '', 'false');
-        //expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','',1,1000);
-    });
-
 });

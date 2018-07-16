@@ -63,27 +63,17 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         var name = userService.getUserName();
         var currentRevision;
         var status;
-        if(revNumOp.length === 4){
-            currentRevision = parseInt(revNumOp[3]);
-            status = true;
-        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
-            currentRevision = parseInt(revNumOp[5]);
-            status = true;
-        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-            currentRevision = parseInt(revNumOp[5]);
+
+        if(revNumOp.length === 2 || revNumOp.length === 5){
+            var proc = procedureService.getCurrentViewRevision();
+            currentRevision = proc.value;
             status = false;
-        }else if(revNumOp.length === 2 || revNumOp.length === 5){
-            currentRevision = "";
-            status = false;
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth); 
+                }
+            },function(error){}); 
         }
-        console.log($scope.params.procID);
-        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
-            if(response.status === 200){
-                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth); 
-            }
-        },function(error){
-            
-        });        
     });
 });
 

@@ -182,23 +182,12 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 $scope.procedurelist = [];
                 if(response.data.length > 0){
                     for(var i=0;i<response.data.length;i++){
-
                         if(response.data[i].procedureID){
                             $scope.procedurelist.push(
                             {
                                 id:response.data[i].procedureID,
                                 title:response.data[i].title,
                                 lastuse:response.data[i].lastuse,
-                                instances:response.data[i].instances,
-                                running:0,
-                                archived:0
-                            });
-                        }else {
-                            $scope.procedurelist.push(
-                            {
-                                id:response.data[i].procedure.id,
-                                title:response.data[i].procedure.title,
-                                lastuse:response.data[i].procedure.lastuse,
                                 instances:response.data[i].instances,
                                 running:0,
                                 archived:0
@@ -334,45 +323,45 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         });
     }
 
-    $scope.$on('$locationChangeStart', function(evnt, next, current){  
-        var loc = $location.url();
-        var revNumOp = loc.split("/");
-        var emailaddress = userService.getUserEmail();
-        var name = userService.getUserName();
-        var currentRevision;
+    // $scope.$on('$locationChangeStart', function(evnt, next, current){  
+    //     var loc = $location.url();
+    //     var revNumOp = loc.split("/");
+    //     var emailaddress = userService.getUserEmail();
+    //     var name = userService.getUserName();
+    //     var currentRevision;
 
-        if(revNumOp.length === 4){
-            //user status is already set using save procedure instance
-        }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
-            currentRevision = parseInt(revNumOp[5]);
-            status = true;
-            var proc = procedureService.getProcedureName();
-            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-                if(response.status === 200){
-                }
-            },function(error){
-            }); 
-        }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-            currentRevision = parseInt(revNumOp[5]);
-            status = false;
-            var proc = procedureService.getProcedureName();
-            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-                if(response.status === 200){
-                }
-            },function(error){
-            }); 
-        }
-        else if(revNumOp.length === 2 || revNumOp.length === 5){
-            currentRevision = "";
-            status = false;
-            var proc = procedureService.getProcedureName();
-            procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-                if(response.status === 200){
-                }
-            },function(error){
-            }); 
-        }  
-    });
+    //     if(revNumOp.length === 4){
+    //         //user status is already set using save procedure instance
+    //     }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+    //         // currentRevision = parseInt(revNumOp[5]);
+    //         // status = true;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+    //         // currentRevision = parseInt(revNumOp[5]);
+    //         // status = false;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }
+    //     else if(revNumOp.length === 2 || revNumOp.length === 5){
+    //         // currentRevision = "";
+    //         // status = false;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }  
+    // });
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {

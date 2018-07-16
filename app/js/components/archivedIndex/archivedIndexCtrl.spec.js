@@ -23,7 +23,7 @@ describe('Test Suite for Archived Index controller', function () {
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
             userService = _userService_;
-            spyOn($location,'url').and.returnValue('/dashboard');
+            spyOn($location,'url').and.returnValue('/dashboard/procedure/archivedinstance/1.1/1');
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
   
@@ -290,7 +290,7 @@ describe('Test Suite for Archived Index controller', function () {
     });
 
     it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dashboard';
+        var newUrl = '/dashboard/procedure/archivedinstance/1.1/1';
         var oldUrl = '/dashboard/procedure/archived/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
 
@@ -298,7 +298,7 @@ describe('Test Suite for Archived Index controller', function () {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
 
-        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1','',false);
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1',1,true);
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','Audacy Zero - Procedure Example','',1000);
     });
 
