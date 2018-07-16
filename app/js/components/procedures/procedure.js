@@ -1,4 +1,4 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal,$location) {
 	$scope.sortType     = 'procedurenum'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
@@ -18,13 +18,13 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                             $scope.count = 0;
                             $scope.sameProcedure = false;
                             for(var i=0;i<response.data.length;i++){
-                                var filenameFrmDb = response.data[i].procedure.id+" - "+response.data[i].procedure.title+'.xlsx';
+                                var filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
                                 
-                                if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
+                                if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
                                     //Condition to check if a procedure exists with the same file name and has no saved instances
                                     $scope.sameProcedure = true;
                                     break;
-                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
+                                }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
@@ -37,7 +37,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                         $scope.upload_form.$setPristine();
                                         break;
                                     }
-                                }else if(response.data[i].procedure.id === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
+                                }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
                                     $scope.count = $scope.count + 1;
                                     $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
@@ -182,16 +182,17 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 $scope.procedurelist = [];
                 if(response.data.length > 0){
                     for(var i=0;i<response.data.length;i++){
-                        $scope.procedurelist.push(
+                        if(response.data[i].procedureID){
+                            $scope.procedurelist.push(
                             {
-                                id:response.data[i].procedure.id,
-                                title:response.data[i].procedure.title,
-                                lastuse:response.data[i].procedure.lastuse,
+                                id:response.data[i].procedureID,
+                                title:response.data[i].title,
+                                lastuse:response.data[i].lastuse,
                                 instances:response.data[i].instances,
                                 running:0,
                                 archived:0
-                            }
-                        )
+                            });
+                        }
                     }
 
                     for(var j=0;j<response.data.length;j++){
@@ -277,7 +278,10 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             $scope.name = userService.getUserName();
             $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
             var starttime = $scope.clock.year+" - "+$scope.clock.utc;
-            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime).then(function(response){
+            var emailaddress = userService.getUserEmail();
+            var userstatus = true;
+
+            procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
                 if(response.status === 200){
                     procedureService.setCurrentViewRevision(response.data.revision);
                 }
@@ -294,7 +298,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.procedurelistinterval);
-            $interval.cancel($scope.interval);
         }
     );
 
@@ -319,6 +322,46 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             //handle modal dismiss
         });
     }
+
+    // $scope.$on('$locationChangeStart', function(evnt, next, current){  
+    //     var loc = $location.url();
+    //     var revNumOp = loc.split("/");
+    //     var emailaddress = userService.getUserEmail();
+    //     var name = userService.getUserName();
+    //     var currentRevision;
+
+    //     if(revNumOp.length === 4){
+    //         //user status is already set using save procedure instance
+    //     }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
+    //         // currentRevision = parseInt(revNumOp[5]);
+    //         // status = true;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+    //         // currentRevision = parseInt(revNumOp[5]);
+    //         // status = false;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }
+    //     else if(revNumOp.length === 2 || revNumOp.length === 5){
+    //         // currentRevision = "";
+    //         // status = false;
+    //         // var proc = procedureService.getProcedureName();
+    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
+    //         //     if(response.status === 200){
+    //         //     }
+    //         // },function(error){
+    //         // }); 
+    //     }  
+    // });
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {

@@ -2,6 +2,9 @@
     <ul>
         <li><a ng-href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.name)" class="indexBtns">Live Index</a></li>
         <li><a ng-href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.name)" class="indexBtns">AS-Run Archive Index</a></li>
+        <li ng-style="icons.usersicon" class="indexBtns usersBtn">
+            <a ng-click="openRightNav()"><i class="fa fa-users" aria-hidden="true" style="color:#337ab7"></i></a>
+        </li>
     </ul>
 </div>
 <div id="liveprocedures">

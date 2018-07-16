@@ -1,5 +1,5 @@
 describe('Test Suite for Run Instance Controller', function () {
-    var controller,scope,procedureService,userService, deferred, $q,timeService,$interval,location,dashboardService,rootScope;
+    var controller,scope,procedureService,userService, deferred, $q,timeService,$interval,location,dashboardService,rootScope,$location;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -357,7 +357,6 @@ describe('Test Suite for Run Instance Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
                 "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
@@ -399,9 +398,8 @@ describe('Test Suite for Run Instance Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:50 UTC",
                 "title": "Audacy Zero - Procedure Example",
-                "id": "1.1"
-            },
-            "__v": 6
+                "procedureID": "1.1",
+                "__v": 6
         },
         {
             "_id": "5a78b2745fa10701004acb4d",
@@ -441,8 +439,7 @@ describe('Test Suite for Run Instance Controller', function () {
                     "running": true
                 }
             ],
-            "procedure": {
-                "sections": [
+            "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
                         "Type": "Heading",
@@ -483,9 +480,8 @@ describe('Test Suite for Run Instance Controller', function () {
                 "eventname": "Audacy Zero",
                 "lastuse": "2018 - 034.11:26:59 UTC",
                 "title": "Audacy Zero - OBC Bootup",
-                "id": "1.2"
-            },
-            "__v": 3
+                "procedureID": "1.2",
+                "__v": 3
         }];
 
     var liststeps = [
@@ -1010,6 +1006,7 @@ describe('Test Suite for Run Instance Controller', function () {
             timeService = _timeService_;
             location = $location;
             dashboardService = _dashboardService_;
+            spyOn($location, 'url').and.returnValue('/dashboard');
 
             deferredProcedureList = _$q_.defer();
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
@@ -1024,15 +1021,14 @@ describe('Test Suite for Run Instance Controller', function () {
 
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
-            
-           
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
             spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "openNextSteps").and.returnValue(res);
             spyOn(procedureService, "showPList").and.returnValue(lsteps);
-            // spyOn(procedureService, "checkIfEmpty").and.returnValue(false);            
-
             spyOn(userService, "getUserName").and.returnValue('John Smith');
+            spyOn(userService,"getUserEmail").and.returnValue('jsmith@gmail.com');
+            deferredUsersCurrentRole = _$q_.defer();
+            spyOn(userService, "getUsersCurrentRole").and.returnValue(deferredUsersCurrentRole.promise);
             spyOn(timeService, "getTime").and.returnValue({
                 days : '070',
                 minutes : '10',
@@ -1043,6 +1039,18 @@ describe('Test Suite for Run Instance Controller', function () {
             });
 
             spyOn(procedureService, "getProcedureName").and.returnValue({id : '', name : '', status : '',fullname : ''});
+
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+            spyOn(procedureService,"getCurrentViewRevision").and.returnValue({"value":1});
+            spyOn(userService,"setActiveUsers").and.returnValue([{
+                "name":"John Smith",
+                "email":"jsmith@gmail.com",
+                "status":true,
+                "role":""
+            }]);
+
+            spyOn(userService,"setOnlineUsers");
 
             controller = $controller('runningInstanceCtrl', {
                 $scope: scope,
@@ -1078,7 +1086,7 @@ describe('Test Suite for Run Instance Controller', function () {
 
     it('should call $interval once', function(){
         expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(1);
+        expect($intervalSpy.calls.count()).toBe(2);
     });
 
     it('should call $interval on updateClock and updateLiveInstancefunction', function(){
@@ -1595,13 +1603,14 @@ describe('Test Suite for Run Instance Controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
-        expect($intervalSpy.cancel.calls.count()).toBe(1);
+        expect($intervalSpy.cancel.calls.count()).toBe(2);
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = 'http://foourl.com';
-        var oldUrl = 'http://barurl.com'
-
+        var newUrl = '/dashboard';
+        var oldUrl = '/dashboard/procedure/runninginstance/1.1/1';
+        
+        deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
@@ -2625,6 +2634,87 @@ describe('Test Suite for Run Instance Controller', function () {
         expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
         expect(scope.steps[5].Info).toEqual('070.10:10:50 UTC John Smith(MD)');
 
+    });
+
+    it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
+        var newUrl = '/dashboard';
+        var oldUrl = '/dashboard/procedure/runninginstance/1.1/1'
+
+        deferredUserStatus.resolve({ data :{},status : 200});
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1',1,false);
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','','2',1000);
+    });
+
+    it('should define and assign styles for users icon', function() {
+        expect(scope.icons).toBeDefined();
+        expect(scope.icons.usersicon).toEqual({
+            'display':'block',
+            'float':'right'
+        });
+    });
+
+    it('should call $interval on updateActiveUsers', function(){
+        expect($intervalSpy).toHaveBeenCalledWith(scope.updateActiveUsers, 1000);
+    });
+
+    it('should define updateActiveUsers and call it every 1 second', function() {
+        var resultSteps = {   
+            "Steps": [
+                {
+                    "step": "1.0",
+                    "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "1.1",
+                    "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "1.2",
+                    "info": ""
+                },
+                {
+                    "step": "2.0",
+                    "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "2.1.0",
+                    "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
+                },
+                {
+                    "step": "2.1.1",
+                    "info": ""
+                }
+            ],
+            "closedBy": "",
+            "startedAt": "2018 - 034.11:26:49 UTC",
+            "completedAt": "",
+            "revision": 2,
+            "running": true
+        }
+
+
+        deferredLiveInstanceData.resolve({ data : {users:[{
+                "name":"John Smith",
+                "email":"jsmith@gmail.com",
+                "status":true,
+                "role":""
+            }]},status : 200});
+        deferredUsersCurrentRole.resolve({ data : [{
+                "google":{"email":"jsmith@gmail.com"},
+                "missions":[{"currentRole":'MD'}]
+            }],status : 200});
+        expect(scope.steps).toBeDefined();
+        expect(scope.currentRevision).toBeDefined();
+        expect(scope.updateActiveUsers).toBeDefined();
+        scope.updateActiveUsers();
+        scope.$digest();
+        expect(procedureService.getLiveInstanceData).toHaveBeenCalledWith('1.1',2);
+        expect(userService.setActiveUsers).toHaveBeenCalledWith([{ name: 'John Smith', email: 'jsmith@gmail.com', status: true, role: '' }]);
+        expect(userService.setOnlineUsers).toHaveBeenCalledWith([{ name: 'John Smith', email: 'jsmith@gmail.com', status: true, role: 'MD' } ]);
     });
 
 });

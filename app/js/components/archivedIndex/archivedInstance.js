@@ -2,14 +2,19 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.procedure = procedureService.getProcedureName();
-  
+    $scope.icons = {
+        usersicon: {
+            'display':'none',
+        }
+    }
+
     viewProcedure();
 
     function viewProcedure(){
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
-                    if(response.data[i].procedure.id === $scope.params.procID){
+                    if(response.data[i].procedureID === $scope.params.procID){
                         for(var a=0;a<response.data[i].instances.length;a++){
                             if(parseInt(response.data[i].instances[a].revision) === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
@@ -17,12 +22,12 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
 
                             }
                         }
-                        for(var b=0;b<response.data[i].procedure.sections.length;b++){
-                            if($scope.steps[b].step === response.data[i].procedure.sections[b].Step){
-                                $scope.steps[b].Step = response.data[i].procedure.sections[b].Step
-                                $scope.steps[b].Type = response.data[i].procedure.sections[b].Type;
-                                $scope.steps[b].Content = response.data[i].procedure.sections[b].Content;
-                                $scope.steps[b].Role = response.data[i].procedure.sections[b].Role;
+                        for(var b=0;b<response.data[i].sections.length;b++){
+                            if($scope.steps[b].step === response.data[i].sections[b].Step){
+                                $scope.steps[b].Step = response.data[i].sections[b].Step
+                                $scope.steps[b].Type = response.data[i].sections[b].Type;
+                                $scope.steps[b].Content = response.data[i].sections[b].Content;
+                                $scope.steps[b].Role = response.data[i].sections[b].Role;
                                 $scope.steps[b].Info = $scope.steps[b].info;
                             }
                         }
@@ -32,7 +37,6 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
-
         });
     }
 
@@ -54,7 +58,22 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  
         var loc = $location.url();
-        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth);        
+        var revNumOp = loc.split("/");
+        var emailaddress = userService.getUserEmail();
+        var name = userService.getUserName();
+        var currentRevision;
+        var status;
+
+        if(revNumOp.length === 2 || revNumOp.length === 5){
+            var proc = procedureService.getCurrentViewRevision();
+            currentRevision = proc.value;
+            status = false;
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth); 
+                }
+            },function(error){}); 
+        }
     });
 });
 

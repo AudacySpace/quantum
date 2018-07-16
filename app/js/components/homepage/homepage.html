@@ -30,17 +30,13 @@
                             <li  id="headerright">
                                 <a class="dropdown-toggle" id="username" ng-style="$ctrl.header.namestyles" data-toggle="dropdown" href="#"
                                 >{{$ctrl.name}}</a>
-                                <small id="callsign" ng-style="$ctrl.header.namestyles"> {{ $ctrl.role.cRole.callsign }} </small>
+                                
+                                <small id="callsign" ng-style="$ctrl.header.namestyles"> <i class="fa fa-circle" aria-hidden="true" style="margin-right:5px;color:#12C700"></i>{{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'">User Administration</a></li>
                                 </ul>
-                            </li>
-                            <li id="cfgmenu">
-                                <a href="#" id="config-bar" ng-click="$ctrl.openRightNav()"> 
-                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
-                                </a>
                             </li>
                         </ul>
                     </div>

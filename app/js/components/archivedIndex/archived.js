@@ -1,10 +1,11 @@
-quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location) {
+quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService) {
     $scope.params = $routeParams;
     $scope.sortType     = 'procedurecompleted'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.archivedlist = [];
     $scope.loadcount = 0;
     $scope.loadstatus = true;
+    $scope.procedure = procedureService.getProcedureName();
     showArchivedList();
 
     function showArchivedList(){
@@ -38,8 +39,38 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  
         var loc = $location.url();
-        dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.proceduretitle,'',$window.innerWidth);  
+        var revNumOp = loc.split("/");
+        var emailaddress = userService.getUserEmail();
+        var name = userService.getUserName();
+        var currentRevision;
+        var status;
+
+        if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
+            currentRevision = parseInt(revNumOp[5]);
+            status = true;
+            procedureService.setCurrentViewRevision(currentRevision);
+            procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
+                if(response.status === 200){
+                    dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
+                } 
+            },function(error){
+            });  
+        }else {
+            dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
+        }
     });
+
+    $scope.changeColor = function(status,pid,ptitle){
+        if(status === "Live"){
+            procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+
+        }else if(status === "Archived") {
+            procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+
+        }
+    }
 });
 
 
