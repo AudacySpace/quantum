@@ -66,7 +66,7 @@ module.exports = {
     getAllInstances: function(req,res){
         var id = req.query.procedureID;
 
-        ProcedureModel.findOne( { 'procedureID' : id}, function(err, model) {
+        ProcedureModel.findOne( { 'procedureID' : id }, function(err, model) {
             if(err){ 
                 console.log(err);
             }
@@ -350,10 +350,9 @@ module.exports = {
         var procid = req.body.pid;
         var username = req.body.username;
         var revision = req.body.revision;
-        var mydata;
         var liveinstanceID;
-        var Leni;
-        ProcedureModel.findOne( { 'procedureID' : procid}, function(err, procs) {
+
+        ProcedureModel.findOne( { 'procedureID' : procid }, function(err, procs) {
             if(err){ 
                 console.log(err);
             }
@@ -370,16 +369,14 @@ module.exports = {
                 }
 
                 if(liveinstanceID !== ""){
-                    if(procs.instances[liveinstanceID].users.length > 0){
+                    if(procs.instances[liveinstanceID].users && procs.instances[liveinstanceID].users.length > 0){
                         var len = procs.instances[liveinstanceID].users.length;
                         for(var i=0;i<len;i++){
                             if(procs.instances[liveinstanceID].users[i].email === email){
                                 // when the user object exits already
                                 procs.instances[liveinstanceID].users[i].status = status;
-                               // mydata = procs.instances[liveinstanceID].users;
                                 break;
                             }else if(i === len-1){
-                                Leni = i;
                                 procs.instances[liveinstanceID].users.push({
                                     'name':username,
                                     'email':email,
@@ -388,6 +385,7 @@ module.exports = {
                             }
                         }
                     }else {
+                        procs.instances[liveinstanceID].users = [];
                         procs.instances[liveinstanceID].users.push({
                             'name':username,
                             'email':email,

@@ -1,5 +1,5 @@
 describe('Test Suite for Archived Instance Controller', function () {
-    var controller,scope,procedureService,userService, deferred, $q,location,dashboardService,rootScope;
+    var controller,scope,procedureService,userService, deferred, $q,location,dashboardService,rootScope,$location;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -602,18 +602,27 @@ describe('Test Suite for Archived Instance Controller', function () {
             deferredProcedureList = _$q_.defer();
             location = $location;
             dashboardService = _dashboardService_;
+            spyOn($location, 'url').and.returnValue('/dashboard');
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
 
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
-            // spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "showPList").and.returnValue(liststeps);
             spyOn(procedureService, "disableSteps").and.returnValue(steps);
+            spyOn(userService, "getUserName").and.returnValue('John Smith');
+            spyOn(userService,"getUserEmail").and.returnValue('jsmith@gmail.com');
             
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
 
             deferredUserStatus = _$q_.defer();
             spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
+            spyOn(procedureService,'getProcedureName').and.returnValue({
+                id:"1.1",
+                name:"Audacy Zero - Procedure Example",
+                status:"",
+                fullname:"Audacy Zero - Procedure Example.xlsx"
+            });
 
             controller = $controller('archivedInstanceCtrl', {
                 $scope: scope,
@@ -671,7 +680,11 @@ describe('Test Suite for Archived Instance Controller', function () {
 
     it('should define procedure', function() {
         expect(scope.procedure).toBeDefined();
-        expect(scope.procedure).toEqual({id : '', name : '', status : '',fullname : '' })
+        expect(scope.procedure).toEqual({
+            id:"1.1",
+            name:"Audacy Zero - Procedure Example",
+            status:"",
+            fullname:"Audacy Zero - Procedure Example.xlsx"})
     });
 
     it('should change Color of the header panel to blue when clicked on Live Index', function(){
@@ -698,6 +711,26 @@ describe('Test Suite for Archived Instance Controller', function () {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
+    });
+
+    it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
+        var newUrl = '/dashboard';
+        var oldUrl = '/dashboard/procedure/archivedinstance/1.1/1';
+        deferredUserStatus.resolve({ data :{},status : 200});
+
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1','',false);
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','Audacy Zero - Procedure Example','1',1000);
+    });
+
+    it('should define and assign styles for users icon', function() {
+        expect(scope.icons).toBeDefined();
+        expect(scope.icons.usersicon).toEqual({
+            'display':'none'
+        });
     });
 
 

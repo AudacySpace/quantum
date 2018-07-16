@@ -3,6 +3,9 @@ describe('Testing admin controller', function () {
     var windowMock = {
         alert: function(message) {
             
+        },
+        user : {
+            currentRole : {}
         }
     };
     var modalInstance = { dismiss: function() {} };

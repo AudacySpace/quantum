@@ -24,7 +24,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     viewProcedure();
 
     $scope.openRightNav = function(){
-        console.log($location.url());
         if($window.innerWidth < 800){
             if ($window.innerWidth < 800){
                 $mdSidenav('right').open();
@@ -89,8 +88,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     $scope.updateActiveUsers = function(){
          procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){
-                if(response.data.Steps){
-                    users = setActiveUsers(response.data.users);
+                if(response.data.users){
+                    users = userService.setActiveUsers(response.data.users);
                     setActiveUsersRole(users);
                 }
             } 
@@ -1034,25 +1033,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     $scope.$watch('role.cRole',function(newvalue,oldvalue){
         $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
     });
-
-    function setActiveUsers(activeUsers){
-        var userLen = activeUsers.length;
-        var userList = [];
-        var currentUserEmail = userService.getUserEmail();
-        //for loop to get all the current users
-        for(var i=0;i<userLen;i++){
-            if(activeUsers[i].status === true && activeUsers[i].email !== currentUserEmail){
-                var userdetails = new Object();
-                userdetails.name = activeUsers[i].name;
-                userdetails.status = activeUsers[i].status;
-                userdetails.email = activeUsers[i].email;
-                userdetails.role = {};
-                userList.push(userdetails);
-            }
-        }
-
-        return userList;
-    }
 
     function setActiveUsersRole(activeUsers){
         //function to get current roles of all the online users

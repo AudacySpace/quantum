@@ -182,7 +182,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 $scope.procedurelist = [];
                 if(response.data.length > 0){
                     for(var i=0;i<response.data.length;i++){
-                        $scope.procedurelist.push(
+
+                        if(response.data[i].procedureID){
+                            $scope.procedurelist.push(
                             {
                                 id:response.data[i].procedureID,
                                 title:response.data[i].title,
@@ -190,8 +192,18 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 instances:response.data[i].instances,
                                 running:0,
                                 archived:0
-                            }
-                        )
+                            });
+                        }else {
+                            $scope.procedurelist.push(
+                            {
+                                id:response.data[i].procedure.id,
+                                title:response.data[i].procedure.title,
+                                lastuse:response.data[i].procedure.lastuse,
+                                instances:response.data[i].instances,
+                                running:0,
+                                archived:0
+                            });
+                        }
                     }
 
                     for(var j=0;j<response.data.length;j++){
@@ -328,6 +340,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         var emailaddress = userService.getUserEmail();
         var name = userService.getUserName();
         var currentRevision;
+
         if(revNumOp.length === 4){
             //user status is already set using save procedure instance
         }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){

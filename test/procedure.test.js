@@ -1077,4 +1077,96 @@ describe('Test Suite for Procedure Route Controller', function() {
         expect(res.send.calledOnce).to.be.true;
         sinon.assert.calledWith(res.send,{"data":""});
     });
+
+    it('should set user online or offline status for the logged in user when working on active procedure', function() {
+        procedure = require('../server/controllers/procedure.controller');
+        var error = null;
+        var procs = {    
+            "instances": [
+                {
+                    "Steps":[
+                        { "step": "1.0",
+                            "info": "2018 - 057.21:54:35 UTC Taruni Gattu(MD)"
+                        },
+                        {
+                            "step": "2.0",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.1",
+                            "info": ""
+                        },
+                        {
+                            "step": "2.2",
+                            "info": ""
+                        }
+                    ],
+                    "openedBy": "Taruni Gattu(MD)",
+                    "closedBy": "",
+                    "startedAt": "2018 - 057.21:53:35 UTC",
+                    "completedAt": "",
+                    "revision": 1,
+                    "running": true
+                }
+            ],
+            "eventname": "SF Earth Station",
+            "lastuse": "2018 - 057.21:56:35 UTC",
+            "title": "SF Earth Station - Procedure Example copy 2",
+            "procedureID": "2.3",
+            "sections": [
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                }
+            ],
+            save:function(callback){
+                var err = null;
+                var res = {"data":""};
+                callback(err,res);
+            },
+            markModified:function(field){
+
+            }
+        };
+
+        Procedure.findOne.yields(error,procs);
+        var req = { 
+            body: {
+                pid:'2.3',
+                revision:1,
+                email:'jsmith@gmail.com',
+                status:true,
+                username:'John Smith'
+            }
+        };
+
+        var res = {
+            send: sinon.stub()
+        };
+ 
+        procedure.setUserStatus(req, res);
+        sinon.assert.calledWith(Procedure.findOne,{ procedureID: "2.3" },sinon.match.func);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,{"status":true});
+    });
 });

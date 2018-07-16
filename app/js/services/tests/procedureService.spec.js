@@ -1,5 +1,10 @@
 describe('Test Suite for Procedure Service', function () {
-  
+    var windowMock = {
+        user : {
+            currentRole : {}
+        }
+    };
+
 
     var procSection = [
         {
@@ -72,14 +77,16 @@ describe('Test Suite for Procedure Service', function () {
 
     beforeEach(function () {
         // load the module
-        module('quantum');
+        module('quantum', function ($provide) {
+            $provide.value('$window', windowMock);
+        });
 
         // get your service, also get $httpBackend
         // $httpBackend will be a mock.
-        inject(function (_$httpBackend_, _procedureService_,_$window_) {
+        inject(function (_$httpBackend_, _procedureService_,_$window_,_userService_) {
             procedureService = _procedureService_;
             httpBackend = _$httpBackend_;
-            $window = _$window_;
+            userService = _userService_;
         });
     });
  

@@ -98,6 +98,25 @@ quantum
     function getOnlineUsers(){
         return userList;
     }
+
+    function setActiveUsers(activeUsers){
+        var userLen = activeUsers.length;
+        var userList = [];
+        var currentUserEmail = getUserEmail();
+        //for loop to get all the current users
+        for(var i=0;i<userLen;i++){
+            if(activeUsers[i].status === true && activeUsers[i].email !== currentUserEmail){
+                var userdetails = new Object();
+                userdetails.name = activeUsers[i].name;
+                userdetails.status = activeUsers[i].status;
+                userdetails.email = activeUsers[i].email;
+                userdetails.role = {};
+                userList.push(userdetails);
+            }
+        }
+
+        return userList;
+    }
  
 	return {
         userRole : userRole,
@@ -112,6 +131,7 @@ quantum
         setAllowedRoles : setAllowedRoles,
         setOnlineUsers : setOnlineUsers,
         getOnlineUsers  : getOnlineUsers,
-        getUsersCurrentRole : getUsersCurrentRole
+        getUsersCurrentRole : getUsersCurrentRole,
+        setActiveUsers : setActiveUsers
 	}
 }]);

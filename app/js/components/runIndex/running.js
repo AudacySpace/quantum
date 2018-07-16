@@ -5,6 +5,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
     $scope.livelist = [];
     $scope.loadcount = 0;
     $scope.loadstatus = true;
+    $scope.procedure = procedureService.getProcedureName();
     showRunningList();
 
     function showRunningList(){
@@ -56,9 +57,9 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
             status = false;
         }
 
-        procedureService.setUserStatus(loc,emailaddress,name,$scope.procedureid,currentRevision,status).then(function(response){
+        procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
             if(response.status === 200){
-                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.proceduretitle,'',$window.innerWidth);
+                dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
             }
         },function(error){
         }); 

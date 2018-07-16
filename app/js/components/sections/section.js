@@ -65,9 +65,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                 }
 
-                // var users = setActiveUsers(response.data.users);
-                // var usersroles = setActiveUsersRole(users);
-
                 $scope.steps = procedureService.getCompletedSteps($scope.steps); 
                 if($scope.steps[$scope.steps.length-1].Info !== ""){
                     procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
@@ -80,8 +77,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.updateActiveUsers = function(){
          procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision.value).then(function(response){
             if(response.status === 200){
-                if(response.data.Steps){
-                    users = setActiveUsers(response.data.users);
+                if(response.data.users){
+                    users = userService.setActiveUsers(response.data.users);
                     setActiveUsersRole(users);
                 }
             } 
@@ -97,11 +94,19 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             for(var i=0;i<response.data.length;i++){
-                if(response.data[i].procedureID === $scope.params.procID){
-                   	$scope.steps = response.data[i].sections;
-                    $scope.procedure.name = response.data[i].title;
-                    break;
-				}
+                if(response.data[i].procedureID){
+                    if(response.data[i].procedureID === $scope.params.procID){
+                        $scope.steps = response.data[i].sections;
+                        $scope.procedure.name = response.data[i].title;
+                        break;
+                    }
+                }else {
+                    if(response.data[i].procedure.id === $scope.params.procID){
+                        $scope.steps =  response.data[i].procedure.sections;
+                        $scope.procedure.name = response.data[i].procedure.title;
+                        break;
+                    }
+                }
 			}
 
             for(var a=0;a<$scope.steps.length;a++){
@@ -1015,25 +1020,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.$watch('role.cRole',function(newvalue,oldvalue){
         $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
     });
-
-    function setActiveUsers(activeUsers){
-        var userLen = activeUsers.length;
-        var userList = [];
-        var currentUserEmail = userService.getUserEmail();
-        //for loop to get all the current users
-        for(var i=0;i<userLen;i++){
-            if(activeUsers[i].status === true && activeUsers[i].email !== currentUserEmail){
-                var userdetails = new Object();
-                userdetails.name = activeUsers[i].name;
-                userdetails.status = activeUsers[i].status;
-                userdetails.email = activeUsers[i].email;
-                userdetails.role = {};
-                userList.push(userdetails);
-            }
-        }
-
-        return userList;
-    }
 
     function setActiveUsersRole(activeUsers){
         //function to get current roles of all the online users

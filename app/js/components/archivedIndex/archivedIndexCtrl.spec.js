@@ -1,5 +1,5 @@
 describe('Test Suite for Archived Index controller', function () {
-    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope,userService;
+    var controller,scope,procedureService, deferred, $q,dashboardService,rootScope,userService,$location;
 
     var windowMock = {
         innerWidth: 1000,
@@ -15,7 +15,7 @@ describe('Test Suite for Archived Index controller', function () {
 
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,$location,_dashboardService_,_userService_){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_dashboardService_,_userService_,$location){
             scope = $rootScope.$new();
             rootScope = $rootScope;
             $q = _$q_;
@@ -23,9 +23,10 @@ describe('Test Suite for Archived Index controller', function () {
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
             userService = _userService_;
-            location = $location;
+            spyOn($location,'url').and.returnValue('/dashboard');
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
+  
             spyOn(procedureService, "getAllInstances").and.returnValue(deferred.promise);
             spyOn(procedureService, "setHeaderStyles").and.returnValue(deferredHeaderStyles.promise);
             spyOn(procedureService, "setProcedureName").and.returnValue(deferredProcName.promise);
@@ -35,13 +36,20 @@ describe('Test Suite for Archived Index controller', function () {
 
             deferredUserStatus = _$q_.defer();
             spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+            spyOn(userService,"getUserEmail").and.returnValue('jsmith@gmail.com');
+            spyOn(userService,'getUserName').and.returnValue('John Smith');
+            spyOn(procedureService,'getProcedureName').and.returnValue({
+                id:"1.1",
+                name:"Audacy Zero - Procedure Example",
+                status:"",
+                fullname:"Audacy Zero - Procedure Example.xlsx"
+            });
 
 
             controller = $controller('archivedIndexCtrl', {
                 $scope: scope,
-                $routeParams: {procID: '1.1'},
+                $routeParams: {procID: '1.1',revisionID:1},
                 procedureService: procedureService,
-                $location: location,
                 dashboardService: dashboardService,
                 userService: userService
             });
@@ -279,6 +287,19 @@ describe('Test Suite for Archived Index controller', function () {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
+    });
+
+    it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
+        var newUrl = '/dashboard';
+        var oldUrl = '/dashboard/procedure/archived/1.1';
+        deferredUserStatus.resolve({ data :{},status : 200});
+
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1','',false);
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','Audacy Zero - Procedure Example','',1000);
     });
 
 });

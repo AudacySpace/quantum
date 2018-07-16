@@ -1,5 +1,5 @@
 describe('Test Suite for Procedure Controller', function () {
-    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend,timeService;
+    var controller,scope,procedureService,userService,$interval,Blob,FileSaver,deferred,$q,httpBackend,timeService,$location,rootScope;
     var windowMock = {
         innerWidth: 1000,
         user : {
@@ -224,14 +224,18 @@ describe('Test Suite for Procedure Controller', function () {
             })
         });
 
-        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_){
+        inject(function($controller, $rootScope, _$q_, _procedureService_,$routeParams,_userService_,$interval,_$httpBackend_,_timeService_,$location){
             scope = $rootScope.$new();
+            rootScope = $rootScope;
+
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             $q = _$q_;
             procedureService = _procedureService_;
             userService = _userService_;
             httpBackend = _$httpBackend_;
             timeService = _timeService_;
+            
+            spyOn($location,'url').and.returnValue('/dashboard/procedure/running/1.1');
 
             deferredProcedureList = _$q_.defer();
             spyOn(procedureService, "getProcedureList").and.returnValue(deferredProcedureList.promise);
@@ -244,8 +248,17 @@ describe('Test Suite for Procedure Controller', function () {
 
             spyOn(userService, "getUserName").and.returnValue('John Smith');
             spyOn(userService, "getUserEmail").and.returnValue('jsmith@gmail.com');
-
             spyOn(procedureService,"displayAlert").and.returnValue(true);
+
+            deferredUserStatus = _$q_.defer();
+            spyOn(procedureService, "setUserStatus").and.returnValue(deferredUserStatus.promise);
+
+            spyOn(procedureService,'getProcedureName').and.returnValue({
+                id:"1.1",
+                name:"Audacy Zero - Procedure Example",
+                status:"",
+                fullname:"Audacy Zero - Procedure Example.xlsx"
+            });
 
             spyOn(timeService, "getTime").and.returnValue({
                 days : '070',
@@ -1319,6 +1332,19 @@ describe('Test Suite for Procedure Controller', function () {
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
         expect($intervalSpy.cancel.calls.count()).toBe(1);
+    });
+
+    it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
+        var newUrl = '/dashboard/procedure/running/1.1';
+        var oldUrl = '/dashboard'
+
+        deferredUserStatus.resolve({ data :{},status : 200});
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith('/dashboard/procedure/running/1.1', 'jsmith@gmail.com', 'John Smith', '1.1', '', 'false');
+        //expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','',1,1000);
     });
 
 });

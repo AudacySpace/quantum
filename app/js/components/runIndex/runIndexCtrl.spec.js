@@ -1,5 +1,5 @@
 describe('Test Suite for Run Index Controller', function () {
-    var controller,scope,procedureService, deferred, $q,dashboardService,location,rootScope,userService;
+    var controller,scope,procedureService, deferred, $q,dashboardService,$location,rootScope,userService;
 
     var windowMock = {
         innerWidth: 1000,
@@ -22,13 +22,22 @@ describe('Test Suite for Run Index Controller', function () {
             procedureService = _procedureService_;
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
-            location = $location;
             userService = _userService_;
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
+            spyOn($location, 'url').and.returnValue('/dashboard/procedure/runninginstance/1.1/1');
             spyOn(procedureService, "getAllInstances").and.returnValue(deferred.promise);
             spyOn(procedureService, "setHeaderStyles").and.returnValue(deferredHeaderStyles.promise);
             spyOn(procedureService, "setProcedureName").and.returnValue(deferredProcName.promise);
+            spyOn(userService, "getUserName").and.returnValue('John Smith');
+            spyOn(userService,"getUserEmail").and.returnValue('jsmith@gmail.com');
+
+            spyOn(procedureService,'getProcedureName').and.returnValue({
+                id:"1.1",
+                name:"Audacy Zero - Procedure Example",
+                status:"",
+                fullname:"Audacy Zero - Procedure Example.xlsx"
+            });
 
             deferredHeaderChange =  _$q_.defer();
             spyOn(dashboardService, "changeHeaderWithLocation").and.returnValue(deferredHeaderChange.promise);
@@ -40,7 +49,6 @@ describe('Test Suite for Run Index Controller', function () {
                 $scope: scope,
                 $routeParams: {procID: '1.1'},
                 procedureService: procedureService,
-                $location: location,
                 dashboardService: dashboardService,
                 userService: userService
             });
@@ -271,13 +279,27 @@ describe('Test Suite for Run Index Controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dahboard/procedure/runninginstance/1.1/1';
+        var newUrl = '/dashboard/procedure/runninginstance/1.1/1';
         var oldUrl = '/dashboard/procedure/running/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
             rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
         });
         expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalled();
+    });
+
+
+    it('should set user status as true and call changeHeaderWithLocation function on location change', function() {
+        var newUrl = '/dashboard/procedure/runninginstance/1.1/1';
+        var oldUrl = '/dashboard/procedure/running/1.1';
+        deferredUserStatus.resolve({ data :{},status : 200});
+
+        scope.$apply(function() {
+            rootScope.$broadcast('$locationChangeStart', newUrl, oldUrl);
+        });
+
+        expect(procedureService.setUserStatus).toHaveBeenCalledWith(newUrl,'jsmith@gmail.com','John Smith','1.1',1,true);
+        expect(dashboardService.changeHeaderWithLocation).toHaveBeenCalledWith(newUrl,'1.1','Audacy Zero - Procedure Example','',1000);
     });
 
 });

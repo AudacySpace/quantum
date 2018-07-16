@@ -2,7 +2,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.procedure = procedureService.getProcedureName();
-      $scope.icons = {
+    $scope.icons = {
         usersicon: {
             'display':'none',
         }
@@ -37,7 +37,6 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
-
         });
     }
 
@@ -77,6 +76,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
             currentRevision = "";
             status = false;
         }
+        console.log($scope.params.procID);
         procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
             if(response.status === 200){
                 dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,$scope.params.revisionID,$window.innerWidth); 
