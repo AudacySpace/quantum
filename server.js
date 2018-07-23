@@ -1,4 +1,4 @@
-// set up ======================================================================
+// set up =======================================================================
 var express  = require('express');
 var app      = express(); 								// create our app w/ express
 // set the port
@@ -16,7 +16,7 @@ var configDB = require('./config/database'); 			// load the database config
 
 // app.use(express.static(__dirname + '/config'));
 app.use(express.static(__dirname + '/app')); 		// set the static files location
-// configuration ===============================================================
+// configuration ================================================================
 mongoose.connect(configDB.url, { useMongoClient: true }); 	// connect to mongoDB database
 
 require('./config/passport')(passport); // pass passport for configuration
@@ -41,7 +41,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// routes ======================================================================
+// routes =======================================================================
 require('./server/routes.js')(app,passport); // load our routes and pass in our app and fully configured passport
 
 app.listen(app.get('port'), function() {
