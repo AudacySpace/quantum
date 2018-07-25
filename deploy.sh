@@ -28,7 +28,7 @@ then
   docker rmi quantum-app || true
   docker tag quantum-app-test quantum-app
   docker rmi quantum-app-test
-  docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
+  docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v /etc/letsencrypt:/etc/letsencrypt -p 80:80 -p 443:443 quantum-app
 else
   echo "====================================================================="
   echo "Test docker container failure. See above for more details."
