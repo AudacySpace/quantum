@@ -40,11 +40,12 @@ RUN yum -y install zlib-devel libuuid-devel libmnl-devel gcc autoconf autoconf-a
 
 RUN yum install -y epel-release && \
 	yum install -y nginx && \
-	mkdir -p /etc/ssl
+	mkdir -p /etc/ssl && \
+	mkdir -p /etc/letsencrypt/live/quantum.audacy.space
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/server.crt /etc/ssl/server.crt
-COPY nginx/server.key /etc/ssl/server.key
+COPY nginx/server.crt /etc/letsencrypt/live/quantum.audacy.space/fullchain.pem
+COPY nginx/server.key /etc/letsencrypt/live/quantum.audacy.space/privkey.pem
 
 #**** install node ****
 # https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora
