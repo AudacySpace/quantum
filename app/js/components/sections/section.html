@@ -69,10 +69,16 @@
                 </td>
                 <td ng-if="step.contenttype === 'DecisionInfo'">
                     <p>{{step.Content}}</p>
-                    <label ng-show="step.procedureLinkDetails.length > 0">Links to:</label>
+<!--                     <label ng-show="step.procedureLinkDetails.length > 0">Links to:</label>
                     <ul class="contentList">
                         <li ng-repeat="links in step.procedureLinkDetails">
                             <a href="{{links.link}}">Procedure {{links.pid}}</a>
+                        </li>
+                    </ul> -->
+                    <label ng-show="step.procedureLinkDetails.length > 0">Refer to:</label>
+                    <ul class="contentList">
+                        <li ng-repeat="links in step.procedureLinkDetails">
+                            Procedure {{links.pid}}
                         </li>
                     </ul>
                 </td>
