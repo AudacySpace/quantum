@@ -915,7 +915,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
                                             });
@@ -929,7 +929,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                                     for(var a=0;a<$scope.steps.length;a++){
                                                         $scope.steps[a].status = true;
                                                     }
-                                                    procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                                    procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                                 }
 
@@ -945,7 +945,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
 
@@ -985,7 +985,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                             for(var a=0;a<$scope.steps.length;a++){
                                                 $scope.steps[a].status = true;
                                             }
-                                            procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                            procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                         }
                                     });
@@ -999,7 +999,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                         for(var a=0;a<$scope.steps.length;a++){
                                             $scope.steps[a].status = true;
                                         }
-                                        procedureService.setProcedureName($scope.params.procID,res.data.procedure.title,"AS-Run Archive");
+                                        procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                                     }
                                 });
