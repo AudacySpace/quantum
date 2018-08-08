@@ -17,7 +17,24 @@ var configDB = require('./config/database'); 			// load the database config
 // app.use(express.static(__dirname + '/config'));
 app.use(express.static(__dirname + '/app')); 		// set the static files location
 // configuration ================================================================
+mongoose.Promise = global.Promise;
 mongoose.connect(configDB.url, { useMongoClient: true }); 	// connect to mongoDB database
+
+// CONNECTION EVENTS
+// When successfully connected
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open\n');
+});
+
+// If the connection throws an error
+mongoose.connection.on('error',function (err) {
+    console.log('Mongoose default connection error: ' + err + '\n');
+});
+
+// When the connection is disconnected
+mongoose.connection.on('disconnected', function () {
+    console.log('Mongoose default connection disconnected');
+});
 
 require('./config/passport')(passport); // pass passport for configuration
 
