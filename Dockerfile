@@ -89,6 +89,6 @@ RUN  mkdir -p /tmp/uploads
 # the last command can't exit, or the container will shutdown
 
 EXPOSE 80 443
-CMD /usr/sbin/nginx && (pm2-runtime start server.js --watch --error err.log --output out.log --format "YYYY-MM-DD HH:mm:ss Z" &) && \
+CMD /usr/sbin/nginx && (pm2-runtime start server.js --watch --error /root/.pm2/logs/err.log --output /root/.pm2/logs/out.log --log-date-format "YYYY-MM-DD HH:mm:ss Z" &) && \
 	/usr/sbin/netdata -D -s /host -p 19999
 	
