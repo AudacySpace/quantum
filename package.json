@@ -27,11 +27,11 @@
     "xlsx": "^0.11.14"
   },
   "engines": {
-    "node": "4.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/quindar/quantum"
+    "url": "https://github.com/AudacySpace/quantum"
   },
   "keywords": [
     "node",

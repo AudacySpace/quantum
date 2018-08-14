@@ -55,7 +55,7 @@ COPY nginx/server.key /etc/letsencrypt/live/quantum.audacy.space/privkey.pem
 # if additional options to the --watch flag are desired, add a config.json file to the build (tbd)
 
 RUN yum install -y gcc-c++    && \
-	curl --silent --location https://rpm.nodesource.com/setup_4.x | bash - && \
+	curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - && \
 	yum -y install nodejs  && \
 	npm install -g bower && \
 	npm install -g gulp  && \
@@ -89,6 +89,6 @@ RUN  mkdir -p /tmp/uploads
 # the last command can't exit, or the container will shutdown
 
 EXPOSE 80 443
-CMD /usr/sbin/nginx && (pm2-docker start server.js --watch --format "YYYY-MM-DD HH:mm:ss Z" &) && \
+CMD /usr/sbin/nginx && (pm2-runtime start server.js --watch --error err.log --output out.log --format "YYYY-MM-DD HH:mm:ss Z" &) && \
 	/usr/sbin/netdata -D -s /host -p 19999
 	
