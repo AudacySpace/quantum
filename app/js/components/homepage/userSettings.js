@@ -25,7 +25,7 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
     });
 
     $ctrl.updateRole = function(){
-        if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
+        if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
             var position = "bottom right";
             var queryId = '#logouttoaster';
             var delay = 5000;
