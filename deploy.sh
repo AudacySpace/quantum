@@ -31,8 +31,11 @@ then
   docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
   if [ -d "/etc/letsencrypt/live/quantum.audacy.space" ]
   then
-    docker exec -i quantum sh -c 'cat > /etc/ssl/server.crt' < /etc/letsencrypt/live/quantum.audacy.space/fullchain.pem
-    docker exec -i quantum sh -c 'cat > /etc/ssl/server.key' < /etc/letsencrypt/live/quantum.audacy.space/privkey.pem
+sudo su <<HERE
+docker exec -i quantum sh -c 'cat > /etc/ssl/server.crt' < /etc/letsencrypt/live/quantum.audacy.space/fullchain.pem
+docker exec -i quantum sh -c 'cat > /etc/ssl/server.key' < /etc/letsencrypt/live/quantum.audacy.space/privkey.pem
+HERE
+    docker exec quantum nginx -s reload
   fi
 else
   echo "====================================================================="
