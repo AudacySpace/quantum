@@ -40,12 +40,11 @@ RUN yum -y install zlib-devel libuuid-devel libmnl-devel gcc autoconf autoconf-a
 
 RUN yum install -y epel-release && \
 	yum install -y nginx && \
-	mkdir -p /etc/ssl && \
-	mkdir -p /etc/letsencrypt/live/quantum.audacy.space
+	mkdir -p /etc/ssl
 
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/server.crt /etc/letsencrypt/live/quantum.audacy.space/fullchain.pem
-COPY nginx/server.key /etc/letsencrypt/live/quantum.audacy.space/privkey.pem
+COPY nginx/server.crt /etc/ssl/server.crt
+COPY nginx/server.key /etc/ssl/server.key
 
 #**** install node ****
 # https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora
@@ -61,6 +60,11 @@ RUN yum install -y gcc-c++    && \
 	npm install -g gulp  && \
 	npm install -g mean-cli && \
 	npm install -g pm2
+
+#**** install logrotate for pm2 ****
+RUN pm2 install pm2-logrotate && \
+	pm2 set pm2-logrotate:compress true && \
+	pm2 set pm2-logrotate:retain 7
 
 #**** deploy quantum app ****
 # deploy from the source code under /node
