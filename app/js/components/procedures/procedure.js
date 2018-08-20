@@ -212,8 +212,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 
         },function(error){
             if(error.data === null || error.data === undefined){
-                console.log("No Procedures available");
-                console.log(error);
+               // console.log("No Procedures available");
+               // console.log(error);
             }
             $scope.loadstatus = false;
         });
