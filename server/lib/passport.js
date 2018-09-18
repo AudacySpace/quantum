@@ -1,15 +1,15 @@
-// config/passport.js
+// lib/passport.js
 
 // load all the things we need
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
-var User       = require('../server/models/user');
+var User       = require('../models/user');
 
 // load the auth variables
-var configAuth = require('./auth');
-var configRole = require('./role');
-
+var config = require('../../config/config.env.js');
+var configAuth = new config();
+var configRole = require('../../config/role');
 
 var userRole;
 
