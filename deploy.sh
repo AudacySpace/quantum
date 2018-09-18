@@ -1,9 +1,22 @@
 #!/bin/bash
-#build new docker container
+#checkout the branch and pull new contents
 git fetch --all
 git checkout $1 
 git pull
-docker build -t quantum-app-test .
+
+#define environment as per the branch
+if [ "$1" == "master" ]
+then
+  ENV="production"
+elif [ "$1" == "develop" ]
+then
+  ENV="staging"
+else
+  ENV="development"
+fi
+
+#build new docker container
+docker build -t quantum-app-test --build-arg ENVIRONMENT=$ENV .
 
 #build docker test container
 docker build -t "quantum_test" -f "Dockerfile.test" .

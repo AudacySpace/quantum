@@ -1,6 +1,6 @@
 module.exports = {
     apps : [{
-        name : 'Quantum',
+        name : 'quantum',
         script : './server.js',
         watch : true,
         log_date_format : "YYYY-MM-DD HH:mm:ss Z",
