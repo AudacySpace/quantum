@@ -83,6 +83,11 @@ RUN npm install
 # create a directory to store the uploaded files
 RUN  mkdir -p /tmp/uploads
 
+#**** add build argument to environment variable ****
+# only environment variables can be used in CMD commands
+ARG ENVIRONMENT
+ENV ENVIRONMENT ${ENVIRONMENT}
+
 ##############################################################################	
 	
 #**** start servers with container deploy
@@ -93,6 +98,6 @@ RUN  mkdir -p /tmp/uploads
 # the last command can't exit, or the container will shutdown
 
 EXPOSE 80 443
-CMD /usr/sbin/nginx && (pm2 start server.js --no-daemon --watch --log-date-format "YYYY-MM-DD HH:mm:ss Z" &) && \
+CMD /usr/sbin/nginx && (pm2 start ecosystem.config.js --env ${ENVIRONMENT} --no-daemon &) && \
 	/usr/sbin/netdata -D -s /host -p 19999
 	
