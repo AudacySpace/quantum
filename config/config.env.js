@@ -1,3 +1,5 @@
+var fs = require('fs-extra');
+
 module.exports = function(){
     switch(process.env.NODE_ENV){
         case 'staging':
@@ -17,7 +19,14 @@ module.exports = function(){
 			        'clientSecret'     : '1E3Dh5tTzlEW58e5cWuMdgy1',
 			        'callbackURL'      : 'https://quantum.audacy.space/auth/google/callback'
 			    },
-			    'databaseURL' : 'mongodb://audacy:race2space@10.0.22.236:27017/quindar'
+			    'databaseURL' : 'mongodb://audacy:race2space@10.0.22.236:27017/quindar',
+			    'databaseOpts' : {
+					useMongoClient: true,
+					ssl: true,
+					sslValidate: false,
+					sslKey: fs.readFileSync('./config/ssl/mongodb.pem'),
+					sslCert: fs.readFileSync('./config/ssl/mongodb-prod.crt')
+				}
             };
 
         default:
@@ -27,7 +36,10 @@ module.exports = function(){
 			        'clientSecret'     : '1E3Dh5tTzlEW58e5cWuMdgy1',
 			        'callbackURL'      : 'https://localhost/auth/google/callback'
 			    },
-			    'databaseURL' : 'mongodb://54.184.232.90:27017/quindar'
+			    'databaseURL' : 'mongodb://54.184.232.90:27017/quindar',
+			    'databaseOpts' :  {
+					useMongoClient: true,
+				}
             };
     }
 };

@@ -24,7 +24,8 @@
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "passport-google-oauth2": "^0.1.6",
-    "xlsx": "^0.11.14"
+    "xlsx": "^0.11.14",
+    "fs-extra": "^7.0.0"
   },
   "engines": {
     "node": ">=8.0.0"
