@@ -86,7 +86,7 @@ WORKDIR /node
 
 # Copy code contents and install app dependencies
 COPY . /node
-RUN npm install
+RUN npm install --no-save
 
 # create a directory to store the uploaded files
 RUN  mkdir -p /tmp/uploads
