@@ -66,11 +66,19 @@ RUN pm2 install pm2-logrotate && \
 	pm2 set pm2-logrotate:compress true && \
 	pm2 set pm2-logrotate:retain 7
 
+#**** install git-crypt ****
+# openssl development headers and git are prerequisites
+RUN yum install -y openssl-devel
+
+RUN git clone https://www.agwa.name/git/git-crypt.git && \
+	cd git-crypt && \
+	make && \
+	make install
+
 #**** deploy quantum app ****
-# deploy from the source code under /node
+# create a directory node and copy the source code under /node
 # node server should run on port 3000 > proxied via nginx to 443
-# start command: npm start
-#
+# start command: pm2 start
 
 # Create app directory	 
 RUN  mkdir -p /node 
