@@ -21,7 +21,10 @@ mongoose.plugin(schema => { schema.options.usePushEach = true });
 var config = require('./config/config.env.js'),
     configDB = new config();
 mongoose.Promise = global.Promise;
-mongoose.connect(configDB.databaseURL, configDB.databaseOpts); 	// connect to mongoDB database
+mongoose.connect(configDB.databaseURL, configDB.databaseOpts) 	// connect to mongoDB database
+.catch(function(err){
+    console.log("Error connecting Mongo " + err);
+});
 
 // CONNECTION EVENTS
 // When successfully connected
