@@ -69,7 +69,7 @@
                                 <md-tooltip md-direction="top">Download procedure</md-tooltip> 
                             </span>
                         </a>&nbsp;&nbsp;
-                        <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,true);">
+                        <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,true);" ng-show="role.cRole.callsign !== 'VIP'">
                             <span class="fa fa-caret-right iconDisplay" style="vertical-align:middle">
                                 <md-tooltip md-direction="top">Start procedure</md-tooltip> 
                             </span>
