@@ -237,13 +237,7 @@ quantum
                     psteps[k].buttonStatus = "";
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
-                    }
-                    if(psteps[k].Reference){
-                        psteps[k].procedureLinkDetails = getProcedureLink(psteps[k].Reference);
-                    }else {
-                        psteps[k].procedureLinkDetails = [];
-                    }
-                   
+                    }                   
                 }
             }
 
