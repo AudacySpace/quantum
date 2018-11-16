@@ -108,6 +108,8 @@ module.exports = {
                     }
 
                     if(procs){ // Update a procedure
+                        procs.versions = [];
+                        procs.versions.push(procs.sections);
                         procs.sections = [];
                         for(var i=0;i<sheet1.length;i++){
                             procs.sections.push(sheet1[i]); 
@@ -137,6 +139,8 @@ module.exports = {
                         for(var i=0;i<sheet1.length;i++){
                             pfiles.sections.push(sheet1[i]); 
                         }
+                        pfiles.versions = [];
+                        pfiles.versions.push(pfiles.sections);
 
                         pfiles.eventname = filename[1];
                         pfiles.uploadedBy = userdetails;

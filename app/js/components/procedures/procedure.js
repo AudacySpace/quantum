@@ -39,17 +39,20 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     }
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
-                                    $scope.count = $scope.count + 1;
-                                    $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
-                                    var position = "top left";
-                                    var queryId = '#toaster';
-                                    var delay = 5000;
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    if(alertstatus === true){
-                                        $scope.config = {};
-                                        $scope.upload_form.$setPristine();
-                                        break;
-                                    }
+                                    // $scope.count = $scope.count + 1;
+                                    // $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
+                                    // var position = "top left";
+                                    // var queryId = '#toaster';
+                                    // var delay = 5000;
+                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                                    // if(alertstatus === true){
+                                    //     $scope.config = {};
+                                    //     $scope.upload_form.$setPristine();
+                                    //     break;
+                                    // }
+
+                                    $scope.sameProcedure = true;
+                                    break;
                                 }
                             }
 
