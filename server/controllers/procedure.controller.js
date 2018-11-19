@@ -437,6 +437,33 @@ module.exports = {
                 });
             }
         });
+    },
+    updateProcedureName: function(req,res){
+        var newprocedurename = req.body.newprocedurename;
+        var prevProcId = req.body.procId
+
+        ProcedureModel.findOne( { 'procedureID' : prevProcId }, function(err, procs) {
+            if(err){ 
+                console.log(err);
+            }
+
+            if(procs){
+                procs.procedureID = newprocedurename.id;
+                procs.eventname = newprocedurename.gname;
+                procs.title = newprocedurename.gname+" - "+newprocedurename.title;
+
+                procs.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                       res.send(result);
+                    }
+                    
+                });
+            }
+        });
+
     }
 };
 

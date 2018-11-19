@@ -369,6 +369,26 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     //         // }); 
     //     }  
     // });
+
+    $scope.showEditModal = function(procedure){
+        $uibModal.open({
+            templateUrl: './js/components/procedures/editProcedure.html',
+            controller: 'editProcedureCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                procedure: procedure
+            },
+            backdrop: 'static',
+            keyboard: false
+        }).result.then(function(newName){
+            //handle modal close with response
+            procedureService.updateProcedureName(procedure.id,newName).then(function(response){
+            });
+
+        },function () {
+            //handle modal dismiss
+        });
+    }
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {
@@ -384,5 +404,52 @@ quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,f
     }
 
 });
+
+quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstance,procedure,procedureService) {
+    var $ctrl = this;
+    $ctrl.procedure = angular.copy(procedure);
+    $ctrl.procedureTitle = $ctrl.procedure.title.split(" - ");
+    $ctrl.indexNum = angular.copy($ctrl.procedure.id);
+    $ctrl.groupName = $ctrl.procedureTitle[0];
+    $ctrl.mainTitle = $ctrl.procedureTitle[1];
+
+    $ctrl.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $ctrl.save = function(indexNum,groupName,title){
+        var exists = false;
+        var prevprocId;
+        var procIndex;
+        var firstId = $ctrl.procedure.id;
+        var secondId = indexNum;
+        if(indexNum && groupName && title){
+            procedureService.getProcedureList().then(function(response){
+                if(response.status === 200){
+                    for(var i=0;i<response.data.length;i++){
+                        if(response.data[i].procedureID === indexNum){
+                            exists = true;
+                            prevprocId = response.data[i].procedureID;
+                            procIndex = i;
+                            break;
+                        }
+                    }
+                    if(exists === false){
+                        var newName = {
+                            'id':indexNum,
+                            'gname':groupName,
+                            'title':title
+                        }
+                        $uibModalInstance.close(newName); // close method should be called with an object
+                    }else {
+                       
+                    }
+                }
+            });
+        }
+    }
+
+});
+
 
 

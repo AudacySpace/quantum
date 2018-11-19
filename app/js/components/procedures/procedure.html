@@ -54,6 +54,9 @@
                     <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,false);">{{ procedure.running }}</a></td>
                     <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title,false);">{{ procedure.archived }}</a></td>
                     <td class="centerCols" style="width:15%">
+                        <a href="#" ng-click="showEditModal(procedure)">
+                            <span class="fa fa-edit" title="Edit procedure name"></span>
+                        </a>&nbsp;&nbsp;
                         <a ng-click="download(procedure.id, procedure.title)" href="">
                             <span class="fa fa-caret-down" title="Download procedure"></span>
                         </a>&nbsp;&nbsp;
