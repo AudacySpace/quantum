@@ -37,7 +37,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             if(curLocationOp.length === 4 ){ //open right sidebar for new instance
                 $scope.locks.lockRight = !$scope.locks.lockRight;
                 dashboardService.setRightLock($scope.locks.lockRight);
-            }else if(curLocationOp.length === 6 && curLocationOp[3] === "runninginstance" ){
+            }else if(curLocationOp.length === 7 && curLocationOp[3] === "runninginstance" ){
                 //open right sidebar for active procedure
                $scope.locks.lockRight = !$scope.locks.lockRight;
                 dashboardService.setRightLock($scope.locks.lockRight); 
@@ -113,13 +113,37 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps = $scope.instances.Steps;
                             }
                         }
-                        for(var b=0;b<response.data[i].sections.length;b++){
-                            if($scope.steps[b].step === response.data[i].sections[b].Step){
-                                $scope.steps[b].Step = response.data[i].sections[b].Step
-                                $scope.steps[b].Type = response.data[i].sections[b].Type;
-                                $scope.steps[b].Content = response.data[i].sections[b].Content;
-                                $scope.steps[b].Role = response.data[i].sections[b].Role;
-                                $scope.steps[b].Reference = response.data[i].sections[b].Reference;
+
+                        var newVersion = response.data[i].versions[parseInt($scope.params.versionID) - 1];
+                        // for(var b=0;b<response.data[i].sections.length;b++){
+                        //     if($scope.steps[b].step === response.data[i].sections[b].Step){
+                        //         $scope.steps[b].Step = response.data[i].sections[b].Step
+                        //         $scope.steps[b].Type = response.data[i].sections[b].Type;
+                        //         $scope.steps[b].Content = response.data[i].sections[b].Content;
+                        //         $scope.steps[b].Role = response.data[i].sections[b].Role;
+                        //         $scope.steps[b].Reference = response.data[i].sections[b].Reference;
+                        //         $scope.steps[b].Info = $scope.steps[b].info;
+
+                        //         $scope.inputStepValues.push({
+                        //             snum:$scope.steps[b].Step,
+                        //             ivalue:""
+                        //         });
+
+                        //         $scope.tempValues.push({
+                        //             snum:$scope.steps[b].Step,
+                        //             ivalue:"",
+                        //             comments:""
+                        //         });
+                        //     }
+                        // }
+
+                        for(var b=0;b<newVersion.length;b++){
+                            if($scope.steps[b].step === newVersion[b].Step){
+                                $scope.steps[b].Step = newVersion[b].Step
+                                $scope.steps[b].Type = newVersion[b].Type;
+                                $scope.steps[b].Content = newVersion[b].Content;
+                                $scope.steps[b].Role = newVersion[b].Role;
+                                $scope.steps[b].Reference = newVersion[b].Reference;
                                 $scope.steps[b].Info = $scope.steps[b].info;
 
                                 $scope.inputStepValues.push({

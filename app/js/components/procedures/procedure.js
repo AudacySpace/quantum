@@ -12,13 +12,14 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         if($scope.upload_form.$valid) {
             if($scope.config && $scope.config.file){
                 $scope.filenames = $scope.config.file.name.split(" - ");
-                if($scope.filenames.length === 3){
+                if($scope.filenames.length >= 3){
                     procedureService.getProcedureList().then(function(response){
                         if(response.status === 200){
                             $scope.count = 0;
                             $scope.sameProcedure = false;
+                            var filenameFrmDb;
                             for(var i=0;i<response.data.length;i++){
-                                var filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
+                                filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
                                 
                                 if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
                                     //Condition to check if a procedure exists with the same file name and has no saved instances
@@ -26,17 +27,20 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
-                                    $scope.count = $scope.count + 1;
-                                    $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
-                                    var position = "top left";
-                                    var queryId = '#toaster';
-                                    var delay = 5000;
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    if(alertstatus === true){
-                                        $scope.config = {};
-                                        $scope.upload_form.$setPristine();
-                                        break;
-                                    }
+                                    // $scope.count = $scope.count + 1;
+                                    // $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
+                                    // var position = "top left";
+                                    // var queryId = '#toaster';
+                                    // var delay = 5000;
+                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                                    // if(alertstatus === true){
+                                    //     $scope.config = {};
+                                    //     $scope.upload_form.$setPristine();
+                                    //     break;
+                                    // }
+
+                                    $scope.sameProcedure = true;
+                                    break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
                                     // $scope.count = $scope.count + 1;
@@ -62,7 +66,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 $scope.upload($scope.config.file,userdetails); 
                             }else if($scope.count === 0 && $scope.sameProcedure === true){
                                 var messages = {
-                                    confirmMsg: "Are you sure you want to update this procedure?"
+                                    confirmMsg: "Are you sure you want to update procedure: "+filenameFrmDb +" to procedure: "+$scope.config.file.name+" ?"
                                 };
                                 confirmProcedureUpdate(messages);
                             }

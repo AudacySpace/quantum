@@ -45,8 +45,9 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
         var currentRevision;
         var status;
 
-        if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-            currentRevision = parseInt(revNumOp[5]);
+        // the url for archived instance
+        if(revNumOp.length === 7 && revNumOp[3] === "archivedinstance"){
+            currentRevision = parseInt(revNumOp[6]); //get revision number from url
             status = true;
             procedureService.setCurrentViewRevision(currentRevision);
             procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){
