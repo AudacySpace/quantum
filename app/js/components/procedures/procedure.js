@@ -410,6 +410,7 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
     $ctrl.procedure = angular.copy(procedure);
     $ctrl.procedureTitle = $ctrl.procedure.title.split(" - ");
     $ctrl.indexNum = angular.copy($ctrl.procedure.id);
+    $ctrl.existingIndex = $ctrl.procedure.id;
     $ctrl.groupName = $ctrl.procedureTitle[0];
     $ctrl.mainTitle = $ctrl.procedureTitle[1];
 
@@ -437,13 +438,24 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
                     }
                     if(exists === false){
                         var newName = {
-                            'id':indexNum,
-                            'gname':groupName,
-                            'title':title
+                             'id':indexNum,
+                             'gname':groupName,
+                             'title':title
+                         }
+                         $uibModalInstance.close(newName); // close method should be called with an object
+                    }else if(exists === true){
+                        // check if only title is changed and not index number and update
+                        if(indexNum === $ctrl.existingIndex){
+                            var newName = {
+                                'id':indexNum,
+                                'gname':groupName,
+                                'title':title
+                         }
+                         $uibModalInstance.close(newName); 
+                        }else {
+                            //check if index number has changed then do not update
+                            $ctrl.indexExists = true;
                         }
-                        $uibModalInstance.close(newName); // close method should be called with an object
-                    }else {
-                       $ctrl.indexExists = true;
                     }
                 }
             });
