@@ -423,6 +423,7 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
         var procIndex;
         var firstId = $ctrl.procedure.id;
         var secondId = indexNum;
+        $ctrl.indexExists = false;
         if(indexNum && groupName && title){
             procedureService.getProcedureList().then(function(response){
                 if(response.status === 200){
@@ -442,7 +443,7 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
                         }
                         $uibModalInstance.close(newName); // close method should be called with an object
                     }else {
-                       
+                       $ctrl.indexExists = true;
                     }
                 }
             });
