@@ -12,13 +12,14 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         if($scope.upload_form.$valid) {
             if($scope.config && $scope.config.file){
                 $scope.filenames = $scope.config.file.name.split(" - ");
-                if($scope.filenames.length === 3){
+                if($scope.filenames.length >= 3){
                     procedureService.getProcedureList().then(function(response){
                         if(response.status === 200){
                             $scope.count = 0;
                             $scope.sameProcedure = false;
+                            var filenameFrmDb;
                             for(var i=0;i<response.data.length;i++){
-                                var filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
+                                filenameFrmDb = response.data[i].procedureID+" - "+response.data[i].title+'.xlsx';
                                 
                                 if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length === 0){
                                     //Condition to check if a procedure exists with the same file name and has no saved instances
@@ -26,30 +27,36 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
-                                    $scope.count = $scope.count + 1;
-                                    $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
-                                    var position = "top left";
-                                    var queryId = '#toaster';
-                                    var delay = 5000;
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    if(alertstatus === true){
-                                        $scope.config = {};
-                                        $scope.upload_form.$setPristine();
-                                        break;
-                                    }
+                                    // $scope.count = $scope.count + 1;
+                                    // $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
+                                    // var position = "top left";
+                                    // var queryId = '#toaster';
+                                    // var delay = 5000;
+                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                                    // if(alertstatus === true){
+                                    //     $scope.config = {};
+                                    //     $scope.upload_form.$setPristine();
+                                    //     break;
+                                    // }
+
+                                    $scope.sameProcedure = true;
+                                    break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
-                                    $scope.count = $scope.count + 1;
-                                    $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
-                                    var position = "top left";
-                                    var queryId = '#toaster';
-                                    var delay = 5000;
-                                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    if(alertstatus === true){
-                                        $scope.config = {};
-                                        $scope.upload_form.$setPristine();
-                                        break;
-                                    }
+                                    // $scope.count = $scope.count + 1;
+                                    // $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
+                                    // var position = "top left";
+                                    // var queryId = '#toaster';
+                                    // var delay = 5000;
+                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                                    // if(alertstatus === true){
+                                    //     $scope.config = {};
+                                    //     $scope.upload_form.$setPristine();
+                                    //     break;
+                                    // }
+
+                                    $scope.sameProcedure = true;
+                                    break;
                                 }
                             }
 
@@ -59,7 +66,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 $scope.upload($scope.config.file,userdetails); 
                             }else if($scope.count === 0 && $scope.sameProcedure === true){
                                 var messages = {
-                                    confirmMsg: "Are you sure you want to update this procedure?"
+                                    confirmMsg: "Are you sure you want to update procedure: "+filenameFrmDb +" to procedure: "+$scope.config.file.name+" ?"
                                 };
                                 confirmProcedureUpdate(messages);
                             }
@@ -362,6 +369,26 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     //         // }); 
     //     }  
     // });
+
+    $scope.showEditModal = function(procedure){
+        $uibModal.open({
+            templateUrl: './js/components/procedures/editProcedure.html',
+            controller: 'editProcedureCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                procedure: procedure
+            },
+            backdrop: 'static',
+            keyboard: false
+        }).result.then(function(newName){
+            //handle modal close with response
+            procedureService.updateProcedureName(procedure.id,newName).then(function(response){
+            });
+
+        },function () {
+            //handle modal dismiss
+        });
+    }
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {
@@ -377,5 +404,65 @@ quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,f
     }
 
 });
+
+quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstance,procedure,procedureService) {
+    var $ctrl = this;
+    $ctrl.procedure = angular.copy(procedure);
+    $ctrl.procedureTitle = $ctrl.procedure.title.split(" - ");
+    $ctrl.indexNum = angular.copy($ctrl.procedure.id);
+    $ctrl.existingIndex = $ctrl.procedure.id;
+    $ctrl.groupName = $ctrl.procedureTitle[0];
+    $ctrl.mainTitle = $ctrl.procedureTitle[1];
+
+    $ctrl.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $ctrl.save = function(indexNum,groupName,title){
+        var exists = false;
+        var prevprocId;
+        var procIndex;
+        var firstId = $ctrl.procedure.id;
+        var secondId = indexNum;
+        $ctrl.indexExists = false;
+        if(indexNum && groupName && title){
+            procedureService.getProcedureList().then(function(response){
+                if(response.status === 200){
+                    for(var i=0;i<response.data.length;i++){
+                        if(response.data[i].procedureID === indexNum){
+                            exists = true;
+                            prevprocId = response.data[i].procedureID;
+                            procIndex = i;
+                            break;
+                        }
+                    }
+                    if(exists === false){
+                        var newName = {
+                             'id':indexNum,
+                             'gname':groupName,
+                             'title':title
+                         }
+                         $uibModalInstance.close(newName); // close method should be called with an object
+                    }else if(exists === true){
+                        // check if only title is changed and not index number and update
+                        if(indexNum === $ctrl.existingIndex){
+                            var newName = {
+                                'id':indexNum,
+                                'gname':groupName,
+                                'title':title
+                         }
+                         $uibModalInstance.close(newName); 
+                        }else {
+                            //check if index number has changed then do not update
+                            $ctrl.indexExists = true;
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+});
+
 
 

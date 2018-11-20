@@ -22,12 +22,23 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
 
                             }
                         }
-                        for(var b=0;b<response.data[i].sections.length;b++){
-                            if($scope.steps[b].step === response.data[i].sections[b].Step){
-                                $scope.steps[b].Step = response.data[i].sections[b].Step
-                                $scope.steps[b].Type = response.data[i].sections[b].Type;
-                                $scope.steps[b].Content = response.data[i].sections[b].Content;
-                                $scope.steps[b].Role = response.data[i].sections[b].Role;
+                        var newVersion = response.data[i].versions[parseInt($scope.params.versionID) - 1];
+                        // for(var b=0;b<response.data[i].sections.length;b++){
+                        //     if($scope.steps[b].step === response.data[i].sections[b].Step){
+                        //         $scope.steps[b].Step = response.data[i].sections[b].Step
+                        //         $scope.steps[b].Type = response.data[i].sections[b].Type;
+                        //         $scope.steps[b].Content = response.data[i].sections[b].Content;
+                        //         $scope.steps[b].Role = response.data[i].sections[b].Role;
+                        //         $scope.steps[b].Info = $scope.steps[b].info;
+                        //     }
+                        // }
+
+                        for(var b=0;b<newVersion.length;b++){
+                            if($scope.steps[b].step === newVersion[b].Step){
+                                $scope.steps[b].Step = newVersion[b].Step
+                                $scope.steps[b].Type = newVersion[b].Type;
+                                $scope.steps[b].Content = newVersion[b].Content;
+                                $scope.steps[b].Role = newVersion[b].Role;
                                 $scope.steps[b].Info = $scope.steps[b].info;
                             }
                         }

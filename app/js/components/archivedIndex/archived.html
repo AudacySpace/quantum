@@ -5,9 +5,15 @@
             <thead>
                 <tr>
                     <th>
-                        <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Revision
+                        <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Instance
                             <span ng-show="sortType == 'procedurerevision' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'procedurerevision' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#" ng-click="sortType = 'procedureversion'; sortReverse = !sortReverse">Version
+                            <span ng-show="sortType == 'procedureversion' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'procedureversion' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
                     <th>
@@ -46,12 +52,13 @@
             <tbody class="details" ng-show="archivedlist.length > 0 && loadstatus === false" style="background: #fcfefc">
                 <tr dir-paginate="procedure in archivedlist | orderBy:'-revision' | orderBy:sortType:sortReverse | itemsPerPage:10">
                     <td>{{ procedure.revision }}</td>
+                    <td>{{ procedure.version }}</td>
                     <td>{{ procedure.openedBy }}</td>
                     <td>{{ procedure.closedBy }}</td>
                     <td>{{ procedure.startedAt }}</td>
                     <td>{{ procedure.completedAt }}</td>
                     <td class="centerCols">
-                          <a href="/dashboard/procedure/archivedinstance/{{procedureid}}/{{procedure.revision}}" ng-click="changeColor('AS-Run Archive',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
+                          <a href="/dashboard/procedure/archivedinstance/{{procedureid}}/{{procedure.version}}/{{procedure.revision}}" ng-click="changeColor('AS-Run Archive',procedureid,proceduretitle);"><span class="fa fa-caret-right"></span></a>
                     </td>
                 </tr>
             </tbody>

@@ -638,6 +638,14 @@ quantum
         }
     }
 
+    function updateProcedureName(procId,newprocedurename){
+        return $http({
+            url: "/updateProcedureName", 
+            method: "POST",
+            data: {"procId":procId,"newprocedurename":newprocedurename}
+        }); 
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -670,6 +678,7 @@ quantum
         getNextSubSectionHeaderIndex : getNextSubSectionHeaderIndex,
         getStepPermissions : getStepPermissions,
         displayAlert : displayAlert,
-        setUserStatus : setUserStatus
+        setUserStatus : setUserStatus,
+        updateProcedureName : updateProcedureName
     }
 }]);

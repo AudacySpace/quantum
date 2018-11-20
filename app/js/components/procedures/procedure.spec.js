@@ -323,22 +323,22 @@ describe('Test Suite for Procedure Controller', function () {
     });
 
 
-    it('should call submit if the form is valid but not upload if the index already exists', function(){
+    // it('should call submit if the form is valid but not upload if the index already exists', function(){
 
-    	deferredProcedureList.resolve({ data : result,status:200});
+    // 	deferredProcedureList.resolve({ data : result,status:200});
 
-    	scope.upload_form = { $valid: true ,$setPristine : function(){}}
-    	scope.config = {file: { name : '1.1 - Audacy Zero - OBC Bootup.xlsx'}}
+    // 	scope.upload_form = { $valid: true ,$setPristine : function(){}}
+    // 	scope.config = {file: { name : '1.1 - Audacy Zero - OBC Bootup.xlsx'}}
 
-    	scope.submit();
-  		expect(scope.upload_form).toBeDefined();
-  		expect(scope.config).toBeDefined();
-  		scope.$digest();
-        expect(procedureService.getProcedureList).toHaveBeenCalled();
-        expect(scope.usermessage).toEqual('This file number already exists in the list with a different title.Please try uploading with a new index number!');
-        expect(scope.config).toEqual({});      
+    // 	scope.submit();
+  		// expect(scope.upload_form).toBeDefined();
+  		// expect(scope.config).toBeDefined();
+  		// scope.$digest();
+    //     expect(procedureService.getProcedureList).toHaveBeenCalled();
+    //     expect(scope.usermessage).toEqual('This file number already exists in the list with a different title.Please try uploading with a new index number!');
+    //     expect(scope.config).toEqual({});      
 
-    });
+    // });
 
     it('should call submit if the form is valid and upload if it is a new index procedure', function(){
 
@@ -789,220 +789,220 @@ describe('Test Suite for Procedure Controller', function () {
         expect(scope.config).toEqual({});
     });
 
-    it('should alert the user if a procedure with a same file name is added.', function(){
-        var rep = [{
-            "_id": "5a78b26a5fa10701004acb4c",
-            "instances": [
-                {
-                    "openedBy": "Taruni Gattu(VIP)",
-                    "Steps": [
-                        {
-                            "step": "1.0",
-                            "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "1.1",
-                            "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "1.2",
-                            "info": "034.11:26:37 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "2.0",
-                            "info": "034.11:26:38 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "2.1.0",
-                            "info": "034.11:26:39 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "2.1.1",
-                            "info": "034.11:26:40 UTC Taruni Gattu(VIP)"
-                        }
-                    ],
-                    "closedBy": "Taruni Gattu(VIP)",
-                    "startedAt": "2018 - 034.11:26:35 UTC",
-                    "completedAt": "2018 - 034.11:26:40 UTC",
-                    "revision": 1,
-                    "running": false
-                },
-                {
-                    "openedBy": "Taruni Gattu(VIP)",
-                    "Steps": [
-                        {
-                            "step": "1.0",
-                            "info": ""
-                        },
-                        {
-                            "step": "1.1",
-                            "info": ""
-                        },
-                        {
-                            "step": "1.2",
-                            "info": ""
-                        },
-                        {
-                            "step": "2.0",
-                            "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "2.1.0",
-                            "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "2.1.1",
-                            "info": ""
-                        }
+    // it('should alert the user if a procedure with a same file name is added.', function(){
+    //     var rep = [{
+    //         "_id": "5a78b26a5fa10701004acb4c",
+    //         "instances": [
+    //             {
+    //                 "openedBy": "Taruni Gattu(VIP)",
+    //                 "Steps": [
+    //                     {
+    //                         "step": "1.0",
+    //                         "info": "034.11:26:35 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "1.1",
+    //                         "info": "034.11:26:36 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "1.2",
+    //                         "info": "034.11:26:37 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "2.0",
+    //                         "info": "034.11:26:38 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "2.1.0",
+    //                         "info": "034.11:26:39 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "2.1.1",
+    //                         "info": "034.11:26:40 UTC Taruni Gattu(VIP)"
+    //                     }
+    //                 ],
+    //                 "closedBy": "Taruni Gattu(VIP)",
+    //                 "startedAt": "2018 - 034.11:26:35 UTC",
+    //                 "completedAt": "2018 - 034.11:26:40 UTC",
+    //                 "revision": 1,
+    //                 "running": false
+    //             },
+    //             {
+    //                 "openedBy": "Taruni Gattu(VIP)",
+    //                 "Steps": [
+    //                     {
+    //                         "step": "1.0",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "1.1",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "1.2",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "2.0",
+    //                         "info": "034.11:26:49 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "2.1.0",
+    //                         "info": "034.11:26:50 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "2.1.1",
+    //                         "info": ""
+    //                     }
          
-                    ],
-                    "closedBy": "",
-                    "startedAt": "2018 - 034.11:26:49 UTC",
-                    "completedAt": "",
-                    "revision": 2,
-                    "running": true
-                }
-            ],
-            "sections": [
-                    {
-                        "Content": "Pre-Action Safety Information",
-                        "Type": "Heading",
-                        "Role": "MD",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Reference": "http://somewhere on the net",
-                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
-                        "Type": "Warning",
-                        "Role": "MD",
-                        "Step": "1.1"
-                    },
-                    {
-                        "Content": "Make required safety announcement on VL-AZERO",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "1.2"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1.0"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1.1"
-                    } 
-                ],
-                "eventname": "Audacy Zero",
-                "lastuse": "2018 - 034.11:26:50 UTC",
-                "title": "Audacy Zero - Procedure Example",
-                "procedureID": "1.3",
-            "__v": 6
-        },
-        {
-            "_id": "5a78b2745fa10701004acb4d",
-            "instances": [
-                {
-                    "openedBy": "Taruni Gattu(VIP)",
-                    "Steps": [
-                        {
-                            "step": "1.0",
-                            "info": "034.11:26:58 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "1.1",
-                            "info": "034.11:26:59 UTC Taruni Gattu(VIP)"
-                        },
-                        {
-                            "step": "1.2",
-                            "info": ""
-                        },
-                        {
-                            "step": "2.0",
-                            "info": ""
-                        },
-                        {
-                            "step": "2.1.0",
-                            "info": ""
-                        },
-                        {
-                            "step": "2.1.1",
-                            "info": ""
-                        }
-                    ],
-                    "closedBy": "",
-                    "startedAt": "2018 - 034.11:26:58 UTC",
-                    "completedAt": "",
-                    "revision": 1,
-                    "running": true
-                }
-            ],
-            "sections": [
-                    {
-                        "Content": "Pre-Action Safety Information",
-                        "Type": "Heading",
-                        "Role": "MD",
-                        "Step": "1.0"
-                    },
-                    {
-                        "Reference": "http://somewhere on the net",
-                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
-                        "Type": "Warning",
-                        "Role": "MD",
-                        "Step": "1.1"
-                    },
-                    {
-                        "Content": "Make required safety announcement on VL-AZERO",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "1.2"
-                    },
-                    {
-                        "Content": "Close Procedure",
-                        "Role": "MD",
-                        "Step": "2.0"
-                    },
-                    {
-                        "Content": "Update the shift log with procedure close status / notes",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1.0"
-                    },
-                    {
-                        "Content": "Close the procedure in Quantum (complete this step)",
-                        "Type": "Action",
-                        "Role": "MD",
-                        "Step": "2.1.1"
-                    }
-                ],
-                "eventname": "Audacy Zero",
-                "lastuse": "2018 - 034.11:26:59 UTC",
-                "title": "Audacy Zero - OBC Bootup",
-                "procedureID": "1.2",
-            "__v": 3
-        }];
+    //                 ],
+    //                 "closedBy": "",
+    //                 "startedAt": "2018 - 034.11:26:49 UTC",
+    //                 "completedAt": "",
+    //                 "revision": 2,
+    //                 "running": true
+    //             }
+    //         ],
+    //         "sections": [
+    //                 {
+    //                     "Content": "Pre-Action Safety Information",
+    //                     "Type": "Heading",
+    //                     "Role": "MD",
+    //                     "Step": "1.0"
+    //                 },
+    //                 {
+    //                     "Reference": "http://somewhere on the net",
+    //                     "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+    //                     "Type": "Warning",
+    //                     "Role": "MD",
+    //                     "Step": "1.1"
+    //                 },
+    //                 {
+    //                     "Content": "Make required safety announcement on VL-AZERO",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "1.2"
+    //                 },
+    //                 {
+    //                     "Content": "Close Procedure",
+    //                     "Role": "MD",
+    //                     "Step": "2.0"
+    //                 },
+    //                 {
+    //                     "Content": "Update the shift log with procedure close status / notes",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "2.1.0"
+    //                 },
+    //                 {
+    //                     "Content": "Close the procedure in Quantum (complete this step)",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "2.1.1"
+    //                 } 
+    //             ],
+    //             "eventname": "Audacy Zero",
+    //             "lastuse": "2018 - 034.11:26:50 UTC",
+    //             "title": "Audacy Zero - Procedure Example",
+    //             "procedureID": "1.3",
+    //         "__v": 6
+    //     },
+    //     {
+    //         "_id": "5a78b2745fa10701004acb4d",
+    //         "instances": [
+    //             {
+    //                 "openedBy": "Taruni Gattu(VIP)",
+    //                 "Steps": [
+    //                     {
+    //                         "step": "1.0",
+    //                         "info": "034.11:26:58 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "1.1",
+    //                         "info": "034.11:26:59 UTC Taruni Gattu(VIP)"
+    //                     },
+    //                     {
+    //                         "step": "1.2",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "2.0",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "2.1.0",
+    //                         "info": ""
+    //                     },
+    //                     {
+    //                         "step": "2.1.1",
+    //                         "info": ""
+    //                     }
+    //                 ],
+    //                 "closedBy": "",
+    //                 "startedAt": "2018 - 034.11:26:58 UTC",
+    //                 "completedAt": "",
+    //                 "revision": 1,
+    //                 "running": true
+    //             }
+    //         ],
+    //         "sections": [
+    //                 {
+    //                     "Content": "Pre-Action Safety Information",
+    //                     "Type": "Heading",
+    //                     "Role": "MD",
+    //                     "Step": "1.0"
+    //                 },
+    //                 {
+    //                     "Reference": "http://somewhere on the net",
+    //                     "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+    //                     "Type": "Warning",
+    //                     "Role": "MD",
+    //                     "Step": "1.1"
+    //                 },
+    //                 {
+    //                     "Content": "Make required safety announcement on VL-AZERO",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "1.2"
+    //                 },
+    //                 {
+    //                     "Content": "Close Procedure",
+    //                     "Role": "MD",
+    //                     "Step": "2.0"
+    //                 },
+    //                 {
+    //                     "Content": "Update the shift log with procedure close status / notes",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "2.1.0"
+    //                 },
+    //                 {
+    //                     "Content": "Close the procedure in Quantum (complete this step)",
+    //                     "Type": "Action",
+    //                     "Role": "MD",
+    //                     "Step": "2.1.1"
+    //                 }
+    //             ],
+    //             "eventname": "Audacy Zero",
+    //             "lastuse": "2018 - 034.11:26:59 UTC",
+    //             "title": "Audacy Zero - OBC Bootup",
+    //             "procedureID": "1.2",
+    //         "__v": 3
+    //     }];
 
-        var userdetails = '070.10:10:50 UTC John Smith(MD)';
-        spyOn(scope, "upload");
-        deferredProcedureList.resolve({ data : rep,status:200});
+    //     var userdetails = '070.10:10:50 UTC John Smith(MD)';
+    //     spyOn(scope, "upload");
+    //     deferredProcedureList.resolve({ data : rep,status:200});
 
-        scope.upload_form = { $valid: true ,$setPristine : function(){}};
-        scope.config = {file: { name : '1.3 - Audacy Zero - Procedure Example.xlsx'}};
+    //     scope.upload_form = { $valid: true ,$setPristine : function(){}};
+    //     scope.config = {file: { name : '1.3 - Audacy Zero - Procedure Example.xlsx'}};
     
-        scope.submit();
-        scope.$digest();
-        expect(procedureService.getProcedureList).toHaveBeenCalled();
-        expect(scope.usermessage).toEqual('There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.')
-        expect(scope.config).toEqual({});
-    });
+    //     scope.submit();
+    //     scope.$digest();
+    //     expect(procedureService.getProcedureList).toHaveBeenCalled();
+    //     expect(scope.usermessage).toEqual('There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.')
+    //     expect(scope.config).toEqual({});
+    // });
 
 
 

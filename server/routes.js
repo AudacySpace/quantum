@@ -115,6 +115,9 @@ module.exports = function(app,passport) {
     //get user current role
     app.get('/getUsersCurrentRole',usr.getUsersCurrentRole);
 
+    //update procedure name
+    app.post('/updateProcedureName',procs.updateProcedureName);
+
 };
 
 // route middleware to make sure a user is logged in

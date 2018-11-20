@@ -699,8 +699,34 @@ describe('Test Suite for Procedure Route Controller', function() {
                     "Type": "Action",
                     "Role": "MD",
                     "Step": "2.2"
-                }
+                },
             ],
+            "versions":[[
+                {
+                    "Content": "Issue null command and confirm response",
+                    "Type": "Action",
+                    "Role": "MD, CC",
+                    "Step": "1.0"
+                },
+                {
+                    "Content": "Close Procedure",
+                    "Role": "MD",
+                    "Step": "2.0",
+                    "Type": "Heading"
+                },
+                {
+                    "Content": "Update the shift log with procedure close status / notes",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.1"
+                },
+                {
+                    "Content": "Close the procedure in Quantum (complete this step)",
+                    "Type": "Action",
+                    "Role": "MD",
+                    "Step": "2.2"
+                },
+            ]],
             save:function(callback){
                 var err = null;
                 var res = {"data":""};
