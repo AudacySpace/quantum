@@ -37,7 +37,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             if(curLocationOp.length === 4 ){ //open right sidebar for new instance
                 $scope.locks.lockRight = !$scope.locks.lockRight;
                 dashboardService.setRightLock($scope.locks.lockRight);
-            }else if(curLocationOp.length === 6 && curLocationOp[3] === "runninginstance" ){
+            }else if(curLocationOp.length === 7 && curLocationOp[3] === "runninginstance" ){
                 //open right sidebar for active procedure
                 $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
                 dashboardService.setRightLock($ctrl.locks.lockRight); 

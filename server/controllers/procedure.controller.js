@@ -108,6 +108,21 @@ module.exports = {
                     }
 
                     if(procs){ // Update a procedure
+                        var ptitle = filename[2].split(".");
+                        procs.procedureID = filename[0];
+                        procs.title = filename[1]+" - "+ptitle[0];
+                        
+                        if(procs.versions && procs.versions.length > 0){
+                            procs.versions.push(sheet1);
+                        }else if(procs.versions && procs.versions.length === 0){
+                            procs.versions = [];
+                            procs.versions.push(procs.sections);
+                            procs.versions.push(sheet1);
+                        }else if(!procs.versions){
+                            procs.versions = [];
+                            procs.versions.push(procs.sections);
+                            procs.versions.push(sheet1);
+                        }
                         procs.sections = [];
                         for(var i=0;i<sheet1.length;i++){
                             procs.sections.push(sheet1[i]); 
@@ -133,10 +148,13 @@ module.exports = {
                         pfiles.title = filename[1]+" - "+ptitle[0];
                         pfiles.lastuse = "";
                         pfiles.instances = [];
+                        pfiles.versions = [];
 
                         for(var i=0;i<sheet1.length;i++){
                             pfiles.sections.push(sheet1[i]); 
                         }
+                        
+                        pfiles.versions.push(pfiles.sections);
 
                         pfiles.eventname = filename[1];
                         pfiles.uploadedBy = userdetails;
@@ -177,12 +195,13 @@ module.exports = {
                     instancesteps.push({"step":procs.sections[i].Step,"info":""})
                 }
                 var revision = procs.instances.length+1;
+                var versionNum = procs.versions.length;
 
                 procs.instances.push({"openedBy":usernamerole,"Steps":instancesteps,"closedBy":"","startedAt":lastuse,"completedAt":"","revision": procs.instances.length+1,"running":true,users:[{
                     "name":username,
                     "email":useremail,
                     "status":userstatus
-                }]});
+                }],"version":versionNum});
 
                 procs.lastuse = lastuse;
                 procs.save(function(err,result) {
@@ -418,6 +437,33 @@ module.exports = {
                 });
             }
         });
+    },
+    updateProcedureName: function(req,res){
+        var newprocedurename = req.body.newprocedurename;
+        var prevProcId = req.body.procId
+
+        ProcedureModel.findOne( { 'procedureID' : prevProcId }, function(err, procs) {
+            if(err){ 
+                console.log(err);
+            }
+
+            if(procs){
+                procs.procedureID = newprocedurename.id;
+                procs.eventname = newprocedurename.gname;
+                procs.title = newprocedurename.gname+" - "+newprocedurename.title;
+
+                procs.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                       res.send(result);
+                    }
+                    
+                });
+            }
+        });
+
     }
 };
 

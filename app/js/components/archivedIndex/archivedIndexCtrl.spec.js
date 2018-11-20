@@ -23,7 +23,7 @@ describe('Test Suite for Archived Index controller', function () {
             deferred = _$q_.defer();
             dashboardService = _dashboardService_;
             userService = _userService_;
-            spyOn($location,'url').and.returnValue('/dashboard/procedure/archivedinstance/1.1/1');
+            spyOn($location,'url').and.returnValue('/dashboard/procedure/archivedinstance/1.1/2/1');
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
   
@@ -280,7 +280,7 @@ describe('Test Suite for Archived Index controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dahboard/procedure/archivedinstance/1.1/1';
+        var newUrl = '/dahboard/procedure/archivedinstance/1.1/2/1';
         var oldUrl = '/dashboard/procedure/archived/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
@@ -290,7 +290,7 @@ describe('Test Suite for Archived Index controller', function () {
     });
 
     it('should set user status as false and call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dashboard/procedure/archivedinstance/1.1/1';
+        var newUrl = '/dashboard/procedure/archivedinstance/1.1/2/1';
         var oldUrl = '/dashboard/procedure/archived/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
 

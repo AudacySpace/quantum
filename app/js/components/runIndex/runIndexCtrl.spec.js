@@ -25,7 +25,7 @@ describe('Test Suite for Run Index Controller', function () {
             userService = _userService_;
             deferredHeaderStyles = _$q_.defer();
             deferredProcName = _$q_.defer();
-            spyOn($location, 'url').and.returnValue('/dashboard/procedure/runninginstance/1.1/1');
+            spyOn($location, 'url').and.returnValue('/dashboard/procedure/runninginstance/1.1/2/1');
             spyOn(procedureService, "getAllInstances").and.returnValue(deferred.promise);
             spyOn(procedureService, "setHeaderStyles").and.returnValue(deferredHeaderStyles.promise);
             spyOn(procedureService, "setProcedureName").and.returnValue(deferredProcName.promise);
@@ -279,7 +279,7 @@ describe('Test Suite for Run Index Controller', function () {
     });
 
     it('should call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dashboard/procedure/runninginstance/1.1/1';
+        var newUrl = '/dashboard/procedure/runninginstance/1.1/2/1';
         var oldUrl = '/dashboard/procedure/running/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
         scope.$apply(function() {
@@ -290,7 +290,7 @@ describe('Test Suite for Run Index Controller', function () {
 
 
     it('should set user status as true and call changeHeaderWithLocation function on location change', function() {
-        var newUrl = '/dashboard/procedure/runninginstance/1.1/1';
+        var newUrl = '/dashboard/procedure/runninginstance/1.1/2/1';
         var oldUrl = '/dashboard/procedure/running/1.1';
         deferredUserStatus.resolve({ data :{},status : 200});
 

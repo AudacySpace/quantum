@@ -41,8 +41,8 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
         var currentRevision;
         var status;
  
-        if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
-            currentRevision = parseInt(revNumOp[5]);
+        if(revNumOp.length === 7 && revNumOp[3] === "runninginstance"){
+            currentRevision = parseInt(revNumOp[6]);
             status = true
             procedureService.setCurrentViewRevision(currentRevision);
             procedureService.setUserStatus(loc,emailaddress,name,$scope.params.procID,currentRevision,status).then(function(response){

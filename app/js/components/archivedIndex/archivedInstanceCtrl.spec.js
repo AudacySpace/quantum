@@ -345,6 +345,83 @@ describe('Test Suite for Archived Instance Controller', function () {
                     "running": true
                 }
             ],
+            "versions":[[
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    } 
+                ],
+                [
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    } 
+                ]
+            ],
             "sections": [
                     {
                         "Content": "Pre-Action Safety Information",
@@ -426,6 +503,81 @@ describe('Test Suite for Archived Instance Controller', function () {
                     "revision": 1,
                     "running": true
                 }
+            ],
+            "versions":[[
+                    {
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    }
+                ],[{
+                        "Content": "Pre-Action Safety Information",
+                        "Type": "Heading",
+                        "Role": "MD",
+                        "Step": "1.0"
+                    },
+                    {
+                        "Reference": "http://somewhere on the net",
+                        "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.",
+                        "Type": "Warning",
+                        "Role": "MD",
+                        "Step": "1.1"
+                    },
+                    {
+                        "Content": "Make required safety announcement on VL-AZERO",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "1.2"
+                    },
+                    {
+                        "Content": "Close Procedure",
+                        "Role": "MD",
+                        "Step": "2.0"
+                    },
+                    {
+                        "Content": "Update the shift log with procedure close status / notes",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.0"
+                    },
+                    {
+                        "Content": "Close the procedure in Quantum (complete this step)",
+                        "Type": "Action",
+                        "Role": "MD",
+                        "Step": "2.1.1"
+                    }
+                ]
             ],
             "sections": [
                     {
@@ -626,7 +778,7 @@ describe('Test Suite for Archived Instance Controller', function () {
 
             controller = $controller('archivedInstanceCtrl', {
                 $scope: scope,
-                $routeParams: {procID: '1.1',revisionID:'1'},
+                $routeParams: {procID: '1.1',versionID:'2',revisionID:'1'},
                 procedureService: procedureService,
                 userService: userService,
                 $location: location,
