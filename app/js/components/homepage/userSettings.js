@@ -25,17 +25,17 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
     });
 
     $ctrl.updateRole = function(){
-        if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
-            var position = "bottom right";
-            var queryId = '#logouttoaster';
-            var delay = 5000;
-            $scope.usermessage = 'No mission without the Mission Director. Your role cannot be updated.';
-            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-            if(alertstatus === true){
-               $uibModalInstance.close($ctrl.cRole);
-            }
+        // if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
+        //     var position = "bottom right";
+        //     var queryId = '#logouttoaster';
+        //     var delay = 5000;
+        //     $scope.usermessage = 'No mission without the Mission Director. Your role cannot be updated.';
+        //     var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+        //     if(alertstatus === true){
+        //        $uibModalInstance.close($ctrl.cRole);
+        //     }
 
-        } else {
+        // } else {
             userService.getRoles()
             .then(function(response) {
                 if(response.status == 200) {
@@ -73,6 +73,6 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
                     var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 }
             });
-        }
+        // }
     }
 });
