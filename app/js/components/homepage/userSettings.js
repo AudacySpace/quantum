@@ -25,54 +25,42 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
     });
 
     $ctrl.updateRole = function(){
-        // if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
-        //     var position = "bottom right";
-        //     var queryId = '#logouttoaster';
-        //     var delay = 5000;
-        //     $scope.usermessage = 'No mission without the Mission Director. Your role cannot be updated.';
-        //     var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-        //     if(alertstatus === true){
-        //        $uibModalInstance.close($ctrl.cRole);
-        //     }
-
-        // } else {
-            userService.getRoles()
-            .then(function(response) {
-                if(response.status == 200) {
-                    for(var a in response.data.roles){
-                        if(response.data.roles[a].name === $ctrl.role.currentRole.name){
-                            $ctrl.role.currentRole.callsign = response.data.roles[a].callsign;
-                            break;
-                        }
+        userService.getRoles()
+        .then(function(response) {
+            if(response.status == 200) {
+                for(var a in response.data.roles){
+                    if(response.data.roles[a].name === $ctrl.role.currentRole.name){
+                        $ctrl.role.currentRole.callsign = response.data.roles[a].callsign;
+                        break;
                     }
-                    userService.setCurrentRole($ctrl.role.currentRole, mission.name)
-                    .then(function(response) {
-                        if(response.status == 200){
-                            var position = "bottom right";
-                            var queryId = '#logouttoaster';
-                            var delay = 5000;
-                            $scope.usermessage = "User's current role updated!";
-                            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                            if(alertstatus === true){
-                                $uibModalInstance.close($ctrl.role.currentRole);
-                            }
-                            $uibModalInstance.close($ctrl.role.currentRole);
-                        }else {
-                            var position = "bottom right";
-                            var queryId = '#usersettingstoaster';
-                            var delay = 5000;
-                            $scope.usermessage = "An error occurred.User's role not updated!";
-                            var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                        }
-                    });
-                }else {
-                    var position = "bottom right";
-                    var queryId = '#usersettingstoaster';
-                    var delay = 5000;
-                    $scope.usermessage = "An error occurred.User's role not updated!";
-                    var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 }
-            });
-        // }
+                userService.setCurrentRole($ctrl.role.currentRole, mission.name)
+                .then(function(response) {
+                    if(response.status == 200){
+                        var position = "bottom right";
+                        var queryId = '#logouttoaster';
+                        var delay = 5000;
+                        $scope.usermessage = "User's current role updated!";
+                        var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                        if(alertstatus === true){
+                            $uibModalInstance.close($ctrl.role.currentRole);
+                        }
+                        $uibModalInstance.close($ctrl.role.currentRole);
+                    }else {
+                        var position = "bottom right";
+                        var queryId = '#usersettingstoaster';
+                        var delay = 5000;
+                        $scope.usermessage = "An error occurred.User's role not updated!";
+                        var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                    }
+                });
+            }else {
+                var position = "bottom right";
+                var queryId = '#usersettingstoaster';
+                var delay = 5000;
+                $scope.usermessage = "An error occurred.User's role not updated!";
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+            }
+        });
     }
 });

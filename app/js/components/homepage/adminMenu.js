@@ -14,9 +14,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
 
                 roles[role].checked = false;
 
-                // if(role != 'MD') {
-                    $ctrl.roles.push(roles[role]);
-                // }
+                $ctrl.roles.push(roles[role]);
             }
         }
     });
@@ -26,9 +24,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
         if(response.status == 200) {
             var users = response.data;
             for (var i=0; i<users.length; i++){
-                // if(users[i].currentRole && users[i].currentRole.callsign != 'MD') {
-                    $ctrl.users.push(users[i]);
-                // }
+                $ctrl.users.push(users[i]);
             }
         }
     });
