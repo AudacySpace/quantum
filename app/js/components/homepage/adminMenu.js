@@ -4,6 +4,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
     $ctrl.users = [];
     $ctrl.roles = [];
     $ctrl.mission = mission.name;
+    $ctrl.email = userService.getUserEmail();
 
     userService.getRoles()
     .then(function(response) {

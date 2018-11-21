@@ -23,7 +23,7 @@ describe('Testing admin controller', function () {
             deferredSet = _$q_.defer();
             scope = $rootScope.$new();
             procedureService = _procedureService_;
-            userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles']);
+            userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles', 'getUserEmail']);
 
             userService.getRoles.and.callFake(function() {
                 return deferredRole.promise;
