@@ -646,6 +646,28 @@ quantum
         }); 
     }
 
+    function createProcedureInstance(steps){
+        //get all sections
+        //A section can have sub sections,may not have parents,can also have just steps
+        var sections = [];
+        sections = createSections(steps);
+        console.log(sections);
+
+        //get all sectionsteps
+        //All the sectionsteps should be inside a section 
+        var sectionsteps = [];
+        sectionsteps = createStepsforSections();
+        console.log(sectionsteps);
+    }
+
+    function createSections(steps){
+
+    }
+
+    function createStepsforSections(steps){
+        
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
