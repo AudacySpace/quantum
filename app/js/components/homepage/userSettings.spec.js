@@ -112,24 +112,25 @@ describe('Testing user settings modal controller', function () {
         expect(controller.updateRole).toBeDefined();
     });
 
-    it('should not update the role if you are a Mission Director', function() {
-        controller.cRole = { 
-            name : 'Mission Director', 
-            callsign : 'MD'
-        };
-        controller.role = {
-            currentRole : { 
-                name : 'Observer', 
-                callsign : 'VIP'
-            }
-        }
+    // commented out as now MD role is handled similar to all other roles(more than one MD)
+    // it('should not update the role if you are a Mission Director', function() {
+    //     controller.cRole = {
+    //         name : 'Mission Director',
+    //         callsign : 'MD'
+    //     };
+    //     controller.role = {
+    //         currentRole : {
+    //             name : 'Observer',
+    //             callsign : 'VIP'
+    //         }
+    //     }
 
-        spyOn(modalInstance, 'close');
+    //     spyOn(modalInstance, 'close');
 
-        controller.updateRole();
-        expect(modalInstance.close).toHaveBeenCalled();
-        expect(scope.usermessage).toEqual('No mission without the Mission Director. Your role cannot be updated.');
-    });
+    //     controller.updateRole();
+    //     expect(modalInstance.close).toHaveBeenCalled();
+    //     expect(scope.usermessage).toEqual('No mission without the Mission Director. Your role cannot be updated.');
+    // });
 
     it('should update the role of the user when update role is called', function() {
         controller.cRole = { 
