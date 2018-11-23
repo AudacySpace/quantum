@@ -65,14 +65,14 @@ describe('Test Suite for Archived Index controller', function () {
         expect(scope.params.procID).toEqual('1.1');
     });
 
-    it('should define sortType and set it to a default value procedurecompleted', function() {
+    it('should define sortType and set it to a default value completedAt', function() {
         expect(scope.sortType).toBeDefined();
-        expect(scope.sortType).toEqual('procedurecompleted');
+        expect(scope.sortType).toEqual('completedAt');
     });
 
     it('should define sortReverse and set it to a default value false', function() {
         expect(scope.sortReverse).toBeDefined();
-        expect(scope.sortReverse).toEqual(false);
+        expect(scope.sortReverse).toEqual(true);
     });
 
     it('should call the service to get all instances of a procedure', function() {
