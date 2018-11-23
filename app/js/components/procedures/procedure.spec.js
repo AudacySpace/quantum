@@ -288,7 +288,7 @@ describe('Test Suite for Procedure Controller', function () {
 
     it('should define sort type and sort reverse variables', function() {
         expect(scope.sortType).toBeDefined();
-        expect(scope.sortType).toEqual('procedurenum');
+        expect(scope.sortType).toEqual('id');
         expect(scope.sortReverse).toBeDefined();
         expect(scope.sortReverse).toEqual(false);
     });

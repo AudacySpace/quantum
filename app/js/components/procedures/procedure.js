@@ -1,5 +1,5 @@
 quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal,$location) {
-	$scope.sortType     = 'procedurenum'; // set the default sort type
+	$scope.sortType     = 'id'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
     $scope.role = userService.userRole;

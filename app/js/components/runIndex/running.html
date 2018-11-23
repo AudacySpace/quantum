@@ -5,27 +5,27 @@
             <thead>
                 <tr>
                     <th>
-                        <a href="#" ng-click="sortType = 'procedurerevision'; sortReverse = !sortReverse">Instance
-                            <span ng-show="sortType == 'procedurerevision' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'procedurerevision' && sortReverse" class="fa fa-caret-up"></span>
+                        <a href="#" ng-click="sortType = 'revision'; sortReverse = !sortReverse">Instance
+                            <span ng-show="sortType == 'revision' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'revision' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
                     <th>
-                        <a href="#" ng-click="sortType = 'procedureversion'; sortReverse = !sortReverse">Version
-                            <span ng-show="sortType == 'procedureversion' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'procedureversion' && sortReverse" class="fa fa-caret-up"></span>
+                        <a href="#" ng-click="sortType = 'version'; sortReverse = !sortReverse">Version
+                            <span ng-show="sortType == 'version' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'version' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
                     <th>
-                        <a href="#" ng-click="sortType = 'procedureopenedby'; sortReverse = !sortReverse">Opened By
-                            <span ng-show="sortType == 'procedureopenedby' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'procedureopenedby' && sortReverse" class="fa fa-caret-up"></span>
+                        <a href="#" ng-click="sortType = 'openedBy'; sortReverse = !sortReverse">Opened By
+                            <span ng-show="sortType == 'openedBy' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'openedBy' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
                     <th>
-                        <a href="#" ng-click="sortType = 'procedurestarted'; sortReverse = !sortReverse">Started
-                            <span ng-show="sortType == 'procedurestarted' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'procedurestarted' && sortReverse" class="fa fa-caret-up"></span>
+                        <a href="#" ng-click="sortType = 'startedAt'; sortReverse = !sortReverse">Started
+                            <span ng-show="sortType == 'startedAt' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'startedAt' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </th>
                     <th class="centerCols">
@@ -38,7 +38,7 @@
     <div class="tbl-index-content">
         <table cellpadding="0" cellspacing="0" border="0" class="procedureTable table-hover">
             <tbody class="details" ng-show="livelist.length > 0 && loadstatus === false" style="background: #fcfefc">
-                <tr dir-paginate="procedure in livelist | orderBy:'-revision' | orderBy:sortType:sortReverse | itemsPerPage:10">
+                <tr dir-paginate="procedure in livelist | orderBy:sortType:sortReverse | itemsPerPage:15">
                     <td>{{ procedure.revision }}</td>
                     <td>{{ procedure.version }}</td>
                     <td>{{ procedure.openedBy }}</td>
