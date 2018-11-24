@@ -116,10 +116,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     comments:""
                 });
             }
-
-            //Steps to create a procedure instance
-            var debug_Steps = procedureService.createProcedureInstance($scope.steps);
-            //End of steps to create a procedure instance 
             
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign); 
