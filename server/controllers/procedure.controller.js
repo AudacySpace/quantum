@@ -464,6 +464,60 @@ module.exports = {
             }
         });
 
+    },
+    setParentsInfo: function(req,res){
+        var info = req.body.info;
+        var parentsArray = req.body.parentsArray;
+        var procid = req.body.id;
+        var usernamerole = req.body.usernamerole;
+        var procrevision = req.body.revision;
+        var lastuse = req.body.lastuse; //time when the step was completed
+        var inputStepValues = req.body.inputStepValues;
+
+        ProcedureModel.findOne({ 'procedureID' : procid }, function(err, procs) {
+            if(err){
+                console.log(err);
+            }
+
+            if(procs){
+                var instance = [];
+                var instanceid;
+                //get procedure instance with the revision num
+                for(var i=0;i<procs.instances.length;i++){
+                    if(procs.instances[i].revision === procrevision){
+                        instance = procs.instances[i].Steps;
+                        instanceid = i;
+                        break;
+                    }
+                }
+
+                //Set info for the step of that revision
+                for(var a=0;a<parentsArray.length;a++){
+                    instance[parentsArray[a].index].info = info;
+                    if(parentsArray[a].parent.contenttype === 'Input'){
+                        instance[parentsArray[a].index].recordedValue = inputStepValues[parentsArray[a].index].ivalue; 
+                    }
+                }
+
+
+                procs.instances[instanceid].Steps = instance;
+                procs.lastuse = lastuse;
+                procs.markModified('procedure');
+                procs.markModified('instances');
+
+                procs.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                        res.send(result);
+                    }
+                    
+                });
+
+            }
+        });
+
     }
 };
 
