@@ -40,8 +40,8 @@
         <tbody class="details">
             <tr ng-repeat="step in steps" ng-show="step.openstatus" ng-style="step.rowstyle.rowcolor">
                 <td>
-                    <a href="#" ng-click="showPList($index,step.index,step.headertype)">
-                    <span class="{{step.class}}"></span></a>
+                    <a href="#" ng-click="showPList($index,step.index,step.headertype,step.Type)">
+                    <span class="{{step.class}}" ng-style="step.sectionbtn.styles"></span></a>
                 </td>
                 <td>{{ step.Step }}</td>
                 <td>{{ step.Role }}</td>

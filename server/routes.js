@@ -118,6 +118,9 @@ module.exports = function(app,passport) {
     //update procedure name
     app.post('/updateProcedureName',procs.updateProcedureName);
 
+    //update parents info
+    app.post('/setParentsInfo',procs.setParentsInfo);
+
 };
 
 // route middleware to make sure a user is logged in
