@@ -22,6 +22,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     }
     var users;
     viewProcedure();
+    $scope.running = true;
 
     $scope.openRightNav = function(){
         if($window.innerWidth < 800){
@@ -143,7 +144,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 $scope.steps[b].Type = newVersion[b].Type;
                                 $scope.steps[b].Content = newVersion[b].Content;
                                 $scope.steps[b].Role = newVersion[b].Role;
-                                $scope.steps[b].Reference = newVersion[b].Reference;
+                                if(newVersion[b].hasOwnProperty("Reference") && newVersion[b].Reference.length > 0){
+                                   $scope.steps[b].Reference = newVersion[b].Reference; 
+                                }
                                 $scope.steps[b].Info = $scope.steps[b].info;
 
                                 $scope.inputStepValues.push({

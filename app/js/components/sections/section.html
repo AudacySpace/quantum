@@ -79,11 +79,11 @@
                 </td>
                 <td>{{ step.Info }}</td>
                 <td class="commentsCol" ng-show="step.headertype === 'listitem'">
-                    <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="15"  ng-if="step.chkval === false && step.status === false" ng-click="whenTypingComments($index,comments)" onaftersave="saveComments(tempValues[$index].comments,$index)">
+                    <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="15" ng-if="running === true" ng-click="whenTypingComments($index,comments)" onaftersave="saveComments(tempValues[$index].comments,$index)">
                         <div ng-if="tempValues[$index].comments.length > 0 || step.comments.length > 0" style="border:1px solid #F8F8F8;background: #fff;color:#000000de;padding:4px;font-style: normal">{{ tempValues[$index].comments || step.comments }}</div>
                         <div ng-if="!tempValues[$index].comments && !step.comments" style="color:#ccc;border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">{{ 'Enter comments here' }}</div>
                     </a>
-                    <div ng-if="step.chkval === true || step.status === true" e-rows="3" e-cols="15" style="border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">
+                    <div ng-if="running === false" e-rows="3" e-cols="15" style="border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">
                         <div ng-if="step.comments.length > 0" style="color:#000000de">{{ step.comments }}</div>
                         <div ng-if="!step.comments || step.comments.length === 0" style="color:#ccc;background: #fff;  font-style: normal;">{{ 'Enter comments here' }}</div>
                     </div>
