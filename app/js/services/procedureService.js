@@ -124,11 +124,17 @@ quantum
         if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
                     psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right";
                     psteps[j].header = true; 
                     psteps[j].headertype = "mainheader";
                     psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].subheadervalue = joinOp;
                     psteps[j].openstatus = true;
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
@@ -140,10 +146,16 @@ quantum
                     psteps[j].checkbox = false;
 
                 }else if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") !== psteps[j].Step.lastIndexOf(".")){
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
                     psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right";
                     psteps[j].header = true; 
                     psteps[j].headertype = "subheader";
+                    psteps[j].subheadervalue = joinOp;
                     psteps[j].headervalue = psteps[j].Step.split(".")[0];
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
@@ -157,11 +169,17 @@ quantum
                     psteps[j].chkval = false;
                     psteps[j].checkbox = false;
                 }else {
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
                     psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right"; 
                     psteps[j].header = false;
                     psteps[j].headertype = "listitem";
                     psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].subheadervalue = joinOp;
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
@@ -720,7 +738,6 @@ quantum
             steps[id].class = "fa fa-caret-down";
             for(var i=id+1;i<steps.length;i++){
                 if(steps[i].parent === steps[id].Step){
-                    //steps[i].class="fa fa-caret-right";
                     steps[i].openstatus = true;
                     listSteps.push(steps[i]);
                 }
@@ -729,16 +746,36 @@ quantum
             steps[id].class = "fa fa-caret-right";
             for(var j=id+1;j<steps.length;j++){
                 if(steps[j].parent === steps[id].Step){
-                    //steps[i].class="fa fa-caret-right";
+                    if(steps[j].class="fa fa-caret-down"){
+                        steps[j].class="fa fa-caret-right";
+                    }
                     steps[j].openstatus = false;
                     listSteps.push(steps[j]);
                 }
             }
-            
-            for(var a=0;a<listSteps.length;a++){
-                for(var k=0;k<steps.length;k++){
-                    if(steps[k].parent === listSteps[a].Step){
-                        steps[k].openstatus = false;
+
+            // for(var a=0;a<listSteps.length;a++){
+            //     for(var k=0;k<steps.length;k++){
+            //         if(steps[k].parent === listSteps[a].Step){
+            //             steps[k].openstatus = false;
+            //         }
+            //     }
+            // }
+
+            for(var a=id+1;a<steps.length;a++){
+                if(steps[id].headertype === "mainheader"){
+                    if(steps[a].headervalue === steps[id].headervalue){
+                        steps[a].openstatus = false;
+                        if(steps[a].class="fa fa-caret-down"){
+                            steps[a].class="fa fa-caret-right";
+                        }
+                    }
+                }else if(steps[id].headertype === "subheader"){
+                    if(steps[a].headervalue === steps[id].headervalue && steps[a].subheadervalue.includes(steps[id].subheadervalue)){
+                        steps[a].openstatus = false;
+                        if(steps[a].class="fa fa-caret-down"){
+                            steps[a].class="fa fa-caret-right";
+                        }
                     }
                 }
             }
@@ -768,7 +805,6 @@ quantum
         var allCompParents = [];
         //get all parents
         for(var a=parentIndex-1;a>=0;a--){
-            //if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].index !== steps[parentIndex].index){
             if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].Step.length < steps[parentIndex].Step.length){
                 allParents.push({'parent':steps[a],'children':[],'index':a});
             }
@@ -808,7 +844,6 @@ quantum
         var allCompParents = [];
         //get all parents
         for(var a=parentIndex-1;a>=0;a--){
-            //if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].index !== steps[parentIndex].index){
             if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].Step.length < steps[parentIndex].Step.length){
                 steps[a].Info = "";
                 allParents.push({'parent':steps[a],'children':[],'index':a});
