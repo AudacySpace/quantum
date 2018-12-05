@@ -7,6 +7,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
             'display':'none',
         }
     }
+    $scope.running = false;
 
     viewProcedure();
 
@@ -40,6 +41,10 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                                 $scope.steps[b].Content = newVersion[b].Content;
                                 $scope.steps[b].Role = newVersion[b].Role;
                                 $scope.steps[b].Info = $scope.steps[b].info;
+                                if(newVersion[b].hasOwnProperty("Reference") && newVersion[b].Reference.length > 0){
+                                    $scope.steps[b].Reference = newVersion[b].Reference;
+                                }
+                                
                             }
                         }
                     }

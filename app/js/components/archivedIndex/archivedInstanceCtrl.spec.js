@@ -233,7 +233,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: 'Warning', 
                     Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
                     Role: 'MD', 
-                    Info: '034.11:26:36 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:36 UTC Taruni Gattu(VIP)',
+                    Reference: 'http://somewhere on the net'
                 }, 
                 {   
                     step: '1.2', 
