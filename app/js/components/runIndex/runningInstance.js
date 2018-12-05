@@ -517,7 +517,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                             }
                         }
                     }else {
-                        procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                        procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,completetime).then(function(res){
                             if(res.status === 200){
                                 for(var a=0;a<$scope.steps.length;a++){
                                     $scope.steps[a].status = true;
