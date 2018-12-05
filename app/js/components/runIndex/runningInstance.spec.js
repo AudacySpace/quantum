@@ -228,8 +228,7 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Heading', 
             Content: 'Pre-Action Safety Information', 
             Role: 'MD', 
-            Info: '',
-            Reference: undefined
+            Info: ''
         }, 
         {   
             step: '1.1', 
@@ -248,8 +247,7 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Make required safety announcement on VL-AZERO', 
             Role: 'MD', 
-            Info: '',
-            Reference: undefined
+            Info: ''
         }, 
         {   
             step: '2.0', 
@@ -258,8 +256,7 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: undefined, 
             Content: 'Close Procedure', 
             Role: 'MD', 
-            Info: '034.11:26:49 UTC Taruni Gattu(VIP)',
-            Reference: undefined
+            Info: '034.11:26:49 UTC Taruni Gattu(VIP)'
         }, 
         {
             step: '2.1.0', 
@@ -268,8 +265,7 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Update the shift log with procedure close status / notes', 
             Role: 'MD', 
-            Info: '034.11:26:50 UTC Taruni Gattu(VIP)',
-            Reference: undefined
+            Info: '034.11:26:50 UTC Taruni Gattu(VIP)'
         }, 
         {   
             step: '2.1.1', 
@@ -278,8 +274,7 @@ describe('Test Suite for Run Instance Controller', function () {
             Type: 'Action', 
             Content: 'Close the procedure in Quantum (complete this step)', 
             Role: 'MD', 
-            Info: '',
-            Reference: undefined
+            Info: ''
         }
     ];
 

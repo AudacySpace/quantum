@@ -22,6 +22,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.procedure = procedureService.getProcedureName();
     var mission = 'Quantum';
 	viewProcedure();
+    $scope.running = true;
 
     $scope.openRightNav = function(){
         if($window.innerWidth < 800){
