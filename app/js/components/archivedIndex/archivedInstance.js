@@ -51,13 +51,17 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                 }
 
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
+                $scope.steps = procedureService.getAllParents($scope.steps);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
         });
     }
 
-    $scope.showPList = function(id,index,headertype){
-        $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
+    $scope.showPList = function(id,index,headertype,type){
+       // $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
+        if(type === 'Heading'){
+            $scope.steps = procedureService.showstepList(id,$scope.steps);
+        }
     }
 
     $scope.changeColor = function(status,pid,ptitle){

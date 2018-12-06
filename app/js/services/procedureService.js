@@ -682,7 +682,7 @@ quantum
                 steps[a].parentIndex = isParent.index;
             }else if(isParent.status === false){
                 steps[a].parent = '';
-                 steps[a].parentIndex = '';
+                steps[a].parentIndex = '';
             }
         }
     }
