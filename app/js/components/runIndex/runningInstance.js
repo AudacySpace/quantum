@@ -512,6 +512,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 lastStepexecuteParent($scope.steps[stepParentIndex],stepParentIndex,index,completetime);
                             }
                         }else{
+<<<<<<< HEAD
                             procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision,completetime).then(function(res){
                                 if(res.status === 200){
                                     for(var a=0;a<$scope.steps.length;a++){
@@ -532,6 +533,18 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                 for(var a=0;a<$scope.steps.length;a++){
                                     $scope.steps[a].status = true;
                                 }
+=======
+                            if($scope.liveInstanceinterval === null) {
+                                $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                            }
+                        }
+                    }else {
+                        procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
+                            if(res.status === 200){
+                                for(var a=0;a<$scope.steps.length;a++){
+                                    $scope.steps[a].status = true;
+                                }
+>>>>>>> f7fbaca6e6890aadf8e6af69d9e5ca6bcefca925
                                 procedureService.setProcedureName($scope.params.procID,res.data.title,"AS-Run Archive");
                                 procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
                             }
