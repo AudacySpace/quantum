@@ -685,6 +685,7 @@ quantum
                 steps[a].parentIndex = '';
             }
         }
+        return steps;
     }
 
     function ifParentExists(pTag,steps){
