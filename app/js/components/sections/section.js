@@ -62,7 +62,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                     if($scope.steps[a].Info !== ""){
                         $scope.steps[a].chkval = true;
-                        //$scope.steps = procedureService.openNextSteps($scope.steps,a);
                     }
                 }
 
@@ -118,17 +117,15 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
             }
             
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
-            $scope.steps = procedureService.getAllParents($scope.steps);
-            //$scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign); 
+            $scope.steps = procedureService.getAllParents($scope.steps); 
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
     	});
 	}
 
     $scope.showPList = function(id,index,headertype,type){
-        if(type === 'Heading'){
+        if(type.toUpperCase() === procedureService.headindTypeName.toUpperCase()){
             $scope.steps = procedureService.showstepList(id,$scope.steps);
         }
-        //$scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
     }
 
     $scope.setInfo = function(index,stepstatus){
@@ -284,9 +281,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                             }
                         }
                     });
-
-                    //end of updating section header info
-                   // $scope.steps = procedureService.openNextSteps($scope.steps,index);
                 }
             
             }else {
@@ -524,17 +518,54 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     function executeParents(parentsArray){
         for(i=0;i<parentsArray.length;i++){
-            $scope.steps[parentsArray[i].index].rowstyle = {
-                rowcolor : {
-                    'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                    'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                    'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                    'background-size': '200% 100%',
-                    'background-position':'right bottom',
-                    'margin-left':'10px',
-                    'transition':'all 0.3s linear'
+            if($scope.steps[parentsArray[i].index].headertype === 'mainheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background':'linear-gradient(to left, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
+                }
+            }else if($scope.steps[parentsArray[i].index].headertype === 'subheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background':'linear-gradient(to left, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
+                }
+            }else if($scope.steps[parentsArray[i].index].headertype === 'listitem'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
                 }
             }
+            // $scope.steps[parentsArray[i].index].rowstyle = {
+            //     rowcolor : {
+            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background-size': '200% 100%',
+            //         'background-position':'right bottom',
+            //         'margin-left':'10px',
+            //         'transition':'all 0.3s linear'
+            //     }
+            // }
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -544,7 +575,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         //parentsarray,procedureid,usernamerole,revisionNum,infotime,infostepvalues
         procedureService.setParentsInfo(parentsArray,$scope.params.procID,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues,$scope.clock.utc).then(function(response){
             if(response){
-                // console.log("Parents status saved!");
+                if($scope.liveInstanceinterval === null) {
+                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                }
             }
         });
     }
@@ -552,9 +585,22 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     function removeParentsStatus(parentsArray){
         for(i=0;i<parentsArray.length;i++){
             $scope.steps[parentsArray[i].index].Info = "";
-            $scope.steps[parentsArray[i].index].rowstyle = {
-                rowcolor : {backgroundColor:'#e9f6fb'}
+            if($scope.steps[parentsArray[i].index].headertype === 'mainheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {backgroundColor:'#bee4f3'}
+                }
+            }else if($scope.steps[parentsArray[i].index].headertype === 'subheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {backgroundColor:'#d4edf7'}
+                }
+            }else if($scope.steps[parentsArray[i].index].headertype === 'listitem'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {backgroundColor:'#e9f6fb'}
+                }
             }
+            // $scope.steps[parentsArray[i].index].rowstyle = {
+            //     rowcolor : {backgroundColor:'#e9f6fb'}
+            // }
             $scope.inputStepValues[parentsArray[i].index].ivalue = "";
             if($scope.steps[parentsArray[i].index].recordedValue) {
                 $scope.steps[parentsArray[i].index].recordedValue = "";
@@ -566,72 +612,40 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         //parentsarray,procedureid,usernamerole,revisionNum,infotime,infostepvalues
         procedureService.setParentsInfo(parentsArray,$scope.params.procID,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues,info).then(function(response){
             if(response){
-                // console.log("Parents status removed!");
+                if($scope.liveInstanceinterval === null) {
+                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                }
             }
         });
     }
 
     function executeParent(parent,index){
-        $scope.steps[index].rowstyle = {
-            rowcolor : {
-                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background-size': '200% 100%',
-                'background-position':'right bottom',
-                'margin-left':'10px',
-                'transition':'all 0.3s linear'
-            }
-        }
-        $scope.steps[index].recordedValue = "";
-        $scope.steps[index].buttonStatus = "";
-        $scope.steps[index].Info = $scope.clock.utc;
-        infotime = $scope.clock.year+" - "+$scope.clock.utc;
-        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){   
-            if(response){
-                // console.log("Parent status saved!");
-                //getItsParents
-                //check if all its siblings are complete 
-                //get parents with siblings complete
-                //add info to these parents
-
-            }
-        });
-
-    }
-
-    function noexecuteParent(parent,index){
-        $scope.steps[index].rowstyle = {
-            rowcolor : {
-                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background-size': '200% 100%',
-                'background-position':'right bottom',
-                'margin-left':'10px',
-                'transition':'all 0.3s linear'
-            }
-        }
-        $scope.steps[index].recordedValue = "";
-        $scope.steps[index].buttonStatus = "";
-        $scope.steps[index].Info = "";
-        infotime = $scope.clock.year+" - "+$scope.clock.utc;
-        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){   
-            if(response){
-                // console.log("Parent status saved!");
-                //getItsParents
-                //check if all its siblings are complete 
-                //get parents with siblings complete
-                //add info to these parents
-
-            }
-        });
-
-    }
-
-    function lastStepexecuteParents(parentsArray,index,completetime){
-        for(i=0;i<parentsArray.length;i++){
-            $scope.steps[parentsArray[i].index].rowstyle = {
+        if($scope.steps[index].headertype === 'mainheader'){
+            $scope.steps[index].rowstyle = {
+                rowcolor : {
+                    'background':'-moz-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background':'linear-gradient(to left, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
+            };
+        }else if($scope.steps[index].headertype === 'subheader'){
+            $scope.steps[index].rowstyle = {
+                rowcolor : {
+                    'background':'-moz-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background':'linear-gradient(to left, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
+            };
+        }else if($scope.steps[index].headertype === 'listitem'){
+            $scope.steps[index].rowstyle = {
                 rowcolor : {
                     'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
                     'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
@@ -641,7 +655,87 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     'margin-left':'10px',
                     'transition':'all 0.3s linear'
                 }
+            };
+        }
+        // $scope.steps[index].rowstyle = {
+        //     rowcolor : {
+        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background-size': '200% 100%',
+        //         'background-position':'right bottom',
+        //         'margin-left':'10px',
+        //         'transition':'all 0.3s linear'
+        //     }
+        // };
+        $scope.steps[index].recordedValue = "";
+        $scope.steps[index].buttonStatus = "";
+        $scope.steps[index].Info = $scope.clock.utc;
+        infotime = $scope.clock.year+" - "+$scope.clock.utc;
+        procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){   
+            if(response){
+                if($scope.liveInstanceinterval === null) {
+                    $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
+                }
+
             }
+        });
+
+    }
+
+    function lastStepexecuteParents(parentsArray,index,completetime){
+        for(i=0;i<parentsArray.length;i++){
+            if($scope.steps[parentsArray[i].index].headertype === 'mainheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background':'linear-gradient(to left, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
+                };
+
+            }else if($scope.steps[parentsArray[i].index].headertype === 'subheader'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background':'linear-gradient(to left, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
+                };
+
+            }else if($scope.steps[parentsArray[i].index].headertype === 'listitem'){
+                $scope.steps[parentsArray[i].index].rowstyle = {
+                    rowcolor : {
+                        'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                        'background-size': '200% 100%',
+                        'background-position':'right bottom',
+                        'margin-left':'10px',
+                        'transition':'all 0.3s linear'
+                    }
+                };
+
+            }
+            // $scope.steps[parentsArray[i].index].rowstyle = {
+            //     rowcolor : {
+            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+            //         'background-size': '200% 100%',
+            //         'background-position':'right bottom',
+            //         'margin-left':'10px',
+            //         'transition':'all 0.3s linear'
+            //     }
+            // }
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -651,7 +745,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         //parentsarray,procedureid,usernamerole,revisionNum,infotime,infostepvalues
         procedureService.setParentsInfo(parentsArray,$scope.params.procID,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues,$scope.clock.utc).then(function(response){
             if(response){
-                // console.log("Parents status saved!");
                 procedureService.setInstanceCompleted($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
                     if(res.status === 200){
                         for(var a=0;a<$scope.steps.length;a++){
@@ -669,29 +762,60 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     }
 
     function lastStepexecuteParent(parent,index,stepindex,completetime){
-        $scope.steps[index].rowstyle = {
-            rowcolor : {
-                'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-                'background-size': '200% 100%',
-                'background-position':'right bottom',
-                'margin-left':'10px',
-                'transition':'all 0.3s linear'
+        if($scope.steps[index].headertype === 'mainheader'){
+            $scope.steps[index].rowstyle = {
+                rowcolor : {
+                    'background':'-moz-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background':'linear-gradient(to left, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
             }
+        }else if($scope.steps[index].headertype === 'subheader'){
+            $scope.steps[index].rowstyle = {
+                rowcolor : {
+                    'background':'-moz-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background':'linear-gradient(to left, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
+            }
+        }else if($scope.steps[index].headertype === 'listitem'){
+            $scope.steps[index].rowstyle = {
+                rowcolor : {
+                    'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+                    'background-size': '200% 100%',
+                    'background-position':'right bottom',
+                    'margin-left':'10px',
+                    'transition':'all 0.3s linear'
+                }
+            };
         }
+        // $scope.steps[index].rowstyle = {
+        //     rowcolor : {
+        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
+        //         'background-size': '200% 100%',
+        //         'background-position':'right bottom',
+        //         'margin-left':'10px',
+        //         'transition':'all 0.3s linear'
+        //     }
+        // };
         $scope.steps[index].recordedValue = "";
         $scope.steps[index].buttonStatus = "";
         $scope.steps[index].Info = $scope.clock.utc;
         infotime = $scope.clock.year+" - "+$scope.clock.utc;
         procedureService.setInfo($scope.steps[index].Info,$scope.params.procID,index,$scope.usernamerole,$scope.currentRevision.value,infotime,$scope.inputStepValues[index].ivalue,$scope.steps[index].contenttype).then(function(response){   
             if(response){
-                // console.log("Parent status saved!");
-                //getItsParents
-                //check if all its siblings are complete 
-                //get parents with siblings complete
-                //add info to these parents
-
                 procedureService.setInstanceCompleted($scope.steps[stepindex].Info,$scope.params.procID,stepindex,$scope.usernamerole,$scope.currentRevision.value,completetime).then(function(res){
                     if(res.status === 200){
                         for(var a=0;a<$scope.steps.length;a++){
@@ -707,7 +831,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
             }
         });
-
     }
 
 });

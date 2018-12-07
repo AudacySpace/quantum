@@ -39,17 +39,17 @@
         </thead>
         <tbody class="details">
             <tr ng-repeat="step in steps" ng-show="step.openstatus" ng-style="step.rowstyle.rowcolor">
-                <td>
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff">
                     <a href="#" ng-click="showPList($index,step.index,step.headertype,step.Type)">
                     <span class="{{step.class}}" ng-style="step.sectionbtn.styles"></span></a>
                 </td>
-                <td>{{ step.Step }}</td>
-                <td>{{ step.Role }}</td>
-                <td><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
-                <td ng-if="step.contenttype === 'String'">{{ step.Content }}
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff">{{ step.Step }}</td>
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff">{{ step.Role }}</td>
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff"><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-if="step.contenttype === 'String'">{{ step.Content }}
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a><p>
                 </td>
-                <td ng-if="step.contenttype === 'Array'">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-if="step.contenttype === 'Array'">
                     <ul class="contentList">
                         <li ng-repeat="item in step.Content track by $index">
                             {{item}}
@@ -57,7 +57,7 @@
                     </ul>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
                 </td>
-                <td ng-if="step.contenttype === 'Input'" >
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-if="step.contenttype === 'Input'" >
                     <p>{{step.Content}}</p>
                     <label>TLM Recorded Value:</label><strong>{{step.recordedValue}}</strong>
                     <br/>
@@ -67,18 +67,18 @@
                     <span id="{{ 'objectid-' + $index }}" style="display:block;" class="infoNotification"></span>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
                 </td>
-                <td ng-if="step.contenttype === 'AlertInfo'">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-if="step.contenttype === 'AlertInfo'">
                     <p>{{step.Content}}</p>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
                 </td>
-                <td ng-if="step.contenttype === 'DecisionInfo'">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-if="step.contenttype === 'DecisionInfo'">
                     <p>{{step.Content}}</p>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
                 </td>
-                <td><input ng-show="step.checkbox" type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff"><input ng-show="step.checkbox" type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval">
                 </td>
-                <td>{{ step.Info }}</td>
-                <td class="commentsCol" ng-show="step.headertype === 'listitem'">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff">{{ step.Info }}</td>
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" class="commentsCol" ng-show="step.headertype === 'listitem'">
                     <a href="#" editable-textarea="tempValues[$index].comments" e-rows="3" e-cols="15" ng-if="running === true" ng-click="whenTypingComments($index,comments)" onaftersave="saveComments(tempValues[$index].comments,$index)">
                         <div ng-if="tempValues[$index].comments.length > 0 || step.comments.length > 0" style="border:1px solid #F8F8F8;background: #fff;color:#000000de;padding:4px;font-style: normal">{{ tempValues[$index].comments || step.comments }}</div>
                         <div ng-if="!tempValues[$index].comments && !step.comments" style="color:#ccc;border:1px solid #F8F8F8;background: #fff;padding:4px;font-style: normal;">{{ 'Enter comments here' }}</div>
@@ -88,7 +88,7 @@
                         <div ng-if="!step.comments || step.comments.length === 0" style="color:#ccc;background: #fff;  font-style: normal;">{{ 'Enter comments here' }}</div>
                     </div>
                 </td>
-                <td ng-show="step.headertype !== 'listitem'">
+                <td style="border-top:1px solid #fff;border-bottom:1px solid #fff" ng-show="step.headertype !== 'listitem'">
                 </td>
             </tr>
         </tbody>

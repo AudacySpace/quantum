@@ -22,6 +22,8 @@ quantum
         value:""
     }
 
+    var headindTypeName = 'Heading';
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -121,6 +123,7 @@ quantum
     }
 
     function getProcedureSection(psteps,callsign){
+        var types = ["Heading","Warning","Caution","Record","Verify","Action","Decision"];
         if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
@@ -137,7 +140,7 @@ quantum
                     psteps[j].subheadervalue = joinOp;
                     psteps[j].openstatus = true;
                     psteps[j].rowstyle = {
-                        rowcolor: {backgroundColor:'#e9f6fb'}
+                        rowcolor: {backgroundColor:'#bee4f3'}
                     };
                     psteps[j].sectionbtn = {
                         styles:{color:''}
@@ -160,7 +163,7 @@ quantum
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {
-                            backgroundColor:'#e9f6fb'
+                            backgroundColor:'#d4edf7'
                         }
                     };
                     psteps[j].sectionbtn = {
@@ -194,7 +197,7 @@ quantum
 
             //set type icon 
             for(var k=0;k<psteps.length;k++){
-                if(psteps[k].Type === "Heading"){
+                if(psteps[k].Type.toUpperCase() === types[0].toUpperCase()){
                     psteps[k].typeicon = "";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
@@ -202,7 +205,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Warning"){
+                }else if(psteps[k].Type.toUpperCase() === types[1].toUpperCase()){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ff0000"};
                     psteps[k].contenttype = 'AlertInfo';
@@ -210,7 +213,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Caution"){
+                }else if(psteps[k].Type.toUpperCase() === types[2].toUpperCase()){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ffcc00"};
                     psteps[k].contenttype = 'AlertInfo';
@@ -218,7 +221,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Record"){
+                }else if(psteps[k].Type.toUpperCase() === types[3].toUpperCase()){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'Input';
@@ -229,7 +232,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("recordedValue")){
                         psteps[k].recordedValue = "";
                     }
-                }else if(psteps[k].Type === "Verify"){
+                }else if(psteps[k].Type.toUpperCase() === types[4].toUpperCase()){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
@@ -237,7 +240,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Action"){
+                }else if(psteps[k].Type.toUpperCase() === types[5].toUpperCase()){
                     psteps[k].typeicon = "fa fa-cog";
                     psteps[k].typecolor = {color:""};
                     psteps[k].buttonStatus = "";
@@ -257,7 +260,7 @@ quantum
                         //General action steps
                         psteps[k].contenttype = 'String';
                     }
-                }else if(psteps[k].Type === "Decision"){
+                }else if(psteps[k].Type.toUpperCase() === types[6].toUpperCase()){
                     psteps[k].typeicon = "fa fa-dot-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'DecisionInfo';
@@ -270,6 +273,7 @@ quantum
 
             //check for role and disable the steps if not permitted
             for(var a=0;a<psteps.length;a++){
+                psteps[a].Role = psteps[a].Role.toUpperCase();
                 if(psteps[a].Role.includes(callsign)){
                     psteps[a].status = false;
                 }else {
@@ -424,16 +428,49 @@ quantum
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
-                    steps[d].rowstyle = {
-                        rowcolor : {
-                            backgroundColor:'#c6ecc6'
-                        }
-                    };
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#9fdf9f'
+                            }
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#b3e6b3'
+                            }
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#c6ecc6'
+                            }
+                        };
+                    }
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {
+                    //         backgroundColor:'#c6ecc6'
+                    //     }
+                    // };
                     steps[d].chkval = true;
                 }else {
-                    steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#e9f6fb'}
-                    };
+
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#bee4f3'}
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#d4edf7'}
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#e9f6fb'}
+                        };  
+                    }
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {backgroundColor:'#e9f6fb'}
+                    // };
                     steps[d].chkval = false;
                 }
             }
@@ -493,9 +530,22 @@ quantum
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
-                    steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
-                    };
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#9fdf9f'}
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#b3e6b3'}
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#c6ecc6'}
+                        };
+                    }
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {backgroundColor:'#c6ecc6'}
+                    // };
                     steps[d].chkval = true;
                     steps[d].status = true;
                 }else {
@@ -530,6 +580,7 @@ quantum
             }
 
             for(var a=0;a<psteps.length;a++){
+                psteps[a].Role = psteps[a].Role.toUpperCase();
                 if(psteps[a].Role.includes(callsign)){
                     psteps[a].status = false;
                 }else {
@@ -609,6 +660,7 @@ quantum
         var len = psteps.length;
         //check for role and disable the steps if not permitted
         for(var a=0;a<len;a++){
+            psteps[a].Role = psteps[a].Role.toUpperCase();
             if(psteps[a].Role.includes(callsign)){
                 psteps[a].status = false;
             }else {
@@ -692,7 +744,7 @@ quantum
         var parentStatus = {'status':false,'index':''};
         if(pTag.step && pTag.step.length > 0){
             for(var i=0;i<steps.length;i++){
-                if(steps[i].Step === pTag.step && steps[i].Type === 'Heading'){
+                if(steps[i].Step === pTag.step && steps[i].Type.toUpperCase() === headindTypeName.toUpperCase()){
                     parentStatus.status = true;
                     parentStatus.index = i;
                     break;
@@ -710,13 +762,13 @@ quantum
         var pTag = {
             step:''
         };
-        if(step.Type !== 'Heading'){
+        if(step.Type.toUpperCase() !== headindTypeName.toUpperCase()){
             var splitOp = [];
             splitOp = step.Step.split('.');
             var joinOpPre = splitOp.splice(0,splitOp.length-1)
             var joinOp = joinOpPre.join('.');
             pTag.step = joinOp+'.0';
-        }else if(step.Type === 'Heading'){
+        }else if(step.Type.toUpperCase() === headindTypeName.toUpperCase()){
             if(step.Step.length > 3){
                 var splitOp = [];
                 splitOp = step.Step.split('.');
@@ -942,6 +994,7 @@ quantum
         getAllParentList : getAllParentList,
         setParentsInfo : setParentsInfo,
         getAllParentTree : getAllParentTree,
-        nocheckallParents : nocheckallParents
+        nocheckallParents : nocheckallParents,
+        headindTypeName : headindTypeName
     }
 }]);
