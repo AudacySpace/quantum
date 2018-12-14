@@ -48,7 +48,8 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     }
 
     $scope.showPList = function(id,index,headertype,type){
-        if(type.toUpperCase() === procedureService.headindTypeName.toUpperCase()){
+        var headingTypeName = procedureService.getStepHeadingName();
+        if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
             $scope.steps = procedureService.showstepList(id,$scope.steps);
         }
     }

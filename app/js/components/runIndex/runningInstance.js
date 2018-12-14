@@ -153,7 +153,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     }
 
     $scope.showPList = function(id,index,headertype,type){
-        if(type.toUpperCase() === procedureService.headindTypeName.toUpperCase()){
+        var headingTypeName = procedureService.getStepHeadingName();
+        if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
             $scope.steps = procedureService.showstepList(id,$scope.steps);
         }
     }
@@ -727,7 +728,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                 };
 
-            }else if(scope.steps[parentsArray[i].index].headertype === 'subheader'){
+            }else if($scope.steps[parentsArray[i].index].headertype === 'subheader'){
                 $scope.steps[parentsArray[i].index].rowstyle = {
                     rowcolor : {
                         'background':'-moz-linear-gradient(right, transparent 50%, #d4edf7 50%), linear-gradient(#b3e6b3, #b3e6b3)',
@@ -740,7 +741,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                 };
 
-            }else if(scope.steps[parentsArray[i].index].headertype === 'listitem'){
+            }else if($scope.steps[parentsArray[i].index].headertype === 'listitem'){
                 $scope.steps[parentsArray[i].index].rowstyle = {
                     rowcolor : {
                         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',

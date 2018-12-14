@@ -22,7 +22,7 @@ quantum
         value:""
     }
 
-    var headindTypeName = 'Heading';
+    var headingType = {'name': 'Heading'};
 
     function getProcedureList() {
     	return $http({
@@ -454,7 +454,6 @@ quantum
                     // };
                     steps[d].chkval = true;
                 }else {
-
                     if(steps[d].headertype === 'mainheader'){
                         steps[d].rowstyle = {
                             rowcolor : {backgroundColor:'#bee4f3'}
@@ -744,7 +743,7 @@ quantum
         var parentStatus = {'status':false,'index':''};
         if(pTag.step && pTag.step.length > 0){
             for(var i=0;i<steps.length;i++){
-                if(steps[i].Step === pTag.step && steps[i].Type.toUpperCase() === headindTypeName.toUpperCase()){
+                if(steps[i].Step === pTag.step && steps[i].Type.toUpperCase() === headingType.name.toUpperCase()){
                     parentStatus.status = true;
                     parentStatus.index = i;
                     break;
@@ -762,13 +761,13 @@ quantum
         var pTag = {
             step:''
         };
-        if(step.Type.toUpperCase() !== headindTypeName.toUpperCase()){
+        if(step.Type.toUpperCase() !== headingType.name.toUpperCase()){
             var splitOp = [];
             splitOp = step.Step.split('.');
             var joinOpPre = splitOp.splice(0,splitOp.length-1)
             var joinOp = joinOpPre.join('.');
             pTag.step = joinOp+'.0';
-        }else if(step.Type.toUpperCase() === headindTypeName.toUpperCase()){
+        }else if(step.Type.toUpperCase() === headingType.name.toUpperCase()){
             if(step.Step.length > 3){
                 var splitOp = [];
                 splitOp = step.Step.split('.');
@@ -848,9 +847,7 @@ quantum
         }else {
             siblings = [];
         }
-
         return siblings;
-
     }
 
     function getAllParentList(parentIndex,steps){
@@ -954,6 +951,10 @@ quantum
         }); 
     }
 
+    function getStepHeadingName(){
+        return headingType;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -995,6 +996,6 @@ quantum
         setParentsInfo : setParentsInfo,
         getAllParentTree : getAllParentTree,
         nocheckallParents : nocheckallParents,
-        headindTypeName : headindTypeName
+        getStepHeadingName : getStepHeadingName
     }
 }]);

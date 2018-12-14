@@ -123,7 +123,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 	}
 
     $scope.showPList = function(id,index,headertype,type){
-        if(type.toUpperCase() === procedureService.headindTypeName.toUpperCase()){
+        var headingTypeName = procedureService.getStepHeadingName();
+        if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
             $scope.steps = procedureService.showstepList(id,$scope.steps);
         }
     }
@@ -555,17 +556,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     }
                 }
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {
-            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background-size': '200% 100%',
-            //         'background-position':'right bottom',
-            //         'margin-left':'10px',
-            //         'transition':'all 0.3s linear'
-            //     }
-            // }
+
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -598,9 +589,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     rowcolor : {backgroundColor:'#e9f6fb'}
                 }
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {backgroundColor:'#e9f6fb'}
-            // }
             $scope.inputStepValues[parentsArray[i].index].ivalue = "";
             if($scope.steps[parentsArray[i].index].recordedValue) {
                 $scope.steps[parentsArray[i].index].recordedValue = "";
@@ -657,17 +645,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }
             };
         }
-        // $scope.steps[index].rowstyle = {
-        //     rowcolor : {
-        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background-size': '200% 100%',
-        //         'background-position':'right bottom',
-        //         'margin-left':'10px',
-        //         'transition':'all 0.3s linear'
-        //     }
-        // };
         $scope.steps[index].recordedValue = "";
         $scope.steps[index].buttonStatus = "";
         $scope.steps[index].Info = $scope.clock.utc;
@@ -725,17 +702,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 };
 
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {
-            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background-size': '200% 100%',
-            //         'background-position':'right bottom',
-            //         'margin-left':'10px',
-            //         'transition':'all 0.3s linear'
-            //     }
-            // }
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -799,17 +765,6 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 }
             };
         }
-        // $scope.steps[index].rowstyle = {
-        //     rowcolor : {
-        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background-size': '200% 100%',
-        //         'background-position':'right bottom',
-        //         'margin-left':'10px',
-        //         'transition':'all 0.3s linear'
-        //     }
-        // };
         $scope.steps[index].recordedValue = "";
         $scope.steps[index].buttonStatus = "";
         $scope.steps[index].Info = $scope.clock.utc;
