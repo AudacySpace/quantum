@@ -1,4 +1,4 @@
-quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval,$window,dashboardService,$location,$uibModal,$mdSidenav) {
+quantum.controller('runningInstanceCtrl', function($scope,procedureService,$routeParams,userService,timeService,$interval,$window,dashboardService,$location,$uibModal,$mdSidenav,$rootScope) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
@@ -787,6 +787,15 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         var status;
 
         if(revNumOp.length === 2 || revNumOp.length === 5){
+            if(revNumOp.length === 2){
+                $rootScope.title = "Quantum";
+            }else if(revNumOp.length === 5){
+                if(revNumOp.includes("running")){
+                    $rootScope.title = "Live Index - "+$scope.procedure.tabname;
+                }else if(revNumOp.includes("archived")){
+                    $rootScope.title = "Archive Index - "+$scope.procedure.tabname;
+                }
+            }
             var procRev = procedureService.getCurrentViewRevision();
             currentRevision = procRev.value;
             status = false;
