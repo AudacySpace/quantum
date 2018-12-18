@@ -1,4 +1,4 @@
-quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService) {
+quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService,$rootScope) {
     $scope.params = $routeParams;
     $scope.sortType = 'startedAt'; // set the default sort type
     $scope.sortReverse = true;  // set the default sort order
@@ -6,6 +6,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
     $scope.loadcount = 0;
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
+    $rootScope.title = "Live Index - "+$scope.procedure.id+" | Quantum";
     showRunningList();
 
     function showRunningList(){
@@ -42,6 +43,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
         var status;
  
         if(revNumOp.length === 7 && revNumOp[3] === "runninginstance"){
+            $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum";
             currentRevision = parseInt(revNumOp[6]);
             status = true
             procedureService.setCurrentViewRevision(currentRevision);
@@ -52,6 +54,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
             },function(error){
             }); 
         }else {
+            $rootScope.title = "Quantum";
             dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
         }
     });
