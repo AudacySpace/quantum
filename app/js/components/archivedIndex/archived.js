@@ -1,4 +1,4 @@
-quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService) {
+quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService,$rootScope) {
     $scope.params = $routeParams;
     $scope.sortType     = 'completedAt'; // set the default sort type
     $scope.sortReverse  = true;  // set the default sort order
@@ -6,6 +6,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     $scope.loadcount = 0;
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
+    $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
     showArchivedList();
 
     function showArchivedList(){
@@ -47,6 +48,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
 
         // the url for archived instance
         if(revNumOp.length === 7 && revNumOp[3] === "archivedinstance"){
+            $rootScope.title ="Procedure "+$scope.procedure.id+" | Quantum";
             currentRevision = parseInt(revNumOp[6]); //get revision number from url
             status = true;
             procedureService.setCurrentViewRevision(currentRevision);
@@ -57,6 +59,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
             },function(error){
             });  
         }else {
+            $rootScope.title = "Quantum";
             dashboardService.changeHeaderWithLocation(loc,$scope.params.procID,$scope.procedure.name,'',$window.innerWidth);
         }
     });
