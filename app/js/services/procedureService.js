@@ -5,8 +5,7 @@ quantum
         id:"",
         name:"",
         status:"",
-        fullname : "",
-        tabname: ""
+        fullname : ""
     }
     var icons = {
         icon1style:"",
@@ -32,28 +31,27 @@ quantum
     }
 
     function setProcedureName(id,name,status){
-        var procedureFullName = name.split(" - ");
-        var procedureGrpname = procedureFullName[0];
-        var procedureTitle = procedureFullName[1];
-        if(procedureFullName.length > 2){
-            var procTitle = procedureFullName.splice(1,procedureFullName.length-1);
-            procedureTitle = procTitle.join(" - ");
-        }
-
-
+        // var procedureFullName = name.split(" - ");
+        // var procedureGrpname = procedureFullName[0];
+        // var procedureTitle = procedureFullName[1];
+        // if(procedureFullName.length > 2){
+        //     var procTitle = procedureFullName.splice(1,procedureFullName.length-1);
+        //     procedureTitle = procTitle.join(" - ");
+        // }
+        
         if(status !== 'Home'){
             procedure.id = id;
             procedure.name = name;
             procedure.status = status;
             procedure.fullname = status+":"+id+" - "+name;
-            procedure.tabname = id+' - '+procedureTitle;
+            // procedure.tabname = id+' - '+procedureTitle;
             // procedure.tabname = id+' - '+name;
         }else {
             procedure.id = "";
             procedure.name = "";
             procedure.status = "";
             procedure.fullname = "";
-            procedure.tabname = "Quantum";
+            // procedure.tabname = "Quantum";
         }
     }
 

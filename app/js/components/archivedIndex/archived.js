@@ -6,7 +6,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     $scope.loadcount = 0;
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
-    $rootScope.title = "Archive Index - "+$scope.procedure.tabname;
+    $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
     showArchivedList();
 
     function showArchivedList(){
@@ -48,7 +48,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
 
         // the url for archived instance
         if(revNumOp.length === 7 && revNumOp[3] === "archivedinstance"){
-            $rootScope.title = $scope.procedure.tabname;
+            $rootScope.title ="Procedure "+$scope.procedure.id+" | Quantum";
             currentRevision = parseInt(revNumOp[6]); //get revision number from url
             status = true;
             procedureService.setCurrentViewRevision(currentRevision);

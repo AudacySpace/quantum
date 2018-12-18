@@ -23,7 +23,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     var mission = 'Quantum';
 	viewProcedure();
     $scope.running = true;
-    $rootScope.title = $scope.procedure.tabname;
+    $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum ";
 
     $scope.openRightNav = function(){
         if($window.innerWidth < 800){
@@ -747,9 +747,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 $rootScope.title = "Quantum";
             }else if(revNumOp.length === 5){
                 if(revNumOp.includes("running")){
-                    $rootScope.title = "Live Index - "+$scope.procedure.tabname;
+                    $rootScope.title = "Live Index - "+$scope.procedure.id+" | Quantum";
                 }else if(revNumOp.includes("archived")){
-                    $rootScope.title = "Archive Index - "+$scope.procedure.tabname;
+                    $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
                 }
             }
             var procRev = procedureService.getCurrentViewRevision();

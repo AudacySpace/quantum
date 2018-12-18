@@ -6,7 +6,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
     $scope.loadcount = 0;
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
-    $rootScope.title = "Live Index - "+$scope.procedure.tabname;
+    $rootScope.title = "Live Index - "+$scope.procedure.id+" | Quantum";
     showRunningList();
 
     function showRunningList(){
@@ -43,7 +43,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
         var status;
  
         if(revNumOp.length === 7 && revNumOp[3] === "runninginstance"){
-            $rootScope.title = $scope.procedure.tabname;
+            $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum";
             currentRevision = parseInt(revNumOp[6]);
             status = true
             procedureService.setCurrentViewRevision(currentRevision);

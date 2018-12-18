@@ -21,6 +21,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
     var users;
+    $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum ";
     viewProcedure();
     $scope.running = true;
 
@@ -791,9 +792,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 $rootScope.title = "Quantum";
             }else if(revNumOp.length === 5){
                 if(revNumOp.includes("running")){
-                    $rootScope.title = "Live Index - "+$scope.procedure.tabname;
+                    $rootScope.title = "Live Index - "+$scope.procedure.id+" | Quantum";
                 }else if(revNumOp.includes("archived")){
-                    $rootScope.title = "Archive Index - "+$scope.procedure.tabname;
+                    $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
                 }
             }
             var procRev = procedureService.getCurrentViewRevision();
