@@ -12,6 +12,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     viewProcedure();
 
     function viewProcedure(){
+        procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
@@ -20,6 +21,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                             if(parseInt(response.data[i].instances[a].revision) === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
                                 $scope.steps = $scope.instances.Steps;
+                                $scope.procedure.name = response.data[i].title;
 
                             }
                         }
@@ -49,7 +51,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                         }
                     }
                 }
-
+                procedureService.setProcedureName($scope.params.procID, $scope.procedure.name,"AS-Run Archive");
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }

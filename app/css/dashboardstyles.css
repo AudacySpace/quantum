@@ -167,7 +167,7 @@ div.uploadlabel{
     padding:4px
 }
 
-table td.centerCols,th.centerCols{
+table td.centerCols,table th.centerCols{
     text-align: center;
 }
 
@@ -270,10 +270,6 @@ td{
     padding-top:35px;
 }
 
-img.previewIcon{
-    width: 15px;
-    height: 15px;
-}
 /* end of scrollable procedure list styles*/
 
 div.indexList{
