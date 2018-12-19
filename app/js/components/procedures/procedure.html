@@ -52,8 +52,10 @@
                     <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,false);">{{ procedure.running }}</a></td>
                     <td class="centerCols" style="width:15%"><a href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.title,false);">{{ procedure.archived }}</a></td>
                     <td style="width:15%">
-                        <a href="/dashboard/viewProcedure/{{procedure.id}}/{{procedure.name}}" ng-click="changeColor('Preview',procedure.id,procedure.title,false);">
-                            <span class="fa fa-file" style="vertical-align:middle">
+                        <a href="/dashboard/viewProcedure/{{procedure.id}}" ng-click="changeColor('Preview',procedure.id,procedure.title,false);">
+                            <span class="fa-stack fa-stack-15" style="vertical-align:middle">
+                                <i class="fa fa-search fa-stack-1x fa-lower-right"></i>
+                                <i class="fa fa-file-o fa-stack-2x fa-stack-15x fa-upper-left"></i>
                                 <md-tooltip md-direction="top">Preview procedure</md-tooltip> 
                             </span>
                         </a>&nbsp;&nbsp;
@@ -68,7 +70,7 @@
                             </span>
                         </a>&nbsp;&nbsp;
                         <a href="/dashboard/procedure/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.title,true);">
-                            <span class="fa fa-caret-right" style="font-size: 20px;vertical-align:middle">
+                            <span class="fa fa-caret-right iconDisplay" style="vertical-align:middle">
                                 <md-tooltip md-direction="top">Start procedure</md-tooltip> 
                             </span>
                         </a>
