@@ -270,7 +270,10 @@ td{
     padding-top:35px;
 }
 
-
+img.previewIcon{
+    width: 15px;
+    height: 15px;
+}
 /* end of scrollable procedure list styles*/
 
 div.indexList{

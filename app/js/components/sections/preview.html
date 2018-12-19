@@ -1,0 +1,78 @@
+<div class="menu float-right indexbuttons">
+    <ul>
+        <li><a ng-href="/dashboard/procedure/running/{{procedure.id}}" ng-click="changeColor('Live',procedure.id,procedure.name)" class="indexBtns">Live Index</a></li>
+        <li><a ng-href="/dashboard/procedure/archived/{{procedure.id}}" ng-click="changeColor('Archived',procedure.id,procedure.name)" class="indexBtns">AS-Run Archive Index</a></li>
+    </ul>
+</div>
+<div id="liveprocedures">
+    <table class="table table-hover">
+        <thead>
+            <tr class="procheader">
+                <th>
+                    <a href="#"></a>
+                </th>
+                <th>
+                    <a href="#">Step</a>
+                </th>
+                <th>
+                    <a href="#">Role</a>
+                </th>
+                <th>
+                    <a href="#">Type</a>
+                </th>
+                <th>
+                    <a href="#">Content</a>
+                </th>
+                <th>
+                    <a href="#">Comments</a>
+                </th>
+                <th>
+                    <a href="#">Status</a>
+                </th>
+                <th>
+                    <a href="#">Info</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="details">
+            <tr ng-repeat="step in previewSteps" ng-show="step.openstatus" ng-style="step.rowstyle.rowcolor">
+                <td>
+                    <a href="#" ng-click="showPList($index,step.index,step.headertype)">
+                    <span class="{{step.class}}"></span></a>
+                </td>
+                <td>{{ step.Step }}</td>
+                <td>{{ step.Role }}</td>
+                <td><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
+                <td ng-if="step.contenttype === 'String'">{{ step.Content }}
+                    <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a><p>
+                </td>
+                <td ng-if="step.contenttype === 'Array'">
+                    <ul class="contentList">
+                        <li ng-repeat="item in step.Content track by $index">
+                            {{item}}
+                        </li>
+                    </ul>
+                    <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                </td>
+                <td ng-if="step.contenttype === 'Input'" >
+                    <p>{{step.Content}}</p>
+                    <label>TLM Recorded Value:</label><strong>{{step.recordedValue}}</strong>
+                    <br/>
+                    <label>Enter Value:</label><input type="text" ng-model="tempValues[$index].ivalue" ng-keypress="whenTyping($index)" ng-disabled="step.chkval || step.status"/>
+                    <button ng-click="updateInputValue($index,tempValues[$index].ivalue)" ng-style="step.buttonStatus" ng-disabled="step.chkval || step.status" class="inputsetbuttton">Set</button>
+                    <span id="{{ 'object-' + $index }}" style="display:block" class="inputNotification"></span>
+                    <span id="{{ 'objectid-' + $index }}" style="display:block;" class="infoNotification"></span>
+                    <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                </td>
+                <td ng-if="step.contenttype === 'AlertInfo'">
+                    <p>{{step.Content}}</p>
+                    <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                </td>
+                <td ng-if="step.contenttype === 'DecisionInfo'">
+                    <p>{{step.Content}}</p>
+                    <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
