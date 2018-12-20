@@ -44,7 +44,9 @@
                     <td>{{ procedure.openedBy }}</td>
                     <td>{{ procedure.startedAt }}</td>
                     <td class="centerCols">
-                        <a href="/dashboard/procedure/runninginstance/{{procedureid}}/{{procedure.version}}/{{procedure.revision}}"><span class="fa fa-caret-right"></span></a>
+                        <a href="/dashboard/procedure/runninginstance/{{procedureid}}/{{procedure.version}}/{{procedure.revision}}"><span class="fa fa-caret-right iconDisplay" style="vertical-align:middle">
+                            <md-tooltip md-direction="top">View procedure</md-tooltip> 
+                        </span></a>
                     </td>
                 </tr>
             </tbody>

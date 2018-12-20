@@ -167,7 +167,7 @@ div.uploadlabel{
     padding:4px
 }
 
-table td.centerCols,th.centerCols{
+table td.centerCols,table th.centerCols{
     text-align: center;
 }
 
@@ -270,6 +270,30 @@ td{
     padding-top:35px;
 }
 
+.fa-lower-right {
+    left: 3px !important;
+    top: -12px !important;
+    font-size: 0.75em;
+}
+.fa-upper-left {
+    left: 0px !important;
+    top: -8px !important;
+}
+.fa-stack-15x {
+    font-size: 1.0em;
+}
+
+.fa-stack-15 {
+    height: inherit;
+}
+
+.fa-stack{
+    width: 1em;
+}
+
+.iconDisplay{
+    font-size: 20px;
+}
 
 /* end of scrollable procedure list styles*/
 
@@ -538,6 +562,20 @@ div.indexList i {
         color:#000000de;
     }
 
+    .iconDisplay{
+        font-size: 10px;
+    }
+
+    .fa-lower-right {
+        left: 1px !important;
+        top: -6px !important;
+        font-size: 0.75em;
+    }
+    .fa-upper-left {
+        left: 0px !important;
+        top: -4px !important;
+    }
+
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
@@ -634,6 +672,20 @@ div.indexList i {
 
     .indexbuttons .btn{
         padding:3px 6px !important;
+    }
+
+    .fa-lower-right {
+        left: 3px !important;
+        top: -8px !important;
+        font-size: 0.75em;
+    }
+    .fa-upper-left {
+        left: 0px !important;
+        top: -6px !important;
+    }
+
+    .iconDisplay{
+        font-size: 16px;
     }
 
 }   

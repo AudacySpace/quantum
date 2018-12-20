@@ -299,6 +299,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }else if(status === "Archived") {
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+        }else if(status === "Preview"){
+            procedureService.setHeaderStyles('block','none','#ffffff','#000000','none','inline-block',$window.innerWidth);
+            procedureService.setProcedureName(pid,ptitle,"Preview Procedure");
         }
     }
 
@@ -389,6 +392,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             //handle modal dismiss
         });
     }
+
 });
 
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {

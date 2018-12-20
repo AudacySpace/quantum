@@ -43,6 +43,12 @@ quantum.config(function($routeProvider, $locationProvider) {
 		controller  : 'archivedInstanceCtrl'
 	})
 
+	//route for preview procedure instance
+	.when('/dashboard/viewProcedure/:procID', {
+		templateUrl : './js/components/sections/preview.html',
+		controller  : 'previewInstanceCtrl'
+	})
+
 	$locationProvider.html5Mode(true);
 });
 

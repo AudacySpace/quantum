@@ -39,6 +39,9 @@ quantum
             }else if(nextLocation === "/dashboard/procedure/archivedinstance/"+pid+"/"+revNum){
                 procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',windowWidth);
                 procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
+            }else if(nextLocation === "/dashboard/viewProcedure/"+pid){
+                procedureService.setHeaderStyles('block','none','#ffffff','#000000','none','inline-block',windowWidth);
+                procedureService.setProcedureName(pid,ptitle,"Preview Procedure");
             }else {
                 procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',windowWidth);
                 procedureService.setProcedureName('','',"Home");
@@ -64,6 +67,9 @@ quantum
             }else if(nextLocation.includes("/dashboard/procedure/archivedinstance/"+pid+"/")){
                 procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',windowWidth);
                 procedureService.setProcedureName(pid, ptitle,"AS-Run Archive");
+            }else if(nextLocation === "/dashboard/viewProcedure/"+pid){
+                procedureService.setHeaderStyles('block','none','#ffffff','#000000','none','inline-block',windowWidth);
+                procedureService.setProcedureName(pid,ptitle,"Preview Procedure");
             }else {
                 procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',windowWidth);
                 procedureService.setProcedureName('','',"Home");

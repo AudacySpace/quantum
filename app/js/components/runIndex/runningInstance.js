@@ -104,7 +104,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     function viewProcedure(){
         $scope.inputStepValues = [];
         $scope.tempValues = [];
-        procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
+        procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
             if(response.status === 200){
                 for(var i=0;i<response.data.length;i++){
@@ -113,6 +113,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                             if(response.data[i].instances[a].revision === parseInt($scope.params.revisionID)){
                                 $scope.instances = response.data[i].instances[a];
                                 $scope.steps = $scope.instances.Steps;
+                                $scope.procedure.name = response.data[i].title;
                             }
                         }
 
@@ -166,6 +167,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                 }
             }
+            procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign);
             //completed steps
