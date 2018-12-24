@@ -249,6 +249,14 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }                   
+                }else if(psteps[k].Type === "Info"){
+                    psteps[k].typeicon = "fa fa-info-circle";
+                    psteps[k].typecolor = {color:""};
+                    psteps[k].contenttype = 'String';
+                    psteps[k].buttonStatus = "";
+                    if(!psteps[k].hasOwnProperty("comments")){
+                        psteps[k].comments = "";
+                    }
                 }
             }
 
