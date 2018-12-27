@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var ProcedureModel = mongoose.model('procedure');
 var XLSX = require("xlsx");
+var configRole = require('../../config/role');
+var validTypes = ['ACTION','CAUTION','DECISION','HEADING','INFO','RECORD','VERIFY','WARNING'];
 
 module.exports = {
     getProcedureList: function(req, res){
@@ -92,15 +94,108 @@ module.exports = {
             var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
             var userdetails = req.body.userdetails;
 
+            // File Upload Validations
             var fileverify = 0
 
+            // check if all steps have step,type,content
             for(var a=0;a<sheet1.length;a++){
-                if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
+                //if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
+                if(sheet1[a].Step && sheet1[a].Type && sheet1[a].Content){
                     fileverify++;
                 }
             }
 
-            if(fileverify === sheet1.length){
+
+            //To check if Type is valid
+               //Check spellings and ignore case
+                    //It Should be one of 'Action','Caution','Decision','Heading','Info','Record','Verify','Warning'.
+            var stepsValidity = 0;
+            var errorTypeSteps = [];
+            for(var b=0;b<sheet1.length;b++){
+                var isValid = checkTypeValidity(sheet1[b].Type);
+                if(isValid === true){
+                    stepsValidity++;
+                }else {
+                    errorTypeSteps.push({"Step":sheet1[b].Step,"Type":sheet1[b].Type});
+                }
+            }
+
+            var roleValidity = 0;
+            var roleErrSteps = [];
+            for(var r=0;r<sheet1.length;r++){
+                if(sheet1[r].Type.toUpperCase !== 'HEADING'){
+                    if(sheet1[r].Role){
+                        var isRoleValid = checkRoleValidity(sheet1[r].Role);
+                        if(isRoleValid === true){
+                            roleValidity++;
+                        }else {
+                            roleErrSteps.push({"Step":sheet1[r].Step,"Role":sheet1[r].Role});
+                        }
+                    }else {
+                        roleErrSteps.push({"Step":sheet1[r].Step,"Role":""});
+                    }
+                }
+            }
+
+            var headingSteps = 0;
+            var headingErr = [];
+            var nonheadingSteps = 0;
+            var nonHeadingErr = [];
+            if(errorTypeSteps.length === 0){
+                if(roleErrSteps.length > 0){
+                    res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
+                }
+
+                if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                    res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+                }
+                for(var c=0;c<sheet1.length;c++){
+                    if(sheet1[c].Type.toUpperCase() === 'HEADING'){
+                         //Get Heading type steps
+                        var isHeading = getSteps(sheet1[c],true);
+                        if(isHeading === true){
+                            headingSteps++;
+                        }else {
+                            headingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
+                        }
+                    }else {
+                        //Get Non Heading type steps
+                        var isNonHeading = getSteps(sheet1[c],false);
+                        if(isNonHeading === true){
+                            nonheadingSteps++;
+                        }else {
+                            nonHeadingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
+                        }
+                    }
+                }
+
+                if(headingErr.length > 0 && nonHeadingErr.length > 0){
+                    res.json({error_code:3,err_desc:"Not a valid Step",err_dataHeading:headingErr,err_dataNonHeading:nonHeadingErr});
+                }else if(headingErr.length > 0){
+                    res.json({error_code:4,err_desc:"Invalid Heading",err_data:headingErr});
+                }else if(nonHeadingErr.length > 0){
+                    res.json({error_code:5,err_desc:"Invalid Other Type",err_data:nonHeadingErr});
+                }
+                // else if(roleErrSteps.length > 0){
+                //     res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
+                // }
+                // else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                //     res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+                // }
+            }else if(errorTypeSteps.length > 0){
+                res.json({error_code:2,err_desc:"Step Type invalid",err_data:errorTypeSteps});
+            }else if(roleErrSteps.length > 0){
+                res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
+            }else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+            }else {
+                res.json({error_code:0,err_desc:"Not a valid file"});
+            }
+            //End of Validations
+
+
+            //If everything is valid 
+            if(fileverify === sheet1.length && errorTypeSteps.length === 0 && headingErr.length === 0 && nonHeadingErr.length === 0 && roleErrSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING'){
 
                 ProcedureModel.findOne({ 'procedureID' : filename[0] }, function(err, procs) {
                     if(err){
@@ -169,10 +264,9 @@ module.exports = {
                         });
                     }
                 });
-            }else{
+            }else if(fileverify !== sheet1.length){
                 res.json({error_code:0,err_desc:"Not a valid file"});
             }
-
         }catch(e){
             console.log(e);
         }
@@ -466,4 +560,72 @@ module.exports = {
 
     }
 };
+
+function checkTypeValidity(stepType){
+    console.log(validTypes);
+    if(validTypes.includes(stepType.toUpperCase())){
+        return true
+    }else {
+        return false;
+    }
+}
+
+function getSteps(step,isHeading){
+    if(isHeading === true){
+       // psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")
+        if(step.Step.includes(".0") === true){
+            return true;
+        }else {
+            return false;
+        }
+    }else if(isHeading === false){
+        if(step.Step.includes(".0") === false){
+            return true;
+        }else {
+            return false;
+        }
+    }
+}
+
+function getAllCallSigns(){
+    var callSigns = [];
+    var roleKeys = Object.keys(configRole.roles);
+    for(var i=0;i<roleKeys.length;i++){
+        callSigns.push(configRole.roles[roleKeys[i]].callsign);
+    }
+    return callSigns;
+}
+
+function checkRoleValidity(stepRole){
+    var callSigns = getAllCallSigns();
+    var tempRoles = [];
+    var str = stepRole.replace(/\s/g, '');
+    if(stepRole.includes(",")){
+        tempRoles = str.split(',');
+
+    }else {
+        tempRoles.push(str);
+    }
+    if(tempRoles.length === 1){
+        if(callSigns.includes(str)){
+            return true;
+        }else {
+            return false;
+        }
+    }else if(tempRoles.length > 1){
+        var roleCount = 0;
+        for(var a=0;a<tempRoles.length;a++){
+            if(callSigns.includes(tempRoles[a].toUpperCase())){
+                roleCount++;
+            }else {
+                return false;
+            }
+        }
+
+        if(roleCount === tempRoles.length){
+            return true;
+        }
+    }
+
+}
 

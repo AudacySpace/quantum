@@ -35,6 +35,10 @@ body {
     display:none !important;
 }
 
+.md-toast-text {
+  white-space: pre-line;
+}
+
 .navbar {
     border: 0 none;
 /*    border-bottom: 1px solid #CFCFD5;*/

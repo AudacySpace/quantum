@@ -144,11 +144,106 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
-            }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
+            }else if(resp.data.error_code === 2){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = '\n Error - Following steps have invalid type: \n'+dataString+'\n'+'Valid step types are: Action,Caution,Decision,Heading,Info,Record,Verify,Warning';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+
+            }else if(resp.data.error_code === 3){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataStringHeading = "";
+                var dataStringNonHeading = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataStringHeading = dataStringHeading + JSON.stringify(resp.data.err_dataHeading[a]) + '\n';
+                }
+
+                for(var b=0;b<resp.data.err_data.length;b++){
+                    dataStringNonHeading = dataStringNonHeading + JSON.stringify(resp.data.err_dataNonHeading[b]) + '\n';
+                }
+
+                $scope.usermessage = '\nError - Following Steps do not have right types: \n'+dataStringHeading+'\n and '+'\n'+dataStringNonHeading+' \n';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+
+            }else if(resp.data.error_code === 4){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = '\nError - Following "Heading" Type steps should end with ".0" : \n'+dataString+'\n';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+
+            }else if(resp.data.error_code === 5){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = '\nError - Non Heading(Action,Warning,Caution,Info,Verify,Record,Decision) type steps should not end with ".0" : \n'+dataString+' \n';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+
+            }else if(resp.data.error_code === 6){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = '\nError - Not a valid role for the following steps: \n'+dataString+' \n';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+            }else if(resp.data.error_code === 7){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = '\nError - Last step should not be of Type "Heading": \n'+dataString+' \n';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+            }
+            else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
-                $scope.usermessage = 'Not a valid file.Required Columns are Step,Type,Role,Content!';
+                $scope.usermessage = 'Error - Not a valid file.Required Columns are Step,Type,Role,Content!';
                 var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};
