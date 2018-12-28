@@ -243,7 +243,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
-                $scope.usermessage = 'Error - Not a valid file.Required Columns are Step,Type,Role,Content!';
+                $scope.usermessage = 'Error - Not a valid file.Required Columns are Step,Type,Role(except for "Heading" Type Steps),Content!';
                 var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};

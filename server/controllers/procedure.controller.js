@@ -149,39 +149,46 @@ module.exports = {
                 if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
                     res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
                 }
-                for(var c=0;c<sheet1.length;c++){
-                    if(sheet1[c].Type.toUpperCase() === 'HEADING'){
-                         //Get Heading type steps
-                        var isHeading = getSteps(sheet1[c],true);
-                        if(isHeading === true){
-                            headingSteps++;
+
+                if(fileverify === sheet1.length){
+                    for(var c=0;c<sheet1.length;c++){
+                        if(sheet1[c].Type.toUpperCase() === 'HEADING'){
+                            //Get Heading type steps
+                            var isHeading = getSteps(sheet1[c],true);
+                            if(isHeading === true){
+                                headingSteps++;
+                            }else {
+                                headingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
+                            }
                         }else {
-                            headingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
-                        }
-                    }else {
-                        //Get Non Heading type steps
-                        var isNonHeading = getSteps(sheet1[c],false);
-                        if(isNonHeading === true){
-                            nonheadingSteps++;
-                        }else {
-                            nonHeadingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
+                            //Get Non Heading type steps
+                            var isNonHeading = getSteps(sheet1[c],false);
+                            if(isNonHeading === true){
+                                nonheadingSteps++;
+                            }else {
+                                nonHeadingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
+                            }
                         }
                     }
-                }
+                
 
-                if(headingErr.length > 0 && nonHeadingErr.length > 0){
-                    res.json({error_code:3,err_desc:"Not a valid Step",err_dataHeading:headingErr,err_dataNonHeading:nonHeadingErr});
-                }else if(headingErr.length > 0){
-                    res.json({error_code:4,err_desc:"Invalid Heading",err_data:headingErr});
-                }else if(nonHeadingErr.length > 0){
-                    res.json({error_code:5,err_desc:"Invalid Other Type",err_data:nonHeadingErr});
-                }
+
+                    if(headingErr.length > 0 && nonHeadingErr.length > 0){
+                        res.json({error_code:3,err_desc:"Not a valid Step",err_dataHeading:headingErr,err_dataNonHeading:nonHeadingErr});
+                    }else if(headingErr.length > 0){
+                        res.json({error_code:4,err_desc:"Invalid Heading",err_data:headingErr});
+                    }else if(nonHeadingErr.length > 0){
+                        res.json({error_code:5,err_desc:"Invalid Other Type",err_data:nonHeadingErr});
+                    }
                 // else if(roleErrSteps.length > 0){
                 //     res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
                 // }
                 // else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
                 //     res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
                 // }
+                }else {
+                    res.json({error_code:0,err_desc:"Not a valid file"});
+                }
             }else if(errorTypeSteps.length > 0){
                 res.json({error_code:2,err_desc:"Step Type invalid",err_data:errorTypeSteps});
             }else if(roleErrSteps.length > 0){
@@ -562,7 +569,6 @@ module.exports = {
 };
 
 function checkTypeValidity(stepType){
-    console.log(validTypes);
     if(validTypes.includes(stepType.toUpperCase())){
         return true
     }else {

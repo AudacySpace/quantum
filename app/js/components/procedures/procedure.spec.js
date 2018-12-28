@@ -1075,7 +1075,7 @@ describe('Test Suite for Procedure Controller', function () {
         httpBackend.when('POST', '/upload').respond(200, resp);
         scope.upload(mockFile,'034.11:26:58 UTC Taruni Gattu(VIP)');    
         httpBackend.flush();
-        expect(scope.usermessage).toEqual('Error - Not a valid file.Required Columns are Step,Type,Role,Content!');
+        expect(scope.usermessage).toEqual('Error - Not a valid file.Required Columns are Step,Type,Role(except for "Heading" Type Steps),Content!');
         expect(scope.config).toEqual({});
 
     });
