@@ -100,7 +100,7 @@ module.exports = {
             // check if all steps have step,type,content
             for(var a=0;a<sheet1.length;a++){
                 //if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
-                if(sheet1[a].Step && sheet1[a].Type && sheet1[a].Content){
+                if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
                     fileverify++;
                 }
             }
@@ -156,44 +156,44 @@ module.exports = {
                             //Get Heading type steps
                             var isHeading = getSteps(sheet1[c],true);
                             if(isHeading === true){
-                                headingSteps++;
+                                //headingSteps++;
                             }else {
                                 headingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
                             }
-                        }else {
+                        }else if(sheet1[c].Type.toUpperCase() !== 'HEADING'){
                             //Get Non Heading type steps
                             var isNonHeading = getSteps(sheet1[c],false);
                             if(isNonHeading === true){
-                                nonheadingSteps++;
+                               // nonheadingSteps++;
                             }else {
                                 nonHeadingErr.push({"Step":sheet1[c].Step,"Type":sheet1[c].Type});
                             }
                         }
                     }
                 
-
-
                     if(headingErr.length > 0 && nonHeadingErr.length > 0){
                         res.json({error_code:3,err_desc:"Not a valid Step",err_dataHeading:headingErr,err_dataNonHeading:nonHeadingErr});
-                    }else if(headingErr.length > 0){
+                    }else if(headingErr.length > 0 && nonHeadingErr.length === 0){
                         res.json({error_code:4,err_desc:"Invalid Heading",err_data:headingErr});
-                    }else if(nonHeadingErr.length > 0){
+                    }else if(nonHeadingErr.length > 0 && headingErr.length === 0){
                         res.json({error_code:5,err_desc:"Invalid Other Type",err_data:nonHeadingErr});
                     }
-                // else if(roleErrSteps.length > 0){
-                //     res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
-                // }
-                // else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
-                //     res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
-                // }
                 }else {
                     res.json({error_code:0,err_desc:"Not a valid file"});
                 }
-            }else if(errorTypeSteps.length > 0){
+            }else if(errorTypeSteps.length > 0 && roleErrSteps.length > 0 && sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                res.json({error_code:8,err_typedata:errorTypeSteps,err_roledata:roleErrSteps,err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+            }else if(errorTypeSteps.length > 0 && roleErrSteps.length > 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING'){
+                res.json({error_code:9,err_typedata:errorTypeSteps,err_roledata:roleErrSteps});
+            }else if(errorTypeSteps.length > 0 && roleErrSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                res.json({error_code:10,err_typedata:errorTypeSteps,err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+            }else if(errorTypeSteps.length === 0 && roleErrSteps.length > 0 && sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+                res.json({error_code:11,err_roledata:roleErrSteps,err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
+            }else if(errorTypeSteps.length > 0 && roleErrSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING'){
                 res.json({error_code:2,err_desc:"Step Type invalid",err_data:errorTypeSteps});
-            }else if(roleErrSteps.length > 0){
+            }else if(roleErrSteps.length > 0 && errorTypeSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING'){
                 res.json({error_code:6,err_desc:"Invalid Role",err_data:roleErrSteps});
-            }else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING'){
+            }else if(sheet1[sheet1.length-1].Type.toUpperCase() === 'HEADING' && errorTypeSteps.length === 0 && roleErrSteps.length === 0){
                 res.json({error_code:7,err_desc:"Last Step Invalid",err_data:[{"Step":sheet1[sheet1.length-1].Step,"Type":sheet1[sheet1.length-1].Type}]});
             }else {
                 res.json({error_code:0,err_desc:"Not a valid file"});
@@ -565,27 +565,33 @@ module.exports = {
             }
         });
 
+    },
+    getQuantumRoles: function(req,res){
+        var callSigns = getAllCallSigns();
+        res.send(callSigns);
     }
 };
 
 function checkTypeValidity(stepType){
-    if(validTypes.includes(stepType.toUpperCase())){
+    var typeOfStep = stepType.replace(/\s/g, '');
+    if(validTypes.includes(typeOfStep.toUpperCase())){
         return true
     }else {
         return false;
     }
 }
 
-function getSteps(step,isHeading){
+function getSteps(stepNum,isHeading){
+    var step = stepNum.Step.replace(/\s/g, '');
     if(isHeading === true){
        // psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")
-        if(step.Step.includes(".0") === true){
+        if(step.includes(".0") === true && step.lastIndexOf("0") === step.length-1 && step.lastIndexOf(".") === step.length-2 ){
             return true;
         }else {
             return false;
         }
     }else if(isHeading === false){
-        if(step.Step.includes(".0") === false){
+        if(step.includes(".0") === false){
             return true;
         }else {
             return false;

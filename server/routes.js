@@ -118,6 +118,9 @@ module.exports = function(app,passport) {
     //update procedure name
     app.post('/updateProcedureName',procs.updateProcedureName);
 
+    //get quantum user roles
+    app.get('/getQuantumRoles',procs.getQuantumRoles);
+
 };
 
 // route middleware to make sure a user is logged in

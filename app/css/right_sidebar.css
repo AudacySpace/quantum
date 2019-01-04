@@ -47,9 +47,13 @@ md-list-item:hover {
 /*    border-left: 4px solid #07D1EA;*/
 }
 
-.md-button:not([disabled]):hover {
+/*.md-button:not([disabled]):hover {
     background-color: #242833;
 }
+*/
+/*.md-list-item:not([disabled]):hover  {
+    background-color: #242833;
+}*/
 
 md-divider {
     border-top-width: 2px;

@@ -1,4 +1,4 @@
-quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal,$location) {
+quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,userService,procedureService,FileSaver,Blob,dashboardService,timeService,$mdToast,$http,$uibModal,$location,$mdDialog) {
 	$scope.sortType     = 'id'; // set the default sort type
   	$scope.sortReverse  = false;  // set the default sort order
     $scope.procedure = procedureService.getProcedureName();
@@ -6,6 +6,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.name = userService.getUserName();
     $scope.loadcount = 0;
     $scope.loadstatus = true;
+    $scope.quantumRoles = procedureService.getValidRoles();
 
   	$scope.submit = function(){ 
         // Call upload if form is valid
@@ -27,34 +28,10 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                     break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb !== $scope.config.file.name){
                                     //Condition to check if a procedure exists with same index but different title
-                                    // $scope.count = $scope.count + 1;
-                                    // $scope.usermessage = 'This file number already exists in the list with a different title.Please try uploading with a new index number!';
-                                    // var position = "top left";
-                                    // var queryId = '#toaster';
-                                    // var delay = 5000;
-                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    // if(alertstatus === true){
-                                    //     $scope.config = {};
-                                    //     $scope.upload_form.$setPristine();
-                                    //     break;
-                                    // }
-
                                     $scope.sameProcedure = true;
                                     break;
                                 }else if(response.data[i].procedureID === $scope.filenames[0] && filenameFrmDb === $scope.config.file.name && response.data[i].instances.length > 0){
                                     //Condition to check if a procedure exists with the same file name and has saved instances
-                                    // $scope.count = $scope.count + 1;
-                                    // $scope.usermessage = 'There is already a procedure with the same filename and it has saved instances.Please try uploading a different file.';
-                                    // var position = "top left";
-                                    // var queryId = '#toaster';
-                                    // var delay = 5000;
-                                    // var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                                    // if(alertstatus === true){
-                                    //     $scope.config = {};
-                                    //     $scope.upload_form.$setPristine();
-                                    //     break;
-                                    // }
-
                                     $scope.sameProcedure = true;
                                     break;
                                 }
@@ -152,12 +129,23 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 for(var a=0;a<resp.data.err_data.length;a++){
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
-                $scope.usermessage = '\n Error - Following steps have invalid type: \n'+dataString+'\n'+'Valid step types are: Action,Caution,Decision,Heading,Info,Record,Verify,Warning';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                if(alertstatus === true){
+                $scope.usermessage = "Error: Steps have invalid types!";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",errorInfo:"Note: Valid step types are - Action,Caution,Decision,Heading,Info,Record,Verify,Warning "},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
-                }
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
 
             }else if(resp.data.error_code === 3){
                 var position = "top left";
@@ -165,21 +153,31 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 var delay = 0;
                 var dataStringHeading = "";
                 var dataStringNonHeading = "";
-                for(var a=0;a<resp.data.err_data.length;a++){
+                for(var a=0;a<resp.data.err_dataHeading.length;a++){
                     dataStringHeading = dataStringHeading + JSON.stringify(resp.data.err_dataHeading[a]) + '\n';
                 }
 
-                for(var b=0;b<resp.data.err_data.length;b++){
+                for(var b=0;b<resp.data.err_dataNonHeading.length;b++){
                     dataStringNonHeading = dataStringNonHeading + JSON.stringify(resp.data.err_dataNonHeading[b]) + '\n';
                 }
 
-                $scope.usermessage = '\nError - Following Steps do not have right types: \n'+dataStringHeading+'\n and '+'\n'+dataStringNonHeading+' \n';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                if(alertstatus === true){
+                $scope.usermessage = "Error: Steps do not have right types for the step number!";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:"",dataStringHeading: dataStringHeading,dataStringNonHeading: dataStringNonHeading,dataStringType:"",dataStringRole:"",errorInfo:"Note: Only 'Heading' Type Step number should end with .0 "},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
-                }
-
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
             }else if(resp.data.error_code === 4){
                 var position = "top left";
                 var queryId = '#toaster';
@@ -188,12 +186,23 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 for(var a=0;a<resp.data.err_data.length;a++){
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
-                $scope.usermessage = '\nError - Following "Heading" Type steps should end with ".0" : \n'+dataString+'\n';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                if(alertstatus === true){
+                $scope.usermessage = "Error: Step with Type 'Heading' should have step number that ends with '.0'";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",dataStringType:"",dataStringRole:"",errorInfo:"Eample for a Heading Type step: 1.1.1.0; 1.0; 1.2.3.0"},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
-                }
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
 
             }else if(resp.data.error_code === 5){
                 var position = "top left";
@@ -203,12 +212,23 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 for(var a=0;a<resp.data.err_data.length;a++){
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
-                $scope.usermessage = '\nError - Non Heading(Action,Warning,Caution,Info,Verify,Record,Decision) type steps should not end with ".0" : \n'+dataString+' \n';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                if(alertstatus === true){
+                $scope.usermessage = "Error: Only Steps with 'Heading' Type should end with '.0'";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",dataStringType:"",dataStringRole:"",errorInfo:"Steps with Types 'Action,Warning,Caution,Info,Verify,Record,Decision' should not have the step number end with '.0'"},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
-                }
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
 
             }else if(resp.data.error_code === 6){
                 var position = "top left";
@@ -224,6 +244,28 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 }
+                $scope.usermessage = "Error: Steps have invalid roles.";
+                procedureService.getQuantumRoles().then(function(response){
+                    if(response){
+                        $scope.quantumRoles = angular.copy(response.data);
+                        $mdToast.show({
+                            hideDelay: 0,
+                            position: position,
+                            controller: 'ToastCtrl',
+                            controllerAs: 'ctrl',
+                            bindToController: true,
+                            locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",dataStringType:"",dataStringRole:"",errorInfo:"Note: Valid Roles are: "+  $scope.quantumRoles},
+                            templateUrl: './js/components/procedures/toastTemplate.html',
+                            parent: document.querySelectorAll(queryId)
+                        }).then(function(result) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        }).catch(function(error) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        });
+                    }
+                });
             }else if(resp.data.error_code === 7){
                 var position = "top left";
                 var queryId = '#toaster';
@@ -232,18 +274,174 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 for(var a=0;a<resp.data.err_data.length;a++){
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
-                $scope.usermessage = '\nError - Last step should not be of Type "Heading": \n'+dataString+' \n';
-                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
-                if(alertstatus === true){
+                $scope.usermessage = "Error: Last Step should not be of type 'Heading'";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",dataStringType:"",dataStringRole:"",errorInfo:"Note: Last step should not be section heading"},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
+            }else if(resp.data.error_code === 8){
+                // 3
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataStringType = "";
+                var dataStringRole = "";
+                var dataString = "";
+                for(var a=0;a<resp.data.err_typedata.length;a++){
+                    dataStringType = dataStringType + JSON.stringify(resp.data.err_typedata[a]) + '\n';
                 }
+
+                for(var b=0;b<resp.data.err_roledata.length;b++){
+                    dataStringRole = dataStringRole + JSON.stringify(resp.data.err_roledata[b]) + '\n';
+                }
+
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+
+                $scope.usermessage = "Error: Step types,roles are invalid and Last step should not be of Type 'Heading' or end with '.0'!";
+                procedureService.getQuantumRoles().then(function(response){
+                    if(response){
+                        $scope.quantumRoles = angular.copy(response.data);
+                        $mdToast.show({
+                            hideDelay: 0,
+                            position: position,
+                            controller: 'ToastCtrl',
+                            controllerAs: 'ctrl',
+                            bindToController: true,
+                            locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringType: dataStringType,dataStringRole: dataStringRole,dataStringHeading:"",dataStringNonHeading: "",errorInfo:"Note: Valid step types are - Action,Caution,Decision,Heading,Info,Record,Verify,Warning and \n Valid Roles are: "+  $scope.quantumRoles+". Last Step should not be of Type 'Heading' and step number should not end with '.0'"},
+                            templateUrl: './js/components/procedures/toastTemplate.html',
+                            parent: document.querySelectorAll(queryId)
+                        }).then(function(result) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        }).catch(function(error) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        });
+                    }
+                });
+
+            }else if(resp.data.error_code === 9){
+                // 2
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataStringType = "";
+                var dataStringRole = "";
+                for(var a=0;a<resp.data.err_typedata.length;a++){
+                    dataStringType = dataStringType + JSON.stringify(resp.data.err_typedata[a]) + '\n';
+                }
+
+                for(var b=0;b<resp.data.err_roledata.length;b++){
+                    dataStringRole = dataStringRole + JSON.stringify(resp.data.err_roledata[b]) + '\n';
+                }
+
+                $scope.usermessage = "Error: Step types and roles are invalid!";
+                procedureService.getQuantumRoles().then(function(response){
+                    if(response){
+                        $scope.quantumRoles = angular.copy(response.data);
+                        $mdToast.show({
+                            hideDelay: 0,
+                            position: position,
+                            controller: 'ToastCtrl',
+                            controllerAs: 'ctrl',
+                            bindToController: true,
+                            locals: {toastMessage: $scope.usermessage,dataString:"",dataStringType: dataStringType,dataStringRole: dataStringRole,dataStringHeading:"",dataStringNonHeading: "",errorInfo:"Note: Valid step types are - Action,Caution,Decision,Heading,Info,Record,Verify,Warning and \n  Valid Roles are: "+  $scope.quantumRoles},
+                            templateUrl: './js/components/procedures/toastTemplate.html',
+                            parent: document.querySelectorAll(queryId)
+                        }).then(function(result) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        }).catch(function(error) {
+                            $scope.config = {};
+                            $scope.upload_form.$setPristine();
+                        });
+                    }
+                });
+
+            }else if(resp.data.error_code === 10){
+                //2
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataStringType = "";
+                var dataString = "";
+                for(var a=0;a<resp.data.err_typedata.length;a++){
+                    dataStringType = dataStringType + JSON.stringify(resp.data.err_typedata[a]) + '\n';
+                }
+
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+
+                $scope.usermessage = "Error: Steps types are invalid and Last step should not be of type 'Heading' or end with '.0'";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringHeading:"",dataStringNonHeading: "",dataStringRole: "",dataStringType: dataStringType,errorInfo:"Valid step types are - Action,Caution,Decision,Heading,Info,Record,Verify,Warning"},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
+            }else if(resp.data.error_code === 11){
+                // 1
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 0;
+                var dataString = "";
+                var dataStringRole = "";
+
+                for(var b=0;b<resp.data.err_roledata.length;b++){
+                    dataStringRole = dataStringRole + JSON.stringify(resp.data.err_roledata[b]) + '\n';
+                }
+
+                for(var a=0;a<resp.data.err_data.length;a++){
+                    dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
+                }
+                $scope.usermessage = "Error: Step roles are invalid and Last step should not be of type 'Heading' or end with '.0'";
+                $mdToast.show({
+                    hideDelay: 0,
+                    position: position,
+                    controller: 'ToastCtrl',
+                    controllerAs: 'ctrl',
+                    bindToController: true,
+                    locals: {toastMessage: $scope.usermessage,dataString:dataString,dataStringRole:dataStringRole,dataStringType:"",dataStringHeading:"",dataStringNonHeading: "",errorInfo:"Steps with Types 'Action,Warning,Caution,Info,Verify,Record,Decision' should not have the step number end with '.0'"},
+                    templateUrl: './js/components/procedures/toastTemplate.html',
+                    parent: document.querySelectorAll(queryId)
+                }).then(function(result) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }).catch(function(error) {
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                });
             }
             else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
-                $scope.usermessage = 'Error - Not a valid file.Required Columns are Step,Type,Role(except for "Heading" Type Steps),Content!';
+                $scope.usermessage = 'Error: Not a valid file.Required Columns are Step,Type,Role,Content!';
                 var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                 if(alertstatus === true){
                     $scope.config = {};
@@ -428,46 +626,6 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         });
     }
 
-    // $scope.$on('$locationChangeStart', function(evnt, next, current){  
-    //     var loc = $location.url();
-    //     var revNumOp = loc.split("/");
-    //     var emailaddress = userService.getUserEmail();
-    //     var name = userService.getUserName();
-    //     var currentRevision;
-
-    //     if(revNumOp.length === 4){
-    //         //user status is already set using save procedure instance
-    //     }else if(revNumOp.length === 6 && revNumOp[3] === "runninginstance"){
-    //         // currentRevision = parseInt(revNumOp[5]);
-    //         // status = true;
-    //         // var proc = procedureService.getProcedureName();
-    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-    //         //     if(response.status === 200){
-    //         //     }
-    //         // },function(error){
-    //         // }); 
-    //     }else if(revNumOp.length === 6 && revNumOp[3] === "archivedinstance"){
-    //         // currentRevision = parseInt(revNumOp[5]);
-    //         // status = false;
-    //         // var proc = procedureService.getProcedureName();
-    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-    //         //     if(response.status === 200){
-    //         //     }
-    //         // },function(error){
-    //         // }); 
-    //     }
-    //     else if(revNumOp.length === 2 || revNumOp.length === 5){
-    //         // currentRevision = "";
-    //         // status = false;
-    //         // var proc = procedureService.getProcedureName();
-    //         // procedureService.setUserStatus(loc,emailaddress,name,proc.id,currentRevision,status).then(function(response){
-    //         //     if(response.status === 200){
-    //         //     }
-    //         // },function(error){
-    //         // }); 
-    //     }  
-    // });
-
     $scope.showEditModal = function(procedure){
         $uibModal.open({
             templateUrl: './js/components/procedures/editProcedure.html',
@@ -562,6 +720,37 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
     }
 
 });
+
+quantum.controller('DialogController',function($scope,$mdDialog) {
+    var $ctrl = this;
+    $ctrl.cancel = function() {
+         $mdDialog.cancel('cancel');
+    };
+});
+
+quantum.controller('ToastCtrl',function($scope,$mdDialog,$mdToast) {
+    var $ctrl = this;
+    $ctrl.closeToast = function() {
+        $mdToast.cancel('ok');
+    };
+
+    $ctrl.openMoreInfo = function(){
+        $mdDialog.show({
+            controller: 'DialogController',
+            templateUrl: './js/components/procedures/dialog.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            controllerAs: 'ctrl',
+            bindToController: true,
+            locals: {errorInfo:$ctrl.errorInfo,dataString:$ctrl.dataString,dataStringHeading: $ctrl.dataStringHeading,dataStringNonHeading: $ctrl.dataStringNonHeading,dataStringType: $ctrl.dataStringType,dataStringRole: $ctrl.dataStringRole},
+            fullscreen: false // Only for -xs, -sm breakpoints.
+        })
+        .then(function(answer) {
+        }, function() {
+        });
+    }
+});
+
 
 
 
