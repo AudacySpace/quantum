@@ -1,0 +1,39 @@
+<md-dialog aria-label="">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h5>Error Details</h5>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h5>
+            {{ctrl.errorInfo}}
+        </h5>
+        <br/>
+        <p style="color:red">
+          {{ctrl.dataString}}
+        </p>
+        <p style="color:red">
+          {{ctrl.dataStringHeading}}
+        </p>
+        <p style="color:red">
+            {{ctrl.dataStringNonHeading}}
+        </p>
+        <p style="color:red">
+            {{ctrl.dataStringType}}
+        </p>
+        <p style="color:red">
+            {{ctrl.dataStringRole}}
+        </p>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button ng-click="ctrl.cancel()">
+        <h5>Cancel</h5>
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

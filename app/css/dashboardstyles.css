@@ -35,6 +35,18 @@ body {
     display:none !important;
 }
 
+.md-toast-text {
+  white-space: pre-line;
+}
+
+md-toast .md-toast-content {
+  height: 100% !important;
+}
+
+button.md-button {
+    color: #337ab7 !important;
+}
+
 .navbar {
     border: 0 none;
 /*    border-bottom: 1px solid #CFCFD5;*/
@@ -194,7 +206,8 @@ label{
 }
 
 button.md-action{
-   color:#07d1ea !important; 
+/*   color:#07d1ea !important; */
+    color: #337ab7 !important;
 }
 
 .infoNotification{

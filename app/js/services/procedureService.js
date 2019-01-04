@@ -22,6 +22,10 @@ quantum
         value:""
     }
 
+    var validRoles = {
+        callsigns:""
+    }
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -134,12 +138,13 @@ quantum
     function getProcedureSection(psteps,callsign){
         if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
-                if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") === psteps[j].Step.lastIndexOf(".")){
-                    psteps[j].index = parseFloat(psteps[j].Step);
+                var step = psteps[j].Step.replace(/\s/g, '');
+                if(step.includes(".0") === true && step.indexOf(".") === step.lastIndexOf(".") && step.lastIndexOf("0") === step.length-1 && step.lastIndexOf(".") === step.length-2){
+                    psteps[j].index = parseFloat(step);
                     psteps[j].class = "fa fa-caret-right";
                     psteps[j].header = true; 
                     psteps[j].headertype = "mainheader";
-                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].headervalue = step.split(".")[0];
                     psteps[j].openstatus = true;
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
@@ -147,12 +152,12 @@ quantum
                     psteps[j].chkval = false;
                     psteps[j].checkbox = false;
 
-                }else if(psteps[j].Step.includes(".0") === true && psteps[j].Step.indexOf(".") !== psteps[j].Step.lastIndexOf(".")){
-                    psteps[j].index = parseFloat(psteps[j].Step);
+                }else if(step.includes(".0") === true && step.indexOf(".") !== step.lastIndexOf(".") && step.lastIndexOf("0") === step.length-1 && step.lastIndexOf(".") === step.length-2){
+                    psteps[j].index = parseFloat(step);
                     psteps[j].class = "fa fa-caret-down";
                     psteps[j].header = true; 
                     psteps[j].headertype = "subheader";
-                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].headervalue = step.split(".")[0];
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {
@@ -162,11 +167,11 @@ quantum
                     psteps[j].chkval = false;
                     psteps[j].checkbox = false;
                 }else {
-                    psteps[j].index = parseFloat(psteps[j].Step);
+                    psteps[j].index = parseFloat(step);
                     psteps[j].class = "fa fa-caret-right"; 
                     psteps[j].header = false;
                     psteps[j].headertype = "listitem";
-                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].headervalue = step.split(".")[0];
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
@@ -178,7 +183,8 @@ quantum
 
             //set type icon 
             for(var k=0;k<psteps.length;k++){
-                if(psteps[k].Type === "Heading"){
+                var typeOfStep = psteps[k].Type.replace(/\s/g, '');
+                if(typeOfStep.toUpperCase() === "HEADING"){
                     psteps[k].typeicon = "";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
@@ -186,7 +192,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Warning"){
+                }else if(typeOfStep.toUpperCase() === "WARNING"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ff0000"};
                     psteps[k].contenttype = 'AlertInfo';
@@ -194,7 +200,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Caution"){
+                }else if(typeOfStep.toUpperCase() === "CAUTION"){
                     psteps[k].typeicon = "fa fa-exclamation-triangle";
                     psteps[k].typecolor = {color:"#ffcc00"};
                     psteps[k].contenttype = 'AlertInfo';
@@ -202,7 +208,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Record"){
+                }else if(typeOfStep.toUpperCase() === "RECORD"){
                     psteps[k].typeicon = "fa fa-pencil-square-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'Input';
@@ -213,7 +219,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("recordedValue")){
                         psteps[k].recordedValue = "";
                     }
-                }else if(psteps[k].Type === "Verify"){
+                }else if(typeOfStep.toUpperCase() === "VERIFY"){
                     psteps[k].typeicon = "fa fa-check-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
@@ -221,7 +227,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }
-                }else if(psteps[k].Type === "Action"){
+                }else if(typeOfStep.toUpperCase() === "ACTION"){
                     psteps[k].typeicon = "fa fa-cog";
                     psteps[k].typecolor = {color:""};
                     psteps[k].buttonStatus = "";
@@ -241,7 +247,7 @@ quantum
                         //General action steps
                         psteps[k].contenttype = 'String';
                     }
-                }else if(psteps[k].Type === "Decision"){
+                }else if(typeOfStep.toUpperCase() === "DECISION"){
                     psteps[k].typeicon = "fa fa-dot-circle-o";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'DecisionInfo';
@@ -249,7 +255,7 @@ quantum
                     if(!psteps[k].hasOwnProperty("comments")){
                         psteps[k].comments = "";
                     }                   
-                }else if(psteps[k].Type === "Info"){
+                }else if(typeOfStep.toUpperCase() === "INFO"){
                     psteps[k].typeicon = "fa fa-info-circle";
                     psteps[k].typecolor = {color:""};
                     psteps[k].contenttype = 'String';
@@ -665,6 +671,22 @@ quantum
         }); 
     }
 
+    function getQuantumRoles(){
+        return $http({
+            url:"/getQuantumRoles",
+            method: "GET",
+            params: {}
+        });
+    }
+
+    function setQuantumRoles(roles){
+        validRoles.callsigns = roles;
+    }
+
+    function getValidRoles(){
+        return validRoles;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -698,6 +720,9 @@ quantum
         getStepPermissions : getStepPermissions,
         displayAlert : displayAlert,
         setUserStatus : setUserStatus,
-        updateProcedureName : updateProcedureName
+        updateProcedureName : updateProcedureName,
+        getQuantumRoles : getQuantumRoles,
+        setQuantumRoles : setQuantumRoles,
+        getValidRoles : getValidRoles
     }
 }]);
