@@ -113,7 +113,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
-                $scope.usermessage = 'An error occured.This procedure already exists.Please upload with a new index number.';
+                $scope.usermessage = 'An error occured.This procedure already exists.\n Please upload with a new index number.';
                 var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
 
                 if(alertstatus === true){
@@ -311,7 +311,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
 
-                $scope.usermessage = "Error: Step types,roles are invalid and Last step should not be of Type 'Heading' or end with '.0'!";
+                $scope.usermessage = "Error: Step types,roles are invalid and \n Last step should not be of Type 'Heading' or end with '.0'!";
                 procedureService.getQuantumRoles().then(function(response){
                     if(response){
                         $scope.quantumRoles = angular.copy(response.data);
@@ -387,7 +387,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     dataString = dataString + JSON.stringify(resp.data.err_data[a]) + '\n';
                 }
 
-                $scope.usermessage = "Error: Steps types are invalid and Last step should not be of type 'Heading' or end with '.0'";
+                $scope.usermessage = "Error: Steps types are invalid and \n Last step should not be of type 'Heading' or end with '.0'";
                 $mdToast.show({
                     hideDelay: 0,
                     position: position,
