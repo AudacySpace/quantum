@@ -101,6 +101,9 @@ module.exports = {
             for(var a=0;a<sheet1.length;a++){
                 //if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
                 if(sheet1[a].Step && sheet1[a].Role && sheet1[a].Type && sheet1[a].Content){
+                    sheet1[a].Step = sheet1[a].Step.replace(/\s/g, '');
+                    sheet1[a].Role = sheet1[a].Role.replace(/\s/g, '');
+                    sheet1[a].Type = sheet1[a].Type.replace(/\s/g, '');
                     fileverify++;
                 }
             }
@@ -112,6 +115,7 @@ module.exports = {
             var stepsValidity = 0;
             var errorTypeSteps = [];
             for(var b=0;b<sheet1.length;b++){
+                sheet1[b].Type = sheet1[b].Type.replace(/\s/g, '');
                 var isValid = checkTypeValidity(sheet1[b].Type);
                 if(isValid === true){
                     stepsValidity++;
@@ -123,8 +127,10 @@ module.exports = {
             var roleValidity = 0;
             var roleErrSteps = [];
             for(var r=0;r<sheet1.length;r++){
+                sheet1[r].Type =  sheet1[r].Type.replace(/\s/g, '');
                 if(sheet1[r].Type.toUpperCase !== 'HEADING'){
                     if(sheet1[r].Role){
+                        sheet1[r].Role = sheet1[r].Role.replace(/\s/g, '');
                         var isRoleValid = checkRoleValidity(sheet1[r].Role);
                         if(isRoleValid === true){
                             roleValidity++;
@@ -152,6 +158,7 @@ module.exports = {
 
                 if(fileverify === sheet1.length){
                     for(var c=0;c<sheet1.length;c++){
+                        sheet1[c].Type =  sheet1[c].Type.replace(/\s/g, '');
                         if(sheet1[c].Type.toUpperCase() === 'HEADING'){
                             //Get Heading type steps
                             var isHeading = getSteps(sheet1[c],true);
