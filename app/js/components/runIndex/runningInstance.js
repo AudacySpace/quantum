@@ -118,28 +118,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                         }
 
                         var newVersion = response.data[i].versions[parseInt($scope.params.versionID) - 1];
-                        // for(var b=0;b<response.data[i].sections.length;b++){
-                        //     if($scope.steps[b].step === response.data[i].sections[b].Step){
-                        //         $scope.steps[b].Step = response.data[i].sections[b].Step
-                        //         $scope.steps[b].Type = response.data[i].sections[b].Type;
-                        //         $scope.steps[b].Content = response.data[i].sections[b].Content;
-                        //         $scope.steps[b].Role = response.data[i].sections[b].Role;
-                        //         $scope.steps[b].Reference = response.data[i].sections[b].Reference;
-                        //         $scope.steps[b].Info = $scope.steps[b].info;
-
-                        //         $scope.inputStepValues.push({
-                        //             snum:$scope.steps[b].Step,
-                        //             ivalue:""
-                        //         });
-
-                        //         $scope.tempValues.push({
-                        //             snum:$scope.steps[b].Step,
-                        //             ivalue:"",
-                        //             comments:""
-                        //         });
-                        //     }
-                        // }
-
                         for(var b=0;b<newVersion.length;b++){
                             if($scope.steps[b].step === newVersion[b].Step){
                                 $scope.steps[b].Step = newVersion[b].Step
@@ -150,6 +128,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                    $scope.steps[b].Reference = newVersion[b].Reference; 
                                 }
                                 $scope.steps[b].Info = $scope.steps[b].info;
+                                if(newVersion[b].hasOwnProperty("Procedures") && newVersion[b].Procedures.length > 0){
+                                   $scope.steps[b].Procedures = newVersion[b].Procedures; 
+                                }
 
                                 $scope.inputStepValues.push({
                                     snum:$scope.steps[b].Step,

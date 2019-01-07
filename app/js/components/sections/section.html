@@ -48,6 +48,19 @@
                 <td><span class="{{step.typeicon}}" title="{{step.Type}}" ng-style="step.typecolor"></span></td>
                 <td ng-if="step.contenttype === 'String'">{{ step.Content }}
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a><p>
+                        <br>
+                    <p ng-show="step.Procedures.length > 0">Shortcuts to procedure</p>
+                    <div class="dropdown" ng-repeat="proc in step.dependentProcedures.listOfProcs">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{proc.id}}
+                            <md-tooltip md-direction="top" ng-show="!proc.exists">Procedure does not exist.</md-tooltip> 
+                            <span class="caret" ng-show="proc.exists"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id);">Open new instance</a></li>
+                            <li role="presentation" ng-show="proc.revision !== 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
+                        </ul>
+                    </div>
                 </td>
                 <td ng-if="step.contenttype === 'Array'">
                     <ul class="contentList">
@@ -56,6 +69,19 @@
                         </li>
                     </ul>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                    <br>
+                    <p ng-show="step.Procedures.length > 0">Shortcuts to procedure</p>
+                                         <div class="dropdown" ng-repeat="proc in step.dependentProcedures.listOfProcs">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{proc.id}}
+                            <md-tooltip md-direction="top" ng-show="!proc.exists">Procedure does not exist.</md-tooltip> 
+                            <span class="caret" ng-show="proc.exists"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation" ng-show="proc.revision !== 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
+                        </ul>
+                    </div>
                 </td>
                 <td ng-if="step.contenttype === 'Input'" >
                     <p>{{step.Content}}</p>
@@ -66,14 +92,55 @@
                     <span id="{{ 'object-' + $index }}" style="display:block" class="inputNotification"></span>
                     <span id="{{ 'objectid-' + $index }}" style="display:block;" class="infoNotification"></span>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                    <br>
+                     <p ng-show="step.Procedures.length > 0">Shortcuts to procedure</p>
+                    <div class="dropdown" ng-repeat="proc in step.dependentProcedures.listOfProcs">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{proc.id}}
+                            <md-tooltip md-direction="top" ng-show="!proc.exists">Procedure does not exist.</md-tooltip> 
+                            <span class="caret" ng-show="proc.exists"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation" ng-show="proc.revision !== 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
+                        </ul>
+                    </div>
+
                 </td>
                 <td ng-if="step.contenttype === 'AlertInfo'">
                     <p>{{step.Content}}</p>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                    <br>
+                     <p ng-show="step.Procedures.length > 0">Shortcuts to procedure</p>
+                    <div class="dropdown" ng-repeat="proc in step.dependentProcedures.listOfProcs">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{proc.id}}
+                            <md-tooltip md-direction="top" ng-show="!proc.exists">Procedure does not exist.</md-tooltip> 
+                            <span class="caret" ng-show="proc.exists"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation" ng-show="proc.revision !== 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
+                        </ul>
+                    </div>
+
                 </td>
                 <td ng-if="step.contenttype === 'DecisionInfo'">
                     <p>{{step.Content}}</p>
                     <p><a href="{{step.Reference}}" target="_blank" ng-show="step.Reference && step.Reference.length > 0">Reference Link</a></p>
+                    <br>
+                     <p ng-show="step.Procedures.length > 0">Shortcuts to procedure</p>
+                    <div class="dropdown" ng-repeat="proc in step.dependentProcedures.listOfProcs">
+                        <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{proc.id}}
+                            <md-tooltip md-direction="top" ng-show="!proc.exists">Procedure does not exist.</md-tooltip> 
+                            <span class="caret" ng-show="proc.exists"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation" ng-show="proc.revision !== 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
+                        </ul>
+                    </div>
                 </td>
                 <td><input ng-show="step.checkbox" type="checkbox" ng-disabled="step.status" ng-click="setInfo($index,step.chkval)" ng-model="step.chkval">
                 </td>

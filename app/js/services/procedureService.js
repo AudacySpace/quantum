@@ -26,6 +26,10 @@ quantum
         callsigns:""
     }
 
+    var procLinks = {
+        listOfProcs: []
+    }
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -272,6 +276,26 @@ quantum
                     psteps[a].status = false;
                 }else {
                     psteps[a].status = true;
+                }
+            }
+
+            //check for dependent procedures
+            for(var b=0;b<psteps.length;b++){
+                if(psteps[b].Procedures){
+                    var dependentProcedures = getDependentProcedures(psteps[b]);
+                    var listProcs = checkStepProceduresExist(dependentProcedures);
+                    // for(var k=0;k<dependentProcedures.length;k++){
+                    //     for(var j=0;j<listProcs.length;j++){
+                    //         if(dependentProcedures[k] === listProcs[j].id){
+                    //             listProcs[j].exists = true;
+                    //         }else if(dependentProcedures[k] !== listProcs[j].id && j === listProcs.length - 1){
+                    //             listProcs[j].exists = false;
+                    //         }
+                    //     }
+                    // }
+                    checkStepProceduresExist(dependentProcedures);
+                    psteps[b].dependentProcedures = getListOfProcs();
+                    console.log(psteps[b].dependentProcedures);
                 }
             }
 
@@ -685,6 +709,68 @@ quantum
 
     function getValidRoles(){
         return validRoles;
+    }
+
+    function setListOfProcs(listOfProcs){
+        procLinks.listOfProcs = listOfProcs;
+    }
+
+    function getListOfProcs(){
+        return procLinks;
+    }
+
+    function checkStepProceduresExist(procedureNums){
+        var listOfProcs = [];
+        getProcedureList().then(function(response){
+            if(response){
+                //check if step's procedures exist in this list
+                for(var b=0;b<procedureNums.length;b++){
+                    console.log(procedureNums[b]);
+                    for(var c=0;c<response.data.length;c++){
+                        if(procedureNums[b] === response.data[c].procedureID){
+                            listOfProcs.push({
+                                "id":response.data[c].procedureID,
+                                "version":response.data[c].versions.length,
+                                "revision":response.data[c].instances.length,
+                                "exists":true
+                            });
+                        }else if(c === response.data.length -1 && procedureNums[b] !== response.data[c].procedureID && ifFound(listOfProcs,procedureNums[b]) === false){
+                            listOfProcs.push({
+                                "id":procedureNums[b],
+                                "version":"",
+                                "revision":"",
+                                "exists":false
+                            });
+                        }
+                    }
+                }
+                setListOfProcs(listOfProcs);
+            }
+        });
+    }
+
+    function getDependentProcedures(step){
+        var stepProcedures = [];
+        var stepProceduresParams = [];
+        var stepProc = "";
+        if(step.Procedures.length > 0){
+            stepProc = step.Procedures.replace(/\s/g, '');
+            if(stepProc.includes(",")){
+                stepProcedures = stepProc.split(",");
+                return stepProcedures;
+            }
+        }
+    }
+
+    function ifFound(procList,elem){
+        var found = false;
+        for(var i = 0; i < procList.length; i++) {
+            if (procList[i].id == elem) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 
     return { 
