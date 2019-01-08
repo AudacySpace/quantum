@@ -74,6 +74,10 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     // var users = setActiveUsers(response.data.users);
                     // var usersroles = setActiveUsersRole(users);
 
+                    procedureService.getProcedureList().then(function(response) {
+                        $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
+                    });
+
                     $scope.steps = procedureService.getCompletedSteps($scope.steps);
                     if($scope.steps[$scope.steps.length-1].Info !== ""){
                         procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
@@ -149,6 +153,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             }
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
+            $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign);
             //completed steps

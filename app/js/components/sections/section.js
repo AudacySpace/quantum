@@ -79,6 +79,9 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                         $scope.steps = procedureService.openNextSteps($scope.steps,a);
                     }
                 }
+                procedureService.getProcedureList().then(function(response) {
+                    $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
+                 });
 
                 $scope.steps = procedureService.getCompletedSteps($scope.steps); 
                 if($scope.steps[$scope.steps.length-1].Info !== ""){
@@ -130,6 +133,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     comments:""
                 });
             }
+
+            $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
 
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign); 
@@ -729,7 +734,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.liveInstanceinterval);
-            $interval.cancel($scope.activeUsersInterval);    
+            $interval.cancel($scope.activeUsersInterval);  
         }
     );
 

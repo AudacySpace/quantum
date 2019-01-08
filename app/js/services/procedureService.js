@@ -279,31 +279,73 @@ quantum
                 }
             }
 
-            //check for dependent procedures
-            for(var b=0;b<psteps.length;b++){
-                if(psteps[b].Procedures){
-                    var dependentProcedures = getDependentProcedures(psteps[b]);
-                    var listProcs = checkStepProceduresExist(dependentProcedures);
-                    // for(var k=0;k<dependentProcedures.length;k++){
-                    //     for(var j=0;j<listProcs.length;j++){
-                    //         if(dependentProcedures[k] === listProcs[j].id){
-                    //             listProcs[j].exists = true;
-                    //         }else if(dependentProcedures[k] !== listProcs[j].id && j === listProcs.length - 1){
-                    //             listProcs[j].exists = false;
-                    //         }
-                    //     }
-                    // }
-                    checkStepProceduresExist(dependentProcedures);
-                    psteps[b].dependentProcedures = getListOfProcs();
-                    console.log(psteps[b].dependentProcedures);
-                }
-            }
-
         }else {
             psteps = [];
             callsign = "";
         }
         return psteps;
+    }
+
+    function getValidLinks(procList,steps){
+        //check for dependent procedures
+        for(var a=0;a<steps.length;a++){
+            if(steps[a].Procedures){
+                steps[a].dependentProcedures = [];
+                var listOfProcs = [];
+                var dependentProcedures = getDependentProcedures(steps[a]);
+                for(var b=0;b<dependentProcedures.length;b++){
+                    for(var c=0;c<procList.length;c++){
+                        if(dependentProcedures[b] === procList[c].procedureID){
+                            if(procList[c].instances.length > 0){
+                                var running = 0;
+                                for(var i=0;i<procList[c].instances.length;i++){
+                                    if(procList[c].instances[i].running === true){
+                                        running++;
+                                    }
+                                }
+                                if(running > 0){
+                                    listOfProcs.push({
+                                        "id":procList[c].procedureID,
+                                        "version":procList[c].versions.length,
+                                        "revision":procList[c].instances.length,
+                                        "running":running,
+                                        "exists":true
+                                    });
+                                }else {
+                                    listOfProcs.push({
+                                        "id":procList[c].procedureID,
+                                        "version":procList[c].versions.length,
+                                        "revision":procList[c].instances.length,
+                                        "running":0,
+                                        "exists":true
+                                    });
+                                }
+                            }else {
+                                listOfProcs.push({
+                                    "id":procList[c].procedureID,
+                                    "version":procList[c].versions.length,
+                                    "revision":procList[c].instances.length,
+                                    "running":0,
+                                    "exists":true
+                                });
+                            }
+                        }else if(c === procList.length -1 && dependentProcedures[b] !== procList[c].procedureID && ifFound(listOfProcs,dependentProcedures[b]) === false){
+                            listOfProcs.push({
+                                "id":dependentProcedures[b],
+                                "version":"",
+                                "revision":"",
+                                "running":0,
+                                "exists":false
+                            });
+                        }
+                    }
+                }
+                steps[a].dependentProcedures = listOfProcs;
+            }else {
+                 steps[a].dependentProcedures = [];
+            }
+        }
+        return steps;
     }
 
     function showPList(id,index,headertype,liststeps){
@@ -711,44 +753,6 @@ quantum
         return validRoles;
     }
 
-    function setListOfProcs(listOfProcs){
-        procLinks.listOfProcs = listOfProcs;
-    }
-
-    function getListOfProcs(){
-        return procLinks;
-    }
-
-    function checkStepProceduresExist(procedureNums){
-        var listOfProcs = [];
-        getProcedureList().then(function(response){
-            if(response){
-                //check if step's procedures exist in this list
-                for(var b=0;b<procedureNums.length;b++){
-                    console.log(procedureNums[b]);
-                    for(var c=0;c<response.data.length;c++){
-                        if(procedureNums[b] === response.data[c].procedureID){
-                            listOfProcs.push({
-                                "id":response.data[c].procedureID,
-                                "version":response.data[c].versions.length,
-                                "revision":response.data[c].instances.length,
-                                "exists":true
-                            });
-                        }else if(c === response.data.length -1 && procedureNums[b] !== response.data[c].procedureID && ifFound(listOfProcs,procedureNums[b]) === false){
-                            listOfProcs.push({
-                                "id":procedureNums[b],
-                                "version":"",
-                                "revision":"",
-                                "exists":false
-                            });
-                        }
-                    }
-                }
-                setListOfProcs(listOfProcs);
-            }
-        });
-    }
-
     function getDependentProcedures(step){
         var stepProcedures = [];
         var stepProceduresParams = [];
@@ -809,6 +813,7 @@ quantum
         updateProcedureName : updateProcedureName,
         getQuantumRoles : getQuantumRoles,
         setQuantumRoles : setQuantumRoles,
-        getValidRoles : getValidRoles
+        getValidRoles : getValidRoles,
+        getValidLinks : getValidLinks
     }
 }]);

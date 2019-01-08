@@ -46,12 +46,16 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                                 if(newVersion[b].hasOwnProperty("Reference") && newVersion[b].Reference.length > 0){
                                     $scope.steps[b].Reference = newVersion[b].Reference;
                                 }
+                                if(newVersion[b].hasOwnProperty("Procedures") && newVersion[b].Procedures.length > 0){
+                                    $scope.steps[b].Procedures = newVersion[b].Procedures;
+                                }
                                 
                             }
                         }
                     }
                 }
                 procedureService.setProcedureName($scope.params.procID, $scope.procedure.name,"AS-Run Archive");
+                $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
