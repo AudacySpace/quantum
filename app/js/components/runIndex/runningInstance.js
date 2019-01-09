@@ -74,8 +74,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     // var users = setActiveUsers(response.data.users);
                     // var usersroles = setActiveUsersRole(users);
 
-                    procedureService.getProcedureList().then(function(response) {
-                        $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
+                    procedureService.getProcedureList().then(function(res) {
+                        $scope.steps = procedureService.getValidLinks(res.data,$scope.steps);
                     });
 
                     $scope.steps = procedureService.getCompletedSteps($scope.steps);
