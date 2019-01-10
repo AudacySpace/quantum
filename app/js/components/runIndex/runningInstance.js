@@ -50,6 +50,19 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    $scope.createNewProc = function(pid){
+        $scope.clock = timeService.getTime();
+        var starttime = $scope.clock.year+" - "+$scope.clock.utc;
+        var emailaddress = userService.getUserEmail();
+        var userstatus = true;
+
+        procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
+            if(response.status === 200){
+                procedureService.setCurrentViewRevision(response.data.revision);
+            }
+        });
+    }
+
     $scope.updateLiveInstance = function(){
         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){

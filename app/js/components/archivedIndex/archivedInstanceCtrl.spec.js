@@ -224,7 +224,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: 'Heading', 
                     Content: 'Pre-Action Safety Information', 
                     Role: 'MD', 
-                    Info: '034.11:26:35 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:35 UTC Taruni Gattu(VIP)',
+                    dependentProcedures: [  ]
                 }, 
                 {   
                     step: '1.1', 
@@ -234,7 +235,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
                     Role: 'MD', 
                     Info: '034.11:26:36 UTC Taruni Gattu(VIP)',
-                    Reference: 'http://somewhere on the net'
+                    Reference: 'http://somewhere on the net',
+                    dependentProcedures: [  ]
                 }, 
                 {   
                     step: '1.2', 
@@ -243,7 +245,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: 'Action', 
                     Content: 'Make required safety announcement on VL-AZERO', 
                     Role: 'MD', 
-                    Info: '034.11:26:37 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:37 UTC Taruni Gattu(VIP)',
+                    dependentProcedures: [  ]
                 }, 
                 {   
                     step: '2.0', 
@@ -252,7 +255,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: undefined, 
                     Content: 'Close Procedure', 
                     Role: 'MD', 
-                    Info: '034.11:26:38 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:38 UTC Taruni Gattu(VIP)',
+                    dependentProcedures: [  ]
                 }, 
                 {
                     step: '2.1.0', 
@@ -261,7 +265,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: 'Action', 
                     Content: 'Update the shift log with procedure close status / notes', 
                     Role: 'MD', 
-                    Info: '034.11:26:39 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:39 UTC Taruni Gattu(VIP)',
+                    dependentProcedures: [  ]
                 }, 
                 {   step: '2.1.1', 
                     info: '034.11:26:40 UTC Taruni Gattu(VIP)', 
@@ -269,7 +274,8 @@ describe('Test Suite for Archived Instance Controller', function () {
                     Type: 'Action', 
                     Content: 'Close the procedure in Quantum (complete this step)', 
                     Role: 'MD', 
-                    Info: '034.11:26:40 UTC Taruni Gattu(VIP)'
+                    Info: '034.11:26:40 UTC Taruni Gattu(VIP)',
+                    dependentProcedures: [  ]
                 }
             ];
 
@@ -803,15 +809,61 @@ describe('Test Suite for Archived Instance Controller', function () {
     });
 
     it('should call the service to get all procedures', function() {
+        var newres1 = [
+            {   
+
+                Step: '1.0',
+                Type: 'Heading', 
+                Content: 'Pre-Action Safety Information', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }, 
+            {   
+                Step: '1.1', 
+                Type: 'Warning', 
+                Content: 'Review applicable safety information, from documents located in Mission Specific Release Folder. Failure to consider guidelines may result in personal injury or death.', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }, 
+            {   
+                Step: '1.2',
+                Type: 'Action', 
+                Content: 'Make required safety announcement on VL-AZERO', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }, 
+            {   
+                Step: '2.0', 
+                Type: 'Action', 
+                Content: 'Close Procedure', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }, 
+            {
+                Step: '2.1.0', 
+                Type: 'Action', 
+                Content: 'Update the shift log with procedure close status / notes', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }, 
+            {   
+                Step: '2.1.1', 
+                Type: 'Action', 
+                Content: 'Close the procedure in Quantum (complete this step)', 
+                Role: 'MD', 
+                dependentProcedures: []
+            }
+        ];
 
         deferredProcedureList.resolve({ data : result,status: 200});
+        spyOn(procedureService, "getValidLinks").and.returnValue(newres1);
     
         // We have to call digest cycle for this to work
         scope.$digest();
         expect(scope.steps).toBeDefined();
         expect(procedureService.getProcedureList).toHaveBeenCalled();
-
-        expect(procedureService.getProcedureSection).toHaveBeenCalledWith(stepsT,scope.role.cRole.callsign);
+        expect(procedureService.getValidLinks).toHaveBeenCalled();
+        expect(procedureService.getProcedureSection).toHaveBeenCalledWith(newres1,scope.role.cRole.callsign);
         expect(procedureService.disableSteps).toHaveBeenCalledWith(procSectionSteps);
         expect(scope.steps).toEqual(steps);
 
