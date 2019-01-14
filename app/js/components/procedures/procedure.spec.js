@@ -4,7 +4,11 @@ describe('Test Suite for Procedure Controller', function () {
         innerWidth: 1000,
         user : {
             currentRole : {callsign : 'MD'}
+        },
+        location:{
+            pathname:""
         }
+
     };
 
     var modalInstance = { open: function() {} };
@@ -1308,7 +1312,7 @@ describe('Test Suite for Procedure Controller', function () {
         scope.changeColor("Live","1.1","Procedure Example",true);
         expect(procedureService.saveProcedureInstance).toHaveBeenCalledWith('1.1','John Smith(MD)','2018 - 070.10:10:50 UTC','John Smith',"jsmith@gmail.com",true);
         expect(procedureService.setHeaderStyles).toHaveBeenCalledWith('none','block','#05aec3f2','#ffffff','none','inline-block',1000);
-        expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Open Procedure");
+        expect(procedureService.setProcedureName).toHaveBeenCalledWith("1.1","Procedure Example","Live");
         expect(timeService.getTime).toHaveBeenCalled();
     });
 

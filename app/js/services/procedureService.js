@@ -1,5 +1,5 @@
 quantum
-.factory('procedureService', ['$http','$window','$mdToast','userService', function($http,$window,$mdToast,userService) {
+.factory('procedureService', ['$http','$window','$mdToast','userService','$rootScope', function($http,$window,$mdToast,userService,$rootScope) {
 
     var procedure = {
         id:"",
@@ -26,6 +26,14 @@ quantum
         callsigns:""
     }
 
+    var procLinks = {
+        listOfProcs: []
+    }
+
+    var procs = {
+        revisions:[]
+    }
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -35,27 +43,29 @@ quantum
     }
 
     function setProcedureName(id,name,status){
-        // var procedureFullName = name.split(" - ");
-        // var procedureGrpname = procedureFullName[0];
-        // var procedureTitle = procedureFullName[1];
-        // if(procedureFullName.length > 2){
-        //     var procTitle = procedureFullName.splice(1,procedureFullName.length-1);
-        //     procedureTitle = procTitle.join(" - ");
-        // }
-        
+        var loc = $window.location.pathname;
+        var revNumOp = loc.split("/");
         if(status !== 'Home'){
             procedure.id = id;
             procedure.name = name;
             procedure.status = status;
             procedure.fullname = status+":"+id+" - "+name;
-            // procedure.tabname = id+' - '+procedureTitle;
-            // procedure.tabname = id+' - '+name;
+            //get tab title based on url
+            if(revNumOp.length === 5){
+                if(revNumOp.includes("running")){
+                    $rootScope.title = "Live Index - "+id+" | Quantum";
+                }else if(revNumOp.includes("archived")){
+                    $rootScope.title = "Archive Index - "+id+" | Quantum";
+                }
+            }else {
+                $rootScope.title = "Procedure "+id+" | Quantum ";
+            }  
         }else {
             procedure.id = "";
             procedure.name = "";
             procedure.status = "";
             procedure.fullname = "";
-            // procedure.tabname = "Quantum";
+            $rootScope.title = "Quantum";
         }
     }
 
@@ -282,6 +292,71 @@ quantum
         return psteps;
     }
 
+    function getValidLinks(procList,steps){
+        //check for dependent procedures
+        for(var a=0;a<steps.length;a++){
+            if(steps[a].Procedures){
+                steps[a].dependentProcedures = [];
+                var listOfProcs = [];
+                var dependentProcedures = getDependentProcedures(steps[a]);
+                for(var b=0;b<dependentProcedures.length;b++){
+                    for(var c=0;c<procList.length;c++){
+                        if(dependentProcedures[b] === procList[c].procedureID){
+                            if(procList[c].instances.length > 0){
+                                var running = 0;
+                                var latestInstance;
+                                for(var i=0;i<procList[c].instances.length;i++){
+                                    if(procList[c].instances[i].running === true){
+                                        running++;
+                                        latestInstance = procList[c].instances[i].revision;
+                                    }
+                                }
+
+                                if(running > 0){
+                                    listOfProcs.push({
+                                        "id":procList[c].procedureID,
+                                        "version":procList[c].versions.length,
+                                        "revision":latestInstance,
+                                        "running":running,
+                                        "exists":true
+                                    });
+                                }else {
+                                    listOfProcs.push({
+                                        "id":procList[c].procedureID,
+                                        "version":procList[c].versions.length,
+                                        "revision":"",
+                                        "running":0,
+                                        "exists":true
+                                    });
+                                }
+                            }else {
+                                listOfProcs.push({
+                                    "id":procList[c].procedureID,
+                                    "version":procList[c].versions.length,
+                                    "revision":"",
+                                    "running":0,
+                                    "exists":true
+                                });
+                            }
+                        }else if(c === procList.length -1 && dependentProcedures[b] !== procList[c].procedureID && ifFound(listOfProcs,dependentProcedures[b]) === false){
+                            listOfProcs.push({
+                                "id":dependentProcedures[b],
+                                "version":"",
+                                "revision":"",
+                                "running":0,
+                                "exists":false
+                            });
+                        }
+                    }
+                }
+                steps[a].dependentProcedures = listOfProcs;
+            }else {
+                 steps[a].dependentProcedures = [];
+            }
+        }
+        return steps;
+    }
+
     function showPList(id,index,headertype,liststeps){
         if(id !== "" && index !== "" && headertype !== "" && liststeps.length > 0){
             if(headertype === "mainheader"){
@@ -421,13 +496,20 @@ quantum
     function getCompletedSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
-                if(steps[d].Info !== ""){
-                    steps[d].rowstyle = {
-                        rowcolor : {
-                            backgroundColor:'#c6ecc6'
-                        }
-                    };
-                    steps[d].chkval = true;
+                if(steps[d].Info){
+                    if(steps[d].Info.length > 0){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#c6ecc6'
+                            }
+                        };
+                        steps[d].chkval = true;
+                    }else {
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#e9f6fb'}
+                        };
+                        steps[d].chkval = false;
+                    }
                 }else {
                     steps[d].rowstyle = {
                         rowcolor : {backgroundColor:'#e9f6fb'}
@@ -687,6 +769,41 @@ quantum
         return validRoles;
     }
 
+    function getDependentProcedures(step){
+        var stepProcedures = [];
+        var stepProceduresParams = [];
+        var stepProc = "";
+        if(step.Procedures.length > 0){
+            stepProc = step.Procedures.replace(/\s/g, '');
+            if(stepProc.includes(",")){
+                stepProcedures = stepProc.split(",");
+                return stepProcedures;
+            }
+        }
+    }
+
+    function ifFound(procList,elem){
+        var found = false;
+        for(var i = 0; i < procList.length; i++) {
+            if (procList[i].id == elem) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    function setprocRevisions(procid,revision){
+        procs.revisions.push({
+            "procId":procid,
+            "revision":revision
+        });
+    }
+
+    function getprocRevisions(){
+        return procs;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -723,6 +840,9 @@ quantum
         updateProcedureName : updateProcedureName,
         getQuantumRoles : getQuantumRoles,
         setQuantumRoles : setQuantumRoles,
-        getValidRoles : getValidRoles
+        getValidRoles : getValidRoles,
+        getValidLinks : getValidLinks,
+        setprocRevisions : setprocRevisions,
+        getprocRevisions : getprocRevisions
     }
 }]);

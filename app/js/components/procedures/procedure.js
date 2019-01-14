@@ -573,7 +573,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         if(status === "Live" && createInstance === true){
             $scope.clock = timeService.getTime();
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
-            procedureService.setProcedureName(pid,ptitle,"Open Procedure");
+            procedureService.setProcedureName(pid,ptitle,"Live");
             $scope.role = userService.userRole;
             $scope.name = userService.getUserName();
             $scope.usernamerole =  $scope.name +"("+$scope.role.cRole.callsign+")";
@@ -584,6 +584,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
             procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
                 if(response.status === 200){
                     procedureService.setCurrentViewRevision(response.data.revision);
+                    procedureService.setprocRevisions(pid,response.data.revision);
                 }
             });
         }else if(status === "Live" && createInstance === false){
