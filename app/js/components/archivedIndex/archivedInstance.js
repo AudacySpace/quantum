@@ -1,4 +1,4 @@
-quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService,$window,dashboardService,$location,$rootScope) {
+quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$routeParams,userService,$window,dashboardService,$location,$rootScope,timeService) {
     $scope.params = $routeParams;
     $scope.role = userService.userRole;
     $scope.procedure = procedureService.getProcedureName();
@@ -46,12 +46,16 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                                 if(newVersion[b].hasOwnProperty("Reference") && newVersion[b].Reference.length > 0){
                                     $scope.steps[b].Reference = newVersion[b].Reference;
                                 }
+                                if(newVersion[b].hasOwnProperty("Procedures") && newVersion[b].Procedures.length > 0){
+                                    $scope.steps[b].Procedures = newVersion[b].Procedures;
+                                }
                                 
                             }
                         }
                     }
                 }
                 procedureService.setProcedureName($scope.params.procID, $scope.procedure.name,"AS-Run Archive");
+                $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
@@ -72,6 +76,21 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
 
         }
+    }
+
+
+    $scope.createNewProc = function(pid){
+        $scope.clock = timeService.getTime();
+        var starttime = $scope.clock.year+" - "+$scope.clock.utc;
+        var emailaddress = userService.getUserEmail();
+        var userstatus = true;
+
+        procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
+            if(response.status === 200){
+                procedureService.setCurrentViewRevision(response.data.revision);
+                procedureService.setprocRevisions(pid,response.data.revision);
+            }
+        });
     }
 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  

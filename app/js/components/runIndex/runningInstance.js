@@ -50,6 +50,20 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    $scope.createNewProc = function(pid){
+        $scope.clock = timeService.getTime();
+        var starttime = $scope.clock.year+" - "+$scope.clock.utc;
+        var emailaddress = userService.getUserEmail();
+        var userstatus = true;
+
+        procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
+            if(response.status === 200){
+                procedureService.setCurrentViewRevision(response.data.revision);
+                procedureService.setprocRevisions(pid,response.data.revision);
+            }
+        });
+    }
+
     $scope.updateLiveInstance = function(){
         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){
@@ -65,7 +79,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                             $scope.steps[a].comments = response.data.Steps[a].comments;
                         }
 
-                        if($scope.steps[a].Info !== ""){
+                        if($scope.steps[a].Info && $scope.steps[a].Info.length > 0){
                             $scope.steps[a].chkval = true;
                             $scope.steps = procedureService.openNextSteps($scope.steps,a);
                         }
@@ -73,6 +87,10 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
                     // var users = setActiveUsers(response.data.users);
                     // var usersroles = setActiveUsersRole(users);
+
+                    procedureService.getProcedureList().then(function(res) {
+                        $scope.steps = procedureService.getValidLinks(res.data,$scope.steps);
+                    });
 
                     $scope.steps = procedureService.getCompletedSteps($scope.steps);
                     if($scope.steps[$scope.steps.length-1].Info !== ""){
@@ -118,28 +136,6 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                         }
 
                         var newVersion = response.data[i].versions[parseInt($scope.params.versionID) - 1];
-                        // for(var b=0;b<response.data[i].sections.length;b++){
-                        //     if($scope.steps[b].step === response.data[i].sections[b].Step){
-                        //         $scope.steps[b].Step = response.data[i].sections[b].Step
-                        //         $scope.steps[b].Type = response.data[i].sections[b].Type;
-                        //         $scope.steps[b].Content = response.data[i].sections[b].Content;
-                        //         $scope.steps[b].Role = response.data[i].sections[b].Role;
-                        //         $scope.steps[b].Reference = response.data[i].sections[b].Reference;
-                        //         $scope.steps[b].Info = $scope.steps[b].info;
-
-                        //         $scope.inputStepValues.push({
-                        //             snum:$scope.steps[b].Step,
-                        //             ivalue:""
-                        //         });
-
-                        //         $scope.tempValues.push({
-                        //             snum:$scope.steps[b].Step,
-                        //             ivalue:"",
-                        //             comments:""
-                        //         });
-                        //     }
-                        // }
-
                         for(var b=0;b<newVersion.length;b++){
                             if($scope.steps[b].step === newVersion[b].Step){
                                 $scope.steps[b].Step = newVersion[b].Step
@@ -150,6 +146,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                                    $scope.steps[b].Reference = newVersion[b].Reference; 
                                 }
                                 $scope.steps[b].Info = $scope.steps[b].info;
+                                if(newVersion[b].hasOwnProperty("Procedures") && newVersion[b].Procedures.length > 0){
+                                   $scope.steps[b].Procedures = newVersion[b].Procedures; 
+                                }
 
                                 $scope.inputStepValues.push({
                                     snum:$scope.steps[b].Step,
@@ -168,6 +167,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             }
             procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"Live");
+            $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
             $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
             $scope.steps = procedureService.openFirstStep($scope.steps,$scope.role.cRole.callsign);
             //completed steps

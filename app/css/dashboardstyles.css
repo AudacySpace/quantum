@@ -47,6 +47,18 @@ button.md-button {
     color: #337ab7 !important;
 }
 
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 10px;
+/*  border-radius: 0;
+  outline: 0.5px solid #1e5180 !important;*/
+}
+
 .navbar {
     border: 0 none;
 /*    border-bottom: 1px solid #CFCFD5;*/

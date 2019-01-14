@@ -1,4 +1,4 @@
-quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService,$rootScope) {
+quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams,$window,dashboardService,$location,userService,$rootScope,$route) {
     $scope.params = $routeParams;
     $scope.sortType = 'startedAt'; // set the default sort type
     $scope.sortReverse = true;  // set the default sort order
@@ -44,6 +44,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
  
         if(revNumOp.length === 7 && revNumOp[3] === "runninginstance"){
             $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum";
+            $scope.params.procID = revNumOp[4];
             currentRevision = parseInt(revNumOp[6]);
             status = true
             procedureService.setCurrentViewRevision(currentRevision);
