@@ -59,6 +59,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
             if(response.status === 200){
                 procedureService.setCurrentViewRevision(response.data.revision);
+                procedureService.setprocRevisions(pid,response.data.revision);
             }
         });
     }
@@ -78,7 +79,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                             $scope.steps[a].comments = response.data.Steps[a].comments;
                         }
 
-                        if($scope.steps[a].Info !== ""){
+                        if($scope.steps[a].Info && $scope.steps[a].Info.length > 0){
                             $scope.steps[a].chkval = true;
                             $scope.steps = procedureService.openNextSteps($scope.steps,a);
                         }

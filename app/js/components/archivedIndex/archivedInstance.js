@@ -88,6 +88,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
             if(response.status === 200){
                 procedureService.setCurrentViewRevision(response.data.revision);
+                procedureService.setprocRevisions(pid,response.data.revision);
             }
         });
     }

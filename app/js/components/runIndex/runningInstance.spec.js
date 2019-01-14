@@ -4,6 +4,9 @@ describe('Test Suite for Run Instance Controller', function () {
         innerWidth: 1000,
         user : {
             currentRole : {callsign : 'MD'}
+        },
+        location:{
+            pathname:""
         }
     };
 

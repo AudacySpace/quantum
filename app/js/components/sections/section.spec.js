@@ -5,6 +5,9 @@ describe('Test Suite for Section Controller', function () {
         user : {
             currentRole : {callsign : 'MD'}
         },
+        location:{
+            pathname:""
+        }
     };
 
     var modalInstance = { open: function() {} };

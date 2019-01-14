@@ -2,6 +2,9 @@ describe('Test Suite for Procedure Service', function () {
     var windowMock = {
         user : {
             currentRole : {}
+        },
+        location: {
+            pathname:""
         }
     };
 
@@ -1865,7 +1868,7 @@ describe('Test Suite for Procedure Service', function () {
                                 {
                                     "id":"1.2",
                                     "version":1,
-                                    "revision":1,
+                                    "revision":"",
                                     "running":0,
                                     "exists":true
                                 },
@@ -1900,7 +1903,7 @@ describe('Test Suite for Procedure Service', function () {
                                 {
                                     "id":"1.2",
                                     "version":1,
-                                    "revision":1,
+                                    "revision":"",
                                     "running":0,
                                     "exists":true
                                 }

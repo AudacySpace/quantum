@@ -17,7 +17,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         }
     }
     var users;
-    $scope.currentRevision = procedureService.getCurrentViewRevision();
+    getCurrentPageRevision();
     $scope.liveInstanceinterval = "";
     $scope.procedure = procedureService.getProcedureName();
     var mission = 'Quantum';
@@ -59,6 +59,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         procedureService.saveProcedureInstance(pid,$scope.usernamerole,starttime,$scope.name,emailaddress,userstatus).then(function(response){
             if(response.status === 200){
                 procedureService.setCurrentViewRevision(response.data.revision);
+                procedureService.setprocRevisions(pid,response.data.revision);
             }
         });
     }
@@ -74,7 +75,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     if(response.data.Steps[a].hasOwnProperty("comments")){
                         $scope.steps[a].comments = response.data.Steps[a].comments; 
                     }
-                    if($scope.steps[a].Info !== ""){
+                    if($scope.steps[a].Info && $scope.steps[a].Info.length > 0){
                         $scope.steps[a].chkval = true;
                         $scope.steps = procedureService.openNextSteps($scope.steps,a);
                     }
@@ -82,8 +83,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                 procedureService.getProcedureList().then(function(res) {
                     $scope.steps = procedureService.getValidLinks(res.data,$scope.steps);
                  });
-
-                $scope.steps = procedureService.getCompletedSteps($scope.steps); 
+                $scope.steps = procedureService.getCompletedSteps($scope.steps);
                 if($scope.steps[$scope.steps.length-1].Info !== ""){
                     procedureService.setProcedureName($scope.params.procID,$scope.procedure.name,"AS-Run Archive");
                     procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
@@ -105,6 +105,18 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
     $scope.activeUsersInterval = $interval($scope.updateActiveUsers,1000);
+
+    function getCurrentPageRevision(){
+        var procRevisions = procedureService.getprocRevisions();
+        // for(var i=0;i<procRevisions.revisions.length;i++){
+        for(var i=procRevisions.revisions.length-1;i>=0;i--){
+            if($scope.params.procID === procRevisions.revisions[i].procId){
+                    procedureService.setCurrentViewRevision(procRevisions.revisions[i].revision);
+                    break;
+                }
+            }
+        $scope.currentRevision = procedureService.getCurrentViewRevision();
+    }
 
 	function viewProcedure(){
         $scope.inputStepValues = [];
@@ -762,6 +774,8 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 
         if(revNumOp.length === 2 || revNumOp.length === 5){
             if(revNumOp.length === 2){
+                procedureService.setProcedureName('','',"Home");
+                procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
                 $rootScope.title = "Quantum";
             }else if(revNumOp.length === 5){
                 if(revNumOp.includes("running")){
@@ -770,6 +784,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
                     $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
                 }
             }
+
             var procRev = procedureService.getCurrentViewRevision();
             currentRevision = procRev.value;
             status = false;

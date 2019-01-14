@@ -4,6 +4,9 @@ describe('Test Suite for Archived Instance Controller', function () {
         innerWidth: 1000,
         user : {
             currentRole : {callsign : 'MD'}
+        },
+        location:{
+            pathname:""
         }
     };
 
