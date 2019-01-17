@@ -32,7 +32,7 @@ To keep some sensitive information like database URL, SSL certificates, and othe
 
 After you unlock the git-crypt locked file inside the docker container, you can also unlock the git-crypt locked file in your working directory if you want to view the files.
 
-##### To unlock the git-crypt locked file in working directory.
+##### To unlock the git-crypt locked file in working directory.Here git-crypt-keys is the folder name where the key exists.
 
 ```
 cd ~/quantum
