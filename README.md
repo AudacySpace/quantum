@@ -28,31 +28,9 @@ docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /
 
 ### Unlock environment configuration
 
-To keep some sensitive information like database URL, SSL certificates, and other configuration private, we use [git-crypt](https://www.agwa.name/projects/git-crypt/).
+To keep some sensitive information like database URL, SSL certificates, and other configuration private, we use [git-crypt](https://www.agwa.name/projects/git-crypt/).Follow how to install git-crypt and unlock the files using information [here](https://apps.audacy.space:8443/display/SOFT/Encrypt+Github+files).
 
-#### For Mac
-
-Install git-crypt using homebrew
-
-```
-brew install git-crypt
-```
-
-#### For Windows
-
-Install git-crypt using the instructions [here](https://github.com/oholovko/git-crypt-windows).
-
-#### Using git-crypt key to unlock environment variables
-
-Git-crypt key for Quantum is available in TeamFolder/Software/Security in google drive. Download the crypt-quantum-key from the folder to git-crypt-keys folder in your local.
-
-##### To unlock the git-crypt locked file inside the docker container.
-
-```
-cd ~/git-crypt-keys/crypt-quantum-key
-docker cp crypt-quantum-key quantum:/crypt-quantum-key
-docker exec quantum git-crypt unlock /crypt-quantum-key
-```
+After you unlock the git-crypt locked file inside the docker container, you can also unlock the git-crypt locked file in your working directory if you want to view the files.
 
 ##### To unlock the git-crypt locked file in working directory.
 
