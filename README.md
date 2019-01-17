@@ -14,7 +14,7 @@ Install the pre-requisites on the host server to run the dockerized container of
 ### Clone repository 
 
 ```
-git clone https://github.com/quindar/quantum
+git clone https://github.com/AudacySpace/quantum.git
 ```
 
 ### Build the container
@@ -22,7 +22,8 @@ git clone https://github.com/quindar/quantum
 ```
 cd ~/quantum
 docker build -t quantum-app .
-docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
+npm install
+docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quantum-app
 ```
 
 The quantum GUI will be running on https://HOSTNAME
