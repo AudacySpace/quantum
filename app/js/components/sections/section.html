@@ -57,7 +57,7 @@
                             <span class="caret" ng-show="proc.exists"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)" ng-show="role.cRole.callsign !== 'VIP'">Open new instance</a></li>
                             <li role="presentation" ng-show="proc.running > 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/running/{{proc.id}}" >Open Live index</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/archived/{{proc.id}}">Open Archive index</a></li>
@@ -80,7 +80,7 @@
                             <span class="caret" ng-show="proc.exists"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)" ng-show="role.cRole.callsign !== 'VIP'">Open new instance</a></li>
                             <li role="presentation" ng-show="proc.running > 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/running/{{proc.id}}" >Open Live index</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/archived/{{proc.id}}">Open Archive index</a></li>
@@ -105,7 +105,7 @@
                             <span class="caret" ng-show="proc.exists"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)" ng-show="role.cRole.callsign !== 'VIP'">Open new instance</a></li>
                             <li role="presentation" ng-show="proc.running > 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/running/{{proc.id}}" >Open Live index</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/archived/{{proc.id}}">Open Archive index</a></li>
@@ -125,7 +125,7 @@
                             <span class="caret" ng-show="proc.exists"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)" ng-show="role.cRole.callsign !== 'VIP'">Open new instance</a></li>
                             <li role="presentation" ng-show="proc.running > 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/running/{{proc.id}}" >Open Live index</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/archived/{{proc.id}}">Open Archive index</a></li>
@@ -145,7 +145,7 @@
                             <span class="caret" ng-show="proc.exists"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-show="proc.exists">
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)">Open new instance</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/{{proc.id}}" ng-click="createNewProc(proc.id)" ng-show="role.cRole.callsign !== 'VIP'">Open new instance</a></li>
                             <li role="presentation" ng-show="proc.running > 0"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/runninginstance/{{proc.id}}/{{proc.version}}/{{proc.revision}}">Open latest instance</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/running/{{proc.id}}" >Open Live index</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="/dashboard/procedure/archived/{{proc.id}}">Open Archive index</a></li>
