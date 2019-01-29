@@ -4,12 +4,14 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope) {
+  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope,$mdSidenav,$scope) {
 
         var email = userService.getUserEmail();
         var mission = {
             name : 'Quantum'
         };
+
+         $scope.locks = dashboardService.getLock();
 
         //add user to the Quantum mission for role assignment
         function setMissionForUser(mname){
@@ -30,6 +32,7 @@ angular.module('quantum')
     	$ctrl.header = procedureService.getHeaderStyles();
     	$ctrl.icons = procedureService.getIconStyles();
         $rootScope.title = "Quantum";
+        $ctrl.userList = userService.getOnlineUsers();
       
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
@@ -124,5 +127,35 @@ angular.module('quantum')
                 }
             }
         };
+
+        // $scope.initSlider = function () {
+        //     angular.element(document).ready(function () {
+        //         $('#bootrightsidemenu').BootSideMenu({
+        //             side: 'right',
+        //             icons:{
+        //                 left:'glyphicon glyphicon-menu-left',
+        //                 right:'glyphicon glyphicon-menu-right',
+        //                 down:'glyphicon glyphicon-menu-down'
+        //             }
+        //         });
+        //     });
+        // };
+
+        // $scope.initSlider();
+
+    $ctrl.openRightNav = function(){
+        if($window.innerWidth < 800){
+            if ($window.innerWidth < 800){
+                $mdSidenav('right').open();
+            } else {
+                $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                dashboardService.setRightLock($ctrl.locks.lockRight); 
+            }
+        }else {
+            console.log($ctrl.locks.lockRight);
+            $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+            dashboardService.setRightLock($ctrl.locks.lockRight);
+        }
+    }
 	}
 });
