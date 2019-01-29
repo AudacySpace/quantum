@@ -38,17 +38,6 @@
                                     <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'"><span class="fa fa-user-plus" style="padding-right: 5px"></span><span>User Administration</span></a></li>
                                 </ul>
                             </li>
-<!--                             <li id="headerright">
-                                <a href="#" id="add-widget" class="dropdown-toggle" data-toggle="dropdown" ng-click="$ctrl.openRightNav()"> 
-                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li ><a href="" ng-click="$ctrl.logout($event)" class="userSettings" target="_self"><span class="fa fa-upload" style="padding-right: 5px"></span><span>Upload</span></a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings"><span class="fa fa-users" style="padding-right: 5px"></span><span>Users</span></a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings"><span class="fa fa-list" style="padding-right: 5px"></span><span>Live Index</span></a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings"><span class="fa fa-archive" style="padding-right: 5px"></span><span>Archive Index</span></a></li>
-                                </ul>
-                            </li> -->
                         </ul>
                     </div>
                 </nav>
@@ -56,7 +45,7 @@
                 <!--Procedures -->
                 <div class="container-fluid procedurescontainer">
                     <div ng-view></div>
-                    <div class="bootrightsidemenu bootsidemenu default bootsidemenu-right" ng-click="$ctrl.openRightNav()">
+                    <div class="bootrightsidemenu bootsidemenu default bootsidemenu-right" ng-click="$ctrl.openRightNav()">     
                         <div class="toggler" data-whois="toggler"><span class="glyphicon glyphicon-menu-right icon">&nbsp;</span></div>
                     </div>
 
