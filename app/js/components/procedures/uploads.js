@@ -1,7 +1,6 @@
 quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeService,userService,Upload,$mdDialog) {
-    var $ctrl = this;
     $scope.role = userService.userRole;
-     $scope.name = userService.getUserName();
+    $scope.name = userService.getUserName();
 
     $scope.submit = function(){ 
         // Call upload if form is valid
@@ -56,7 +55,6 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
                     }
                 }
             } else {
-                console.log("HERE");
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
@@ -469,9 +467,10 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
         });
     };
 
-    // $ctrl.close = function() {
-    //     $uibModalInstance.dismiss('cancel');
-    // };
+    $scope.download = function(){ 
+        var file = new Blob([s2ab(filedata.data)], { type: "application/octet-stream" });
+        FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
+    }
 
     function confirmProcedureUpdate(messages){
          //Ask user to update or not
@@ -493,25 +492,7 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
         });
     }
 
-      $scope.answer = function(answer) {
-      $mdDialog.hide(answer);
-    };
-
 });
-
-// quantum.controller('confirmationCtrl',function($scope,$uibModalInstance,usermessage,filedata) {
-//     var $ctrl = this;
-//     $ctrl.modalLabel = usermessage.confirmMsg;
-
-//     $ctrl.close = function() {
-//         $uibModalInstance.dismiss('cancel');
-//     };
-
-//     $ctrl.save = function(){
-//         $uibModalInstance.close(filedata,true);
-//     }
-
-// });
 
 
 
