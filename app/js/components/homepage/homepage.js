@@ -4,7 +4,7 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope) {
+  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope,$mdSidenav) {
 
         var email = userService.getUserEmail();
         var mission = {
@@ -30,6 +30,8 @@ angular.module('quantum')
     	$ctrl.header = procedureService.getHeaderStyles();
     	$ctrl.icons = procedureService.getIconStyles();
         $rootScope.title = "Quantum";
+        $ctrl.userList = userService.getOnlineUsers();
+        $ctrl.locks = dashboardService.getLock();
       
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
@@ -124,5 +126,19 @@ angular.module('quantum')
                 }
             }
         };
+
+        $ctrl.openRightNav = function(){
+            if($window.innerWidth < 800){
+                if ($window.innerWidth < 800){
+                    $mdSidenav('right').open();
+                } else {
+                    $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                    dashboardService.setRightLock($ctrl.locks.lockRight); 
+                }
+            }else {
+                $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                dashboardService.setRightLock($ctrl.locks.lockRight);
+            }
+        }
 	}
 });

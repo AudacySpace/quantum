@@ -4,7 +4,7 @@ angular.module('quantum')
     scope: true,
     bindToController: true,
     templateUrl: "./js/components/rightSidebar/right_sidebar.html",
-    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav) {
+    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav,$mdDialog) {
 
         var $ctrl = this;
         $ctrl.name = userService.getUserName();
@@ -63,6 +63,21 @@ angular.module('quantum')
                     $window.location.href = '/logout';
                 } 
             }
+        };
+
+
+        $ctrl.showUploadModal = function(ev) {
+            $mdDialog.show({
+                controller: 'uploadCtrl',
+                templateUrl: './js/components/procedures/upload.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+            })
+            .then(function(answer) {
+            }, function() {
+            });
         };
 
         function getUserRole() {
