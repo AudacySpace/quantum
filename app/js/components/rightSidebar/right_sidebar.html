@@ -1,20 +1,49 @@
 <!-- Right Side Nav  -->
-<md-toolbar>
-</md-toolbar>
 <md-content flex role="navigation" id="right">
-    <md-list ng-show="$ctrl.userList.online.length > 0">
-        <md-list-item ng-repeat="user in $ctrl.userList.online track by user.email" id="list3">
-            <i class="fa fa-circle" aria-hidden="true" style="margin-right:5px;color:#12C700"></i>{{user.name}} ({{user.role.callsign}})
-             <md-divider></md-divider>
+    <md-list>
+        <md-divider class="show-hide"></md-divider>
+        <md-list-item class="list1">
         </md-list-item>
         <md-divider></md-divider>
-    </md-list>
-    <md-list ng-show="$ctrl.userList.online.length === 0">
-        <md-list-item >
-            No Users Online
-             <md-divider></md-divider>
+        <md-list-item ng-click="$ctrl.showUploadModal($event)" class="list1">
+            <span class="fa fa-upload list1Icon"></span>
+            <p class=" list1 dataItem listItemFonts">Upload Procedure</p>
+            <span flex></span>
+        </md-list-item>
+        <md-divider ></md-divider>
+        <md-list-item class="list1">
+            <span class="fa fa-list-alt list1Icon"></span>
+            <p class=" list1 dataItem listItemFonts">Live Index</p>
+            <span flex></span>
         </md-list-item>
         <md-divider></md-divider>
+        <md-list-item class="list1">
+            <span class="fa fa-list-alt list1Icon"></span>
+            <p class=" list1 dataItem listItemFonts">Archive Index</p>
+            <span flex></span>
+        </md-list-item>
+        <md-divider ></md-divider>
+        <md-list-item class="list1">
+            <i class="fa fa-users list1Icon" aria-hidden="true"></i>
+            <p class=" list1 dataItem listItemFonts">Users</p>
+            <span flex></span>
+            <span class="glyphicon glyphicon-menu-down listItemFonts"></span>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list ng-show="$ctrl.userList.online.length > 0">
+            <md-list-item ng-repeat="user in $ctrl.userList.online track by user.email" id="list3">
+                <i class="fa fa-circle" aria-hidden="true" style="margin-right:5px;color:#12C700"></i>{{user.name}} ({{user.role.callsign}})
+                 <md-divider></md-divider>
+            </md-list-item>
+            <md-divider></md-divider>
+        </md-list>
+        <md-list ng-show="$ctrl.userList.online.length === 0">
+            <md-list-item >
+                No Users Online
+            </md-list-item>
+            <md-divider></md-divider>
+        </md-list>
+        <md-divider class="show-hide"></md-divider>
     </md-list>
 </md-content>
 <!-- End of Right Side Nav  -->

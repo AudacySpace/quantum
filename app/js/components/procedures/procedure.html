@@ -93,35 +93,3 @@
         <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="pagination" style="float:right"></dir-pagination-controls>
     </div>
 </section>
-<section style="height:200px;margin-top:50px">
-    <div style="height:100%;background: #fcfefc">
-        <form name="upload_form" enctype="multipart/form-data"  >
-            <div layout="row" layout-wrap class="formcontainer1">
-               <div flex="99" style="padding:0px 5px"><label><b>Upload a procedure</b></label> </div>
-            </div>
-            <div layout="row" layout-wrap class="upload_form_row formcontainer2">
-                <div flex="15" class="uploadlabel"></div>
-                <div flex="65"> 
-                    <div class="input-group">
-                        <label class="input-group-btn">
-                            <span class="btn btn-primary">
-                            Browse 
-                            <input type="file" id="file" ngf-select ng-model="config.file" name="file" 
-                            ngf-pattern="'.xlsx'" accept=".xlsx" ngf-max-size="1MB" class="browsefile">
-                            </span>
-                        </label>
-                        <input type="text" class="form-control" value="{{ config.file.name }}" placeholder="Filename format:  index - groupname - proceduretitle.xlsx" style="background: #fafafa !important" readonly>
-                    </div>
-                </div>
-                <div flex="20">
-                    <input type="submit" ng-click="submit()" class="btn btn-primary upload" value="Add">
-                </div>
-            </div>
-            <div layout="row" layout-wrap>
-               <div flex="15"></div>
-               <div flex="65" id="toaster"></div>
-               <div flex="20"></div> 
-            </div>
-        </form>
-    </div>
-</section>
