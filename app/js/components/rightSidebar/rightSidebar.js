@@ -72,7 +72,7 @@ angular.module('quantum')
                 templateUrl: './js/components/procedures/upload.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                clickOutsideToClose:true,
+                clickOutsideToClose:false,
                 fullscreen: true // Only for -xs, -sm breakpoints.
             })
             .then(function(answer) {

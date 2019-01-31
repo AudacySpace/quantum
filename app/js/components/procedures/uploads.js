@@ -467,9 +467,8 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
         });
     };
 
-    $scope.download = function(){ 
-        var file = new Blob([s2ab(filedata.data)], { type: "application/octet-stream" });
-        FileSaver.saveAs(file, id + ' - ' + title + '.xlsx' );
+    $scope.closeDialog = function() {
+        $mdDialog.hide();
     }
 
     function confirmProcedureUpdate(messages){
@@ -481,7 +480,9 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
             resolve: {
                 usermessage: messages,
                 filedata:{}
-            }
+            },
+            backdrop: 'static',
+            keyboard: false
         }).result.then(function(response,status){
             //handle modal close with response
             $scope.clock = timeService.getTime();
