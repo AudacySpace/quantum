@@ -32,11 +32,16 @@ angular.module('quantum')
         $rootScope.title = "Quantum";
         $ctrl.userList = userService.getOnlineUsers();
         $ctrl.locks = dashboardService.getLock();
+        //$ctrl.myStyle = {'outline': 'none','transform': 'translate3d(0, 0, 0)'};
+        $ctrl.sidepanel = dashboardService.getSidePanelButton();
+        dashboardService.setHeaderLocation($location.url,false,false);
+        
+
       
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
             procedureService.setProcedureName('','',"Home");
-            dashboardService.setRightLock(false);
+            //dashboardService.setRightLock(false);
     	}
 
         $ctrl.showSettings = function(){
@@ -136,6 +141,17 @@ angular.module('quantum')
                     dashboardService.setRightLock($ctrl.locks.lockRight); 
                 }
             }else {
+                if($ctrl.locks.lockRight === false){
+                    //on open
+                    //$ctrl.myStyle = {'outline': 'none','transform': 'translate3d(-319px, 0, 0)'};
+                    dashboardService.setSidePanelButton({"display":"block",'outline': 'none','transform': 'translate3d(-319px, 0, 0)'});
+
+                }else if($ctrl.locks.lockRight === true){
+                    //on close
+                    //$ctrl.myStyle = {'outline': 'none','transform': 'translate3d(0, 0, 0)'};
+                    dashboardService.setSidePanelButton({"display":"block",'outline': 'none','transform': 'translate3d(0, 0, 0)'});
+                   
+                }
                 $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
                 dashboardService.setRightLock($ctrl.locks.lockRight);
             }

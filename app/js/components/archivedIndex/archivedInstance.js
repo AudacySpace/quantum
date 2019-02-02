@@ -9,6 +9,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     }
     $scope.running = false;
     $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum";
+    dashboardService.setHeaderLocation($location.url,true,true,false);
     viewProcedure();
 
     function viewProcedure(){
