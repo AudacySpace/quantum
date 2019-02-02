@@ -4,13 +4,16 @@ angular.module('quantum')
     scope: true,
     bindToController: true,
     templateUrl: "./js/components/rightSidebar/right_sidebar.html",
-    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav,$mdDialog) {
+    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav,$mdDialog,dashboardService) {
 
         var $ctrl = this;
         $ctrl.name = userService.getUserName();
         $ctrl.role = userService.userRole;
         $ctrl.procedure = procedureService.getProcedureName();
         $ctrl.userList = userService.getOnlineUsers();
+        $ctrl.location = dashboardService.getHeaderLocation();
+        $ctrl.procedure = procedureService.getProcedureName();
+        $ctrl.userMenu = false;
         getUserRole();
 
         $ctrl.logout = function () {
@@ -67,6 +70,7 @@ angular.module('quantum')
 
 
         $ctrl.showUploadModal = function(ev) {
+            dashboardService.setSidePanelButton({"display":"none",'outline': 'none','transform': 'translate3d(0, 0, 0)'});
             $mdDialog.show({
                 controller: 'uploadCtrl',
                 templateUrl: './js/components/procedures/upload.html',
@@ -79,6 +83,11 @@ angular.module('quantum')
             }, function() {
             });
         };
+
+        // toggle the user list menu
+        $ctrl.showUsers = function(){
+            $ctrl.userMenu = !$ctrl.userMenu;
+        }
 
         function getUserRole() {
             if ($window.innerWidth <= 768){

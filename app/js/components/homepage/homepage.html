@@ -46,9 +46,11 @@
                 <div class="container-fluid procedurescontainer">
                     <div ng-view></div>
                     <div class="bootrightsidemenu bootsidemenu default bootsidemenu-right" ng-click="$ctrl.openRightNav()" style="outline: none">
-                        <div class="toggler" data-whois="toggler" style="outline: none"><span class="glyphicon glyphicon-menu-right icon">&nbsp;</span></div>
+                        <div class="toggler" data-whois="toggler" ng-style="$ctrl.sidepanel.btnStyle">
+                            <span class="glyphicon glyphicon-menu-right icon" ng-show="$ctrl.locks.lockRight === false">&nbsp;</span>
+                            <span class="glyphicon glyphicon-menu-left icon" ng-show="$ctrl.locks.lockRight === true">&nbsp;</span>
+                        </div>
                     </div>
-
                 </div>
 
                 <!-- Dashboard Footer -->
