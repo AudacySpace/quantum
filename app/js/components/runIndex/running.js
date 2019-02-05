@@ -7,6 +7,7 @@ quantum.controller('runIndexCtrl', function($scope,procedureService,$routeParams
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
     $rootScope.title = "Live Index - "+$scope.procedure.id+" | Quantum";
+    dashboardService.setHeaderLocation($location.url,false,true,false);
     showRunningList();
 
     function showRunningList(){

@@ -24,6 +24,7 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
 	viewProcedure();
     $scope.running = true;
     $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum ";
+    dashboardService.setHeaderLocation($location.url,true,true,true);
 
     $scope.openRightNav = function(){
         if($window.innerWidth < 800){
@@ -754,12 +755,12 @@ quantum.controller('sectionCtrl', function($scope, $routeParams,procedureService
         if(status === "Live"){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"Open Procedure");
-            dashboardService.setRightLock(false); 
+            //dashboardService.setRightLock(false); 
 
         }else if(status === "Archived") {
             procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
             procedureService.setProcedureName(pid,ptitle,"AS-Run Archive");
-            dashboardService.setRightLock(false); 
+            //dashboardService.setRightLock(false); 
 
         }
     }
