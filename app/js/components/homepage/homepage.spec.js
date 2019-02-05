@@ -18,7 +18,7 @@ describe('Test Suite for Homepage Controller', function () {
         });
 
         inject(function($componentController, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock','setRightLock']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock','setRightLock','setHeaderLocation','getSidePanelButton']);
             procedureService = jasmine.createSpyObj('procedureService', ['setHeaderStyles', 'setProcedureName','getProcedureName','getHeaderStyles','getIconStyles']);
             userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail', 'setMissionForUser']);
             
