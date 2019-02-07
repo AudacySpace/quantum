@@ -31,16 +31,22 @@
         </md-list-item>
         <md-divider ng-show="$ctrl.location.userListStatus"></md-divider>
         <md-list ng-show="$ctrl.userMenu">
-            <md-list-item ng-repeat="user in $ctrl.userList.online track by user.email" id="list3" ng-show="$ctrl.userMenu && $ctrl.userList.online.length > 0 && $ctrl.location.userListStatus">
+            <md-list-item ng-repeat="user in $ctrl.userList.online track by user.email" class="list2" ng-show="$ctrl.userMenu && $ctrl.userList.online.length > 0 && $ctrl.location.userListStatus">
                 <i class="fa fa-circle" aria-hidden="true" style="margin-right:5px;color:#12C700"></i>{{user.name}} ({{user.role.callsign}})
                  <md-divider></md-divider>
             </md-list-item>
-            <md-list-item ng-show="$ctrl.userMenu && $ctrl.userList.online.length === 0 && $ctrl.location.userListStatus">
+            <md-list-item class="list2" ng-show="$ctrl.userMenu && $ctrl.userList.online.length === 0 && $ctrl.location.userListStatus">
                 No Users Online
             </md-list-item>
             <md-divider ng-show="$ctrl.location.userListStatus"></md-divider>
         </md-list>
         <md-divider class="show-hide"></md-divider>
+        <md-list-item href="https://apps.audacy.space:8443/display/SOFT/Quantum#" target="_blank" class="list1">
+            <span class="fa fa-file-text-o list1Icon"></span>
+            <p class=" list1 dataItem listItemFonts">Documentation</p>
+            <span flex></span>
+        </md-list-item>
+        <md-divider ></md-divider>
     </md-list>
 </md-content>
 <!-- End of Right Side Nav  -->
