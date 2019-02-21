@@ -142,11 +142,31 @@ angular.module('quantum')
             }else {
                 if($ctrl.locks.lockRight === false){
                     //on open
-                    dashboardService.setSidePanelButton({"display":"block",'outline': 'none','transform': 'translate3d(-319px, 0, 0)'});
+                    dashboardService.setSidePanelButton({
+                        "display":"block",
+                        'outline': 'none',
+                        'transform': 'translate3d(-319px, 0, 0)' ,  
+                        '-webkit-transition': 'all 0.3s ease-in',
+                        '-moz-transition': 'all 0.3s ease-in',
+                        '-ms-transition': 'all 0.3s ease-in',
+                        '-o-transition': 'all 0.3s ease-in',
+                        'transition': 'all 0.3s ease-in',
+                        'tranisition-delay':'1s'
+                    });
 
                 }else if($ctrl.locks.lockRight === true){
                     //on close
-                    dashboardService.setSidePanelButton({"display":"block",'outline': 'none','transform': 'translate3d(0, 0, 0)'});
+                    dashboardService.setSidePanelButton({
+                        "display":"block",
+                        'outline': 'none',
+                        'transform': 'translate3d(0, 0, 0)',
+                        '-webkit-transition': 'all 0.3s ease-in',
+                        '-moz-transition': 'all 0.3s ease-in',
+                        '-ms-transition': 'all 0.3s ease-in',
+                        '-o-transition': 'all 0.3s ease-in',
+                        'transition': 'all 0.3s ease-in',
+                        'tranisition-delay':'1s'
+                    });
                    
                 }
                 $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
