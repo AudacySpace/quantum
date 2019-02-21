@@ -1,4 +1,4 @@
-quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeService,userService,Upload,$mdDialog,dashboardService) {
+quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeService,userService,Upload,$mdDialog,dashboardService,$mdToast) {
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
 
