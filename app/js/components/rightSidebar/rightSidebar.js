@@ -4,13 +4,16 @@ angular.module('quantum')
     scope: true,
     bindToController: true,
     templateUrl: "./js/components/rightSidebar/right_sidebar.html",
-    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav) {
+    controller: function($window,userService,$mdToast,$location,procedureService,$mdSidenav,$mdDialog,dashboardService) {
 
         var $ctrl = this;
         $ctrl.name = userService.getUserName();
         $ctrl.role = userService.userRole;
         $ctrl.procedure = procedureService.getProcedureName();
         $ctrl.userList = userService.getOnlineUsers();
+        $ctrl.location = dashboardService.getHeaderLocation();
+        $ctrl.procedure = procedureService.getProcedureName();
+        $ctrl.userMenu = false;
         getUserRole();
 
         $ctrl.logout = function () {
@@ -65,6 +68,38 @@ angular.module('quantum')
             }
         };
 
+
+        $ctrl.showUploadModal = function(ev) {
+            dashboardService.setSidePanelButton({
+                "display":"block",
+                'outline': 'none',
+                'transform': 'translate3d(0, 0, 0)',
+                '-webkit-transition': 'all 0.3s ease-in',
+                '-moz-transition': 'all 0.3s ease-in',
+                '-ms-transition': 'all 0.3s ease-in',
+                '-o-transition': 'all 0.3s ease-in',
+                'transition': 'all 0.3s ease-in',
+                'tranisition-delay':'1s'
+            });
+            dashboardService.setRightLock(false);
+            $mdDialog.show({
+                controller: 'uploadCtrl',
+                templateUrl: './js/components/procedures/upload.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:false,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+            })
+            .then(function(answer) {
+            }, function() {
+            });
+        };
+
+        // toggle the user list menu
+        $ctrl.showUsers = function(){
+            $ctrl.userMenu = !$ctrl.userMenu;
+        }
+
         function getUserRole() {
             if ($window.innerWidth <= 768){
                 $ctrl.role = {
@@ -76,6 +111,21 @@ angular.module('quantum')
             } else {
                 $ctrl.role = userService.userRole;
             }
+        }
+
+        $ctrl.hideSideMenu = function(){
+            dashboardService.setSidePanelButton({
+                "display":"block",
+                'outline': 'none',
+                'transform': 'translate3d(0, 0, 0)',
+                '-webkit-transition': 'all 0.3s ease-in',
+                '-moz-transition': 'all 0.3s ease-in',
+                '-ms-transition': 'all 0.3s ease-in',
+                '-o-transition': 'all 0.3s ease-in',
+                'transition': 'all 0.3s ease-in',
+                'tranisition-delay':'1s'
+            });
+            dashboardService.setRightLock(false);
         }
 
      }

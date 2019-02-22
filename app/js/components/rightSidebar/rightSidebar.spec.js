@@ -1,7 +1,7 @@
 describe('Test Suite for Right Sidebar Controller', function () {
     var $controller, userService;
     var windowMock = {
-        location: {href : ''},
+        location: {href : '',url:''},
         innerWidth: 1000,
         user : {
             currentRole : {}
@@ -76,10 +76,18 @@ describe('Test Suite for Right Sidebar Controller', function () {
         expect($controller.role).toEqual(role);
     });
 
+    it('should just display upload procedure option when the location is at dashboard', function() {
+        expect($controller.location).toBeDefined();
+        expect($controller.location).toEqual({ url: '', liveindexStatus: false, archiveindexStatus: false, userListStatus: false });
+    });
+
     it('should define logout function', function() {
         expect($controller.logout).toBeDefined();
         $controller.logout();
         expect(windowMock.location.href).toEqual('/logout');
     });
+
+
+
 
 });

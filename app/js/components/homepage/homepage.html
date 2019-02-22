@@ -33,9 +33,9 @@
                                 
                                 <small id="callsign" ng-style="$ctrl.header.namestyles"> <i class="fa fa-circle" aria-hidden="true" style="margin-right:5px;color:#12C700"></i>{{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'">User Administration</a></li>
+                                    <li ><a href="" ng-click="$ctrl.logout()" target="_self"><span class="fa fa-sign-out" style="padding-right: 5px"></span><span>Logout</span></a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()"><span class="fa fa-cog" style="padding-right: 5px"></span><span>Settings</span></a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showAdminMenu()" ng-show="$ctrl.role.cRole.callsign == 'MD'"><span class="fa fa-user-plus" style="padding-right: 5px"></span><span>User Administration</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -45,6 +45,12 @@
                 <!--Procedures -->
                 <div class="container-fluid procedurescontainer">
                     <div ng-view></div>
+                    <div class="bootrightsidemenu bootsidemenu default bootsidemenu-right" ng-click="$ctrl.openRightNav()" style="outline: none">
+                        <div class="toggler" data-whois="toggler" ng-style="$ctrl.sidepanel.btnStyle">
+                            <span class="glyphicon glyphicon-menu-right icon" ng-show="$ctrl.locks.lockRight === false">&nbsp;</span>
+                            <span class="glyphicon glyphicon-menu-left icon" ng-show="$ctrl.locks.lockRight === true">&nbsp;</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Dashboard Footer -->
@@ -58,7 +64,7 @@
         <!--End Main Dashboard Navigation-->
 
         <!-- Right Sidebar -->
-        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$ctrl.locks.lockRight">
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$ctrl.locks.lockRight" style="margin-top: 50px">
             <right-sidebar></right-sidebar>
         </md-sidenav>
         
