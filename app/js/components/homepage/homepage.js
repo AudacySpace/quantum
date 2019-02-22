@@ -4,7 +4,7 @@ angular.module('quantum')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./js/components/homepage/homepage.html",
-  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope) {
+  	controller: function($window,userService,procedureService,dashboardService, $uibModal,$location,$mdToast,$rootScope,$mdSidenav) {
 
         var email = userService.getUserEmail();
         var mission = {
@@ -30,11 +30,17 @@ angular.module('quantum')
     	$ctrl.header = procedureService.getHeaderStyles();
     	$ctrl.icons = procedureService.getIconStyles();
         $rootScope.title = "Quantum";
+       // $ctrl.userList = userService.getOnlineUsers();
+        $ctrl.locks = dashboardService.getLock();
+        $ctrl.sidepanel = dashboardService.getSidePanelButton();
+        dashboardService.setHeaderLocation($location.url,false,false);
+        
+
       
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
             procedureService.setProcedureName('','',"Home");
-            dashboardService.setRightLock(false);
+            //dashboardService.setRightLock(false);
     	}
 
         $ctrl.showSettings = function(){
@@ -124,5 +130,48 @@ angular.module('quantum')
                 }
             }
         };
+
+        $ctrl.openRightNav = function(){
+            if($window.innerWidth < 800){
+                if ($window.innerWidth < 800){
+                    $mdSidenav('right').open();
+                } else {
+                    $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                    dashboardService.setRightLock($ctrl.locks.lockRight); 
+                }
+            }else {
+                if($ctrl.locks.lockRight === false){
+                    //on open
+                    dashboardService.setSidePanelButton({
+                        "display":"block",
+                        'outline': 'none',
+                        'transform': 'translate3d(-319px, 0, 0)' ,  
+                        '-webkit-transition': 'all 0.3s ease-in',
+                        '-moz-transition': 'all 0.3s ease-in',
+                        '-ms-transition': 'all 0.3s ease-in',
+                        '-o-transition': 'all 0.3s ease-in',
+                        'transition': 'all 0.3s ease-in',
+                        'tranisition-delay':'1s'
+                    });
+
+                }else if($ctrl.locks.lockRight === true){
+                    //on close
+                    dashboardService.setSidePanelButton({
+                        "display":"block",
+                        'outline': 'none',
+                        'transform': 'translate3d(0, 0, 0)',
+                        '-webkit-transition': 'all 0.3s ease-in',
+                        '-moz-transition': 'all 0.3s ease-in',
+                        '-ms-transition': 'all 0.3s ease-in',
+                        '-o-transition': 'all 0.3s ease-in',
+                        'transition': 'all 0.3s ease-in',
+                        'tranisition-delay':'1s'
+                    });
+                   
+                }
+                $ctrl.locks.lockRight = !$ctrl.locks.lockRight;
+                dashboardService.setRightLock($ctrl.locks.lockRight);
+            }
+        }
 	}
 });

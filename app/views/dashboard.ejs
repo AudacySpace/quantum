@@ -10,6 +10,7 @@
     <link rel="icon" href="/media/logos/Quantum_Icon_Regular.png" type="image/png" sizes="16x16">
 	<link rel="stylesheet" href="/css/bootstrap-min.css">
 	<link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/BootSideMenu.css">
 	<link href="/css/dashboardstyles.css" rel="stylesheet">
     <link href="/css/right_sidebar.css" rel="stylesheet">
     <link href="/css/pagelinks.css" rel="stylesheet">
@@ -61,6 +62,7 @@
     <script src="js/components/runIndex/runningInstance.js"></script>
     <script src="js/components/rightSidebar/rightSidebar.js"></script>
     <script src="js/components/sections/preview.js"></script>
+    <script src="js/components/procedures/uploads.js"></script>
 
     <!-- Services -->
     <script src="js/services/userService.js"></script>
@@ -72,6 +74,8 @@
     <script>
         var user = <%- JSON.stringify(user) %>;
         angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
+
+
     </script>
 
 </head>
@@ -84,9 +88,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="scripts/bootstrap.min.js"></script>
-
-        <!-- Angular Scripts and file upload dependencies -->
+    <!-- Angular Scripts and file upload dependencies -->
     <script type="text/javascript" src="/scripts/ng-file-upload.min.js"></script>
     <script type="text/javascript" src="/scripts/ng-file-upload-shim.min.js"></script>
+
 </body>
 </html>

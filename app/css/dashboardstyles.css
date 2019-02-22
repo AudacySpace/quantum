@@ -274,12 +274,18 @@ td{
 }
 
 .procedurescontainer section{
-    padding-left:25px !important;
-    padding-right: 25px !important;
+/*    padding-left:25px !important;
+    padding-right: 25px !important;*/
 }
 
 .procedurescontainer {
-    padding-top:90px;
+    margin-top:90px;
+}
+
+#bootrightsidemenu {
+    margin-top:52px;
+    background-color: #020613;
+    width: 320px !important;
 }
 
 .formcontainer1{
@@ -332,9 +338,25 @@ div.indexList i {
     padding:5px;
 }
 
+md-list-item, md-list-item .md-list-item-inner { 
+    height: 32px !important;
+    min-height: 32px !important;
+}
+
+.list1Icon {
+    font-size: 14px !important;
+    min-width:14px !important;
+    min-height:14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
-        margin-top: 5px;
+    /*    margin-top: 5px;*/
         padding-top: 10px; 
         padding-bottom: 10px; 
     }

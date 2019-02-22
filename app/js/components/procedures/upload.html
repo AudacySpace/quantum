@@ -1,0 +1,65 @@
+<md-dialog aria-label="" style="min-height: 500px;min-width: 1000px">
+    <form name="upload_form" enctype="multipart/form-data"  >
+            <div layout="row" layout-wrap class="formcontainer1">
+               <div flex="66" style="padding:0px 5px"><label><b>Upload a procedure</b></label></div>
+               <div flex="33" style="text-align: right;padding: 0 5px"><span  class="fa fa-close" ng-click="closeDialog()"></span></div>
+            </div>
+            <div layout="row" layout-wrap class="upload_form_row formcontainer2">
+                <div flex="15" class="uploadlabel"></div>
+                <div flex="65"> 
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                            Browse 
+                            <input type="file" id="file" ngf-select ng-model="config.file" name="file" 
+                            ngf-pattern="'.xlsx'" accept=".xlsx" ngf-max-size="1MB" class="browsefile">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" value="{{ config.file.name }}" placeholder="Filename format:  index - groupname - proceduretitle.xlsx" style="background: #fafafa !important" readonly>
+                    </div>
+                </div>
+                <div flex="20">
+                    <input type="submit" ng-click="submit()" class="btn btn-primary upload" value="Add">
+                </div>
+            </div>
+            <div layout="row" layout-wrap>
+               <div flex="15"></div>
+               <div flex="65" id="toaster"></div>
+               <div flex="20"></div> 
+            </div>
+            <md-dialog-actions layout="row">
+                <br/>
+                <div class="accordion" id="accordionExample" style="margin-top: 5%;margin-left: 14%;margin-right: 15%;margin-bottom: 2%">
+                    <div class="card">
+                        <div class="card-header" id="headingOne" style="background: #cccccc40">
+                          <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="outline: none">
+                               Master Template
+                            </button>
+                          </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <div class="card-body" style="background: #fafafa">
+                         <p style="margin: 0px 20px"><a href="./js/components/procedures/1.1 - Procedure - Master Template.xlsx" download="" target="_blank"><span class="fa fa-download"></span> Download Template</a></p>
+                            <ul>
+                                <li>File Type should be <b>.xlsx</b> only.</li>
+                                <li>Step,Type,Role,Content fields are mandatory.Reference and Procedures columns are optional.</li>
+                                <li>Only one type can be given for a step.Valid Step types include <b> Heading, Action, Caution, Decision, Info, Record, Verify and Warning.</b></li>
+                                <li>Role can be one or many(delimited by , if many).Valid roles are <b>MD,CC,SYS,GC,PROXY,NAV,IT and SIM.</b></li>
+                                <li>Sheet name of the file should always be <b>Sheet1</b>.</li>
+                                <li>Make sure Step column has cell formatting set to <b>text</b>.Note:This will avoid rounding the step numbers when uploaded.</li>
+                                <li>Numbering for Steps are in heirarchical order starting with x.0 as top sections.</li>
+                                <li>Only Heading type step number should end with <b>.0</b> . For example <i>1.0,1.2.1.0</i></li>
+                                <li>Heading type steps are either section headers or subsection headers.That means they do not have checkbox when executing the procedure.</li>
+                                <li>Last Step should not be of type <b>Heading.</b></li>
+                                <li>Reference and Procedures columns are optional.Reference field is used to provide valid URL to additional information.Procedures field is used to provide procedure index numbers described in the content of that step.More details in the template.</li>
+                            <ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                 <span flex></span>
+            </md-dialog-actions>
+        </form>
+</md-dialog>

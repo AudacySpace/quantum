@@ -7,6 +7,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     $scope.loadstatus = true;
     $scope.procedure = procedureService.getProcedureName();
     $rootScope.title = "Archive Index - "+$scope.procedure.id+" | Quantum";
+    dashboardService.setHeaderLocation($location.url,true,false,false);
     showArchivedList();
 
     function showArchivedList(){
