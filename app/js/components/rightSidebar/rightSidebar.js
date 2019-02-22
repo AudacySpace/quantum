@@ -70,7 +70,18 @@ angular.module('quantum')
 
 
         $ctrl.showUploadModal = function(ev) {
-            dashboardService.setSidePanelButton({"display":"none",'outline': 'none','transform': 'translate3d(0, 0, 0)'});
+            dashboardService.setSidePanelButton({
+                "display":"block",
+                'outline': 'none',
+                'transform': 'translate3d(0, 0, 0)',
+                '-webkit-transition': 'all 0.3s ease-in',
+                '-moz-transition': 'all 0.3s ease-in',
+                '-ms-transition': 'all 0.3s ease-in',
+                '-o-transition': 'all 0.3s ease-in',
+                'transition': 'all 0.3s ease-in',
+                'tranisition-delay':'1s'
+            });
+            dashboardService.setRightLock(false);
             $mdDialog.show({
                 controller: 'uploadCtrl',
                 templateUrl: './js/components/procedures/upload.html',
@@ -100,6 +111,21 @@ angular.module('quantum')
             } else {
                 $ctrl.role = userService.userRole;
             }
+        }
+
+        $ctrl.hideSideMenu = function(){
+            dashboardService.setSidePanelButton({
+                "display":"block",
+                'outline': 'none',
+                'transform': 'translate3d(0, 0, 0)',
+                '-webkit-transition': 'all 0.3s ease-in',
+                '-moz-transition': 'all 0.3s ease-in',
+                '-ms-transition': 'all 0.3s ease-in',
+                '-o-transition': 'all 0.3s ease-in',
+                'transition': 'all 0.3s ease-in',
+                'tranisition-delay':'1s'
+            });
+            dashboardService.setRightLock(false);
         }
 
      }

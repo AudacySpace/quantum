@@ -468,7 +468,6 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
     };
 
     $scope.closeDialog = function() {
-        dashboardService.setSidePanelButton({"display":"block",'outline': 'none','transform': 'translate3d(-319px, 0, 0)'});
         $mdDialog.hide();
     }
 

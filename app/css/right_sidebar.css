@@ -72,6 +72,21 @@ md-content.main {
     overflow-x: hidden; 
 }
 
+md-toolbar {
+    background-color: #020613 !important;
+   /* border-top: 1px solid #337ab7;*/
+   /* border-bottom: 1px solid #337ab7;*/
+/*    border-bottom: 1px solid #ccc;*/
+    height: 38px !important;
+    min-height: 38px !important;
+    font-size: 16px !important;
+}
+
+md-toolbar-tools {
+    font-size: 16px !important;
+    padding: 0 8px !important;
+}
+
 @media only screen and (max-width: 768px) {
     .show-hide {
         display: block;

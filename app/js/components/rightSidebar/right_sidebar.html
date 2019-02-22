@@ -1,23 +1,25 @@
 <!-- Right Side Nav  -->
+<md-toolbar style="margin-top: 40px">
+    <h4 class="md-toolbar-tools" style="font-size: 18px">Configuration Menu</h4>
+</md-toolbar>
+<md-divider ></md-divider>
+<md-divider ></md-divider>
 <md-content flex role="navigation" id="right">
     <md-list>
         <md-divider class="show-hide"></md-divider>
-        <md-list-item class="list1">
-        </md-list-item>
-        <md-divider></md-divider>
         <md-list-item ng-click="$ctrl.showUploadModal($event)" class="list1">
             <span class="fa fa-upload list1Icon"></span>
             <p class=" list1 dataItem listItemFonts">Upload Procedure</p>
             <span flex></span>
         </md-list-item>
         <md-divider ></md-divider>
-        <md-list-item class="list1" href="/dashboard/procedure/running/{{$ctrl.procedure.id}}" ng-show="$ctrl.location.liveindexStatus">
+        <md-list-item class="list1" href="/dashboard/procedure/running/{{$ctrl.procedure.id}}" ng-click="$ctrl.hideSideMenu()" ng-show="$ctrl.location.liveindexStatus">
             <span class="fa fa-list-alt list1Icon"></span>
             <p class=" list1 dataItem listItemFonts">Live Index</p>
             <span flex></span>
         </md-list-item>
         <md-divider ng-show="$ctrl.location.liveindexStatus"></md-divider>
-        <md-list-item class="list1" href="/dashboard/procedure/archived/{{$ctrl.procedure.id}}" ng-show="$ctrl.location.archiveindexStatus">
+        <md-list-item class="list1" href="/dashboard/procedure/archived/{{$ctrl.procedure.id}}" ng-click="$ctrl.hideSideMenu()" ng-show="$ctrl.location.archiveindexStatus">
             <span class="fa fa-list-alt list1Icon"></span>
             <p class=" list1 dataItem listItemFonts">Archive Index</p>
             <span flex></span>
@@ -41,7 +43,7 @@
             <md-divider ng-show="$ctrl.location.userListStatus"></md-divider>
         </md-list>
         <md-divider class="show-hide"></md-divider>
-        <md-list-item href="https://apps.audacy.space:8443/display/SOFT/Quantum#" target="_blank" class="list1">
+        <md-list-item href="https://apps.audacy.space:8443/display/SOFT/Quantum" ng-click="$ctrl.hideSideMenu()" target="_blank" class="list1">
             <span class="fa fa-file-text-o list1Icon"></span>
             <p class=" list1 dataItem listItemFonts">Documentation</p>
             <span flex></span>

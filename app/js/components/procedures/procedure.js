@@ -253,11 +253,12 @@ quantum.controller('ToastCtrl',function($scope,$mdDialog,$mdToast) {
             controller: 'DialogController',
             templateUrl: './js/components/procedures/dialog.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             controllerAs: 'ctrl',
             bindToController: true,
             locals: {errorInfo:$ctrl.errorInfo,dataString:$ctrl.dataString,dataStringHeading: $ctrl.dataStringHeading,dataStringNonHeading: $ctrl.dataStringNonHeading,dataStringType: $ctrl.dataStringType,dataStringRole: $ctrl.dataStringRole},
-            fullscreen: false // Only for -xs, -sm breakpoints.
+            fullscreen: false, // Only for -xs, -sm breakpoints.
+            multiple:true
         })
         .then(function(answer) {
         }, function() {
