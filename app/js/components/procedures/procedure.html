@@ -42,10 +42,18 @@
         </thead>
     </table>
   </div>
-  <div class="tbl-content" style="font-size:16px">
+    <div class="tbl-content" style="font-size:16px" ng-repeat="group in groups | orderBy:group.groupNum" >
         <table cellpadding="0" cellspacing="0" border="0" class="procedureTable table-hover">
-            <tbody ng-show="procedurelist.length > 0 && loadstatus === false" style="background: #fcfefc">
-                <tr dir-paginate="procedure in procedurelist | orderBy:sortType:sortReverse |itemsPerPage:15">
+            <tbody ng-show="group.groupList.length > 0 && loadstatus === false" style="background: #fcfefc">
+                <tr style="background-color: #125790" ng-click="toggleList(group.groupNum)">
+                    <td style="width:10%;color: #ffffff"><strong>{{ group.groupNum}}</strong></td>
+                    <td style="width:40%;color: #ffffff"><strong>{{group.groupName}}</strong></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                </tr>
+                <tr dir-paginate="procedure in group.groupList | orderBy:sortType:sortReverse | itemsPerPage:group.groupSize" pagination-id="group.groupName" ng-hide="group.hidden === true" >
                     <td style="width:10%">{{ procedure.id }}</td>
                     <td style="width:40%">{{ procedure.title }}</td>
                     <td style="width:15%">{{ procedure.lastuse }}</td>
@@ -90,6 +98,6 @@
                 </tr>
             </tbody>
         </table>
-        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="pagination" style="float:right"></dir-pagination-controls>
+        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" pagination-id="group.groupName" class="pagination" style="float:right" ng-hide="group.hidden === true"></dir-pagination-controls>
     </div>
 </section>

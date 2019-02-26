@@ -26,7 +26,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 lastuse:response.data[i].lastuse,
                                 instances:response.data[i].instances,
                                 running:0,
-                                archived:0
+                                archived:0,
+                                groupNum:response.data[i].procedureID.split(".")[0]+'.0',
                             });
                         }
                     }
@@ -42,7 +43,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     }
                 }
             }
-
+            $scope.groups = $scope.getGroupNames($scope.procedurelist);
             $scope.loadstatus = false;
             $scope.loadcount++;
 
@@ -159,6 +160,75 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         },function () {
             //handle modal dismiss
         });
+    }
+
+    $scope.getGroupNames = function(list){
+        var groups = [];
+        var procedureGroups = [];
+        for(var k=0;k<list.length;k++){
+            groups.push(list[k].groupNum);
+        }
+        var grp = new Set(groups);
+        var setToArray = Array.from(grp);
+        for(var i=0;i<setToArray.length;i++){
+            if(setToArray[i] === "1.0"){
+                procedureGroups.push({
+                    "groupNum":setToArray[i],
+                    "groupName":"Space Operations",
+                    "groupSize":10,
+                    "groupList":[],
+                    "hidden":false
+                });
+            }else if(setToArray[i] === "2.0"){
+                procedureGroups.push({
+                    "groupNum":setToArray[i],
+                    "groupName":"Network Operations",
+                    "groupSize":10,
+                    "groupList":[],
+                    "hidden":false
+                });
+            }else if(setToArray[i] === "3.0"){
+                procedureGroups.push({
+                    "groupNum":setToArray[i],
+                    "groupName":"Ground Operations",
+                    "groupSize":10,
+                    "groupList":[],
+                    "hidden":false
+                });
+            }else {
+                procedureGroups.push({
+                    "groupNum":setToArray[i],
+                    "groupName":"Other",
+                    "groupSize":10,
+                    "groupList":[],
+                    "hidden":false
+                });
+            }
+        }
+
+        for(var m=0;m<procedureGroups.length;m++){
+            for(var j=0;j<list.length;j++){
+                if(procedureGroups[m].groupNum === list[j].groupNum){
+                    procedureGroups[m].groupList.push({
+                        "id":list[j].id,
+                        "title":list[j].title,
+                        "lastuse":list[j].lastuse,
+                        "running":list[j].running,
+                        "archived":list[j].archived
+                    });
+                }
+            }
+        }
+        return procedureGroups;
+    }
+
+    $scope.toggleList = function(groupNum){
+        for(var i=0;i<$scope.groups.length;i++){
+            if($scope.groups[i].groupNum === groupNum){
+                $scope.groups[i].hidden = !$scope.groups[i].hidden;
+                break;
+            }
+        }
     }
 });
 

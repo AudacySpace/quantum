@@ -423,7 +423,8 @@ describe('Test Suite for Procedure Controller', function () {
                 }
             ], 
             running: 1, 
-            archived: 1
+            archived: 1,
+            groupNum: '1.0'
         }, 
         {   
             id: '1.2', 
@@ -465,7 +466,8 @@ describe('Test Suite for Procedure Controller', function () {
                         "running": true
                     }], 
             running: 1, 
-            archived: 0
+            archived: 0,
+            groupNum: '1.0'
         }];
 
         deferredProcedureList.resolve({status:200,data:result});
