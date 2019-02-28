@@ -131,6 +131,9 @@ module.exports = function(app,passport) {
     //get quantum user roles
     app.get('/getQuantumRoles',procs.getQuantumRoles);
 
+    //get quantum procedure groups
+    app.get('/getGroups',procs.getGroups);
+
 };
 
 // route middleware to make sure a user is logged in

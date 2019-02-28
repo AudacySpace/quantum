@@ -430,8 +430,18 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
                     $scope.config = {};
                     $scope.upload_form.$setPristine();
                 });
-            }
-            else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
+            }else if(resp.data.error_code === 12){
+                var position = "top left";
+                var queryId = '#toaster';
+                var delay = 5000;
+                $scope.usermessage = 'Error: Not a valid index number.Index number should not be of value x.0!';
+                var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
+                if(alertstatus === true){
+                    $scope.config = {};
+                    $scope.upload_form.$setPristine();
+                }
+
+            }else if(resp.data.error_code === 0 && resp.data.err_desc === "Not a valid file"){
                 var position = "top left";
                 var queryId = '#toaster';
                 var delay = 5000;
