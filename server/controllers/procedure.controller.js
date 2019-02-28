@@ -3,6 +3,7 @@ var ProcedureModel = mongoose.model('procedure');
 var XLSX = require("xlsx");
 var configRole = require('../../config/role');
 var validTypes = ['ACTION','CAUTION','DECISION','HEADING','INFO','RECORD','VERIFY','WARNING'];
+var procedureGroups = require("../../config/proceduregroups.json");
 
 module.exports = {
     getProcedureList: function(req, res){
@@ -89,6 +90,7 @@ module.exports = {
     uploadFile: function(req,res){
         try{
             var filename = req.file.originalname.split(" - ");
+            var lastValueofIndex = filename[0].split(".");
             var filepath = req.file.path;
             var workbook = XLSX.readFile(filepath);
             var sheet1 = XLSX.utils.sheet_to_json(workbook.Sheets.Sheet1);
@@ -106,6 +108,10 @@ module.exports = {
                     sheet1[a].Type = sheet1[a].Type.replace(/\s/g, '');
                     fileverify++;
                 }
+            }
+
+            if(lastValueofIndex[lastValueofIndex.length - 1] === '0'){
+                res.json({error_code:12,err_desc:"Invalid Index",err_data:filename[0]});
             }
 
 
@@ -213,7 +219,7 @@ module.exports = {
 
 
             //If everything is valid 
-            if(fileverify === sheet1.length && errorTypeSteps.length === 0 && headingErr.length === 0 && nonHeadingErr.length === 0 && roleErrSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING'){
+            if(fileverify === sheet1.length && errorTypeSteps.length === 0 && headingErr.length === 0 && nonHeadingErr.length === 0 && roleErrSteps.length === 0 && sheet1[sheet1.length-1].Type.toUpperCase() !== 'HEADING' && lastValueofIndex[lastValueofIndex.length - 1] !== '0'){
 
                 ProcedureModel.findOne({ 'procedureID' : filename[0] }, function(err, procs) {
                     if(err){
@@ -282,7 +288,10 @@ module.exports = {
                         });
                     }
                 });
-            }else if(fileverify !== sheet1.length){
+            }else if(lastValueofIndex[lastValueofIndex.length - 1] !== '0'){
+                res.json({error_code:12,err_desc:"Invalid Index",err_data:filename[0]});
+            }
+            else if(fileverify !== sheet1.length){
                 res.json({error_code:0,err_desc:"Not a valid file"});
             }
         }catch(e){
@@ -580,6 +589,9 @@ module.exports = {
     getQuantumRoles: function(req,res){
         var callSigns = getAllCallSigns();
         res.send(callSigns);
+    },
+    getGroups: function(req,res){
+        res.send(procedureGroups);
     }
 };
 

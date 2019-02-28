@@ -804,6 +804,13 @@ quantum
         return procs;
     }
 
+    function getGroups() {
+        return $http({
+            url: "/getGroups",
+            method: "GET"
+        });
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -843,6 +850,7 @@ quantum
         getValidRoles : getValidRoles,
         getValidLinks : getValidLinks,
         setprocRevisions : setprocRevisions,
-        getprocRevisions : getprocRevisions
+        getprocRevisions : getprocRevisions,
+        getGroups : getGroups
     }
 }]);

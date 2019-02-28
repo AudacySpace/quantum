@@ -43,9 +43,25 @@
     </table>
   </div>
   <div class="tbl-content" style="font-size:16px">
-        <table cellpadding="0" cellspacing="0" border="0" class="procedureTable table-hover">
+        <table cellpadding="0" cellspacing="0" border="0" class="procedureTable table-hover" ng-repeat="group in procedureGroups | orderBy:group.parent">
             <tbody ng-show="procedurelist.length > 0 && loadstatus === false" style="background: #fcfefc">
-                <tr dir-paginate="procedure in procedurelist | orderBy:sortType:sortReverse |itemsPerPage:15">
+                <tr style="background-color: #125790" ng-click="toggleList(group.id,$index)" ng-show="group.parent === null && group.hidden === false">
+                    <td style="width:10%;color: #ffffff"><strong>{{group.id}}</strong></td>
+                    <td style="width:40%;color: #ffffff"><strong>{{group.name}}</strong></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                </tr>
+                <tr style="background-color: #CFCFD5" ng-click="toggleList(group.id,$index)" ng-show="group.parent !== null && group.hidden === false">
+                    <td style="width:10%;color: #ffffff"><strong>{{group.id}}</strong></td>
+                    <td style="width:40%;color: #ffffff"><strong>{{group.name}}</strong></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                    <td style="width:15%"></td>
+                </tr>
+                <tr ng-repeat="procedure in procedurelist | orderBy:sortType:sortReverse" ng-show="group.id === procedure.parent && procedure.hidden === false">
                     <td style="width:10%">{{ procedure.id }}</td>
                     <td style="width:40%">{{ procedure.title }}</td>
                     <td style="width:15%">{{ procedure.lastuse }}</td>
@@ -90,6 +106,5 @@
                 </tr>
             </tbody>
         </table>
-        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="pagination" style="float:right"></dir-pagination-controls>
     </div>
 </section>

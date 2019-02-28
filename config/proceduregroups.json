@@ -1,0 +1,68 @@
+[
+{
+	"id":"1",
+	"name":"Space Operations"
+},
+{
+	"id":"1.1",
+	"name":"Audacy Zero"
+},
+{
+	"id":"1.1.1",
+	"name":"Integration and Test"
+},
+{
+	"id":"1.1.2",
+	"name":"Nominal Flight Operations"
+},
+{
+	"id":"1.1.3",
+	"name":"Off-Nominal Flight Operations"
+},
+{
+	"id":"2",
+	"name":"Network Operations"
+},
+{
+	"id":"2.1",
+	"name":"Mega Proxy"
+},
+{
+	"id":"2.2",
+	"name":"Gateway Proxy"
+},{
+	"id":"2.3",
+	"name":"Simulations"
+}
+,{
+	"id":"3",
+	"name":"Ground Operations"
+}
+,{
+	"id":"3.1",
+	"name":"SF Earth Station"
+},
+{
+	"id":"3.1.1",
+	"name":"Mission Operations"
+},
+{
+	"id":"3.1.2",
+	"name":"Teleports"
+},
+{
+	"id":"3.2",
+	"name":"SG Earth Station"
+},{
+	"id":"1.2",
+	"name":"Audacy Lynq"
+},
+{
+	"id":"1.3",
+	"name":"Audacy One"
+},
+{
+	"id":"1.4",
+	"name":"Audacy Relays"
+}
+]
