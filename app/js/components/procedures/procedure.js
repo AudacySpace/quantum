@@ -8,13 +8,12 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.loadcount = 0;
     $scope.loadstatus = true;
     $scope.quantumRoles = procedureService.getValidRoles();
+    $scope.prevGroups = [];
+    $scope.prevList = [];
 
     procedureService.getGroups().then(function(response) {
         if(response.status == 200) {
             $scope.pg = angular.copy(response.data);
-            for(var i=0;i<$scope.pg.length;i++){
-                $scope.pg[i].hidden = false;
-            }
         }
     });
 
@@ -25,14 +24,15 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
 
         procedureService.getProcedureList().then(function(response) {
               if(response.status === 200){
-                $scope.procedurelist = [];
+                var procedurelist = [];
                 if(response.data.length > 0){
-                    $scope.procedureGroups = angular.copy($scope.pg);
-                    $scope.procedureGroups = getParentsOfGroups($scope.procedureGroups); 
+                      //check if scope.prevGroups exists then add hidden property of the id else add hidden as false
+                    var procedureGroups = angular.copy($scope.pg);
+                    procedureGroups = getParentsOfGroups(procedureGroups); 
                     $scope.groupIds = [];
                     $scope.uniqueGroupIds = new Set();
-                    for(var a=0;a<$scope.procedureGroups.length;a++){
-                        $scope.groupIds.push($scope.procedureGroups[a].id);
+                    for(var a=0;a<procedureGroups.length;a++){
+                        $scope.groupIds.push(procedureGroups[a].id);
                     }
                     for(var i=0;i<response.data.length;i++){
                         if(response.data[i].procedureID){
@@ -55,7 +55,9 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 }
                             }
                             parent = parent+".0";
-                            $scope.procedurelist.push(
+
+                            //check if scope.prevlist exists then add hidden property of the id else add hidden as false
+                            procedurelist.push(
                             {
                                 id:response.data[i].procedureID,
                                 title:response.data[i].title,
@@ -63,8 +65,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 instances:response.data[i].instances,
                                 running:0,
                                 archived:0,
-                                parent: parent,
-                                hidden:false
+                                parent: parent
                             });
                         }
                     }
@@ -84,33 +85,128 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                         }else {
                             vparent = null;
                         }
-                        $scope.procedureGroups.push({
+
+                        //check if scope.prevGroups exists then add hidden property of the id else add hidden as false
+                        procedureGroups.push({
                             "id":value,
                             "name":"Other",
-                            "hidden":false,
                             "parent":vparent
                         });
                         
                     });
 
-                    $scope.procedureGroups = createDecimalIds($scope.procedureGroups);
-                    $scope.procedureGroups.sort(function(a,b) { return a.decimalId-b.decimalId; });
+                    procedureGroups = createDecimalIds(procedureGroups);
+                    procedureGroups.sort(function(a,b) { return a.decimalId-b.decimalId; });
 
                     for(var j=0;j<response.data.length;j++){
                         for(k=0;k<response.data[j].instances.length;k++){
                             if(response.data[j].instances[k].running === true){
-                                $scope.procedurelist[j].running++;
+                               procedurelist[j].running++;
                             }else{
-                                $scope.procedurelist[j].archived++;
+                                procedurelist[j].archived++;
                             }
                         }
+                    }
+                    if(!angular.equals(procedurelist, $scope.prevList)){
+                        $scope.prevList = angular.copy(procedurelist);
+                        $scope.procedurelist = angular.copy(procedurelist);
+                        if(!$scope.listStatus){
+                            $scope.listStatus = [];
+                            for(var i=0;i<$scope.prevList.length;i++){
+                                $scope.listStatus.push({
+                                    "id":$scope.prevList[i].id,
+                                    "hidden":false,
+                                    "parent":$scope.prevList[i].parent
+                                });
+                            }
+                            for(var i=0;i<$scope.procedurelist.length;i++){
+                                if($scope.procedurelist[i].id === $scope.listStatus[i].id){
+                                    $scope.procedurelist[i].hidden = $scope.listStatus[i].hidden;
+                                }
+            
+                            }
+                        }else {
+                            var temps = [];
+                            for(var a=0;a<$scope.prevList.length;a++){
+                                temps.push($scope.prevList[a].id);
+                            }
+                            var tempList = []
+                            for(var i=0;i<$scope.prevList.length;i++){
+                                if(temps.includes($scope.prevList[i])){
+                                    var idx = temps.indexOf($scope.prevList[i]);
+                                    tempList.push({
+                                        "id":$scope.prevlist[i].id,
+                                        "hidden":$scope.listStatus[idx].hidden,
+                                        "parent":$scope.prevList[idx].parent
+                                    });
+                                }else {
+                                    //check if its parent or ancestors are not hidden ,if not then false else true
+                                    tempList.push({
+                                        "id":$scope.prevList[i].id,
+                                        "hidden":false,
+                                        "parent":$scope.prevList[idx].parent
+                                    });
+                                    $scope.listStatus = angular.copy(tempList);
+                                }
+                            }
+                        }
+
+                        // add code here to add property hidden if does not exist 
+                    }
+
+                    if(!angular.equals(procedureGroups, $scope.prevGroups)){
+                        $scope.prevGroups = angular.copy(procedureGroups);
+                        $scope.procedureGroups = angular.copy(procedureGroups);
+                        if(!$scope.groupStatus){
+                            $scope.groupStatus = [];
+                            for(var i=0;i<$scope.prevGroups.length;i++){
+                                $scope.groupStatus.push({
+                                    "id":$scope.prevGroups[i].id,
+                                    "hidden":false,
+                                    "status":"open"
+                                });
+                            }
+                            for(var i=0;i<$scope.procedureGroups.length;i++){
+                                if($scope.procedureGroups[i].id === $scope.groupStatus[i].id){
+                                    $scope.procedureGroups[i].hidden = $scope.groupStatus[i].hidden;
+                                    $scope.procedureGroups[i].status = $scope.groupStatus[i].status;
+                                }
+            
+                            }
+                        }else {
+                            var temps = [];
+                            for(var a=0;a<$scope.prevGroups.length;a++){
+                                temps.push($scope.prevGroups[a].id);
+                            }
+                            var tempList = []
+                            for(var i=0;i<$scope.prevGroups.length;i++){
+                                if(temps.includes($scope.prevGroups[i])){
+                                    var idx = temps.indexOf($scope.prevGroups[i]);
+                                    tempList.push({
+                                        "id":$scope.prevGroups[i].id,
+                                        "hidden":$scope.groupStatus[idx].hidden,
+                                        "status":$scope.groupStatus[idx].status
+                                    });
+                                }else {
+                                    //check if its parent or ancestors are not hidden ,if not then false else true
+                                    tempList.push({
+                                        "id":$scope.prevList[i].id,
+                                        "hidden":false,
+                                        "status":"open"
+                                    });
+                                    $scope.groupStatus = angular.copy(tempList);
+                                }
+                            }
+                        }
+                        // add code here to add property hidden if does not exist 
+                    }else {
+                        //console.log($scope.procedureGroups);
                     }
                 }
             }
 
             $scope.loadstatus = false;
             $scope.loadcount++;
-
 
         },function(error){
             if(error.data === null || error.data === undefined){
@@ -262,36 +358,60 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     }
 
     $scope.toggleList = function(groupNum,index){
+        if($scope.groupStatus[index].status === "open"){
+            $scope.groupStatus[index].status = "closed";
+        }else if($scope.groupStatus[index].status === "closed"){
+            $scope.groupStatus[index].status = "open";
+        }
         var groupNumarray = groupNum.split(".");
         groupNumarray.pop();
 
         // toggle groups
-
-        for(var i=0;i<$scope.procedureGroups.length;i++){
+        for(var i=0;i<$scope.groupStatus.length;i++){
             if(i !== index){
-                var gnumarraytemp = $scope.procedureGroups[i].id.split(".");
+                var gnumarraytemp = $scope.groupStatus[i].id.split(".");
                 gnumarraytemp.pop();
                 var gnumarraytemp2 = gnumarraytemp.slice(0,groupNumarray.length);
                 if(JSON.stringify(groupNumarray) === JSON.stringify(gnumarraytemp2)){
-                    $scope.procedureGroups[i].hidden = !$scope.procedureGroups[i].hidden;
+                    if($scope.groupStatus[index].status === "closed"){
+                        $scope.groupStatus[i].hidden = true;
+                        $scope.groupStatus[i].status = "closed";
+                    }else if($scope.groupStatus[index].status === "open"){
+                        $scope.groupStatus[i].hidden = false;
+                        $scope.groupStatus[i].status = "open";
+                    }                
                 }
             }
         }
-        
 
         // toggle procedures
-        for(var a=0;a<$scope.procedurelist.length;a++){
-            var gnumarray = $scope.procedurelist[a].id.split(".");
+        for(var a=0;a<$scope.listStatus.length;a++){
+            var gnumarray = $scope.listStatus[a].id.split(".");
             gnumarray.pop();
             var gnumarray2 = gnumarray.slice(0,groupNumarray.length);
             if(JSON.stringify(groupNumarray) === JSON.stringify(gnumarray2)){
-                $scope.procedurelist[a].hidden = !$scope.procedurelist[a].hidden;
+                if($scope.groupStatus[index].status === "closed"){
+                    $scope.listStatus[a].hidden = true;
+                }else if($scope.groupStatus[index].status === "open"){
+                    $scope.listStatus[a].hidden = false;
+                }
             }
         }
 
-        $ctrl.procedurelist = angular.copy($scope.procedurelist);
-        $ctrl.procedureGroups = angular.copy($scope.procedureGroups);
+        for(var k=0;k<$scope.procedureGroups.length;k++){
+            if($scope.procedureGroups[k].id === $scope.groupStatus[k].id){
+                $scope.procedureGroups[k].hidden = $scope.groupStatus[k].hidden;
+                $scope.procedureGroups[k].status = $scope.groupStatus[k].status;
+            }
+        }
 
+        for(var i=0;i<$scope.procedurelist.length;i++){
+            if($scope.procedurelist[i].id === $scope.listStatus[i].id){
+                $scope.procedurelist[i].hidden = $scope.listStatus[i].hidden;
+            }
+        }
+
+        // Handle for nested groups when closed - all its children should also be hidden
         //Handle for main headers
         //Handle for not collapsing or expanding on every interval
     }
