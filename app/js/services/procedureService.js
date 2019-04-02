@@ -804,6 +804,25 @@ quantum
         return procs;
     }
 
+
+    function storeProcedureRegistry(catalog){
+        console.log("storeProcedureRegistry");
+        return $http({
+            url: "/storeProcedureRegistry", 
+            method: "POST",
+            data: {"catalog":catalog}
+        }); 
+    }
+
+    function getProcedureRegistry(){
+        console.log("getProcedureRegistry");
+        return $http({
+            url:"/getProcedureRegistry",
+            method: "GET",
+            params: {}
+        });
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -843,6 +862,8 @@ quantum
         getValidRoles : getValidRoles,
         getValidLinks : getValidLinks,
         setprocRevisions : setprocRevisions,
-        getprocRevisions : getprocRevisions
+        getprocRevisions : getprocRevisions,
+        storeProcedureRegistry : storeProcedureRegistry,
+        getProcedureRegistry : getProcedureRegistry
     }
 }]);

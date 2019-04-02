@@ -2,6 +2,7 @@ module.exports = function(app,passport) {
 
     var User = require('./models/user');
     var ProcedureModel = require('./models/procedure');
+    var ProcedureRegistryModel = require('./models/procedureregistry');
     var procs =  require('./controllers/procedure.controller');
     var usr =  require('./controllers/user.controller');
     var multer = require('multer');
@@ -130,6 +131,13 @@ module.exports = function(app,passport) {
 
     //get quantum user roles
     app.get('/getQuantumRoles',procs.getQuantumRoles);
+
+    //set procedure registry
+    app.post('/storeProcedureRegistry',procs.storeProcedureRegistry);
+
+    //get procedure registry
+    app.get('/getProcedureRegistry',procs.getProcedureRegistry);
+
 
 };
 

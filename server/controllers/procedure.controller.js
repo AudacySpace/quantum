@@ -3,6 +3,7 @@ var ProcedureModel = mongoose.model('procedure');
 var XLSX = require("xlsx");
 var configRole = require('../../config/role');
 var validTypes = ['ACTION','CAUTION','DECISION','HEADING','INFO','RECORD','VERIFY','WARNING'];
+var ProcedureRegistry = mongoose.model('procedureregistry');
 
 module.exports = {
     getProcedureList: function(req, res){
@@ -580,6 +581,57 @@ module.exports = {
     getQuantumRoles: function(req,res){
         var callSigns = getAllCallSigns();
         res.send(callSigns);
+    },
+    storeProcedureRegistry: function(req,res){
+        var catalog = req.body.catalog;
+        ProcedureRegistry.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, data) {
+            if(err){ 
+                console.log(err);
+            }
+            console.log("HERE");
+            console.log("***************");
+            console.log(data);
+            if(data){
+                data.catalog = catalog;
+                data.save(function(err,result) {
+                    if (err){
+                        console.log(err);
+                    }
+                    if(result){
+                       res.send(catalog);
+                    }
+                    
+                });
+            }else {
+                var procregistry = new ProcedureRegistry();
+                procregistry.catalog = catalog;
+                procregistry.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                        console.log('procedure registry saved successfully!');
+                        res.send(catalog);
+                    }
+                });
+            }
+        });
+    },
+    getProcedureRegistry: function(req,res){
+        console.log(" here getProcedureRegistry");
+        ProcedureRegistry.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, data) {
+            if(err){ 
+                console.log(err);
+            }
+            console.log(" here getProcedureRegistry inside");
+            console.log(data);
+            if(data){
+                res.send(data);  
+            }else {
+                res.send([]);
+            }
+            
+        }); 
     }
 };
 

@@ -1,5 +1,5 @@
 var quantum = angular.module('quantum', 
-	['ngFileUpload', 'ngRoute', 'ngFileSaver','ngMaterial', 'ui.bootstrap', 'ui.select','xeditable','angularUtils.directives.dirPagination']);
+	['ngFileUpload', 'ngRoute', 'ngFileSaver','ngMaterial', 'ui.bootstrap', 'ui.select','xeditable','angularUtils.directives.dirPagination','ui.tree']);
 
 quantum.constant('moment', moment);
 

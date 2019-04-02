@@ -9,12 +9,14 @@
     "test": "karma start karma.conf.js && mocha"
   },
   "dependencies": {
+    "angular-ui-tree": "^2.22.6",
     "body-parser": "^1.15.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.13.3",
     "express-session": "^1.15.6",
+    "fs-extra": "^7.0.0",
     "method-override": "^2.3.10",
     "moment": "^2.22.2",
     "mongodb": "^3.0.1",
@@ -24,8 +26,7 @@
     "passport": "~0.3.2",
     "passport-google-oauth": "~0.1.5",
     "passport-google-oauth2": "^0.1.6",
-    "xlsx": "^0.11.14",
-    "fs-extra": "^7.0.0"
+    "xlsx": "^0.11.14"
   },
   "engines": {
     "node": ">=8.0.0"

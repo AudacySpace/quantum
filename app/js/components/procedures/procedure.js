@@ -9,12 +9,186 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.loadstatus = true;
     $scope.quantumRoles = procedureService.getValidRoles();
 
+
+                $scope.treeOptions = {
+                    accept: function(sourceNode, destNodes, destIndex) {
+                        return true;
+                        var sourceType = sourceNode.$element.attr('data-type');
+                        var destType = destNodes.$element.attr('data-type');
+                        var destParent = destNodes.$parent;
+                        //Product can not be moved under root aka uiTrees
+                        if(destParent.$type == 'uiTree' && sourceType==='product') return false;
+                        
+                        //Category can not be moved under product
+                        if(sourceType==='category' && destType==='product' ) return false;
+                        
+                        return true;
+                    },
+                    dragMove: function(event) {
+
+//                      $log.info(event);
+
+                    }
+                };
+
+                $scope.edit = function(scope) {
+                    scope.$modelValue.editable = true;
+                    console.log(scope);
+                };
+
+                $scope.update = function(cat) {
+                    delete cat.editable;
+                };
+
+                $scope.delete = function(scope) {
+                    if (window.confirm('Are you sure to remove category '+ scope.$modelValue.name +'?')) {
+                        scope.remove();
+                    }
+                };
+
+                $scope.toggle = function(scope) {
+                    scope.toggle();
+                };
+
+                $scope.newSubItem = function(scope) {
+                    var nodeData = scope.$modelValue;
+                    nodeData.children.push({
+                        type: "category",
+                        id : nodeData.id * 10 + nodeData.children.length,
+                        name : nodeData.name + '.'
+                                + (nodeData.children.length + 1),
+                        editable : true,
+                        children : []
+                    });
+                    console.log(scope);
+                };
+                
+                $scope.openAddProductModal = function (scope) {
+                    var modelCat = scope.$modelValue;
+                    var modalInstance = $modal.open({
+                      templateUrl: 'productModalContent.html',
+                      controller: 'ProductModalCtrl',
+                      resolve: {
+                        product: function () {
+                          return {"category":modelCat, "type":"product"};
+                        }
+                      }
+                    });
+
+                    modalInstance.result.then(function (product) {
+                        modelCat.children.push(product);
+                    }, function () {
+                      $log.info('Modal dismissed at: ' + new Date());
+                    });
+                  };
+                  
+                  $scope.openEditProductModal = function (scope) {
+                    
+                    };
+
+                // $scope.catalog = [ {
+                //     "type":"category",
+                //     "id" : 1,
+                //     "name" : "Space Operations",
+                //     "children" : []
+                // }, {
+                //     "type":"category",
+                //     "id" : 2,
+                //     "name" : "Network Operations",
+                //     "children" : []
+                // },{
+                //     "type":"category",
+                //     "id" : 3,
+                //     "name" : "Ground Operations",
+                //     "children" : []
+                // },{
+                //     "type":"category",
+                //     "id" : 4,
+                //     "name" : "Other",
+                //     "children" : []
+                // }
+                // ];
+
+
+    $scope.showCatalog = function(){
+        procedureService.getProcedureRegistry().then(function(response) {
+            console.log(response);
+            if(response.status === 200){
+                if(!response.data || (response.data && response.data.length === 0)){
+                    var catalog = [ {
+                    "type":"category",
+                    "id" : 1,
+                    "name" : "Space Operations",
+                    "children" : []
+                }, {
+                    "type":"category",
+                    "id" : 2,
+                    "name" : "Network Operations",
+                    "children" : []
+                },{
+                    "type":"category",
+                    "id" : 3,
+                    "name" : "Ground Operations",
+                    "children" : []
+                },{
+                    "type":"category",
+                    "id" : 4,
+                    "name" : "Other",
+                    "children" : []
+                }
+                ];
+                procedureService.storeProcedureRegistry(catalog).then(function(response){
+                    console.log(response);
+                    if(response.status === 200){
+                        console.log($scope.catalog);
+                        $scope.catalog = [ 
+                            {
+                                "type":"category",
+                                "id" : 1,
+                                "name" : "Space Operations",
+                                "children" : []
+                            }, {
+                                "type":"category",
+                                "id" : 2,
+                                "name" : "Network Operations",
+                                "children" : []
+                            },{
+                                "type":"category",
+                                "id" : 3,
+                                "name" : "Ground Operations",
+                                "children" : []
+                            },{
+                                "type":"category",
+                                "id" : 4,
+                                "name" : "Other",
+                                "children" : []
+                            }
+                        ];
+                    }
+                });
+                }else if(response.data.length > 0){
+                    console.log(response);
+                    $scope.catalog = response.data;
+                }
+            }
+        },function(error){
+            if(error.data === null || error.data === undefined){
+               // console.log("No Procedures available");
+               // console.log(error);
+            }
+            $scope.loadstatus = false;
+        });
+    }
+
+    $scope.showCatalog();
+
+
     $scope.showList = function(){
         if($scope.loadcount === 0){
             $scope.loadstatus = true;
         }
         procedureService.getProcedureList().then(function(response) {
-              if(response.status === 200){
+            if(response.status === 200){
                 $scope.procedurelist = [];
                 if(response.data.length > 0){
                     for(var i=0;i<response.data.length;i++){
@@ -265,6 +439,11 @@ quantum.controller('ToastCtrl',function($scope,$mdDialog,$mdToast) {
         });
     }
 });
+
+quantum.controller('ProductModalCtrl', function ($scope,$uibModal,$uibModalInstance, product) {
+
+      
+    });
 
 
 

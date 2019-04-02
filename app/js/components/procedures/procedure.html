@@ -1,6 +1,6 @@
 <section>
   <!--for demo wrap-->
-  <div class="tbl-header" style="font-size:16px">
+  <div class="tbl-header" style="font-size:16px;">
     <table cellpadding="0" cellspacing="0" border="0" class="procedureTable">
         <thead>
             <tr>
@@ -42,7 +42,7 @@
         </thead>
     </table>
   </div>
-  <div class="tbl-content" style="font-size:16px">
+  <div class="tbl-content" style="font-size:16px;">
         <table cellpadding="0" cellspacing="0" border="0" class="procedureTable table-hover">
             <tbody ng-show="procedurelist.length > 0 && loadstatus === false" style="background: #fcfefc">
                 <tr dir-paginate="procedure in procedurelist | orderBy:sortType:sortReverse |itemsPerPage:15">
@@ -92,4 +92,73 @@
         </table>
         <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" class="pagination" style="float:right"></dir-pagination-controls>
     </div>
+</section>
+<section>
+    <script type="text/ng-template" id="nodes_renderer.html">
+  
+    <div class="{{child.type}}-tree-node">
+
+      <div class="pull-left tree-handle" ui-tree-handle>
+        <span class="glyphicon glyphicon-list"></span>
+      </div>
+
+      <div class="tree-node-content">
+
+        <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)">
+            <span class="glyphicon" ng-show="child.type==='category' && child.children.length>0" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span>
+        </a>
+        <span ng-if="child.type==='category'">
+        <span ng-hide="child.editable">
+            {{child.name}} 
+
+            <div class="btn-toolbar pull-right">
+                <div class="btn-group">
+                    <button id="dLabel{{child.id}}" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-plus"></span><span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel{{child.id}}">
+                        <li><a href="#" ng-click="newSubItem(this)">Category</a></li>
+                        <li><a href="#" ng-click="openAddProductModal(this)">Product</a></li>
+                    </ul>
+                </div>
+                
+                <div class="btn-group"><button type="button" class="btn btn-primary btn-xs" ng-click="child.editable=true"><span class="glyphicon glyphicon-pencil"></span></button></div>
+                <div class="btn-group"><button type="button" class="btn btn-danger btn-xs" ng-click="delete(this)"><span class="glyphicon glyphicon-remove"></span></button></div>
+                
+            </div>
+            
+        </span>
+        <span ng-show="child.editable">
+            <input type="text" ng-model="child.name" style="color: #000"/>
+            <a class="btn btn-primary btn-xs" data-nodrag ng-click="update(child)"><span class="glyphicon glyphicon-save"></span></a>
+        </span>
+        </span>
+
+        <span data-nodrag ng-if="child.type==='product'">
+                    {{child.name}}
+                    <div class="btn-toolbar pull-right">
+                
+                        <div class="btn-group"><button type="button" class="btn btn-primary btn-xs" ng-click="openEditProductModal(this)"><span class="glyphicon glyphicon-pencil"></span></button></div>
+                        <div class="btn-group"><button type="button" class="btn btn-danger btn-xs" ng-click="deleteProduct(this)"><span class="glyphicon glyphicon-remove"></span></button></div>
+                
+                    </div>
+            
+        </span>
+        
+      </div>
+    
+    <ol ui-tree-nodes="" ng-model="child.children" ng-class="{hidden: collapsed}" data-type="category">
+      <li ng-repeat="child in child.children" ui-tree-node ng-include="'nodes_renderer.html'" data-type="category">
+      </li>
+    </ol>
+
+ </div>
+  </script>
+      <div class="row">
+        <div ui-tree="treeOptions" id="tree1-root" class="wrapper">
+          <ol ui-tree-nodes="" ng-model="catalog" data-type="category">
+            <li ng-repeat="child in catalog" ui-tree-node="" ng-include="'nodes_renderer.html'" data-type="category"></li>
+          </ol>
+        </div>
+      </div>
 </section>
