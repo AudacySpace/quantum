@@ -1032,10 +1032,12 @@ describe('Test Suite for Section Controller', function () {
             deferredSetInfo = _$q_.defer();
             deferredSetComments = _$q_.defer();
             deferredInstanceCompleted = _$q_.defer();
+            deferredSetParentsInfo = _$q_.defer();
             spyOn(procedureService, "setInstanceCompleted").and.returnValue(deferredInstanceCompleted.promise);
             spyOn(procedureService, "getCompletedSteps").and.returnValue(steps);
             spyOn(procedureService, "openNextSteps").and.returnValue(res);
-            spyOn(procedureService, "showPList").and.returnValue(lsteps);          
+            spyOn(procedureService, "showPList").and.returnValue(lsteps);
+            spyOn(procedureService, "showstepList").and.returnValue(lsteps);          
             spyOn(userService, "getUserName").and.returnValue('John Smith');
             spyOn(userService, "getUserEmail").and.returnValue('jsmith@gmail.com');
             spyOn(procedureService,"getCurrentViewRevision").and.returnValue({"value":1});
@@ -1282,9 +1284,10 @@ describe('Test Suite for Section Controller', function () {
 
         expect(scope.showPList).toBeDefined();
         scope.steps = steps;
-        scope.showPList(id,index,headertype);
-        
-        expect(procedureService.showPList).toHaveBeenCalledWith(id,index,headertype,steps);
+        scope.showPList(id,index,headertype,'Heading');
+        spyOn(procedureService,"getStepHeadingName").and.returnValue({'name':'Heading'});
+        //expect(procedureService.showPList).toHaveBeenCalledWith(id,index,headertype,steps);
+        expect(procedureService.showstepList).toHaveBeenCalledWith(id,steps);
         expect(scope.steps).toEqual(lsteps);
 
     });
@@ -1496,8 +1499,8 @@ describe('Test Suite for Section Controller', function () {
         scope.setInfo(0,true);
         expect(timeService.getTime).toHaveBeenCalled();
         expect(procedureService.setInfo).toHaveBeenCalledWith("070.10:10:50 UTC John Smith(MD)",'1.1',0,'John Smith(MD)',2,"2018 - 070.10:10:50 UTC",'','String');
-        expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
-        expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
+        //expect(procedureService.openNextSteps).toHaveBeenCalledWith(mid_res,0);
+        //expect(procedureService.openNextSteps(mid_res,0)).toEqual(res);
     });
 
         it('should not set Info for a procedure step if the input field is empty', function() {
@@ -2598,7 +2601,9 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor:{backgroundColor: '#c6ecc6' } }, 
                 chkval: true, 
                 ivalue:'',
-                status: true
+                status: true,
+                parentIndex: '',
+                parent:''
             }, 
             {   
                 step: '1.1', 
@@ -2618,7 +2623,9 @@ describe('Test Suite for Section Controller', function () {
                 chkval: true, 
                 ivalue:'',
                 typeicon: 'fa fa-exclamation-triangle', 
-                status: true
+                status: true,
+                parentIndex:0,
+                parent:'1.0'
             }, 
             {   
                 step: '1.2', 
@@ -2638,13 +2645,15 @@ describe('Test Suite for Section Controller', function () {
                 chkval: true, 
                 ivalue: '',
                 typeicon: 'fa fa-cog', 
-                status: true
+                status: true,
+                parentIndex:0,
+                parent: '1.0'
             }, 
             {   
                 step: '2.0', 
                 info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
                 Step: '2.0', 
-                Type: undefined, 
+                Type: 'Heading', 
                 Content: 'Close Procedure', 
                 Role: 'MD', 
                 Info: '034.11:26:49 UTC Taruni Gattu(VIP)', 
@@ -2657,7 +2666,9 @@ describe('Test Suite for Section Controller', function () {
                 rowstyle: {rowcolor: {backgroundColor: '#c6ecc6' }}, 
                 chkval: true, 
                 ivalue:'',
-                status: true
+                status: true,
+                parentIndex: '',
+                parent: ''
             }, 
             {
                 step: '2.1.0', 
@@ -2677,7 +2688,9 @@ describe('Test Suite for Section Controller', function () {
                 chkval: true, 
                 ivalue: '',
                 typeicon: 'fa fa-cog', 
-                status: true
+                status: true,
+                parentIndex:3,
+                parent:'2.0'
             }, 
             {   step: '2.1.1', 
                 info: '', 
@@ -2696,7 +2709,9 @@ describe('Test Suite for Section Controller', function () {
                 chkval: false, 
                 typeicon: 'fa fa-cog', 
                 ivalue: '',
-                status: false
+                status: false,
+                parentIndex:4,
+                parent:'2.1.0'
             }
         ];
 
@@ -2738,16 +2753,47 @@ describe('Test Suite for Section Controller', function () {
             }
         ]
 
+        scope.tempValues = [
+            {
+                snum:scope.steps[0].Step,
+                ivalue:""
+            },
+            {
+                snum:scope.steps[1].Step,
+                ivalue:""
+            },
+            {
+                snum:scope.steps[2].Step,
+                ivalue:""
+            },
+            {
+                snum:scope.steps[3].Step,
+                ivalue:""
+            },
+            {
+                snum:scope.steps[4].Step,
+                ivalue:""
+            },
+            {
+                snum:scope.steps[5].Step,
+                ivalue:""
+            }
+        ]
+
         var modalResult = {};
         var mockModalInstance = { result: $q.resolve(modalResult,true) };
         spyOn(mockModalInstance.result, 'then').and.callThrough();
         spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+        spyOn(procedureService,'getSiblings').and.returnValue([]);
         spyOn(procedureService, "setInfo").and.returnValue(deferredSetInfo.promise);
         spyOn(procedureService, "setProcedureName").and.callThrough();
         spyOn(procedureService, "setHeaderStyles").and.callThrough();
+        spyOn(procedureService, "setParentsInfo").and.returnValue(deferredSetParentsInfo.promise);
 
         deferredSetInfo.resolve({status:200});
         deferredInstanceCompleted.resolve({status:200,data : {procedure : {title: "Procedure Example"}}});
+        deferredSetParentsInfo.resolve({status:200});
+
         scope.setInfo(5,true);
         scope.$digest();
         expect(scope.setInfo).toBeDefined();
