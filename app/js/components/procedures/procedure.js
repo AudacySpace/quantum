@@ -105,6 +105,11 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                     "id" : 3,
                     "name" : "Ground Operations",
                     "children" : []
+                },{
+                    "type":"category",
+                    "id" : 4,
+                    "name" : "Other",
+                    "children" : []
                 }
                 ];
                 procedureService.storeProcedureRegistry(catalog).then(function(response){
@@ -124,6 +129,11 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
                                 "type":"category",
                                 "id" : 3,
                                 "name" : "Ground Operations",
+                                "children" : []
+                            },{
+                                "type":"category",
+                                "id" : 4,
+                                "name" : "Other",
                                 "children" : []
                             }
                         ];
