@@ -34,6 +34,8 @@ quantum
         revisions:[]
     }
 
+    var headingType = {'name': 'Heading'};
+
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -149,42 +151,69 @@ quantum
         if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
                 var step = psteps[j].Step.replace(/\s/g, '');
-                if(step.includes(".0") === true && step.indexOf(".") === step.lastIndexOf(".") && step.lastIndexOf("0") === step.length-1 && step.lastIndexOf(".") === step.length-2){
-                    psteps[j].index = parseFloat(step);
+                if(step.includes(".0") === true && step.indexOf(".") === step.lastIndexOf(".")){
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
+                    psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right";
                     psteps[j].header = true; 
                     psteps[j].headertype = "mainheader";
-                    psteps[j].headervalue = step.split(".")[0];
+                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].subheadervalue = joinOp;
                     psteps[j].openstatus = true;
                     psteps[j].rowstyle = {
-                        rowcolor: {backgroundColor:'#e9f6fb'}
+                        rowcolor: {backgroundColor:'#bee4f3'}
+                    };
+                    psteps[j].sectionbtn = {
+                        styles:{color:''}
                     };
                     psteps[j].chkval = false;
                     psteps[j].checkbox = false;
 
-                }else if(step.includes(".0") === true && step.indexOf(".") !== step.lastIndexOf(".") && step.lastIndexOf("0") === step.length-1 && step.lastIndexOf(".") === step.length-2){
-                    psteps[j].index = parseFloat(step);
-                    psteps[j].class = "fa fa-caret-down";
+                }else if(step.includes(".0") === true && step.indexOf(".") !== step.lastIndexOf(".")){
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
+                    psteps[j].index = parseFloat(psteps[j].Step);
+                    psteps[j].class = "fa fa-caret-right";
                     psteps[j].header = true; 
                     psteps[j].headertype = "subheader";
-                    psteps[j].headervalue = step.split(".")[0];
+                    psteps[j].subheadervalue = joinOp;
+                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {
-                            backgroundColor:'#e9f6fb'
+                            backgroundColor:'#d4edf7'
                         }
+                    };
+                    psteps[j].sectionbtn = {
+                        styles:{color:''}
                     };
                     psteps[j].chkval = false;
                     psteps[j].checkbox = false;
                 }else {
-                    psteps[j].index = parseFloat(step);
+                    var splitOp = [];
+                    splitOp =  psteps[j].Step.split('.');
+                    var joinOpPre = splitOp.splice(0,splitOp.length-1);
+                    var joinOp = joinOpPre.join('');
+
+                    psteps[j].index = parseFloat(psteps[j].Step);
                     psteps[j].class = "fa fa-caret-right"; 
                     psteps[j].header = false;
                     psteps[j].headertype = "listitem";
-                    psteps[j].headervalue = step.split(".")[0];
+                    psteps[j].headervalue = psteps[j].Step.split(".")[0];
+                    psteps[j].subheadervalue = joinOp;
                     psteps[j].openstatus = false;
                     psteps[j].rowstyle = {
                         rowcolor: {backgroundColor:'#e9f6fb'}
+                    };
+                    psteps[j].sectionbtn = {
+                        styles:{color:''}
                     };
                     psteps[j].chkval = false;
                     psteps[j].checkbox = true;
@@ -278,6 +307,7 @@ quantum
 
             //check for role and disable the steps if not permitted
             for(var a=0;a<psteps.length;a++){
+                psteps[a].Role = psteps[a].Role.toUpperCase();
                 if(psteps[a].Role.includes(callsign)){
                     psteps[a].status = false;
                 }else {
@@ -376,7 +406,7 @@ quantum
                         if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "subheader"){
                             liststeps[i].class = "fa fa-caret-down";
                             liststeps[i].openstatus = true;
-                        }else  if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
+                        }else if(index === parseInt(liststeps[i].headervalue) && liststeps[i].headertype === "listitem"){
                             liststeps[i].class = "fa fa-caret-right";
                             liststeps[i].openstatus = true;
                         }
@@ -496,24 +526,49 @@ quantum
     function getCompletedSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
-                if(steps[d].Info){
-                    if(steps[d].Info.length > 0){
+                if(steps[d].Info !== ""){
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#9fdf9f'
+                            }
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {
+                                backgroundColor:'#b3e6b3'
+                            }
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
                         steps[d].rowstyle = {
                             rowcolor : {
                                 backgroundColor:'#c6ecc6'
                             }
                         };
-                        steps[d].chkval = true;
-                    }else {
+                    }
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {
+                    //         backgroundColor:'#c6ecc6'
+                    //     }
+                    // };
+                    steps[d].chkval = true;
+                }else {
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#bee4f3'}
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#d4edf7'}
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
                         steps[d].rowstyle = {
                             rowcolor : {backgroundColor:'#e9f6fb'}
-                        };
-                        steps[d].chkval = false;
+                        };  
                     }
-                }else {
-                    steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#e9f6fb'}
-                    };
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {backgroundColor:'#e9f6fb'}
+                    // };
                     steps[d].chkval = false;
                 }
             }
@@ -573,9 +628,22 @@ quantum
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
                 if(steps[d].Info !== ""){
-                    steps[d].rowstyle = {
-                        rowcolor : {backgroundColor:'#c6ecc6'}
-                    };
+                    if(steps[d].headertype === 'mainheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#9fdf9f'}
+                        };
+                    }else if(steps[d].headertype === 'subheader'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#b3e6b3'}
+                        };
+                    }else if(steps[d].headertype === 'listitem'){
+                        steps[d].rowstyle = {
+                            rowcolor : {backgroundColor:'#c6ecc6'}
+                        };
+                    }
+                    // steps[d].rowstyle = {
+                    //     rowcolor : {backgroundColor:'#c6ecc6'}
+                    // };
                     steps[d].chkval = true;
                     steps[d].status = true;
                 }else {
@@ -610,6 +678,7 @@ quantum
             }
 
             for(var a=0;a<psteps.length;a++){
+                psteps[a].Role = psteps[a].Role.toUpperCase();
                 if(psteps[a].Role.includes(callsign)){
                     psteps[a].status = false;
                 }else {
@@ -689,6 +758,7 @@ quantum
         var len = psteps.length;
         //check for role and disable the steps if not permitted
         for(var a=0;a<len;a++){
+            psteps[a].Role = psteps[a].Role.toUpperCase();
             if(psteps[a].Role.includes(callsign)){
                 psteps[a].status = false;
             }else {
@@ -804,6 +874,237 @@ quantum
         return procs;
     }
 
+    function getAllParents(steps){
+        for(var a=0;a<steps.length;a++){
+            var stepParent = getParentTag(steps[a]);
+            var isParent = ifParentExists(stepParent,steps);
+            if(isParent.status === true){
+                steps[a].parent = stepParent.step;
+                steps[a].parentIndex = isParent.index;
+            }else if(isParent.status === false){
+                steps[a].parent = '';
+                steps[a].parentIndex = '';
+            }
+        }
+        return steps;
+    }
+
+    function ifParentExists(pTag,steps){
+        var parentStatus = {'status':false,'index':''};
+        if(pTag.step && pTag.step.length > 0){
+            for(var i=0;i<steps.length;i++){
+                if(steps[i].Step === pTag.step && steps[i].Type.toUpperCase() === headingType.name.toUpperCase()){
+                    parentStatus.status = true;
+                    parentStatus.index = i;
+                    break;
+                }
+            }
+        }else {
+            parentStatus.status = false;
+            parentStatus.index = '';
+        }
+
+        return parentStatus;
+    }
+
+    function getParentTag(step){
+        var pTag = {
+            step:''
+        };
+        if(step.Type.toUpperCase() !== headingType.name.toUpperCase()){
+            var splitOp = [];
+            splitOp = step.Step.split('.');
+            var joinOpPre = splitOp.splice(0,splitOp.length-1)
+            var joinOp = joinOpPre.join('.');
+            pTag.step = joinOp+'.0';
+        }else if(step.Type.toUpperCase() === headingType.name.toUpperCase()){
+            if(step.Step.length > 3){
+                var splitOp = [];
+                splitOp = step.Step.split('.');
+                var joinOpPre = splitOp.slice(0,splitOp.length-2)
+                var joinOp = joinOpPre.join('.');
+                pTag.step = joinOp+'.0';
+            }else {
+                pTag = {
+                    step:''
+                };
+            }
+
+        }
+        return pTag;
+    }
+
+    function showstepList(id,steps){
+        var listSteps = [];
+        if(steps[id].class === "fa fa-caret-right"){
+            steps[id].class = "fa fa-caret-down";
+            for(var i=id+1;i<steps.length;i++){
+                if(steps[i].parent === steps[id].Step){
+                    steps[i].openstatus = true;
+                    listSteps.push(steps[i]);
+                }
+            }
+        }else if(steps[id].class === "fa fa-caret-down"){
+            steps[id].class = "fa fa-caret-right";
+            for(var j=id+1;j<steps.length;j++){
+                if(steps[j].parent === steps[id].Step){
+                    if(steps[j].class="fa fa-caret-down"){
+                        steps[j].class="fa fa-caret-right";
+                    }
+                    steps[j].openstatus = false;
+                    listSteps.push(steps[j]);
+                }
+            }
+
+            // for(var a=0;a<listSteps.length;a++){
+            //     for(var k=0;k<steps.length;k++){
+            //         if(steps[k].parent === listSteps[a].Step){
+            //             steps[k].openstatus = false;
+            //         }
+            //     }
+            // }
+
+            for(var a=id+1;a<steps.length;a++){
+                if(steps[id].headertype === "mainheader"){
+                    if(steps[a].headervalue === steps[id].headervalue){
+                        steps[a].openstatus = false;
+                        if(steps[a].class="fa fa-caret-down"){
+                            steps[a].class="fa fa-caret-right";
+                        }
+                    }
+                }else if(steps[id].headertype === "subheader"){
+                    if(steps[a].headervalue === steps[id].headervalue && steps[a].subheadervalue.includes(steps[id].subheadervalue)){
+                        steps[a].openstatus = false;
+                        if(steps[a].class="fa fa-caret-down"){
+                            steps[a].class="fa fa-caret-right";
+                        }
+                    }
+                }
+            }
+
+        }
+        return steps;
+    }
+
+    function getSiblings(index,steps,stepParent){
+        var siblings = [];
+        if(stepParent.length > 0){
+            for(var i=0;i<steps.length;i++){
+                if(steps[i].parent === stepParent && i !== index){
+                    siblings.push({"index":i,"step":steps[i]});
+                }
+            }
+        }else {
+            siblings = [];
+        }
+        return siblings;
+    }
+
+    function getAllParentList(parentIndex,steps){
+        var allParents = [];
+        var allCompParents = [];
+        //get all parents
+        for(var a=parentIndex-1;a>=0;a--){
+            if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].Step.length < steps[parentIndex].Step.length){
+                allParents.push({'parent':steps[a],'children':[],'index':a});
+            }
+        }
+        //check its children
+        // for all the parents in allParents check if all steps are completed
+        for(var b=0;b<allParents.length;b++){
+            for(var c=0;c<steps.length;c++){
+                if(steps[c].parent === allParents[b].parent.Step){
+                    allParents[b].children.push(steps[c]);
+                }
+            }
+        }
+
+        for(var d=0;d<allParents.length;d++){
+            var childrenLen = allParents[d].children.length;
+            var compcount = 0;
+            for(var k=0;k<childrenLen;k++){
+                if(allParents[d].children[k].Info && allParents[d].children[k].Info.length > 0){
+                    compcount++;
+                }
+            }
+            if(childrenLen === compcount){
+                allParents[d].parent.Info = "done";
+                allParents = checkallParents(allParents[d].parent.Step,allParents);
+                allCompParents.push(allParents[d]);
+            }
+
+        }
+
+        //finalize parents
+        return allCompParents;
+    }
+
+    function getAllParentTree(parentIndex,steps){
+        var allParents = [];
+        var allCompParents = [];
+        //get all parents
+        for(var a=parentIndex-1;a>=0;a--){
+            if(steps[a].headervalue === steps[parentIndex].headervalue && steps[a].headertype !== 'listitem' && steps[a].Step.length < steps[parentIndex].Step.length){
+                steps[a].Info = "";
+                allParents.push({'parent':steps[a],'children':[],'index':a});
+            }
+        }
+        //check its children
+        // for all the parents in allParents check if all steps are completed
+        for(var b=0;b<allParents.length;b++){
+            for(var c=0;c<steps.length;c++){
+                if(steps[c].parent === allParents[b].parent.Step){
+                    allParents[b].children.push(steps[c]);
+                }
+            }
+        }
+
+        for(var d=0;d<allParents.length;d++){
+            allParents[d].parent.Info = "";
+            allParents = nocheckallParents(allParents[d].parent.Step,allParents);
+            allCompParents.push(allParents[d]);
+        }
+
+        //finalize parents
+        return allCompParents;
+    }
+
+    function checkallParents(step,allParents){
+        for(var a=0;a<allParents.length;a++){
+            for(var b=0;b<allParents[a].children.length;b++){
+                if(allParents[a].children[b].Step === step){
+                    allParents[a].children[b].Info = 'done';
+                    break;
+                }
+            }
+        }
+        return allParents;
+    }
+
+    function nocheckallParents(step,allParents){
+        for(var a=0;a<allParents.length;a++){
+            for(var b=0;b<allParents[a].children.length;b++){
+                if(allParents[a].children[b].Step === step){
+                    allParents[a].children[b].Info = '';
+                    break;
+                }
+            }
+        }
+        return allParents;
+    }
+
+    function setParentsInfo(parentsArray,id,usernamerole,revision,lastuse,inputStepValues,info){
+        return $http({
+            url: "/setParentsInfo", 
+            method: "POST",
+            data: {"parentsArray":parentsArray,"id":id,"usernamerole":usernamerole,"revision":revision,"lastuse":lastuse,"inputStepValues":inputStepValues,"info":info}
+        }); 
+    }
+
+    function getStepHeadingName(){
+        return headingType;
+    }
+
     return { 
         procedure : procedure,
         icons : icons,
@@ -843,6 +1144,14 @@ quantum
         getValidRoles : getValidRoles,
         getValidLinks : getValidLinks,
         setprocRevisions : setprocRevisions,
-        getprocRevisions : getprocRevisions
+        getprocRevisions : getprocRevisions,
+        getAllParents : getAllParents,
+        showstepList : showstepList,
+        getSiblings : getSiblings,
+        getAllParentList : getAllParentList,
+        setParentsInfo : setParentsInfo,
+        getAllParentTree : getAllParentTree,
+        nocheckallParents : nocheckallParents,
+        getStepHeadingName : getStepHeadingName
     }
 }]);

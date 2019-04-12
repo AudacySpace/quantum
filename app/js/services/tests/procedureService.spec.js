@@ -14,68 +14,123 @@ describe('Test Suite for Procedure Service', function () {
             "Content": "Pre-Action Safety Information",
             "Type": "Heading",
             "Role": "MD",
-            "Step": "1.0"
+            "Step": "1.0",
+            "typeicon": '',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Reference": "http://somewhere on the net",
             "Content": "Review applicable safety information, from documents located in Mission Specific Release Folder.",
             "Type": "Warning",
             "Role": "MD",
-            "Step": "1.1"
+            "Step": "1.1",
+            "typeicon": 'fa fa-exclamation-triangle',
+            "typecolor": { 'color': '' },
+            "contenttype": 'AlertInfo',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Make required safety announcement on VL-AZERO",
             "Type": "Action",
             "Role": "MD",
-            "Step": "1.2"
+            "Step": "1.2",
+            "typeicon": 'fa fa-cog',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Establish Com Link",
             "Type": "Heading",
             "Role": "SYS,CC",
-            "Step": "2.0"
+            "Step": "2.0",
+            "typeicon": '',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Prepare Ground Support Equipment",
             "Type": "Heading",
             "Role": "CC",
-            "Step": "2.1.0"
+            "Step": "2.1.0",
+            "typeicon": '',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Powerup GSE Rack if necessary",
             "Type": "Action",
             "Role": "CC",
-            "Step": "2.1.1"
+            "Step": "2.1.1",
+            "typeicon": 'fa fa-cog',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Verify UPS battery is fully charged, record charge state",
             "Type": "Record",
             "Role": "CC",
-            "Step": "2.1.2"
+            "Step": "2.1.2",
+            "typeicon": 'fa fa-pencil-square-o',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": 'Verify that OBC is fully booted and in state \"idle\"',
             "Type": "Verify",
             "Role": "SYS ",
-            "Step": "2.2.0"
+            "Step": "2.2.0",
+            "typeicon": 'fa fa-check-circle-o',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Close Procedure",
             "Role": "MD",
             "Step": "3.0",
-            "Type": "Heading"
+            "Type": "Heading",
+            "typeicon": '',
+            "typecolor":{ 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Update the shift log with procedure close status / notes",
             "Type": "Action",
             "Role": "MD",
-            "Step": "3.1"
+            "Step": "3.1",
+            "typeicon": 'fa fa-cog',
+            "typecolor": { 'color': '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         },
         {
             "Content": "Close the procedure in Quantum (complete this step)",
             "Type": "Action",
             "Role": "MD",
-            "Step": "3.2"
+            "Step": "3.2",
+            "typeicon": 'fa fa-cog',
+            "typecolor": { color: '' },
+            "contenttype": 'String',
+            "buttonStatus": '',
+            "comments": ''
         }
     ];
 
@@ -434,17 +489,17 @@ describe('Test Suite for Procedure Service', function () {
 
     it('should return the procedure sections array when getProcedureSection is called', function() {
         var procedure = [
-            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
-            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { color: '' },'contenttype': 'String','buttonStatus': '','comments': ''},
-            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
-            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } }},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }}},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } }},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }}},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } } },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
         ]
         expect(procedureService.getProcedureSection(procSection,"SYS")).toEqual(procedure);
     });
@@ -619,7 +674,8 @@ describe('Test Suite for Procedure Service', function () {
                 "Type": "Heading",
                 "Role": "MD",
                 "Step": "1.0",
-                "Info": "Taruni Gattu 036.09:23:12 UTC"
+                "Info": "Taruni Gattu 036.09:23:12 UTC",
+                "headertype":"mainheader"
             },
             {
                 "Reference": "http://somewhere on the net",
@@ -627,33 +683,37 @@ describe('Test Suite for Procedure Service', function () {
                 "Type": "Warning",
                 "Role": "MD",
                 "Step": "1.1",
-                "Info": "Taruni Gattu 036.09:23:15 UTC"
+                "Info": "Taruni Gattu 036.09:23:15 UTC",
+                "headertype":"listitem"
             },
             {
                 "Content": "Make required safety announcement on VL-AZERO",
                 "Type": "Action",
                 "Role": "MD",
                 "Step": "1.2",
-                "Info": "Taruni Gattu 036.09:23:15 UTC"
+                "Info": "Taruni Gattu 036.09:23:15 UTC",
+                "headertype":"listitem"
             },
             {
                 "Content": "Establish Com Link",
                 "Type": "Heading",
                 "Role": "SYS,CC",
                 "Step": "2.0",
-                "Info": ""
+                "Info": "",
+                "headertype":"mainheader"
             }
         ];
 
-
-        expect(procedureService.getCompletedSteps(procSectionTmp)).toEqual([
+        var resultSteps = procedureService.getCompletedSteps(procSectionTmp);
+        expect(resultSteps).toEqual([
             {
                 "Content": "Pre-Action Safety Information",
                 "Type": "Heading",
                 "Role": "MD",
                 "Step": "1.0",
                 "Info": "Taruni Gattu 036.09:23:12 UTC",
-                "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
+                "rowstyle":{"rowcolor" : {'backgroundColor':'#9fdf9f'}},
+                "headertype":"mainheader",
                 "chkval" : true
             },
             {
@@ -664,6 +724,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.1",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
+                "headertype":"listitem",
                 "chkval" : true
             },
             {
@@ -673,6 +734,7 @@ describe('Test Suite for Procedure Service', function () {
                 "Step": "1.2",
                 "Info": "Taruni Gattu 036.09:23:15 UTC",
                 "rowstyle":{"rowcolor" : {'backgroundColor':'#c6ecc6'}},
+                "headertype":"listitem",
                 "chkval" : true
             },
             {
@@ -681,7 +743,8 @@ describe('Test Suite for Procedure Service', function () {
                 "Role": "SYS,CC",
                 "Step": "2.0",
                 "Info": "",
-                "rowstyle":{"rowcolor" : {'backgroundColor':'#e9f6fb'}},
+                "rowstyle":{"rowcolor" : {'backgroundColor':'#bee4f3'}},
+                "headertype":"mainheader",
                 "chkval" : false
             }
 
@@ -1160,17 +1223,17 @@ describe('Test Suite for Procedure Service', function () {
 
     it('should return the procedure sections array with defined permissions when getStepPermissions is called', function() {
         var procedure = [
-            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
-            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true },
-            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false},
-            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { color: '' },'contenttype': 'String','buttonStatus': '','comments': ''},
-            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true},
-            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true },
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue':'1','sectionbtn': { 'styles':{ 'color': '' } }},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true,'subheadervalue':'1','sectionbtn':{ 'styles': { 'color': '' } }},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1','sectionbtn':{ 'styles':{ 'color': '' } }},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue':'2','sectionbtn':{ 'styles':{ 'color': '' }}},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn':{ 'styles':{ 'color': '' }}},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles': { color: '' } }},
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn':{ 'styles':{ 'color': '' }}},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'subheadervalue': '3','sectionbtn':{ 'styles':{ 'color': '' }},'Type':'Heading','typeicon': '','typecolor': { color: '' },'contenttype': 'String','buttonStatus': '','comments': ''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true, 'typecolor':{color:''}, 'contenttype':'String', 'buttonStatus': '', 'comments':'', 'checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles':{ 'color': '' }}},
         ]
         expect(procedureService.getStepPermissions(procSection,"SYS")).toEqual(procedure);
     });
@@ -1931,6 +1994,193 @@ describe('Test Suite for Procedure Service', function () {
                         }
                     ];
         expect(procedureService.getValidLinks(procList,procSteps)).toEqual(output);
+    });
+
+    it('should return all parents for the steps',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } }},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }}},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } }},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }}},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } } },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+        ];
+
+        var procedureOutput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        expect(procedureService.getAllParents(procedureInput)).toEqual(procedureOutput);
+
+    });
+
+    it('should return no parents for the steps when no heading steps exist',function(){
+        var procedureInput = [
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } }},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }}},
+        ];
+
+        var procedureOutput = [
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+        ];
+
+        expect(procedureService.getAllParents(procedureInput)).toEqual(procedureOutput);
+
+    });
+
+    
+    it('should expand steps and collapse subsections on open of a section',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-down', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        expect(procedureService.showstepList(3,procedureInput)).toEqual(procedureOutput);
+
+    });
+
+    it('should get all siblings of a step',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Make required safety announcement on VL-AZERO', 'Type': 'Action', 'Role': 'MD', 'Step': '1.2', 'index': 1.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [{"index":6,"step":{ 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 }}]
+
+        expect(procedureService.getSiblings(5,procedureInput,'2.1.0')).toEqual(procedureOutput);
+
+    });
+
+    it('should not get siblings if step does not have any',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [];
+
+        expect(procedureService.getSiblings(1,procedureInput,'')).toEqual(procedureOutput);
+
+    });
+
+    it('should not get siblings if step does not have any',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [];
+
+        expect(procedureService.getSiblings(1,procedureInput,'')).toEqual(procedureOutput);
+
+    });
+
+    it('should get all parents list',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [];
+
+        expect(procedureService.getAllParentList(1,procedureInput)).toEqual(procedureOutput);
+
+    });
+
+    it('should get all parents list',function(){
+        var procedureInput = [
+            { 'Content': 'Pre-Action Safety Information', 'Type': 'Heading', 'Role': 'MD', 'Step': '1.0', 'index': 1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '1', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '1','sectionbtn':{ 'styles': { 'color': '' } },'parent':'','parentIndex':''},
+            { 'Reference': 'http://somewhere on the net', 'Content': 'Review applicable safety information, from documents located in Mission Specific Release Folder.', 'Type': 'Warning', 'Role': 'MD', 'Step': '1.1', 'index': 1.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '1', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-exclamation-triangle', 'status': true,'typecolor':{color:'#ff0000'},'contenttype':'AlertInfo','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '1' ,'sectionbtn': { 'styles': { 'color': '' } },'parent':'1.0','parentIndex':0},
+            { 'Content': 'Establish Com Link', 'Type': 'Heading', 'Role': 'SYS,CC', 'Step': '2.0', 'index': 2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '2', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': false ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '2','sectionbtn':{ 'styles':{ 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Prepare Ground Support Equipment', 'Type': 'Heading', 'Role': 'CC', 'Step': '2.1.0', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'status': true ,'typeicon':'','typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.0','parentIndex':3},
+            { 'Content': 'Powerup GSE Rack if necessary', 'Type': 'Action', 'Role': 'CC', 'Step': '2.1.1', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '21','sectionbtn':{ 'styles': { 'color': '' }},'parent':'2.1.0','parentIndex':4},
+            { 'Content': 'Verify UPS battery is fully charged, record charge state', 'Type': 'Record', 'Role': 'CC', 'Step': '2.1.2', 'index': 2.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-pencil-square-o', 'status': true,'typecolor':{color:''},'contenttype':'Input','recordedValue':'','buttonStatus': '','comments':'','checkbox':true, 'subheadervalue': '21','sectionbtn': { 'styles':{ 'color': '' } },'parent':'2.1.0','parentIndex':4 },
+            { 'Content': 'Verify that OBC is fully booted and in state "idle"', 'Type': 'Verify', 'Role': 'SYS ', 'Step': '2.2.0', 'index': 2.2, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'subheader', 'headervalue': '2', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#d4edf7' }}, 'chkval': false, 'typeicon': 'fa fa-check-circle-o', 'status': false ,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':false,'subheadervalue': '22','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Close Procedure', 'Role': 'MD', 'Step': '3.0', 'index': 3, 'class': 'fa fa-caret-right', 'header': true, 'headertype': 'mainheader', 'headervalue': '3', 'openstatus': true, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#bee4f3' }}, 'chkval': false, 'status': true,'checkbox':false,'Type': 'Heading','typeicon': '','typecolor': { 'color': '' },'contenttype': 'String','buttonStatus': '','comments': '','subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'','parentIndex':''},
+            { 'Content': 'Update the shift log with procedure close status / notes', 'Type': 'Action', 'Role': 'MD', 'Step': '3.1', 'index': 3.1, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''} ,'contenttype':'String','buttonStatus': '','comments':'','checkbox':true,'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+            { 'Content': 'Close the procedure in Quantum (complete this step)', 'Type': 'Action', 'Role': 'MD', 'Step': '3.2', 'index': 3.2, 'class': 'fa fa-caret-right', 'header': false, 'headertype': 'listitem', 'headervalue': '3', 'openstatus': false, 'rowstyle': { 'rowcolor': { 'backgroundColor': '#e9f6fb' }}, 'chkval': false, 'typeicon': 'fa fa-cog', 'status': true,'typecolor':{color:''},'contenttype':'String','buttonStatus': '','comments':'','checkbox':true , 'subheadervalue': '3','sectionbtn': { 'styles': { 'color': '' }},'parent':'3.0','parentIndex':8},
+        ];
+
+        var procedureOutput = [];
+
+        expect(procedureService.getAllParentTree(1,procedureInput)).toEqual(procedureOutput);
+
     });
 
 });
