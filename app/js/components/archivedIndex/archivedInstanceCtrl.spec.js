@@ -71,7 +71,7 @@ describe('Test Suite for Archived Instance Controller', function () {
                 step: '2.0', 
                 info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
                 Step: '2.0', 
-                Type: undefined, 
+                Type: 'Heading', 
                 Content: 'Close Procedure', 
                 Role: 'MD', 
                 Info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
@@ -176,7 +176,7 @@ describe('Test Suite for Archived Instance Controller', function () {
                     step: '2.0', 
                     info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
                     Step: '2.0', 
-                    Type: undefined, 
+                    Type: 'Heading', 
                     Content: 'Close Procedure', 
                     Role: 'MD', 
                     Info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
@@ -255,7 +255,7 @@ describe('Test Suite for Archived Instance Controller', function () {
                     step: '2.0', 
                     info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
                     Step: '2.0', 
-                    Type: undefined, 
+                    Type: 'Heading', 
                     Content: 'Close Procedure', 
                     Role: 'MD', 
                     Info: '034.11:26:38 UTC Taruni Gattu(VIP)',
@@ -695,7 +695,7 @@ describe('Test Suite for Archived Instance Controller', function () {
                 step: '2.0', 
                 info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
                 Step: '2.0', 
-                Type: undefined, 
+                Type: 'Heading', 
                 Content: 'Close Procedure', 
                 Role: 'MD', 
                 Info: '034.11:26:38 UTC Taruni Gattu(VIP)', 
@@ -769,6 +769,7 @@ describe('Test Suite for Archived Instance Controller', function () {
 
             spyOn(procedureService, "getProcedureSection").and.returnValue(procSectionSteps);
             spyOn(procedureService, "showPList").and.returnValue(liststeps);
+            spyOn(procedureService, "showstepList").and.returnValue(liststeps); 
             spyOn(procedureService, "disableSteps").and.returnValue(steps);
             spyOn(userService, "getUserName").and.returnValue('John Smith');
             spyOn(userService,"getUserEmail").and.returnValue('jsmith@gmail.com');
@@ -866,7 +867,9 @@ describe('Test Suite for Archived Instance Controller', function () {
         expect(scope.steps).toBeDefined();
         expect(procedureService.getProcedureList).toHaveBeenCalled();
         expect(procedureService.getValidLinks).toHaveBeenCalled();
-        expect(procedureService.getProcedureSection).toHaveBeenCalledWith(newres1,scope.role.cRole.callsign);
+        //expect(procedureService.getProcedureSection).toHaveBeenCalledWith(newres1,scope.role.cRole.callsign);
+
+        //expect(procedureService.getProcedureSection).toHaveBeenCalledWith(stepsT,scope.role.cRole.callsign);
         expect(procedureService.disableSteps).toHaveBeenCalledWith(procSectionSteps);
         expect(scope.steps).toEqual(steps);
 
@@ -879,9 +882,11 @@ describe('Test Suite for Archived Instance Controller', function () {
 
         expect(scope.showPList).toBeDefined();
         scope.steps = steps;
-        scope.showPList(id,index,headertype);
+        scope.showPList(id,index,headertype,'Heading');
+        spyOn(procedureService,"getStepHeadingName").and.returnValue({'name':'Heading'});
         
-        expect(procedureService.showPList).toHaveBeenCalledWith(id,index,headertype,steps);
+        //expect(procedureService.showPList).toHaveBeenCalledWith(id,index,headertype,steps);
+        expect(procedureService.showstepList).toHaveBeenCalledWith(id,steps);
         expect(scope.steps).toEqual(liststeps);
 
     });
