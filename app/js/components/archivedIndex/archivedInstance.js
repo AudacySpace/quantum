@@ -27,16 +27,6 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                             }
                         }
                         var newVersion = response.data[i].versions[parseInt($scope.params.versionID) - 1];
-                        // for(var b=0;b<response.data[i].sections.length;b++){
-                        //     if($scope.steps[b].step === response.data[i].sections[b].Step){
-                        //         $scope.steps[b].Step = response.data[i].sections[b].Step
-                        //         $scope.steps[b].Type = response.data[i].sections[b].Type;
-                        //         $scope.steps[b].Content = response.data[i].sections[b].Content;
-                        //         $scope.steps[b].Role = response.data[i].sections[b].Role;
-                        //         $scope.steps[b].Info = $scope.steps[b].info;
-                        //     }
-                        // }
-
                         for(var b=0;b<newVersion.length;b++){
                             if($scope.steps[b].step === newVersion[b].Step){
                                 $scope.steps[b].Step = newVersion[b].Step
@@ -58,13 +48,17 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
                 procedureService.setProcedureName($scope.params.procID, $scope.procedure.name,"AS-Run Archive");
                 $scope.steps = procedureService.getValidLinks(response.data,$scope.steps);
                 $scope.steps = procedureService.getProcedureSection($scope.steps,$scope.role.cRole.callsign);
+                $scope.steps = procedureService.getAllParents($scope.steps);
                 $scope.steps = procedureService.disableSteps($scope.steps);
             }
         });
     }
 
-    $scope.showPList = function(id,index,headertype){
-        $scope.steps = procedureService.showPList(id,index,headertype,$scope.steps);
+    $scope.showPList = function(id,index,headertype,type){
+        var headingTypeName = procedureService.getStepHeadingName();
+        if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
+            $scope.steps = procedureService.showstepList(id,$scope.steps);
+        }
     }
 
     $scope.changeColor = function(status,pid,ptitle){

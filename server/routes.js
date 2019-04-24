@@ -131,6 +131,9 @@ module.exports = function(app,passport) {
     //get quantum user roles
     app.get('/getQuantumRoles',procs.getQuantumRoles);
 
+    //update parents info
+    app.post('/setParentsInfo',procs.setParentsInfo);
+
 };
 
 // route middleware to make sure a user is logged in
