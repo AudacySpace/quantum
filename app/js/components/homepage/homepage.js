@@ -30,19 +30,19 @@ angular.module('quantum')
     	$ctrl.header = procedureService.getHeaderStyles();
     	$ctrl.icons = procedureService.getIconStyles();
         $rootScope.title = "Quantum";
-       // $ctrl.userList = userService.getOnlineUsers();
+
         $ctrl.locks = dashboardService.getLock();
         $ctrl.sidepanel = dashboardService.getSidePanelButton();
         dashboardService.setHeaderLocation($location.url,false,false);
         
-
-      
+        // Function to set header styles to the header when on dashboard or home page
     	$ctrl.setColor = function(){ 
     		procedureService.setHeaderStyles('block','none','#ffffff','#000000','inline-block','none',$window.innerWidth);
             procedureService.setProcedureName('','',"Home");
-            //dashboardService.setRightLock(false);
     	}
 
+        // Function to display user settings modal
+        // All its supporting function exist in userSettings js 
         $ctrl.showSettings = function(){
             $uibModal.open({
                 templateUrl: './js/components/homepage/userSettings.html',
@@ -61,6 +61,8 @@ angular.module('quantum')
             });
         }
 
+        // Function to display user administration modal
+        // All its supporting function exist in adminMenu js 
         $ctrl.showAdminMenu = function() {
             $uibModal.open({
                 templateUrl: './js/components/homepage/adminMenu.html',
@@ -78,6 +80,7 @@ angular.module('quantum')
             });
         }
 
+        //Function to logout from quantum and assign the user as offline
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
@@ -131,6 +134,12 @@ angular.module('quantum')
             }
         };
 
+        //Function to display right side bar which is used to
+        // upload procedures
+        // view live index or archive index
+        // view user list 
+        // view documentation
+        // Options are visible and hidden based on the page you are currently in
         $ctrl.openRightNav = function(){
             if($window.innerWidth < 800){
                 if ($window.innerWidth < 800){

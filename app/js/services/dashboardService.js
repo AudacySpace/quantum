@@ -2,7 +2,6 @@ quantum
 .factory('dashboardService', ['$http', '$window','procedureService', function($http, $window,procedureService) { 
 
     var locks = {
-        lockLeft : false,
         lockRight : false
     };
 
@@ -17,18 +16,17 @@ quantum
        btnStyle:{"display":'block','outline': 'none','transform': 'translate3d(0, 0, 0)'}
     };
 
+    //Function to get right side bar display status
     function getLock(){
         return locks;
     }
 
-    function setLeftLock(lock){
-        locks.lockLeft = lock;
-    }
-
+    //Function to set display staus for right side bar
     function setRightLock(lock){
        locks.lockRight = lock; 
     }
 
+    //Function to set display status of live index,archive index and user list in right side bar based on page url
     function setHeaderLocation(nextLocation,liveindexStatus,archiveindexStatus,userListStatus){
         location.url = nextLocation;
         location.liveindexStatus = liveindexStatus;
@@ -36,6 +34,7 @@ quantum
         location.userListStatus = userListStatus;
     }
 
+    //Function to set header styles and procedure name on header based on the page url
     function changeHeaderWithLocation(nextLocation,pid,ptitle,revNum,windowWidth){
         if(revNum !== ""){
             //from running instance,archived instance index and new instance page
@@ -111,13 +110,17 @@ quantum
         }
     }
 
+    //Function to get the display status of live index option,archive index option and user list
     function getHeaderLocation(){
         return location;
     }
 
+    //Function to set the right side bar button style
     function setSidePanelButton(button){
         sidePanel.btnStyle = button;
     }
+
+    //Function to get the right side bar button style
     function getSidePanelButton(){
         return sidePanel;
     }
@@ -125,7 +128,6 @@ quantum
 	return {
         locks : locks,
         getLock : getLock,
-        setLeftLock : setLeftLock,
         setRightLock : setRightLock,
         changeHeaderWithLocation : changeHeaderWithLocation,
         setHeaderLocation : setHeaderLocation,

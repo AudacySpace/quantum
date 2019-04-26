@@ -6,6 +6,8 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
     $ctrl.mission = mission.name;
     $ctrl.email = userService.getUserEmail();
 
+    // Service to fetch all the roles available in role js file available in config folder
+    //All the user roles and callsigns are defined in the same file, used to assign roles to a user by MD
     userService.getRoles()
     .then(function(response) {
         if(response.status == 200) {
@@ -20,6 +22,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
         }
     });
 
+    //Service to fetch users currently logged in to Quantum
     userService.getUsers($ctrl.mission)
     .then(function(response) {
         if(response.status == 200) {
@@ -30,10 +33,12 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
         }
     });
 
+    // Function to close the user administration modal
     $ctrl.close = function() {
         $uibModalInstance.dismiss('cancel');
     };
 
+    // Function to save the assigned user roles.
     $ctrl.save = function() {
         if($ctrl.selected){
             if(roleChosen()){
@@ -78,6 +83,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
         }
     }
 
+    // Displays roles as checked or unchecked based on the previous assignment
     $scope.$watch('$ctrl.selected.user', function(newValue, oldValue){
         for(var i=0; i<$ctrl.roles.length; i++) {
             if($ctrl.selected.user.allowedRoles) {
