@@ -10,6 +10,9 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
     dashboardService.setHeaderLocation($location.url,true,false,false);
     showArchivedList();
 
+    //Function to fetch archived procedure instances and set header color and display procedure name
+    // loadcount scope variable is used to check for the response from the database 
+        // and stop the loading image when it received some response
     function showArchivedList(){
         if($scope.loadcount === 0){
             $scope.loadstatus = true;
@@ -39,6 +42,8 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
 
     }
 
+    //locationChangeStart is used to check the change the url when using browser back and forward buttons
+    // and change the header based on the url location 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  
         var loc = $location.url();
         var revNumOp = loc.split("/");
@@ -66,6 +71,7 @@ quantum.controller('archivedIndexCtrl', function($scope,procedureService,$routeP
         }
     });
 
+    //Function to set header styles and add title to the header of the dashboard
     $scope.changeColor = function(status,pid,ptitle){
         if(status === "Live"){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
