@@ -16,6 +16,7 @@ angular.module('quantum')
         $ctrl.userMenu = false;
         getUserRole();
 
+        //Function to logout from quantum and set the user status to offline
         $ctrl.logout = function () {
             var loc = $location.url();
             var temp = loc.split('/');
@@ -68,7 +69,8 @@ angular.module('quantum')
             }
         };
 
-
+        // Function to open the upload procedure modal.
+        // All the supporting validation functions exist in uploads js file of procedures folder
         $ctrl.showUploadModal = function(ev) {
             dashboardService.setSidePanelButton({
                 "display":"block",
@@ -100,6 +102,7 @@ angular.module('quantum')
             $ctrl.userMenu = !$ctrl.userMenu;
         }
 
+        //Function to display user role as VIP if Quantum is viewed in screen sizes less than 768px
         function getUserRole() {
             if ($window.innerWidth <= 768){
                 $ctrl.role = {
@@ -113,6 +116,7 @@ angular.module('quantum')
             }
         }
 
+        //Function to hide the right side bar menu
         $ctrl.hideSideMenu = function(){
             dashboardService.setSidePanelButton({
                 "display":"block",

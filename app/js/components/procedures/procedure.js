@@ -9,6 +9,8 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     $scope.loadstatus = true;
     $scope.quantumRoles = procedureService.getValidRoles();
 
+    //Function to display all procedures and its details on the home page
+    //loadstatus scope varaibale is used to check if the response is receieved and then stops the loading animation
     $scope.showList = function(){
         if($scope.loadcount === 0){
             $scope.loadstatus = true;
@@ -65,11 +67,12 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         return buf;
     }
 
+    //Function to convert the procedure to excel sheet and download to local system of the user
     $scope.download = function(id, title){ 
         procedureService.downloadProcedure(id, title)
         .then(function(response) {
             if(response.status == 200){
-                // var data = response.data;
+
                 var filedata = {
                     data: response.data
                 }
@@ -105,6 +108,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         });
     }
 
+    //Function to set header styles and add title to the header of the dashboard
     $scope.changeColor = function(status,pid,ptitle,createInstance){
         if(status === "Live" && createInstance === true){
             $scope.clock = timeService.getTime();
@@ -135,12 +139,14 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
         }
     }
 
+    // Function to destroy all the intervals running in this page when the page is changed
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.procedurelistinterval);
         }
     );
 
+    // Function to edit the procedure index number,name,group name 
     $scope.showEditModal = function(procedure){
         $uibModal.open({
             templateUrl: './js/components/procedures/editProcedure.html',
@@ -162,6 +168,7 @@ quantum.controller('procedureCtrl', function(Upload,$window,$scope,$interval,use
     }
 });
 
+// Confirmation controller to display confirmation pop ups
 quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,filedata) {
     var $ctrl = this;
     $ctrl.modalLabel = usermessage.confirmMsg;
@@ -176,6 +183,7 @@ quantum.controller('confirmCtrl',function($scope,$uibModalInstance,usermessage,f
 
 });
 
+// Controller used to validate edit form of procedure name,index,group name
 quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstance,procedure,procedureService) {
     var $ctrl = this;
     $ctrl.procedure = angular.copy(procedure);
@@ -185,10 +193,12 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
     $ctrl.groupName = $ctrl.procedureTitle[0];
     $ctrl.mainTitle = $ctrl.procedureTitle[1];
 
+    //Function to close the edit procedure modal
     $ctrl.close = function() {
         $uibModalInstance.dismiss('cancel');
     };
 
+    //Function to save the changes to the database when editing procedure is validated
     $ctrl.save = function(indexNum,groupName,title){
         var exists = false;
         var prevprocId;
@@ -235,6 +245,7 @@ quantum.controller('editProcedureCtrl',function($scope,$uibModal,$uibModalInstan
 
 });
 
+// Controller to display the dialog when there are more errors in procedure upload
 quantum.controller('DialogController',function($scope,$mdDialog) {
     var $ctrl = this;
     $ctrl.cancel = function() {
@@ -242,6 +253,7 @@ quantum.controller('DialogController',function($scope,$mdDialog) {
     };
 });
 
+// Controller to display a toast and then use options to view more info about an error in a dialog message
 quantum.controller('ToastCtrl',function($scope,$mdDialog,$mdToast) {
     var $ctrl = this;
     $ctrl.closeToast = function() {

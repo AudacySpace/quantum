@@ -9,9 +9,12 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
     }
     $scope.running = false;
     $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum";
-    dashboardService.setHeaderLocation($location.url,true,true,false);
+
+    //Function to set the display status of live index , archive index and user list based on the url
+    dashboardService.setHeaderLocation($location.url,true,true,false);  
     viewProcedure();
 
+    //Function to set Header styles to archived instance mode and get the instance from the procedure list
     function viewProcedure(){
         procedureService.setHeaderStyles('none','block','#000000','#ffffff','none','inline-block',$window.innerWidth);
         procedureService.getProcedureList().then(function(response) {
@@ -54,6 +57,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         });
     }
 
+    // Function to show or hide the section or subsection
     $scope.showPList = function(id,index,headertype,type){
         var headingTypeName = procedureService.getStepHeadingName();
         if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
@@ -61,6 +65,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         }
     }
 
+    //Function to set header styles and add title to the header of the dashboard
     $scope.changeColor = function(status,pid,ptitle){
         if(status === "Live"){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
@@ -73,7 +78,7 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         }
     }
 
-
+    //Function to create a new instance of a procedure from the procedure links in a step
     $scope.createNewProc = function(pid){
         $scope.clock = timeService.getTime();
         var starttime = $scope.clock.year+" - "+$scope.clock.utc;
@@ -88,6 +93,8 @@ quantum.controller('archivedInstanceCtrl', function($scope,procedureService,$rou
         });
     }
 
+    //locationChangeStart is used to check the change the url when using browser back and forward buttons
+    // and change the header based on the url location 
     $scope.$on('$locationChangeStart', function(evnt, next, current){  
         var loc = $location.url();
         var revNumOp = loc.split("/");

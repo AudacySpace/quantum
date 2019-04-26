@@ -22,10 +22,19 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     }
     var users;
     $rootScope.title = "Procedure "+$scope.procedure.id+" | Quantum ";
+
+    //Function to set the display status of live index , archive index and user list based on the url
     dashboardService.setHeaderLocation($location.url,true,true,true);
     viewProcedure();
     $scope.running = true;
 
+
+    //Function to display right side bar which is used to
+    // upload procedures
+    // view live index or archive index
+    // view user list 
+    // view documentation
+    // Options are visible and hidden based on the page you are currently in
     $scope.openRightNav = function(){
         if($window.innerWidth < 800){
             if ($window.innerWidth < 800){
@@ -51,6 +60,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    //Function to create a new instance of a procedure from the procedure links in a step
     $scope.createNewProc = function(pid){
         $scope.clock = timeService.getTime();
         var starttime = $scope.clock.year+" - "+$scope.clock.utc;
@@ -65,6 +75,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    // Function to listen to changes in the instance and update it every 5 seconds
     $scope.updateLiveInstance = function(){
         procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){
@@ -102,6 +113,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    // Function to update users online for the procedure instance
     $scope.updateActiveUsers = function(){
          procedureService.getLiveInstanceData($scope.params.procID,$scope.currentRevision).then(function(response){
             if(response.status === 200){
@@ -116,6 +128,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
     $scope.liveInstanceinterval = $interval($scope.updateLiveInstance, 5000);
     $scope.activeUsersInterval = $interval($scope.updateActiveUsers,1000);
 
+    //Function to fetch the steps of the procedure and display them as sections and subsections in the page 
     function viewProcedure(){
         $scope.inputStepValues = [];
         $scope.tempValues = [];
@@ -170,14 +183,15 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             //completed steps
             $scope.steps = procedureService.getCompletedSteps($scope.steps);
 
-            for(var a=0;a<$scope.steps.length;a++){
-                if($scope.steps[a].Info !== ""){
-                    //$scope.steps = procedureService.openNextSteps($scope.steps,a);
-                }
-            }
+            // for(var a=0;a<$scope.steps.length;a++){
+            //     if($scope.steps[a].Info !== ""){
+            //         //$scope.steps = procedureService.openNextSteps($scope.steps,a);
+            //     }
+            // }
         });
     }
 
+    //Function to show or hide the sections on click on arrow button
     $scope.showPList = function(id,index,headertype,type){
         var headingTypeName = procedureService.getStepHeadingName();
         if(type.toUpperCase() === headingTypeName.name.toUpperCase()){
@@ -185,7 +199,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
-
+    //Function to set user name,callsign and timestamp when user executes the step by clicking checkbox
+    //This function takes step number as in array number and status as true if checked and false if unchecked
+    //This function also checks if the step checked is last step and will close the procedure by confirming with user
     $scope.setInfo = function(index,stepstatus){
         if($scope.liveInstanceinterval) {
             $interval.cancel($scope.liveInstanceinterval);
@@ -379,6 +395,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    //Function to destroy intervals of procedure update and user list update when the page changes
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.liveInstanceinterval);
@@ -386,6 +403,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     );
 
+    //Function to set header styles and add title to the header of the dashboard
     $scope.changeColor = function(status,pid,ptitle){
         if(status === "Live"){
             procedureService.setHeaderStyles('none','block','#05aec3f2','#ffffff','none','inline-block',$window.innerWidth);
@@ -399,6 +417,8 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    //locationChangeStart is used to check the change the url when using browser back and forward buttons
+    // and change the header based on the url location 
     $scope.$on('$locationChangeStart', function(evnt, next, current){ 
         var loc = $location.url();
         var revNumOp = loc.split("/");
@@ -430,6 +450,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     });
 
+    //Function to validate the input value entered in record step type
     $scope.updateInputValue = function(index,value){
         if(value.length > 0){
             $scope.inputStepValues[index].ivalue = value;
@@ -443,14 +464,17 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         }
     }
 
+    //Function to set the button color when input is typed in record step type
     $scope.whenTyping = function(index){
         $scope.steps[index].buttonStatus = {outline: 0};
     }
 
+    //Function to set comments in a temp variable when comments field is in typing mode
     $scope.whenTypingComments = function(index){
         $scope.tempValues[index].comments = $scope.steps[index].comments; 
     }
 
+    //Function to save comments 
     $scope.saveComments = function(comments,index){
         $scope.clock = timeService.getTime();
         var commentTime = $scope.clock.year+" - "+$scope.clock.utc;
@@ -467,6 +491,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    //Function to confirm closing or archiving of a procedure
     function confirmProcedureUpdate(messages,index){
         //Ask user to update or not
         $uibModal.open({
@@ -561,12 +586,13 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    // watch function to watch the role permissions for steps
     $scope.$watch('role.cRole',function(newvalue,oldvalue){
         $scope.steps = procedureService.getStepPermissions($scope.steps,newvalue.callsign);
     });
 
+    //Function to get current roles of all the online users
     function setActiveUsersRole(activeUsers){
-        //function to get current roles of all the online users
         userService.getUsersCurrentRole(mission).then(function(response) {
             if(response.status == 200){
                 for(var i=0;i<activeUsers.length;i++){
@@ -581,6 +607,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });  
     }
 
+    //Function to execute parents or section headers of a step if all the steps in the section are completed
     function executeParents(parentsArray){
         for(i=0;i<parentsArray.length;i++){
             if($scope.steps[parentsArray[i].index].headertype === 'mainheader'){
@@ -620,17 +647,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     }
                 }
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {
-            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background-size': '200% 100%',
-            //         'background-position':'right bottom',
-            //         'margin-left':'10px',
-            //         'transition':'all 0.3s linear'
-            //     }
-            // }
+
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -647,6 +664,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    // Function to remove the the status of section header if any of its step is unchecked 
     function removeParentsStatus(parentsArray){
         for(i=0;i<parentsArray.length;i++){
             $scope.steps[parentsArray[i].index].Info = "";
@@ -663,9 +681,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                     rowcolor : {backgroundColor:'#e9f6fb'}
                 }
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {backgroundColor:'#e9f6fb'}
-            // }
+
             $scope.inputStepValues[parentsArray[i].index].ivalue = "";
             if($scope.steps[parentsArray[i].index].recordedValue) {
                 $scope.steps[parentsArray[i].index].recordedValue = "";
@@ -684,8 +700,9 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    //Function to execute a section header
     function executeParent(parent,index){
-                if($scope.steps[index].headertype === 'mainheader'){
+        if($scope.steps[index].headertype === 'mainheader'){
             $scope.steps[index].rowstyle = {
                 rowcolor : {
                     'background':'-moz-linear-gradient(right, transparent 50%, #bee4f3 50%), linear-gradient(#9fdf9f, #9fdf9f)',
@@ -722,17 +739,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             };
         }
-        // $scope.steps[index].rowstyle = {
-        //     rowcolor : {
-        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background-size': '200% 100%',
-        //         'background-position':'right bottom',
-        //         'margin-left':'10px',
-        //         'transition':'all 0.3s linear'
-        //     }
-        // }
+
         $scope.steps[index].recordedValue = "";
         $scope.steps[index].buttonStatus = "";
         $scope.steps[index].Info = $scope.clock.utc;
@@ -748,6 +755,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
 
     }
 
+    //Function to execute headers of close step
     function lastStepexecuteParents(parentsArray,index,completetime){
         for(i=0;i<parentsArray.length;i++){
             if($scope.steps[parentsArray[i].index].headertype === 'mainheader'){
@@ -790,17 +798,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 };
 
             }
-            // $scope.steps[parentsArray[i].index].rowstyle = {
-            //     rowcolor : {
-            //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-            //         'background-size': '200% 100%',
-            //         'background-position':'right bottom',
-            //         'margin-left':'10px',
-            //         'transition':'all 0.3s linear'
-            //     }
-            // }
+
             $scope.steps[parentsArray[i].index].recordedValue = "";
             $scope.steps[parentsArray[i].index].buttonStatus = "";
             $scope.steps[parentsArray[i].index].Info = $scope.clock.utc;
@@ -826,6 +824,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
         });
     }
 
+    //Function to execute parent of close step
     function lastStepexecuteParent(parent,index,stepindex,completetime){
         if($scope.steps[index].headertype === 'mainheader'){
             $scope.steps[index].rowstyle = {
@@ -864,17 +863,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
                 }
             };
         }
-        // $scope.steps[index].rowstyle = {
-        //     rowcolor : {
-        //         'background':'-moz-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'-o-linear-gradient(right, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background':'linear-gradient(to left, transparent 50%, #e9f6fb 50%), linear-gradient(#c6ecc6, #c6ecc6)',
-        //         'background-size': '200% 100%',
-        //         'background-position':'right bottom',
-        //         'margin-left':'10px',
-        //         'transition':'all 0.3s linear'
-        //     }
-        // }
+
         $scope.steps[index].recordedValue = "";
         $scope.steps[index].buttonStatus = "";
         $scope.steps[index].Info = $scope.clock.utc;

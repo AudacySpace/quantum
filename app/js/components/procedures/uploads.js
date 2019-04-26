@@ -2,6 +2,8 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
     $scope.role = userService.userRole;
     $scope.name = userService.getUserName();
 
+    //Function to validate the procedure upload on submission
+    //This function validates if the name is in correct format and if an xlsx file is uploaded
     $scope.submit = function(){ 
         // Call upload if form is valid
         if($scope.upload_form.$valid) {
@@ -68,6 +70,10 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
         }
     }
 
+    //If the name format and if the file is an xlsx file then this function is called 
+    //to validate the contents and save in the database and display success or error messages
+    // Validation is executed by function in procedure.controller js file in server folder of the project
+    //This function is also used to update the procedure.
     $scope.upload = function(file,userdetails) {
         Upload.upload({
             url: '/upload', 
@@ -467,10 +473,12 @@ quantum.controller('uploadCtrl',function($scope,$uibModal,procedureService,timeS
         });
     };
 
+    //Function to hide the upload modal when user clicks the close button
     $scope.closeDialog = function() {
         $mdDialog.hide();
     }
 
+    //Function to confirm to update a procedure if the procedure uploaded already exists
     function confirmProcedureUpdate(messages){
          //Ask user to update or not
         $uibModal.open({

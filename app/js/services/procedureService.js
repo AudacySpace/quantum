@@ -36,6 +36,7 @@ quantum
 
     var headingType = {'name': 'Heading'};
 
+    //Function to get procedures uploaded
     function getProcedureList() {
     	return $http({
     		url: "/getProcedureList",
@@ -44,6 +45,7 @@ quantum
     	});
     }
 
+    //Function to set the procedure name currently created or viewed to be set for header title and tab title
     function setProcedureName(id,name,status){
         var loc = $window.location.pathname;
         var revNumOp = loc.split("/");
@@ -71,10 +73,12 @@ quantum
         }
     }
 
+    //Function to get the procedure name to be used in controllers
     function getProcedureName(){
         return procedure;
     }
 
+    //Function to set the quantum icon and dashboard header style based on the size of the page
     function setHeaderStyles(icon1,icon2,bgcolor,fontcolor,icon3,icon4,windowWidth){
         if(windowWidth > 500){
             icons.icon1style = {display:icon1};
@@ -91,10 +95,12 @@ quantum
         header.namestyles = {color:fontcolor};
     }
 
+    //Function to get the quantum icon style to be used in controllers
     function getHeaderStyles(){
         return header;
     }
 
+    //Function to download procedure using get request with procedure index number as identifier
     function downloadProcedure(id){
         return $http({
             url:"/getProcedureData",
@@ -103,10 +109,12 @@ quantum
         })
     }
 
+    //Function to get the quantum icon styles
     function getIconStyles(){
         return icons;
     }
 
+    //Function to save the procedure instance
     function saveProcedureInstance(id,usernamerole,lastuse,username,email,userstatus) {
         return $http({
             url: "/saveProcedureInstance", 
@@ -115,6 +123,8 @@ quantum
         });
     }
 
+    //Function to set the info(user name ,callsign and timestamp) when checkbox is checked 
+    // or remove the info when unchecked
     function setInfo(info,id,step,usernamerole,revision,lastuse,recordedValue,steptype){
         return $http({
             url: "/setInfo", 
@@ -123,6 +133,7 @@ quantum
         });  
     }
 
+    //Function to save the active instance in archived instances when the last step is executed
     function setInstanceCompleted(info,id,step,usernamerole,revision,lastuse){
         return $http({
             url: "/setInstanceCompleted", 
@@ -131,6 +142,7 @@ quantum
         }); 
     }
 
+    //Function to get procedure instance step data from database
     function getLiveInstanceData(pid,revision){
         return $http({
             url:"/getLiveInstanceData",
@@ -139,6 +151,7 @@ quantum
         });
     }
 
+    //Function to get all the instances of a procedure
     function getAllInstances(pid){
         return $http({
             url:"/getAllInstances",
@@ -147,6 +160,7 @@ quantum
         });
     }
 
+    //Function to create procedure instance display using the step type,step number,step role,reference
     function getProcedureSection(psteps,callsign){
         if(psteps && psteps.length > 0 && callsign !== ''){
             for(var j=0;j<psteps.length;j++){
@@ -322,6 +336,7 @@ quantum
         return psteps;
     }
 
+    //Function to get procedure links of the dependent procedures to be executed in a decision step
     function getValidLinks(procList,steps){
         //check for dependent procedures
         for(var a=0;a<steps.length;a++){
@@ -387,6 +402,7 @@ quantum
         return steps;
     }
 
+    //Function to toggle the arrow icon status of a section
     function showPList(id,index,headertype,liststeps){
         if(id !== "" && index !== "" && headertype !== "" && liststeps.length > 0){
             if(headertype === "mainheader"){
@@ -523,6 +539,7 @@ quantum
         return steps;
     }
 
+    //Function to get all the completed steps with their step colors
     function getCompletedSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
@@ -576,20 +593,24 @@ quantum
         return steps;
     }
 
+    //Function to split a string and save to the array based on a delimiter
     function createArrayOfString(content,delimiter){
         var arrayOfContents = [];
         arrayOfContents = content.split(delimiter);
         return arrayOfContents;
     }
 
+    //Function to set the current view revision obtained when instance is saved
     function setCurrentViewRevision(revisionNum){
         currentViewRevision.value = revisionNum;
     }
 
+    //Function to get the current view revision to be used by controllers
     function getCurrentViewRevision(){
         return currentViewRevision
     }
 
+    //Function to create a procedure link to be able to display in a decision step
     function getProcedureLink(decisiondetails){
          var procedureLinkDetails = [];
         if(decisiondetails.includes("\r\n")){
@@ -624,6 +645,7 @@ quantum
         return procedureLinkDetails;
     }
 
+    //Function to disable steps when in archived mode
     function disableSteps(steps){
         if(steps.length > 0){
             for(var d=0;d<steps.length;d++){
@@ -641,9 +663,7 @@ quantum
                             rowcolor : {backgroundColor:'#c6ecc6'}
                         };
                     }
-                    // steps[d].rowstyle = {
-                    //     rowcolor : {backgroundColor:'#c6ecc6'}
-                    // };
+
                     steps[d].chkval = true;
                     steps[d].status = true;
                 }else {
@@ -654,6 +674,7 @@ quantum
         return steps;
     }
 
+    //Function to store comments for a procedure step in database
     function setComments(pid,prevision,index,comments,lastuse){
         return $http({
             url: "/setComments", 
@@ -661,6 +682,7 @@ quantum
             data: {"pid":pid,"prevision":prevision,"index":index,"comments":comments,"lastuse":lastuse}
         });
     }
+
 
     function openFirstStep(psteps,callsign){
         if(psteps && psteps.length > 0){
@@ -689,6 +711,7 @@ quantum
         return psteps;
     }
 
+    //Function to get the main section header index of a step
     function getSectionHeaderIndex(steps,currentIndex) {
         var sectionHeader;
         for(var a=0;a<currentIndex;a++){
@@ -705,6 +728,7 @@ quantum
         
     }
 
+    //Function to get the next main section header index of a step
     function getNextSectionHeaderIndex(steps,mainHeaderIndex,currentIndex){
         var nextsectionHeader;
         for(var s=mainHeaderIndex+1;s<steps.length;s++){
@@ -722,6 +746,7 @@ quantum
 
     }
 
+    //Function to get the sub section index of a step
     function getSubSectionHeaderIndex(steps,currentIndex){
         var subsectionHeader;
         for(var i=0;i<currentIndex;i++){
@@ -738,6 +763,7 @@ quantum
        
     }
 
+    //Function to get the next sub section index of a step
     function getNextSubSectionHeaderIndex(steps,mainSubHeaderIndex,currentIndex){
         var nextsubheaderIndex;
         for(var s=mainSubHeaderIndex+1;s<steps.length;s++){
@@ -754,6 +780,7 @@ quantum
     }
 
 
+    //Function to get step permissions based on the step role
     function getStepPermissions(psteps,callsign){
         var len = psteps.length;
         //check for role and disable the steps if not permitted
@@ -768,7 +795,8 @@ quantum
         return psteps;
     }
 
-      function displayAlert(message,position,queryId,delay){
+    //Function to display angular material toast to display error or success messages
+    function displayAlert(message,position,queryId,delay){
         //var pinTo = 'top left';
         var toast = $mdToast.simple()
                             .textContent(message)
@@ -788,6 +816,7 @@ quantum
         return true;
     }
 
+    //Function to set user online or offline status based on the page url
     function setUserStatus(location,emailaddress,username,pid,revision,status){
         var locationOp1 = location.split("/"); // to split the current location string
         if(locationOp1.length === 4){
@@ -815,6 +844,7 @@ quantum
         }
     }
 
+    //Function to update procedure name
     function updateProcedureName(procId,newprocedurename){
         return $http({
             url: "/updateProcedureName", 
@@ -823,6 +853,7 @@ quantum
         }); 
     }
 
+    //Function to get all roles used in quantum
     function getQuantumRoles(){
         return $http({
             url:"/getQuantumRoles",
@@ -831,14 +862,17 @@ quantum
         });
     }
 
+    //Function to set roles
     function setQuantumRoles(roles){
         validRoles.callsigns = roles;
     }
 
+    //Function to get all valid roles
     function getValidRoles(){
         return validRoles;
     }
 
+    //Function to get all dependent procedures index numbers of a decision step
     function getDependentProcedures(step){
         var stepProcedures = [];
         var stepProceduresParams = [];
@@ -852,6 +886,7 @@ quantum
         }
     }
 
+    //Function to check if the procedures in a decision step exist previously in the database
     function ifFound(procList,elem){
         var found = false;
         for(var i = 0; i < procList.length; i++) {
@@ -863,6 +898,7 @@ quantum
         return found;
     }
 
+    //Function to set procedure instance with revision number
     function setprocRevisions(procid,revision){
         procs.revisions.push({
             "procId":procid,
@@ -870,10 +906,12 @@ quantum
         });
     }
 
+    //Function to get procedure instance with revision number
     function getprocRevisions(){
         return procs;
     }
 
+    //Function to sections headers of a steps
     function getAllParents(steps){
         for(var a=0;a<steps.length;a++){
             var stepParent = getParentTag(steps[a]);
@@ -889,6 +927,7 @@ quantum
         return steps;
     }
 
+    //Function to check if a parent exists for a step
     function ifParentExists(pTag,steps){
         var parentStatus = {'status':false,'index':''};
         if(pTag.step && pTag.step.length > 0){
@@ -907,6 +946,7 @@ quantum
         return parentStatus;
     }
 
+    //Function to get parent-section header number based on step number
     function getParentTag(step){
         var pTag = {
             step:''
@@ -934,6 +974,7 @@ quantum
         return pTag;
     }
 
+    //Function to display steps arrow icon status based on section header toggle status
     function showstepList(id,steps){
         var listSteps = [];
         if(steps[id].class === "fa fa-caret-right"){
@@ -956,13 +997,6 @@ quantum
                 }
             }
 
-            // for(var a=0;a<listSteps.length;a++){
-            //     for(var k=0;k<steps.length;k++){
-            //         if(steps[k].parent === listSteps[a].Step){
-            //             steps[k].openstatus = false;
-            //         }
-            //     }
-            // }
 
             for(var a=id+1;a<steps.length;a++){
                 if(steps[id].headertype === "mainheader"){
@@ -986,6 +1020,7 @@ quantum
         return steps;
     }
 
+    //Function to get all siblings of a step
     function getSiblings(index,steps,stepParent){
         var siblings = [];
         if(stepParent.length > 0){
@@ -1000,6 +1035,7 @@ quantum
         return siblings;
     }
 
+    //Function to get parents of a section and if its children are completed and set parents as done
     function getAllParentList(parentIndex,steps){
         var allParents = [];
         var allCompParents = [];
@@ -1039,6 +1075,7 @@ quantum
         return allCompParents;
     }
 
+    //Function to unset all parents of a section of a step when unchecked
     function getAllParentTree(parentIndex,steps){
         var allParents = [];
         var allCompParents = [];
@@ -1069,6 +1106,7 @@ quantum
         return allCompParents;
     }
 
+
     function checkallParents(step,allParents){
         for(var a=0;a<allParents.length;a++){
             for(var b=0;b<allParents[a].children.length;b++){
@@ -1093,6 +1131,7 @@ quantum
         return allParents;
     }
 
+    //Function to set info for section header
     function setParentsInfo(parentsArray,id,usernamerole,revision,lastuse,inputStepValues,info){
         return $http({
             url: "/setParentsInfo", 

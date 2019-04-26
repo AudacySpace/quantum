@@ -3,6 +3,7 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
 
     $ctrl.cRole = {};
 
+    //Service to fetch the current role selected by the user in Quantum
     userService.getCurrentRole(mission.name)
     .then(function(response) {
         if(response.status == 200){
@@ -13,10 +14,12 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
         }
     });
 
+    //Function to close the user settings modal 
     $ctrl.close = function() {
         $uibModalInstance.dismiss('cancel');
     };
 
+    //Function to get allowed roles assigned to the user
     userService.getAllowedRoles(mission.name)
     .then(function(response) {
         if(response.status == 200){
@@ -24,6 +27,7 @@ quantum.controller('userSettingsCtrl', function($uibModalInstance, userService, 
         }
     });
 
+    //Function to save the change in role by user
     $ctrl.updateRole = function(){
         userService.getRoles()
         .then(function(response) {
