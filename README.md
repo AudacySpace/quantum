@@ -10,7 +10,7 @@ Audacy's vision is to make mission operation accessible to anyone who is pursuin
 You can use Quantum for handling procedures in your own mission operations environment, deployed on your own metal, customized to suit your mission needs. Then give back and contribute to the development community on GitHub.
 
 ## How to Use Quantum
-Please check out the [Usage Guide](https://github.com/AudacySpace/quantum/wiki/Usage-Guide) to learn about navigating around Quantum application.
+Please check out the [Usage Guide](https://github.com/AudacySpace/quantum/wiki/Usage-Guide) to learn about navigating around Quantum application. For installation on your local machine, check out the pre-requisites and steps [here](https://github.com/AudacySpace/quantum/blob/master/CONTRIBUTING.md#contributing-to-the-quantum-code)
 
 ## Contributing
 We encourage you to contribute to Quantum! Please check out the file [CONTRIBUTING.md](https://github.com/AudacySpace/quantum/blob/master/CONTRIBUTING.md) for guidelines about how to proceed.
