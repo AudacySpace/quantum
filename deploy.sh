@@ -27,7 +27,7 @@ docker run --rm --name "quantum_test" quantum_test
 RC=$?
 
 #Remove test container image
-docker rmi quantum_test
+# docker rmi quantum_test
 
 #If tests successful, update the code in the docker container 
 if [ $RC == 0 ]

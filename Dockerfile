@@ -1,12 +1,13 @@
 # Quantum Dockerfile
 
-FROM centos:latest
+FROM -platform=linux/amd64 centos:7.0.1406
 MAINTAINER quindar@audacy.space
 LABEL vendor="Audacy"
 
 
 # run system update & install utils
-RUN yum -y update --setopt=tsflags=nodocs   && \
+RUN yum swap -y fakesystemd systemd && \
+	yum -y update --setopt=tsflags=nodocs && \
 	yum -y install git wget nano curl make dos2unix
 
 ##############################################################################
@@ -17,10 +18,11 @@ RUN yum -y update --setopt=tsflags=nodocs   && \
 # netdata is proxied behind nginx, and accessible at \\hostname\netdata
 # start command /usr/sbin/netdata -D -s /host -p 19999
 #
-RUN yum -y install zlib-devel libuuid-devel libmnl-devel gcc autoconf autoconf-archive autogen automake pkgconfig python tc python-yaml  && \
-	git clone https://github.com/firehol/netdata.git --depth=1    && \
+RUN yum -y install zlib-devel libuuid-devel libmnl-devel gcc autoconf autoconf-archive autogen automake pkgconfig python tc python-yaml && \
+	git clone https://github.com/firehol/netdata.git && \
 	cd netdata && \
-	./netdata-installer.sh --dont-wait --dont-start-it 
+	git checkout f8e0f3ced35509f608f360823c57c19b19eb6164 && \
+	./netdata-installer.sh --dont-wait --dont-start-it
 
 
 ##############################################################################
