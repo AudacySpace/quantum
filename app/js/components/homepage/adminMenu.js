@@ -63,7 +63,7 @@ quantum.controller('adminCtrl', function($scope, $filter, $uibModalInstance, use
                         var position = "bottom right";
                         var queryId = '#adminsettingstoaster';
                         var delay = 5000;
-                        $scope.usermessage = "Allowed roles updated for " + $ctrl.selected.user.google.name;
+                        $scope.usermessage = "Allowed roles updated for " + $ctrl.selected.user.azure_ad.name;
                         var alertstatus = procedureService.displayAlert($scope.usermessage,position,queryId,delay);
                     }
                 })

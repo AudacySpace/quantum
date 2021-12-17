@@ -10,16 +10,16 @@ quantum
     }
 
     function getUserName() {
-        if($window.user.google && $window.user.google.name) {
-            return $window.user.google.name;
+        if($window.user.azure_ad && $window.user.azure_ad.name) {
+            return $window.user.azure_ad.name;
         } else {
             return "";
         }
     }
 
     function getUserEmail() {
-        if($window.user.google && $window.user.google.email) {
-            return $window.user.google.email;
+        if($window.user.azure_ad && $window.user.azure_ad.email) {
+            return $window.user.azure_ad.email;
         } else {
             return "";
         }
@@ -38,7 +38,7 @@ quantum
         return $http({
             url: "/getCurrentRole",
             method: "GET",
-            params: {"email": $window.user.google.email, "mission" : mission}
+            params: {"email": $window.user.azure_ad.email, "mission" : mission}
         });
     }
 
@@ -46,7 +46,7 @@ quantum
         return $http({
             url: "/getAllowedRoles",
             method: "GET",
-            params: {"email": $window.user.google.email, "mission" : mission}
+            params: {"email": $window.user.azure_ad.email, "mission" : mission}
         });
     }
 
@@ -79,7 +79,7 @@ quantum
         return $http({
             url: "/setAllowedRoles",
             method: "POST",
-            data: {"email" : user.google.email, "roles" : roles, "mission": mission}
+            data: {"email" : user.azure_ad.email, "roles" : roles, "mission": mission}
         });
     }
 
