@@ -597,7 +597,7 @@ quantum.controller('runningInstanceCtrl', function($scope,procedureService,$rout
             if(response.status == 200){
                 for(var i=0;i<activeUsers.length;i++){
                     for(var j=0;j<response.data.length;j++){
-                        if(activeUsers[i].status === true && activeUsers[i].email === response.data[j].google.email){
+                        if(activeUsers[i].status === true && activeUsers[i].email === response.data[j].azure_ad.email){
                             activeUsers[i].role = response.data[j].missions[0].currentRole;
                         }
                     }

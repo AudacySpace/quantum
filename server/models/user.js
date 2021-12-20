@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
-    google           : {
+    azure_ad           : {
         id           : {type:String,required:true},
         token        : {type:String,required:true},
         email        : {type:String,required:true},

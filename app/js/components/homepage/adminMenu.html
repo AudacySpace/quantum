@@ -10,10 +10,10 @@
             <label class="control-label col-sm-3">Name of the User</label>
             <div class="col-sm-7">
                 <ui-select ng-model="$ctrl.selected.user" theme="bootstrap">
-                    <ui-select-match placeholder="Select User">{{$select.selected.google.name}}</ui-select-match>
+                    <ui-select-match placeholder="Select User">{{$select.selected.azure_ad.name}}</ui-select-match>
                     <ui-select-choices repeat="user in $ctrl.users">
-                        <div ng-bind="user.google.name"></div>
-                        <small ng-bind="user.google.email"></small>
+                        <div ng-bind="user.azure_ad.name"></div>
+                        <small ng-bind="user.azure_ad.email"></small>
                     </ui-select-choices>
                 </ui-select>
             </div>
@@ -23,7 +23,7 @@
             <div class="col-sm-7">
                 <div class="checkbox"  ng-repeat="role in $ctrl.roles">
                     <label>
-                        <input type="checkbox" ng-model="role.checked" ng-disabled="role.checked && role.callsign=='VIP' || role.checked && role.callsign=='MD' && $ctrl.selected.user.google.email==$ctrl.email">
+                        <input type="checkbox" ng-model="role.checked" ng-disabled="role.checked && role.callsign=='VIP' || role.checked && role.callsign=='MD' && $ctrl.selected.user.azure_ad.email==$ctrl.email">
                         {{ role.name}} ({{ role.callsign }})
                     </label>
                 </div>

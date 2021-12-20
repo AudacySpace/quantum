@@ -44,28 +44,27 @@ module.exports = function(app,passport) {
         res.redirect('/');
     });
 
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-    // the callback after google has authenticated the user
-    app.get('/auth/google/callback',
-            passport.authenticate('google', {
+    app.get('/auth/azureadoauth2', passport.authenticate('azure_ad_oauth2', { scope : ['profile', 'email'] }));
+    // the callback after Azure AD has authenticated the user
+    app.get('/auth/azureadoauth2/callback',
+            passport.authenticate('azure_ad_oauth2', {
                     successRedirect : '/dashboard',
                     failureRedirect : '/'
             }));
 
-    // send to google to do the authentication
-    app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
+    // send to Azure AD to do the authentication
+    app.get('/connect/azureadoauth2', passport.authorize('azure_ad_oauth2', { scope : ['profile', 'email'] }));
 
-    // the callback after google has authorized the user
-    app.get('/connect/google/callback',
-        passport.authorize('google', {
+    // the callback after Azure AD has authorized the user
+    app.get('/connect/azureadoauth2/callback',
+        passport.authorize('azure_ad_oauth2', {
             successRedirect : '/dashboard',
             failureRedirect : '/'
         }));
 
-    app.get('/unlink/google', isLoggedIn, function(req, res) {
+    app.get('/unlink/azureadoauth2', isLoggedIn, function(req, res) {
         var user          = req.user;
-        user.google.token = undefined;
+        user.azure_ad.token = undefined;
         user.save(function(err) {
             res.redirect('/dashboard');
         });

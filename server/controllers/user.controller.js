@@ -10,7 +10,7 @@ module.exports = {
         var mission = req.query.mission;
 
         //update the current role of the user
-        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
+        User.findOne({ 'azure_ad.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
             if(err){
                 console.log(err);
             }
@@ -27,7 +27,7 @@ module.exports = {
         var mission = req.query.mission;
 
         //update allowed roles of the user
-        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
+        User.findOne({ 'azure_ad.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
             if(err){
                 console.log(err);
             }
@@ -42,7 +42,7 @@ module.exports = {
         var mission = req.query.mission;
         var allUsers = [];
 
-        User.find( { 'missions.name' : mission }, { 'google' : 1, 'missions.$' : 1 }, function(err, users) {
+        User.find( { 'missions.name' : mission }, { 'azure_ad' : 1, 'missions.$' : 1 }, function(err, users) {
             if(err){
                 console.log(err);
             }
@@ -50,7 +50,7 @@ module.exports = {
             if(users){
                 for(var i=0; i<users.length; i++){
                     allUsers[i] = new Object();
-                    allUsers[i].google = users[i].google;
+                    allUsers[i].azure_ad = users[i].azure_ad;
                     allUsers[i].currentRole = users[i].missions[0].currentRole;
                     var aRoles = {};
 
@@ -86,7 +86,7 @@ module.exports = {
                 console.log(err);
             }
 
-            User.findOne({ 'google.email' : email }, function(err, user) {
+            User.findOne({ 'azure_ad.email' : email }, function(err, user) {
                 if(err){
                     console.log(err);
                 }
@@ -156,7 +156,7 @@ module.exports = {
         var mission = req.body.mission;
 
         //update the current role of the user
-        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
+        User.findOne({ 'azure_ad.email' : email, 'missions.name' : mission }, function(err, user) {
             if(err){
                 console.log(err);
             }
@@ -188,7 +188,7 @@ module.exports = {
         var mission = req.body.mission;
 
         //update allowed roles of the user
-        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
+        User.findOne({ 'azure_ad.email' : email, 'missions.name' : mission }, function(err, user) {
             if(err){
                 console.log(err);
             }
@@ -220,7 +220,7 @@ module.exports = {
         var mission = req.query.mission;
         var onlineUsers = [];
         //update the current role of the user
-        User.find({'missions.name' : mission}, {'google' : 1, 'missions.$' : 1}, function(err, users) {
+        User.find({'missions.name' : mission}, {'azure_ad' : 1, 'missions.$' : 1}, function(err, users) {
             if(err){
                 console.log(err);
             }

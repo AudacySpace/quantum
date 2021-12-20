@@ -5,7 +5,7 @@ describe('Test Suite for User Service', function() {
 
     var windowMock = { user : 
     	{_id: "594417df3d2dd966dcb43afd", 
-            google: {
+            azure_ad: {
                 email: "john.smith@gmail.com", 
                 name: "John Smith", 
                 id: "112313425445562239891"
@@ -76,7 +76,7 @@ describe('Test Suite for User Service', function() {
         httpBackend.expectPOST("/setMissionForUser")
             .respond(200, {});
 
-        userService.setMissionForUser(windowMock.user.google.email, mission).then( function(response){
+        userService.setMissionForUser(windowMock.user.azure_ad.email, mission).then( function(response){
             expect(response.status).toBe(200);
         });
 
@@ -155,7 +155,7 @@ describe('Test Suite for User Service', function() {
         var users;
         var result = [{
             _id: "594417df3d2dd966dcb43afd",
-            google: {
+            azure_ad: {
                 email: "john.smith@gmail.com",
                 name: "John Smith",
                 id: "112313425445562239891"

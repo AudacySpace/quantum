@@ -1,10 +1,12 @@
 // lib/passport.js
 
 // load all the things we need
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2')
 
 // load up the user model
-var User       = require('../models/user');
+var User = require('../models/user');
+
+var jwt = require('jsonwebtoken');
 
 // load the auth variables
 var config = require('../../config/config.env.js');
@@ -34,36 +36,37 @@ module.exports = function(passport) {
     });
 
     // =========================================================================
-    // GOOGLE ==================================================================
+    // Azure AD ==================================================================
     // =========================================================================
     try{
-        passport.use(new GoogleStrategy({
+        passport.use(new AzureAdOAuth2Strategy({
 
-            clientID        : configAuth.googleAuth.clientID,
-            clientSecret    : configAuth.googleAuth.clientSecret,
-            callbackURL     : configAuth.googleAuth.callbackURL,
+            clientID        : configAuth.azureADAuth.clientID,
+            clientSecret    : configAuth.azureADAuth.clientSecret,
+            callbackURL     : configAuth.azureADAuth.callbackURL,
             passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 
         },
-        function(req, token, refreshToken, profile, done) {
+        function(req, token, refreshToken, params, profile, done) {
 
             // asynchronous
             process.nextTick(function() {
-
                 // check if the user is already logged in
-                if (!req.user) {
+                // user is NOT logged in
+                profile = jwt.decode(params.id_token);
 
-                    User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                if (!req.user) {
+                    User.findOne({ 'azure_ad.id' : profile.oid }, function(err, user) {
                         if (err)
                             return done(err);
 
                         if (user) {
-
+                            console.log('Found user')
                             // if there is a user id already but no token (user was linked at one point and then removed)
-                            if (!user.google.token) {
-                                user.google.token = token;
-                                user.google.name  = initCaps(profile.displayName);
-                                user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                            if (!user.azure_ad.token) {
+                                user.azure_ad.token = token;
+                                user.azure_ad.name  = initCaps(profile.name);
+                                user.azure_ad.email = (profile.upn || '').toLowerCase(); // pull the first email
 
                                 user.save(function(err) {
                                     if (err)
@@ -75,12 +78,13 @@ module.exports = function(passport) {
 
                             return done(null, user);
                         } else {
+                            console.log('Found no user')
                             var newUser          = new User();
 
-                            newUser.google.id    = profile.id;
-                            newUser.google.token = token;
-                            newUser.google.name  = initCaps(profile.displayName);
-                            newUser.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                            newUser.azure_ad.id    = profile.oid;
+                            newUser.azure_ad.token = token;
+                            newUser.azure_ad.name  = initCaps(profile.name);
+                            newUser.azure_ad.email = (profile.upn || '').toLowerCase(); // pull the first email
 
                             newUser.save(function(err) {
                                 if (err)
@@ -92,13 +96,14 @@ module.exports = function(passport) {
                     });
 
                 } else {
+                    console.log('User already exists')
                     // user already exists and is logged in, we have to link accounts
                     var user               = req.user; // pull the user out of the session
 
-                    user.google.id    = profile.id;
-                    user.google.token = token;
-                    user.google.name  = initCaps(profile.displayName);
-                    user.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                    user.azure_ad.id    = profile.oid;
+                    user.azure_ad.token = token;
+                    user.azure_ad.name  = initCaps(profile.name);
+                    user.azure_ad.email = (profile.upn || '').toLowerCase(); // pull the first email
 
                     user.save(function(err) {
                         if (err)
@@ -111,7 +116,7 @@ module.exports = function(passport) {
             });
         }));
     } catch(e){
-        console.log("Error creating GoogleStrategy " + e);
+        console.log("Error creating AzureADStrategy " + e);
     }
 
 };
