@@ -1,8 +1,8 @@
 # Quantum Dockerfile
 
 FROM --platform=linux/amd64 centos:7.0.1406
-MAINTAINER quindar@audacy.space
-LABEL vendor="Audacy"
+MAINTAINER missionops@e-space.com
+LABEL vendor="E-Space"
 
 
 # run system update & install utils
@@ -44,10 +44,6 @@ RUN yum install -y epel-release && \
 	yum install -y nginx && \
 	mkdir -p /etc/ssl
 
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/server.crt /etc/ssl/server.crt
-COPY nginx/server.key /etc/ssl/server.key
-
 #**** install node ****
 # https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora
 # 
@@ -82,11 +78,12 @@ RUN git clone https://www.agwa.name/git/git-crypt.git && \
 # node server should run on port 3000 > proxied via nginx to 443
 # start command: pm2 start
 
-# Create app directory	 
-RUN  mkdir -p /node 
+# Create app directory
+RUN  mkdir -p /node
 WORKDIR /node
 
 # Copy code contents and install app dependencies
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY . /node
 RUN npm install --no-save
 
