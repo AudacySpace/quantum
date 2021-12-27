@@ -1,7 +1,7 @@
 {
   "name": "quantum",
   "version": "0.0.1",
-  "description": "Quantum is a mission procedures platform developed by Audacy",
+  "description": "Quantum - Mission Procedures platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -35,16 +35,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AudacySpace/quantum"
+    "url": "https://github.com/wildstar-tech/quantum"
   },
   "keywords": [
     "node",
     "quantum",
     "express"
   ],
-  "author": "Audacy",
+  "author": "E-Space",
   "contributors": [
-    "Audacy (http://audacy.space)"
+    "E-Space (https://www.e-space.com/)"
   ],
   "license": "MIT",
   "devDependencies": {

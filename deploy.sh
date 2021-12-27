@@ -1,8 +1,4 @@
 #!/bin/bash
-#checkout the branch and pull new contents
-# git fetch --all
-# git checkout $1 
-# git pull
 
 #define environment as per the branch
 if [ "$1" == "master" ]
@@ -15,38 +11,30 @@ else
   ENV="development"
 fi
 
+TAG=${TAG:-1.0.1}
+ECR_HOST="177124026637.dkr.ecr.us-east-2.amazonaws.com"
+# get ECR login
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${ECR_HOST}
+
+
 #build new docker container
 echo 'Building quantum app'
 docker build -t quantum-app --build-arg ENVIRONMENT=$ENV .
+docker tag quantum-app ${ECR_HOST}/quantum:${TAG}
+docker push ${ECR_HOST}/quantum:${TAG}
 
-#build docker test container
-# docker build -t "quantum-test" -f "Dockerfile.test" .
-
-#run and remove the docker test container
-# docker run --rm --name "quantum-test" quantum-test
-
-RC=$?
-
-#Remove test container image
-# docker rmi quantum-test
-
-#If tests successful, update the code in the docker container 
-if [ $RC == 0 ]
+if [ "${ENV}" == "development" ]
 then
   echo "====================================================================="
-  echo "Updating code in the main docker container"
+  echo "Deploying local quantum container"
   echo "====================================================================="
   #Stop the old container and run the new one(after retagging)
   docker stop quantum || true
   docker rm quantum || true
-  # docker rmi quantum-app || true
-  # docker tag quantum-test quantum-app
-  # docker rmi quantum-test
-  docker run -d -t --name quantum --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quantum-app
-else
-  echo "====================================================================="
-  echo "Test docker container failure. See above for more details."
-  echo "====================================================================="
-  # docker rmi quantum-app-test
-  exit 1	
+  docker run -d -t --name quantum \
+    --cap-add SYS_PTRACE \
+    -v /proc:/host/proc:ro -v /sys:/host/sys:ro \
+    -v $PWD/nginx/server.crt:/etc/ssl/server.crt \
+    -v $PWD/nginx/server.key:/etc/ssl/server.key \
+    -p 80:80 -p 443:443 ${ECR_HOST}/quantum:${TAG}
 fi
