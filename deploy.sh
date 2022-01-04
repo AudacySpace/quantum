@@ -33,6 +33,7 @@ then
   docker rm quantum || true
   docker run -d -t --name quantum \
     --cap-add SYS_PTRACE \
+    --env-file secrets.env \
     -v /proc:/host/proc:ro -v /sys:/host/sys:ro \
     -v $PWD/nginx/server.crt:/etc/ssl/server.crt \
     -v $PWD/nginx/server.key:/etc/ssl/server.key \

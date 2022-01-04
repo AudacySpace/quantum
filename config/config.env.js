@@ -1,7 +1,7 @@
 
 module.exports = function(){
 	//values of NODE_ENV - 'staging', 'production', 'development'
-	if(process.env.NODE_ENV) {
+	if(process.env.NODE_ENV && process.env.NODE_ENV != 'development') {
 		return {
         	'azureADAuth' : {
 		        'clientID'         : process.env.OAUTH_CLIENT_ID,

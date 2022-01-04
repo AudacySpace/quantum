@@ -1,2 +1,8 @@
 node_modules
 .DS_Store
+
+# secrets
+*.env
+
+# nginx certs
+nginx/server*
